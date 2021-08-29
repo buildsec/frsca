@@ -1,0 +1,27 @@
+[package]
+name = "bad_cargo"
+version = "0.1.0"
+edition = "2018"
+
+[[bin]]
+name = "bad_cargo_outputs"
+path = "src/outputs/main.rs"
+
+
+[[bin]]
+name = "bad_cargo_inputs"
+path = "src/inputs/main.rs"
+
+
+[[bin]]
+name = "overwrite_binary"
+path = "src/overwrite_binary/main.rs"
+
+
+[[bin]]
+name = "overwrite_source"
+path = "src/overwrite_source/main.rs"
+
+[dependencies]
+pentacle = "1.0.0"
+base64 = "0.13.0"

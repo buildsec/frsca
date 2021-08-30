@@ -2,11 +2,11 @@
 
 These are just a few examples and demos to show how certain supply chain attacks might manifest and how different tools and approaches can help mitigate them.
 
-# Monitoring build with eBPF
+## Monitoring build with eBPF
 
 The set of examples under `build_with_ebpf` are a few examples of how without the right preventive controls around your supply chain you will have to rely on detective controls. It is still good practice from a defense in depth approach to still apply monitoring like this on the builds to still detect anomalous behaviors or when your preventive controls fail for any reason.
 
-## Threats
+### Threats
 
 The threats these examples emulate are the following:
 
@@ -15,11 +15,11 @@ The threats these examples emulate are the following:
 * Build scripts attempting to call out to internet - NOT DONE
 * Approved build tools performing suspicious activities like injecting binaries into memory and executing directly - DONE
 
-## Setup
+### Setup
 
 TODO: Publish artifacts of binaries + containers
 
-```
+```bash
 cd build_with_ebpf/bad_cargo
 ./build.sh
 ```
@@ -30,28 +30,28 @@ cd build_with_ebpf/bad_cargo
 
 Normal Build:
 
-```
+```bash
 cd build_with_ebpf/real_project
 cargo build --release
 ```
 
 Build that hijacks the source files:
 
-```
+```bash
 cd build_with_ebpf/real_project
 ../bad_cargo/target/release/bad_cargo_inputs build --release
 ```
 
 Build that hijacks the output:
 
-```
+```bash
 cd build_with_ebpf/real_project
 ../bad_cargo/target/release/bad_cargo_outputs build --release
 ```
 
 Once you have run any of the above you can test it via:
 
-```
+```bash
 ./target/release/real_project
 ```
 
@@ -62,7 +62,7 @@ You should get a "Goodbye, World" output on the hijacked ones.
 
 Normal Build:
 
-```
+```bash
 cd containers/real_project
 nix-build default.nix
 docker load < result
@@ -71,7 +71,7 @@ docker run --rm -v <outputs_dir>:/src/target:z -v `pwd`/../../real_project:/src:
 
 Build that hijacks the source files:
 
-```
+```bash
 cd container/hijack_inputs_build
 nix-build default.nix
 docker load < result
@@ -80,7 +80,7 @@ docker run --rm -v <outputs_dir>:/src/target:z -v `pwd`/../../real_project:/src:
 
 Build that hijacks the output:
 
-```
+```bash
 cd container/hijack_outputs_build
 nix-build default.nix
 docker load < result
@@ -89,7 +89,7 @@ docker run --rm -v <outputs_dir>:/src/target:z -v `pwd`/../../real_project:/src:
 
 Once you have run any of the above you can test it via:
 
-```
+```bash
 <outputs_dir>/target/release/real_project
 ```
 
@@ -102,3 +102,18 @@ TODO: Flesh this out
     * Compare captured cargo that is run against the build against cargo inputs
     * Compare source inputs with upstream sources
     * You can debug captured suspicious binaries in sandboxed environments
+
+## Kubernetes Demos
+
+These showcase how to leverage Kubernetes, especialy using [Tekton], to improve
+the security of the supply chain.
+
+The scripts provided help provisioning and configuring environments quickly,
+either for an investigation purpose, either for demonstration.
+
+You could find more details in the [README.md](kubernetes/README.md) of the
+dedicated folder.
+
+
+
+[Tekton]: https://tekton.dev/

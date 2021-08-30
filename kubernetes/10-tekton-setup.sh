@@ -1,0 +1,51 @@
+#!/bin/bash
+set -euo pipefail
+
+# Define variables.
+C_GREEN='\033[32m'
+C_YELLOW='\033[33m'
+C_RED='\033[31m'
+C_RESET_ALL='\033[0m'
+
+# Wait until pods are ready.
+# $1: app label
+wait_for_pods () {
+  while [[ $(kubectl get pods --namespace tekton-pipelines -l app=$1 -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do
+  echo -e "${C_YELLOW}Waiting for $1 pods...${C_RESET_ALL}"
+  sleep 1
+done
+}
+
+# Setup Tekton.
+echo -e "${C_GREEN}Setting up Tekton CD...${C_RESET_ALL}"
+kubectl apply --filename https://storage.googleapis.com/tekton-releases/pipeline/latest/release.yaml
+wait_for_pods tekton-pipelines-controller
+
+# Setup the Dashboard.
+#   Use `kubectl proxy --port=8080` and then
+#   http://localhost:8080/api/v1/namespaces/tekton-pipelines/services/tekton-dashboard:http/proxy/
+#   to access it.
+kubectl apply --filename https://github.com/tektoncd/dashboard/releases/latest/download/tekton-dashboard-release.yaml
+wait_for_pods tekton-dashboard
+
+# Install shared tasks.
+kubectl apply -f https://raw.githubusercontent.com/tektoncd/catalog/main/task/git-clone/0.4/git-clone.yaml
+kubectl apply -f https://raw.githubusercontent.com/tektoncd/catalog/main/task/buildpacks/0.3/buildpacks.yaml
+kubectl apply -f https://raw.githubusercontent.com/tektoncd/catalog/main/task/buildpacks-phases/0.2/buildpacks-phases.yaml
+
+# Install shared pipeline.
+kubectl apply -f https://raw.githubusercontent.com/tektoncd/catalog/main/pipeline/buildpacks/0.1/buildpacks.yaml
+
+# Install POC pipeline.
+kubectl apply -f tekton-resources/pipeline-buildpacks.yaml
+tkn pipelinerun describe --last
+
+# Let's try another pipeline.
+# This IBM tutorial looks great:
+#   https://developer.ibm.com/devpractices/devops/tutorials/build-and-deploy-a-docker-image-on-kubernetes-using-tekton-pipelines/#create-a-task-to-clone-the-git-repository
+kubectl apply -f https://raw.githubusercontent.com/tektoncd/catalog/v1beta1/kaniko/kaniko.yaml
+kubectl apply -f tekton-resources/ibm-tutorial/pipeline-pvc.yaml
+kubectl apply -f tekton-resources/ibm-tutorial/pipeline-account.yaml
+kubectl apply -f tekton-resources/ibm-tutorial/build-and-deploy-pipeline.yaml
+kubectl create -f tekton-resources/ibm-tutorial/pipeline-run.yaml
+tkn pipelinerun describe --last

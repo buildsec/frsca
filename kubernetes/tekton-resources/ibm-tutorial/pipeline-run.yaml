@@ -1,0 +1,23 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  generateName: picalc-pr-
+spec:
+  pipelineRef:
+    name: build-and-deploy-pipeline
+  params:
+    - name: gitUrl
+      value: https://github.com/IBM/tekton-tutorial
+    - name: gitRevision
+      value: beta-update
+    - name: pathToYamlFile
+      value: kubernetes/picalc.yaml
+    - name: imageUrl
+      value: registry.kube-system.svc.cluster.local/citi/picalc
+    - name: imageTag
+      value: "1.0"
+  serviceAccountName: pipeline-account
+  workspaces:
+    - name: git-source
+      persistentVolumeClaim:
+        claimName: picalc-source-pvc

@@ -21,6 +21,37 @@ case "${PLATFORM}" in
     tkn version || brew install tektoncd/tools/tektoncd-cli
     ;;
 
+  Linux)
+    minikube version || (
+      TMP=$(mktemp -d)
+      pushd $TMP
+      curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+      sudo install minikube-linux-amd64 /usr/local/bin/minikube
+      rm minikube-linux-amd64
+      popd
+      rmdir $TMP
+    )
+    helm version || (
+      TMP=$(mktemp -d)
+      pushd $TMP
+      curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+      chmod 700 get_helm.sh
+      ./get_helm.sh
+      rm ./get_helm.sh
+      popd
+      rmdir $TMP
+    )
+    tkn version || (
+      TMP=$(mktemp -d)
+      pushd $(mktemp -d)
+      curl -LO https://github.com/tektoncd/cli/releases/download/v0.20.0/tkn_0.20.0_Linux_x86_64.tar.gz
+      sudo tar xvzf tkn_0.20.0_Linux_x86_64.tar.gz -C /usr/local/bin tkn
+      rm tkn_0.20.0_Linux_x86_64.tar.gz
+      popd
+      rmdir $TMP
+    )
+    ;;
+
   *)
     echo -e "${C_RED}The ${PLATFORM} platform is unimplemented or unsupported.${C_RESET_ALL}"
     exit 1

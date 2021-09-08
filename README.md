@@ -19,10 +19,8 @@ The threats these examples emulate are the following:
 
 In order to run these examples, you'll need a system with the following
 
-```bash
-sh.rustup.rs -sSf | sh
-curl -L https://nixos.org/nix/install | sh
-```
+* [Rust & Cargo](https://doc.rust-lang.org/cargo/getting-started/installation.html)
+* [Nix](https://nixos.org/guides/install-nix.html)
 
 ### Setup
 

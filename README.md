@@ -15,6 +15,13 @@ The threats these examples emulate are the following:
 * Build scripts attempting to call out to internet - NOT DONE
 * Approved build tools performing suspicious activities like injecting binaries into memory and executing directly - DONE
 
+### Pre-Requisites
+
+In order to run these examples, you'll need a system with the following
+
+* [Rust & Cargo](https://doc.rust-lang.org/cargo/getting-started/installation.html)
+* [Nix](https://nixos.org/guides/install-nix.html)
+
 ### Setup
 
 TODO: Publish artifacts of binaries + containers

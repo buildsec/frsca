@@ -14,13 +14,10 @@ kubectl get taskrun $TASKRUN -o=json | jq > $TASKRUN_JSON
 jq \
   -r ".metadata.annotations[\"chains.tekton.dev/payload-taskrun-$TASKRUN_UID\"]" \
   $TASKRUN_JSON  \
-  | base64 --decode \
-  | jq > payload.json
+  | base64 --decode > payload.json
 jq \
   -r ".metadata.annotations[\"chains.tekton.dev/signature-taskrun-$TASKRUN_UID\"]" \
-  $TASKRUN_JSON \
-  | base64 --decode \
-  | jq > signature.json
+  $TASKRUN_JSON > signature.pub
 
 echo "Verifying signature with cosign..."
-cosign verify-blob -key cosign.pub -signature ./signature.json ./payload.json
+cosign verify-blob -key cosign.pub -signature ./signature.pub ./payload.json

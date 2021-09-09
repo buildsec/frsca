@@ -20,6 +20,8 @@ The threats these examples emulate are the following:
 In order to run these examples, you'll need a system with the following
 
 * [Rust & Cargo](https://doc.rust-lang.org/cargo/getting-started/installation.html)
+  * Ensure you have x86_64-unknown-linux-musl target installed for static linking
+    `rustup target add x86_64-unknown-linux-musl`
 * [Nix](https://nixos.org/guides/install-nix.html)
 
 ### Setup

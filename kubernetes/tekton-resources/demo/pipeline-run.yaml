@@ -1,0 +1,15 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  generateName: kaniko-cargo-pipeline-run-
+spec:
+  pipelineRef:
+    name: kaniko-cargo-pipeline
+  params:
+  - name: image
+    value: ttl.sh/mlieberman-kaniko-chains-demo:1h
+  workspaces:
+  - name: shared-workspace
+    persistentvolumeclaim:
+      claimName: kaniko-source-pvc
+---

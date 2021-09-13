@@ -3,13 +3,18 @@ kind: PipelineRun
 metadata:
   generateName: kaniko-cargo-pipeline-run-
 spec:
+  serviceAccountName: build-bot
   pipelineRef:
     name: kaniko-cargo-pipeline
   params:
   - name: image
-    value: ttl.sh/mlieberman-kaniko-chains-demo:1h
+    # NOTE: Change me to something like  below if you want to test out without access to push mlieberman85/kaniko-chains-demo
+    # value: ttl.sh/foo-kaniko-chains-demo:1h
+    value: ghcr.io/mlieberman85/kaniko-chains-demo:latest
   workspaces:
   - name: shared-workspace
     persistentvolumeclaim:
       claimName: kaniko-source-pvc
----
+  - name: docker-secrets
+    secret:
+      secretName: secret-dockerconfigjson

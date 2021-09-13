@@ -33,8 +33,15 @@ extract the provenance information from a task.
 
 Script automating the [Spire] setup as defined in the getting started tutorial.
 
+## Kyverno
+
+### 30-kyverno-setup.sh
+
+Script automating the [Kyverno] setup.
+
 [Tekton]: https://tekton.dev/
 [dashboard]: https://github.com/tektoncd/dashboard
 [Chains]: https://github.com/tektoncd/chains
 [Spire]: https://spiffe.io/docs/latest/spire-about/
 [catalog]: https://github.com/tektoncd/catalog
+[Kyverno]: https://kyverno.io/docs/installation/

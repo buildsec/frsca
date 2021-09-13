@@ -39,8 +39,10 @@ spec:
     description: Holds the context and docker file
   - name: dockerconfig
     description: Includes a docker `config.json`
-    optional: true
+    # optional: true
     mountPath: /kaniko/.docker
+  - name: dockerconfig-cosign
+    mountPath: /root/.docker
   results:
   - name: IMAGE_DIGEST
     description: Digest of the image just built.
@@ -48,6 +50,24 @@ spec:
     description: URL of the image just built.
 
   steps:
+  # UNCOMMENT BELOW STEP TO TEST OUT SIGNED IMAGES/COMMENT OUT BELOW STEP TO TEST WITHOUT SIGNED IMAGES
+  - name: validate-parent-image-is-signed
+    workingDir: $(workspaces.source.path)
+    # Replace below with your own image based on cosign docker file.
+    # You can do this by cloning: https://github.com/sigstore/cosign/
+    # And then in the cosign directory: 
+    #   docker build . --tag ttl.sh/foo-cosign:1h -f Dockerfile
+    #   cosign sign -key k8s://tekton-chains/signing-secrets docker push ttl.sh/foo-cosign:1h
+    #   docker push ttl.sh/foo-cosign:1h
+    # You can replace the tag above with whatever you want and have access to push to.
+    # If you are using the admission controller you need to make sure the above image is signed by cosign
+    image: ghcr.io/mlieberman85/cosign
+    args:
+      - verify-dockerfile
+      - -key=https://drive.google.com/uc?export=download&id=1GYT5xnhDgY79AJ8prNyVPC52rTGdFQpg
+      - $(params.DOCKERFILE)
+    securityContext:
+      runAsUser: 0
   - name: build-and-push
     workingDir: $(workspaces.source.path)
     image: $(params.BUILDER_IMAGE)

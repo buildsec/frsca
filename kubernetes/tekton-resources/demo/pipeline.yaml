@@ -37,8 +37,6 @@ spec:
       workspace: shared-workspace
     - name: dockerconfig
       workspace: docker-secrets
-    - name: dockerconfig-cosign
-      workspace: docker-secrets
     params:
     - name: IMAGE
       value: $(params.image)
@@ -80,4 +78,7 @@ kind: ServiceAccount
 metadata:
   name: build-bot
 imagePullSecrets:
+  - name: regcred
+# Below is required because Kaniko task currently doesn't use imagePullSecrets normally
+secrets:
   - name: regcred

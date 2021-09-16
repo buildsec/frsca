@@ -39,10 +39,8 @@ spec:
     description: Holds the context and docker file
   - name: dockerconfig
     description: Includes a docker `config.json`
-    # optional: true
+    optional: true
     mountPath: /kaniko/.docker
-  - name: dockerconfig-cosign
-    mountPath: /root/.docker
   results:
   - name: IMAGE_DIGEST
     description: Digest of the image just built.

@@ -18,3 +18,4 @@ spec:
   - name: docker-secrets
     secret:
       secretName: secret-dockerconfigjson
+

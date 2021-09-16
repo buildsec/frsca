@@ -37,12 +37,12 @@ spec:
       - image: "ghcr.io/*"
         key: |-
           -----BEGIN PUBLIC KEY-----
-          MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEjE3xhsQUJNla1k19iDMEMS8tjHd7
-          na8/Qny/DQsiD7M4ZPjjn1MIh9Xlu34A8ir8y6rJVwFCm2YqCSfV5UCodA==
+          MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEEUPL6NOSBxMciHtxXIVBDGSmHpFJ
+          ko5p+SeQooi6ecFiJSIQRSRYDRqeJfyQAcKIy/X7iLDRB+hF6bSGJomvqg==
           -----END PUBLIC KEY-----
       - image: "ttl.sh/*"
         key: |-
           -----BEGIN PUBLIC KEY-----
-          MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEjE3xhsQUJNla1k19iDMEMS8tjHd7
-          na8/Qny/DQsiD7M4ZPjjn1MIh9Xlu34A8ir8y6rJVwFCm2YqCSfV5UCodA==
+          MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEEUPL6NOSBxMciHtxXIVBDGSmHpFJ
+          ko5p+SeQooi6ecFiJSIQRSRYDRqeJfyQAcKIy/X7iLDRB+hF6bSGJomvqg==
           -----END PUBLIC KEY-----

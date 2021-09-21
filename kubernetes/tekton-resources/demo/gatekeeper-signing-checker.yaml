@@ -1,0 +1,40 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gatekeeper-signing-checker
+  namespace: gatekeeper
+  labels:
+    name: gatekeeper-signing-checker
+spec:
+  selector:
+    matchLabels:
+      run: gatekeeper-signing-checker
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: gatekeeper-signing-checker
+    spec:
+      imagePullSecrets:
+      - name: regcred
+      containers:
+      - name: gatekeeper-signing-checker
+        image: ghcr.io/mlieberman85/main.go-7ddfb3e035b42cd70649cc33393fe32c@sha256:4a25935918036685e80d9d2de5d7c64ef488d4c58d902554a308bc695fb1f27e
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        ports:
+          - containerPort: 8085
+        volumeMounts:
+        - name: keys
+          mountPath: "/keys"
+          readOnly: true
+      volumes:
+        - name: keys
+          configMap:
+            name: key-map
+            items:
+            - key: "image"
+              path: "cosign.pub"

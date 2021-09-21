@@ -1,0 +1,30 @@
+apiVersion: templates.gatekeeper.sh/v1beta1
+kind: ConstraintTemplate
+metadata:
+  name: k8srequiredsignatures
+  namespace: gatekeeper
+spec:
+  crd:
+    spec:
+      names:
+        kind: K8sRequiredSignatures
+      validation:
+        openAPIV3Schema:
+          properties:
+            signatures:
+              type: array
+              items: string
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package k8srequiredsignatures
+
+        violation[{"msg": msg}] {
+          container := input.review.object.spec.containers[_]
+          body := { "image": container.image, }
+          headers_json := {"Content-Type": "application/json"}
+          cosignHTTPWrapperURL := "http://gatekeeper-signing-checker:8085/verify-signature"
+          output := http.send({"method": "post", "url": cosignHTTPWrapperURL, "headers": headers_json, "body": body})
+          not output.body.verified
+          msg := sprintf("container <%v> uses an image without a valid signature <%v>", [container.name, container.image])
+        }

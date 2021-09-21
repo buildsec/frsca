@@ -1,0 +1,25 @@
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: key-map
+  namespace: gatekeeper
+data:
+  image: |-
+    -----BEGIN PUBLIC KEY-----
+    MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEEUPL6NOSBxMciHtxXIVBDGSmHpFJ
+    ko5p+SeQooi6ecFiJSIQRSRYDRqeJfyQAcKIy/X7iLDRB+hF6bSGJomvqg==
+    -----END PUBLIC KEY-----
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gatekeeper-signing-checker-service
+  namespace: gatekeeper
+spec:
+  selector:
+    app: gatekeeper-signing-checker
+  ports:
+    - protocol: TCP
+      port: 8085
+      targetPort: 8085

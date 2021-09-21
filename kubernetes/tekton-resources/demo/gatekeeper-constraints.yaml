@@ -1,0 +1,29 @@
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sRequiredSignatures
+metadata:
+  name: image-must-have-signature
+  namespace: gatekeeper
+spec:
+  enforcementAction: deny
+  match:
+    kinds:
+      - apiGroups: [""]
+        kinds: ["Pod"]
+    namespaces:
+      - "prod"
+  parameters:
+    signatures: ["image"]
+---
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sRequiredAttestations
+metadata:
+  name: image-must-have-valid-slsa-attestations
+  namespace: gatekeeper
+spec:
+  enforcementAction: deny
+  match:
+    kinds:
+      - apiGroups: [""]
+        kinds: ["Pod"]
+    namespaces:
+      - "prod"

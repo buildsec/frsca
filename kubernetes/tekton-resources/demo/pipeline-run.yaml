@@ -10,7 +10,7 @@ spec:
   - name: image
     # NOTE: Change me to something like  below if you want to test out without access to push mlieberman85/kaniko-chains-demo
     # value: ttl.sh/foo-kaniko-chains-demo:1h
-    value: ghcr.io/mlieberman85/kaniko-chains-demo:latest
+    value: ghcr.io/mlieberman85/kaniko-chains-demo
   workspaces:
   - name: shared-workspace
     persistentvolumeclaim:
@@ -18,4 +18,8 @@ spec:
   - name: docker-secrets
     secret:
       secretName: secret-dockerconfigjson
-
+  - name: sboms
+    emptyDir: {}
+  - name: sbom-key
+    secret:
+      secretName: sbom

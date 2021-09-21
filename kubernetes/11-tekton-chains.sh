@@ -26,6 +26,11 @@ case "${TKN_CHAINS_FORMAT}" in
     ;;
 esac
 
+kubectl patch \
+      configmap chains-config \
+      -n tekton-chains \
+      -p='{"data": {"artifacts.taskrun.storage": "oci", "artifacts.taskrun.format": "tekton-provenance"}}'
+
 # Install Cosign if needed.
 if ! cosign version; then
   COSIGN_BIN=cosign

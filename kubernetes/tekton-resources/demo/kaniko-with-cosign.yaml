@@ -37,6 +37,10 @@ spec:
   workspaces:
   - name: source
     description: Holds the context and docker file
+  - name: sboms
+    description: Output workspace for SBOM storage
+  - name: sbom-key
+    description: Signing key for sboms
   - name: dockerconfig
     description: Includes a docker `config.json`
     optional: true
@@ -48,7 +52,7 @@ spec:
     description: URL of the image just built.
 
   steps:
-  # UNCOMMENT BELOW STEP TO TEST OUT SIGNED IMAGES/COMMENT OUT BELOW STEP TO TEST WITHOUT SIGNED IMAGES
+  #UNCOMMENT BELOW STEP TO TEST OUT SIGNED IMAGES/COMMENT OUT BELOW STEP TO TEST WITHOUT SIGNED IMAGES
   - name: validate-parent-image-is-signed
     workingDir: $(workspaces.source.path)
     # Replace below with your own image based on cosign docker file.
@@ -64,12 +68,22 @@ spec:
       - verify-dockerfile
       - -key=https://drive.google.com/uc?export=download&id=1GYT5xnhDgY79AJ8prNyVPC52rTGdFQpg
       - $(params.DOCKERFILE)
-    securityContext:
-      runAsUser: 0
+    #securityContext:
+    #  runAsUser: 0
+  - name: create-source-sbom
+    image: cyclonedx/cyclonedx-cli
+    workingDir: $(workspaces.source.path)
+    args:
+      - add
+      - files
+      - --no-input
+      - --output-format=json
+      - --exclude=/.git/**
+      - --output-file=$(workspaces.sboms.path)/bom-sources.json
   - name: build-and-push
     workingDir: $(workspaces.source.path)
     image: $(params.BUILDER_IMAGE)
-    args:
+    args: 
     - $(params.EXTRA_ARGS[*])
     - --dockerfile=$(params.DOCKERFILE)
     - --context=$(workspaces.source.path)/$(params.CONTEXT)  # The user does not need to care the workspace and the source.
@@ -78,12 +92,25 @@ spec:
     # kaniko assumes it is running as root, which means this example fails on platforms
     # that default to run containers as random uid (like OpenShift). Adding this securityContext
     # makes it explicit that it needs to run as root.
-    securityContext:
-      runAsUser: 0
+    #securityContext:
+    #  runAsUser: 0
   - name: write-url
     image: bash
     script: |
       set -e
       echo $(params.IMAGE) | tee $(results.IMAGE_URL.path)
-    securityContext:
-      runAsUser: 0
+    #securityContext:
+    #  runAsUser: 0
+  # NOTE: Below is UNSAFE. It is purely used now for demoing purposes.
+  #       A better route is to use 
+  - name: attach-and-sign-sbom
+    workingDir: $(workspaces.source.path)
+    image: ghcr.io/mlieberman85/cosign
+    script: |
+      #!/busybox/sh
+      set -e
+      IMAGE_DIGEST=`cat $(results.IMAGE_DIGEST.path) | sed s/:/-/`
+      echo "Uploading: cosign upload blob -f $(workspaces.sboms.path)/bom-sources.json $(params.IMAGE):$IMAGE_DIGEST.sbom.sources"
+      cosign upload blob -f $(workspaces.sboms.path)/bom-sources.json $(params.IMAGE):$IMAGE_DIGEST.sbom.sources
+      echo "Signing: cosign sign blob -key $(workspaces.sbom-key.path)/cosign.key $(params.IMAGE):$IMAGE_DIGEST.sbom.sources"
+      cosign sign -key $(workspaces.sbom-key.path)/cosign.key $(params.IMAGE):$IMAGE_DIGEST.sbom.sources

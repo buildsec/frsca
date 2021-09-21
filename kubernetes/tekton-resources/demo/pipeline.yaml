@@ -7,6 +7,8 @@ spec:
   workspaces:
   - name: shared-workspace
   - name: docker-secrets
+  - name: sboms
+  - name: sbom-key
   params:
   - name: image
     description: reference of the image to build
@@ -37,6 +39,10 @@ spec:
       workspace: shared-workspace
     - name: dockerconfig
       workspace: docker-secrets
+    - name: sboms
+      workspace: sboms
+    - name: sbom-key
+      workspace: sbom-key
     params:
     - name: IMAGE
       value: $(params.image)

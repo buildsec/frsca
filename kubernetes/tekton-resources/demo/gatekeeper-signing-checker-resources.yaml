@@ -1,0 +1,36 @@
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: key-map
+  namespace: gatekeeper
+data:
+  horismos_config: |-
+    base_key_path: "/tmp/keys"
+    key_map:
+      image: "cosign.pub"
+      'sbom.sources': "cosign.sbom.pub"
+    port: 8085
+  image: |-
+    -----BEGIN PUBLIC KEY-----
+    MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEEUPL6NOSBxMciHtxXIVBDGSmHpFJ
+    ko5p+SeQooi6ecFiJSIQRSRYDRqeJfyQAcKIy/X7iLDRB+hF6bSGJomvqg==
+    -----END PUBLIC KEY-----
+  'sbom.sources': |-
+    -----BEGIN PUBLIC KEY-----
+    MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE1uxdE7gKDR7ES+JENpyfJN0rOHJ3
+    ME6fq7hpLjqpNI1NojVM7FOHB2yyvl5YBSAyA/EqeHYEYYyMskz/tlNsLQ==
+    -----END PUBLIC KEY-----
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gatekeeper-signing-checker-service
+  namespace: gatekeeper
+spec:
+  selector:
+    app: gatekeeper-signing-checker
+  ports:
+    - protocol: TCP
+      port: 8085
+      targetPort: 8085

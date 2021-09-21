@@ -39,9 +39,14 @@ Script automating the [Spire] setup as defined in the getting started tutorial.
 
 Script automating the [Kyverno] setup.
 
+### 31-opa-gatekeeper-setup.sh
+
+Script automating OPA [Gatekeeper] setup.
+
 [Tekton]: https://tekton.dev/
 [dashboard]: https://github.com/tektoncd/dashboard
 [Chains]: https://github.com/tektoncd/chains
 [Spire]: https://spiffe.io/docs/latest/spire-about/
 [catalog]: https://github.com/tektoncd/catalog
 [Kyverno]: https://kyverno.io/docs/installation/
+[Gatekeeper]: https://open-policy-agent.github.io/gatekeeper/website/docs/install/

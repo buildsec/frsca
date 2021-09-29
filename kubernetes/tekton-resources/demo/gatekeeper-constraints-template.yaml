@@ -53,7 +53,7 @@ spec:
           output := http.send({"method": "post", "url": cosignHTTPWrapperURL, "headers": headers_json, "body": body})
           output.status == 500
 
-          msg := sprintf("Attestation query engine is not returning valid responses")
+          msg := "Attestation query engine is not returning valid responses"
         }
 
         violation[{"msg": msg}] {

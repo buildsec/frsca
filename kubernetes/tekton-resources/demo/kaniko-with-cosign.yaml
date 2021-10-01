@@ -63,13 +63,12 @@ spec:
     #   docker push ttl.sh/foo-cosign:1h
     # You can replace the tag above with whatever you want and have access to push to.
     # If you are using the admission controller you need to make sure the above image is signed by cosign
-    image: ghcr.io/mlieberman85/cosign
+    image: gcr.io/projectsigstore/cosign:v1.2.1@sha256:68801416e6ae0a48820baa3f071146d18846d8cd26ca8ec3a1e87fca8a735498
     args:
-      - verify-dockerfile
-      - -key=https://drive.google.com/uc?export=download&id=1GYT5xnhDgY79AJ8prNyVPC52rTGdFQpg
+      - dockerfile
+      - verify
+      - -key=https://raw.githubusercontent.com/mlieberman85/public-key-examples/main/cosign.image.pub
       - $(params.DOCKERFILE)
-    #securityContext:
-    #  runAsUser: 0
   - name: create-source-sbom
     image: cyclonedx/cyclonedx-cli
     workingDir: $(workspaces.source.path)
@@ -92,20 +91,16 @@ spec:
     # kaniko assumes it is running as root, which means this example fails on platforms
     # that default to run containers as random uid (like OpenShift). Adding this securityContext
     # makes it explicit that it needs to run as root.
-    #securityContext:
-    #  runAsUser: 0
   - name: write-url
     image: bash
     script: |
       set -e
       echo $(params.IMAGE) | tee $(results.IMAGE_URL.path)
-    #securityContext:
-    #  runAsUser: 0
   # NOTE: Below is UNSAFE. It is purely used now for demoing purposes.
   #       A better route is to use 
   - name: attach-and-sign-sbom
     workingDir: $(workspaces.source.path)
-    image: ghcr.io/mlieberman85/cosign
+    image: gcr.io/projectsigstore/cosign:v1.2.1@sha256:68801416e6ae0a48820baa3f071146d18846d8cd26ca8ec3a1e87fca8a735498
     script: |
       #!/busybox/sh
       set -e

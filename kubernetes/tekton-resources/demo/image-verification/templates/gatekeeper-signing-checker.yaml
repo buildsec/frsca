@@ -19,12 +19,12 @@ spec:
       imagePullSecrets:
       - name: regcred
       containers:
-      - name: gatekeepcder-signing-checker
-        image: ghcr.io/mlieberman85/github.com/mlieberman85/horismos:latest
+      - name: gatekeeper-signing-checker
+        image: {{ .Values.signingchecker.image }}
         resources:
           limits:
-            memory: "512Mi"
-            cpu: "500m"
+            memory: "100Mi"
+            cpu: "100m"
         ports:
           - containerPort: 8085
         volumeMounts:

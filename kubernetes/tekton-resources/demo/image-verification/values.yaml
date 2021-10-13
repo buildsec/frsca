@@ -1,0 +1,8 @@
+verifyimage:
+  key: "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEpyLZhaZKdP8H/HZpp3EU5PjLlKL+\nxqt5pFa13WeuuH2pajG7opq2MyrNFITUmqUTHriD2cmZjVyj7cB4aF7NMg==\n-----END PUBLIC KEY-----"
+
+pipelinerun:
+  image: ttl.sh/foo-kaniko-chains-demo:1h
+
+signingchecker:
+  image: ttl.sh/horismos:10m

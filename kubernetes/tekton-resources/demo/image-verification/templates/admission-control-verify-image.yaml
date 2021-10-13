@@ -42,13 +42,7 @@ spec:
       # Change below to your public keys if you built the images yourself.
       - image: "ghcr.io/*"
         key: |-
-          -----BEGIN PUBLIC KEY-----
-          MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEEUPL6NOSBxMciHtxXIVBDGSmHpFJ
-          ko5p+SeQooi6ecFiJSIQRSRYDRqeJfyQAcKIy/X7iLDRB+hF6bSGJomvqg==
-          -----END PUBLIC KEY-----
+{{ indent 10 .Values.verifyimage.key }}
       - image: "ttl.sh/*"
         key: |-
-          -----BEGIN PUBLIC KEY-----
-          MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEEUPL6NOSBxMciHtxXIVBDGSmHpFJ
-          ko5p+SeQooi6ecFiJSIQRSRYDRqeJfyQAcKIy/X7iLDRB+hF6bSGJomvqg==
-          -----END PUBLIC KEY-----
+{{ indent 10 .Values.verifyimage.key}}

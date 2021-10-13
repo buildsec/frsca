@@ -1,9 +1,21 @@
-kubectl apply -f admission-control-verify-image.yaml
-kubectl apply -f gatekeeper-signing-checker-resources.yaml
-kubectl apply -f gatekeeper-signing-checker.yaml
-kubectl apply -f gatekeeper-constraints-template.yaml
-sleep 5; # Needed because of eventual consistentcy between the template and the actual constraints
-kubectl apply -f gatekeeper-constraints.yaml
-kubectl apply -f kaniko-with-cosign.yaml
-kubectl apply -f pipeline.yaml
-kubectl create -f pipeline-run.yaml
+#!/usr/bin/env bash
+set -u
+set -e
+
+remove_old_charts() {
+    helm uninstall gatekeeper-template
+    helm uninstall demo
+}
+
+install_new_charts() {
+    helm upgrade -i gatekeeper-template gatekeeper-template
+    helm upgrade -i demo image-verification --values image-verification/values.yaml
+}
+
+
+main(){
+    #remove_old_charts "$@"
+    install_new_charts "$@"
+}
+
+main "$@"

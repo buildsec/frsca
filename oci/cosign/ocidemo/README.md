@@ -14,7 +14,8 @@ This demo assumes the following tools are installed:
 
   * `rust` ([official](https://www.rust-lang.org/tools/install))
   * `docker` ([official](https://docs.docker.com/engine/install/))
-  * `cosign` with `sget` ([github](https://github.com/sigstore/cosign))
+  * `cosign` ([github](https://github.com/sigstore/cosign))
+  * `sget` ([github](https://github.com/sigstore/cosign/blob/main/README.md#sget))
   * `crane` ([github](https://github.com/google/go-containerregistry/blob/main/cmd/crane/README.md))
   * `cyclonedx` for rust ([github](https://github.com/CycloneDX/cyclonedx-rust-cargo))
     * ⚠️ [a patch](https://github.com/CycloneDX/cyclonedx-rust-cargo/pull/32) may

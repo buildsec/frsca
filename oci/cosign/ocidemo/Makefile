@@ -7,10 +7,6 @@ TAG ?= 10m	# This is the TTL for the ttl.sh registry
 # General.
 SHELL = /bin/bash
 TOPDIR = $(shell git rev-parse --show-toplevel)
-# `sget` is a tool provided with `cosign` BUT MUST BE COMPILED MANUALLY:
-#		cd $(HOME)/projects/sigstore/cosign
-# 	go build -o sget ./cmd/sget
-SGET = $(HOME)/projects/sigstore/cosign/sget
 
 # Docker.
 DOCKERFILE = Dockerfile
@@ -60,7 +56,7 @@ cosign-attach: sbom ## Attach the SBOM to the container image
 
 .PHONY: cosign-retrieve-sbom
 cosign-retrieve-sbom: ## Retrieve and validate the SBOM
-	$(SGET) -key cosign.pub $(SBOM)
+	sget -key cosign.pub $(SBOM)
 
 # To retrieve the SBOM with crane:
 # 	crane pull ttl.sh/ocidemo:sha256-c5478895df26f9005d116864446d51e4642403c8855108c8c0f2b3519928294b.sbom pulled-sbom.tar

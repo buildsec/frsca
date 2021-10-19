@@ -3,7 +3,12 @@ apiVersion: constraints.gatekeeper.sh/v1beta1
 kind: K8sRequiredSignatures
 metadata:
   name: image-must-have-signature
-  namespace: gatekeeper
+  #namespace: gatekeeper
+  labels:
+    meta.helm.sh/release-name: {{ .Release.Name }}
+    meta.helm.sh/release-namespace: {{ .Release.Namespace }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
   enforcementAction: deny
   match:
@@ -19,7 +24,12 @@ apiVersion: constraints.gatekeeper.sh/v1beta1
 kind: K8sRequiredAttestations
 metadata:
   name: image-must-have-valid-slsa-attestations
-  namespace: gatekeeper
+  #namespace: gatekeeper
+  labels:
+    meta.helm.sh/release-name: {{ .Release.Name }}
+    meta.helm.sh/release-namespace: {{ .Release.Namespace }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
   enforcementAction: deny
   match:

@@ -3,6 +3,9 @@ kind: ConstraintTemplate
 metadata:
   name: k8srequiredsignatures
   namespace: gatekeeper
+  labels:
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
   crd:
     spec:
@@ -35,6 +38,9 @@ kind: ConstraintTemplate
 metadata:
   name: k8srequiredattestations
   namespace: gatekeeper
+  labels:
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
   crd:
     spec:

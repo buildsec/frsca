@@ -83,6 +83,11 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: build-bot
+  labels:
+    meta.helm.sh/release-name:   {{ .Release.Name }}
+    meta.helm.sh/release-namespace: {{ .Release.Namespace }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
 imagePullSecrets:
   - name: regcred
 # Below is required because Kaniko task currently doesn't use imagePullSecrets normally

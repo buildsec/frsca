@@ -3,7 +3,6 @@ apiVersion: constraints.gatekeeper.sh/v1beta1
 kind: K8sRequiredSignatures
 metadata:
   name: image-must-have-signature
-  #namespace: gatekeeper
   labels:
     meta.helm.sh/release-name: {{ .Release.Name }}
     meta.helm.sh/release-namespace: {{ .Release.Namespace }}
@@ -24,7 +23,6 @@ apiVersion: constraints.gatekeeper.sh/v1beta1
 kind: K8sRequiredAttestations
 metadata:
   name: image-must-have-valid-slsa-attestations
-  #namespace: gatekeeper
   labels:
     meta.helm.sh/release-name: {{ .Release.Name }}
     meta.helm.sh/release-namespace: {{ .Release.Namespace }}

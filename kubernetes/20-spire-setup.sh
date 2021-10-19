@@ -6,10 +6,25 @@ set -xeuo pipefail
 #
 # The resources can be found on GitHub at:
 #   https://github.com/spiffe/spire-tutorials
-#
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-# ! THE SCRIPT IS NOT IDEMPOTENT !
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+spire_apply() {
+  if [ $# -lt 2 -o "$1" != "-spiffeID" ]; then
+    echo "spire_apply requires a spiffeID as the first arg" >&2
+    exit 1
+  fi
+
+  show=$(kubectl exec -n spire spire-server-0 -- \
+    /opt/spire/bin/spire-server entry show $1 $2)
+  if [ "$show" != "Found 0 entries" ]; then
+    # delete to recreate
+    entryid=$(echo "$show" | grep "^Entry ID" | cut -f2 -d:)
+    kubectl exec -n spire spire-server-0 -- \
+      /opt/spire/bin/spire-server entry delete -entryID $entryid
+  fi
+  kubectl exec -n spire spire-server-0 -- \
+    /opt/spire/bin/spire-server entry create "$@"
+}
 
 # Define variables.
 QUICKSTART_URL="https://raw.githubusercontent.com/spiffe/spire-tutorials/master/k8s/quickstart"
@@ -39,17 +54,13 @@ kubectl apply \
   -f "${QUICKSTART_URL}/agent-daemonset.yaml"
 
 # Register Workloads.
-# Note(rgreinhofer): This part is not idempotent!
-#   Need to make a `create_or_update()` function.
-kubectl exec -n spire spire-server-0 -- \
-  /opt/spire/bin/spire-server entry create \
+spire_apply \
   -spiffeID spiffe://example.org/ns/spire/sa/spire-agent \
   -selector k8s_sat:cluster:demo-cluster \
   -selector k8s_sat:agent_ns:spire \
   -selector k8s_sat:agent_sa:spire-agent \
   -node
-kubectl exec -n spire spire-server-0 -- \
-  /opt/spire/bin/spire-server entry create \
+spire_apply \
   -spiffeID spiffe://example.org/ns/default/sa/default \
   -parentID spiffe://example.org/ns/spire/sa/spire-agent \
   -selector k8s:ns:default \

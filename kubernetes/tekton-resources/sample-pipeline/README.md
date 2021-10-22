@@ -72,3 +72,12 @@ In this example, we are using [tekton-tutorial-openshift](https://github.com/IBM
 ## Observing
 
 To observe execution of the pipeline, consider setting up [tektoncd/dashboard](https://github.com/tektoncd/dashboard). 
+The SBOM and vulnerability-report are accessible only in the task logs. 
+
+Once successfully completed. You should be able to see your application deployed on the cluster
+
+```bash
+% kubectl get pod
+NAME                                                             READY   STATUS      RESTARTS   AGE
+picalc-cf9dddfdf-bnwv8                                           1/1     Running     0          59m
+```

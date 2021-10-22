@@ -69,6 +69,4 @@ spec:
       secretName: img-registry-secret
   workspaces:
   - name: source
-  - description: Includes a docker `config.json`
-    name: dockerconfig
-    optional: true
+

@@ -45,8 +45,6 @@ spec:
     workspaces:
     - name: source
       workspace: git-source
-    - name: dockerconfig
-      workspace: dockerconfig
   - name: generate-bom
     params:
     - name: image-ref
@@ -90,4 +88,3 @@ spec:
   workspaces:
   - description: The git repo
     name: git-source
-  - name: dockerconfig

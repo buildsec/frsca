@@ -1,0 +1,90 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  annotations:
+    cosign.sigstore.dev/imageRef: icr.io/gitsecure/build-and-deploy-pipeline:v1
+  name: build-and-deploy-pipeline
+spec:
+  params:
+  - description: Git repository url
+    name: gitUrl
+  - default: src
+    description: The path to the build context, used by Kaniko - within the workspace
+    name: pathToContext
+  - description: The path to the yaml file to deploy within the git source
+    name: pathToYamlFile
+  - description: Image name including repository
+    name: imageUrl
+  - default: latest
+    description: Image tag
+    name: imageTag
+  tasks:
+  - name: clone-repo
+    params:
+    - name: url
+      value: $(params.gitUrl)
+    - name: subdirectory
+      value: .
+    - name: deleteExisting
+      value: "true"
+    taskRef:
+      name: git-clone
+    workspaces:
+    - name: output
+      workspace: git-source
+  - name: build-and-push-image
+    params:
+    - name: CONTEXT
+      value: $(params.pathToContext)
+    - name: IMAGE
+      value: $(params.imageUrl):$(params.imageTag)
+    runAfter:
+    - clone-repo
+    taskRef:
+      name: kaniko
+    workspaces:
+    - name: source
+      workspace: git-source
+  - name: generate-bom
+    params:
+    - name: image-ref
+      value: $(params.imageUrl):$(params.imageTag)
+    - name: image-digest
+      value: $(tasks.build-and-push-image.results.IMAGE-DIGEST)
+    runAfter:
+    - build-and-push-image
+    taskRef:
+      name: syft-bom-generator
+    workspaces:
+    - name: source
+      workspace: git-source
+  - name: vulnerability-scan
+    params:
+    - name: image-ref
+      value: $(params.imageUrl):$(params.imageTag)
+    - name: image-digest
+      value: $(tasks.build-and-push-image.results.IMAGE-DIGEST)
+    runAfter:
+    - build-and-push-image
+    taskRef:
+      name: grype-vulnerability-scan
+  - name: deploy-to-cluster
+    params:
+    - name: pathToYamlFile
+      value: $(params.pathToYamlFile)
+    - name: imageUrl
+      value: $(params.imageUrl)
+    - name: imageTag
+      value: $(params.imageTag)
+    - name: imageDigest
+      value: $(tasks.build-and-push-image.results.IMAGE-DIGEST)
+    runAfter:
+    - vulnerability-scan
+    taskRef:
+      name: deploy-using-kubectl
+    workspaces:
+    - name: git-source
+      workspace: git-source
+  workspaces:
+  - description: The git repo
+    name: git-source

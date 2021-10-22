@@ -2,7 +2,6 @@ hello.txt
 base64_*
 target/
 result
-*.pub
 kubernetes/scripts/*.json
 kubernetes/scripts/payload
 kubernetes/scripts/signature

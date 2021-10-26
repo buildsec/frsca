@@ -11,7 +11,7 @@ C_RESET_ALL='\033[0m'
 PLATFORM=$(uname)
 
 # Install packages if needed.
-echo -e "${C_GREEN}Installing paackages if needed...${C_RESET_ALL}"
+echo -e "${C_GREEN}Installing packages if needed...${C_RESET_ALL}"
 case "${PLATFORM}" in
 
   Darwin)

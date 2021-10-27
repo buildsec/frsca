@@ -1,3 +1,5 @@
+**NOTE: THE SECURE SOFTWARE FACTORY IS BEING REFACTORED HEAVILY AND THERE MIGHT BE MANY BUGS. PLEASE OPEN UP ISSUES FOR ANYTHING YOU MIGHT DISCOVER**
+
 # Supply Chain Examples
 
 These are just a few examples and demos to show how certain supply chain attacks might manifest and how different tools and approaches can help mitigate them.

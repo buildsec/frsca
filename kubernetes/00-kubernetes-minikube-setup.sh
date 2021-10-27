@@ -17,8 +17,7 @@ case "${PLATFORM}" in
   Darwin)
     minikube version || brew install minikube
     helm version || brew install helm
-    brew tap tektoncd/tools
-    tkn version || brew install tektoncd/tools/tektoncd-cli
+    tkn version || brew install tektoncd-cli
     ;;
 
   Linux)

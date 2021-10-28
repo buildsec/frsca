@@ -7,6 +7,20 @@ set -xeuo pipefail
 # The resources can be found on GitHub at:
 #   https://github.com/spiffe/spire-tutorials
 
+# Define variables.
+C_GREEN='\033[32m'
+C_YELLOW='\033[33m'
+C_RED='\033[31m'
+C_RESET_ALL='\033[0m'
+
+# Wait until pods are ready.
+# $1: namespace, $2: app label
+wait_for_pods () {
+  while [[ $(kubectl get pods --namespace $1 -l app=$2 -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do
+    echo -e "${C_YELLOW}Waiting for $2 pods in $1...${C_RESET_ALL}"
+    sleep 1
+  done
+}
 
 spire_apply() {
   if [ $# -lt 2 -o "$1" != "-spiffeID" ]; then
@@ -53,6 +67,10 @@ kubectl apply \
   -f "${QUICKSTART_URL}/agent-configmap.yaml" \
   -f "${QUICKSTART_URL}/agent-daemonset.yaml"
 
+# Wait for spire-server and then spire-agent
+wait_for_pods spire spire-server
+wait_for_pods spire spire-agent
+
 # Register Workloads.
 spire_apply \
   -spiffeID spiffe://example.org/ns/spire/sa/spire-agent \
@@ -68,6 +86,9 @@ spire_apply \
 
 # Configure a Workload Container to Access SPIRE.
 kubectl apply -f "${QUICKSTART_URL}/client-deployment.yaml"
+
+# Wait for the client
+wait_for_pods default client
 
 # Verify that the container can access the socket.
 kubectl exec -it \

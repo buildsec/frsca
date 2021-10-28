@@ -35,6 +35,11 @@ cd build_with_ebpf/bad_cargo
 ./build.sh
 ```
 
+### Development
+
+See our [development guide](devel/development.md))
+
+
 ## Emulating Attacks
 
 ### Build on Host

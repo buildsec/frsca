@@ -6,12 +6,6 @@ This is a collection of scripts to setup Kubernetes demo showcasing [Tekton],
 The script are controlled by environment variables, each documented in the
 scripts themselves.
 
-## Setup
-
-### 00-kubernetes-minikube-setup.sh
-
-Setup a minikube cluster with options that would be valid for all demos.
-
 ## Tekton
 
 ### 10-tekton-setup.sh

@@ -53,6 +53,12 @@ kubectl apply \
   -f "${QUICKSTART_URL}/agent-configmap.yaml" \
   -f "${QUICKSTART_URL}/agent-daemonset.yaml"
 
+until ! kubectl get po -n spire | grep "0/1" &> /dev/null ;
+do
+  echo "Waiting for spire to start..."
+  sleep 5
+done
+
 # Register Workloads.
 spire_apply \
   -spiffeID spiffe://example.org/ns/spire/sa/spire-agent \

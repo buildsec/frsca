@@ -19,7 +19,10 @@ kubectl create secret generic regcred --type=kubernetes.io/dockerconfigjson --fr
 kubectl create secret generic regcred --type=kubernetes.io/dockerconfigjson --from-file=.dockerconfigjson=$DOCKER_CONFIG_JSON --dry-run=client -o yaml | kubectl apply -f -
 
 # Assumes helm already installed by previous scripts
-helm repo add kyverno https://kyverno.github.io/kyverno/
-helm repo update
-helm upgrade --install kyverno-crds kyverno/kyverno-crds --namespace kyverno --create-namespace
-helm upgrade --install kyverno kyverno/kyverno -n kyverno --set extraArgs="{--webhooktimeout=15,--imagePullSecrets=regcred}"
+#helm repo add kyverno https://kyverno.github.io/kyverno/
+#helm repo update
+#helm upgrade --install kyverno-crds kyverno/kyverno-crds --namespace kyverno --create-namespace
+#helm upgrade --install kyverno kyverno/kyverno -n kyverno --set extraArgs="{--webhooktimeout=15,--imagePullSecrets=regcred}"
+
+# Using custom install to pull keys from configmaps
+kubectl apply -f https://raw.githubusercontent.com/kyverno/kyverno/main/definitions/release/install.yaml

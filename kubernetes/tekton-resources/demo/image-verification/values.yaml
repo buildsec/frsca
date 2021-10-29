@@ -1,6 +1,9 @@
 verifyimage:
-  key: "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEpyLZhaZKdP8H/HZpp3EU5PjLlKL+\nxqt5pFa13WeuuH2pajG7opq2MyrNFITUmqUTHriD2cmZjVyj7cB4aF7NMg==\n-----END PUBLIC KEY-----"
-
+  key: |-
+    -----BEGIN PUBLIC KEY-----
+    MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEnLNw3RYx9xQjXbUEw8vonX3U4+tB
+    kPnJq+zt386SCoG0ewIH5MB8+GjIDGArUULSDfjfM31Eae/71kavAUI0OA==
+    -----END PUBLIC KEY-----
 pipelinerun:
   image: ttl.sh/foo-kaniko-chains-demo:1h
 

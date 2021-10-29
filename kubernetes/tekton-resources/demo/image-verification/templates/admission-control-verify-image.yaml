@@ -18,6 +18,8 @@ metadata:
 spec:
   validationFailureAction: enforce
   background: false
+  webhookTimeoutSeconds: 30
+  failurePolicy: Fail  
   rules:
     - name: verify-image
       match:
@@ -26,23 +28,18 @@ spec:
           - Pod
           namespaces:
           - "default"
+      context:
+      - name: keys
+        configMap:
+          name: keys
+          namespace: default 
       verifyImages:
       - image: "gcr.io/tekton-releases/github.com/tektoncd/*"
-        key: |-
-          -----BEGIN PUBLIC KEY-----
-          MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEnLNw3RYx9xQjXbUEw8vonX3U4+tB
-          kPnJq+zt386SCoG0ewIH5MB8+GjIDGArUULSDfjfM31Eae/71kavAUI0OA==
-          -----END PUBLIC KEY-----
+        key: {{`"{{ keys.data.tektoncd }}"`}}
       - image: "gcr.io/projectsigstore/*"
-        key: |-
-          -----BEGIN PUBLIC KEY-----
-          MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEhyQCx0E9wQWSFI9ULGwy3BuRklnt
-          IqozONbbdbqz11hlRJy9c7SG+hdcFl9jE9uE/dwtuwU2MqU9T/cN0YkWww==
-          -----END PUBLIC KEY-----
+        key: {{`"{{ keys.data.projectsigstore }}"`}}
       # Change below to your public keys if you built the images yourself.
       - image: "ghcr.io/*"
-        key: |-
-{{ indent 10 .Values.verifyimage.key }}
+        key: {{`"{{ keys.data.ghcrio }}"`}}
       - image: "ttl.sh/*"
-        key: |-
-{{ indent 10 .Values.verifyimage.key}}
+        key: {{`"{{ keys.data.ttlsh }}"`}}

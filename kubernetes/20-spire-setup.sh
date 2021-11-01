@@ -89,6 +89,7 @@ kubectl apply -f "${QUICKSTART_URL}/client-deployment.yaml"
 
 # Wait for the client
 wait_for_pods default client
+sleep 5
 
 # Verify that the container can access the socket.
 kubectl exec -it \

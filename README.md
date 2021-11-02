@@ -1,5 +1,9 @@
 **NOTE: THE SECURE SOFTWARE FACTORY IS BEING REFACTORED HEAVILY AND THERE MIGHT BE MANY BUGS. PLEASE OPEN UP ISSUES FOR ANYTHING YOU MIGHT DISCOVER**
 
+Most of the below will be updated but to better understand the purpose and structure of this project it is worthwhile reading through the "Architecture Prototype" section of the CNCF's Secure Software Factory Reference Architecture: https://docs.google.com/document/d/1FwyOIDramwCnivuvUxrMmHmCr02ARoA3jw76o1mGfGQ/
+
+Besides the above section, it is worthwhile to also read the rest of the Reference Architecture for additional information as well as looking at the CNCF's Supply Chain Security Best Practices White Paper: https://github.com/cncf/tag-security/blob/main/supply-chain-security/supply-chain-security-paper/CNCF_SSCP_v1.pdf
+
 # Supply Chain Examples
 
 These are just a few examples and demos to show how certain supply chain attacks might manifest and how different tools and approaches can help mitigate them.

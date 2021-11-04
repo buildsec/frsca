@@ -25,13 +25,13 @@ spec:
     - name: TRUST_BUILDER
       value: "true"
     - name: APP_IMAGE
-      value: "registry.kube-system.svc.cluster.local/slsapoc"
+      value: "ttl.sh/slsapoc"
     - name: SOURCE_URL
       value: "https://github.com/buildpacks/samples"
     - name: SOURCE_SUBPATH
       value: "apps/ruby-bundler"
     - name: CACHE_IMAGE
-      value: "registry.kube-system.svc.cluster.local/slsapoc-cache"
+      value: "ttl.sh/slsapoc-cache"
   workspaces:
     - name: source-ws
       subPath: source

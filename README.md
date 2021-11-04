@@ -1,4 +1,4 @@
-**NOTE: THE SECURE SOFTWARE FACTORY IS BEING REFACTORED HEAVILY AND THERE MIGHT BE MANY BUGS. PLEASE OPEN UP ISSUES FOR ANYTHING YOU MIGHT DISCOVER**
+>**NOTE: THE SECURE SOFTWARE FACTORY IS BEING REFACTORED HEAVILY AND THERE MIGHT BE MANY BUGS. PLEASE OPEN UP ISSUES FOR ANYTHING YOU MIGHT DISCOVER**
 
 Most of the below will be updated but to better understand the purpose and structure of this project it is worthwhile reading through the "Architecture Prototype" section of the CNCF's Secure Software Factory Reference Architecture: https://docs.google.com/document/d/1FwyOIDramwCnivuvUxrMmHmCr02ARoA3jw76o1mGfGQ/
 

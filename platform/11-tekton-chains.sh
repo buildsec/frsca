@@ -14,4 +14,10 @@ kubectl patch \
       configmap chains-config \
       -n tekton-chains \
       --patch-file "$GIT_ROOT"/platform/components/tekton/chains/patch_config_oci.yaml
+
+kubectl patch \
+      configmap chains-config \
+      -n tekton-chains \
+      --patch-file "$GIT_ROOT"/platform/components/tekton/chains/patch_config_kms.yaml
+
 kubectl rollout status -n tekton-chains deployment/tekton-chains-controller

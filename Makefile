@@ -36,6 +36,10 @@ setup-minikube: ## Setup a Kubernetes cluster using Minikube
 registry-proxy: ## Forward the minikube registry to the host
 	bash platform/05-minikube-registry-proxy.sh
 
+.PHONY: setup-certs
+setup-certs: ## Setup certificates used by vault and spire
+	bash platform/06-setup-certs.sh
+
 .PHONY: setup-tekton-chains
 setup-tekton-chains: ## Setup a Tekton CD with Chains.
 	bash platform/10-tekton-setup.sh
@@ -48,6 +52,15 @@ tekton-generate-keys: ## Generate key pair for Tekton.
 .PHONY: tekton-verify-taskrun
 tekton-verify-taskrun: ## Verify taskrun payload against signature
 	bash scripts/provenance.sh
+
+.PHONY: setup-spire
+setup-spire: ## Setup spire
+	bash platform/20-spire-setup.sh
+
+.PHONY: setup-vault
+setup-vault: ## Setup vault
+	bash platform/25-vault-install.sh
+	bash platform/26-vault-setup.sh
 
 .PHONY: setup-kyverno
 setup-kyverno: ## Setup Kyverno.

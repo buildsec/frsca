@@ -1,0 +1,17 @@
+server:
+  trustDomain: "example.org"
+  clusterName: ssf
+
+agent:
+  kubeletSkipVerification: true
+
+client:
+  enabled: true
+
+oidc:
+  enabled: true
+  discoveryDomain: "spire-oidc.spire.svc.cluster.local"
+  # discoveryDomain: "oidc.example.org"
+  acme:
+    enabled: false
+  certsSecret: oidc-cert

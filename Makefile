@@ -32,8 +32,8 @@ setup-tekton-chains: ## Setup a Tekton CD with Chains.
 
 .PHONY: tekton-generate-keys
 tekton-generate-keys: ## Generate key pair for Tekton.
-	bash resources/tekton/scripts/gen-keys.sh
+	bash scripts/gen-keys.sh
 
 .PHONY: tekton-verify-taskrun
 tekton-verify-taskrun: ## Verify taskrun payload against signature
-	bash resources/tekton/scripts/provenance.sh
+	bash scripts/provenance.sh

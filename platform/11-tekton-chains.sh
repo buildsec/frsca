@@ -32,6 +32,4 @@ kubectl patch \
       -p='{"data": {"artifacts.taskrun.storage": "oci", "artifacts.taskrun.format": "tekton-provenance"}}'
 
 # Install Cosign if needed.
-if ! cosign version; then
-  ./12-cosign-installer.sh
-fi
+./12-cosign-installer.sh

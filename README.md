@@ -1,134 +1,58 @@
->**NOTE: THE SECURE SOFTWARE FACTORY IS BEING REFACTORED HEAVILY AND THERE MIGHT BE MANY BUGS. PLEASE OPEN UP ISSUES FOR ANYTHING YOU MIGHT DISCOVER**
+> **NOTE: See [old README](README.old.md) for out of date info that provides some context while the Secure Software Factory is being rearchitected**
 
-Most of the below will be updated but to better understand the purpose and structure of this project it is worthwhile reading through the "Architecture Prototype" section of the CNCF's Secure Software Factory Reference Architecture: https://docs.google.com/document/d/1FwyOIDramwCnivuvUxrMmHmCr02ARoA3jw76o1mGfGQ/
+# The Secure Software Factory
 
-Besides the above section, it is worthwhile to also read the rest of the Reference Architecture for additional information as well as looking at the CNCF's Supply Chain Security Best Practices White Paper: https://github.com/cncf/tag-security/blob/main/supply-chain-security/supply-chain-security-paper/CNCF_SSCP_v1.pdf
+## About The Project
 
-# Supply Chain Examples
+The Secure Software Factory is a prototype implementation of the CNCF's [Secure Software Factory Reference Architecture](https://docs.google.com/document/d/1FwyOIDramwCnivuvUxrMmHmCr02ARoA3jw76o1mGfGQ/edit#heading=h.ufqjnib6ho5z) which is based on the CNCF's [Software Supply Chain Best Practices White Paper](https://github.com/cncf/tag-security/blob/main/supply-chain-security/supply-chain-security-paper/CNCF_SSCP_v1.pdf)
 
-These are just a few examples and demos to show how certain supply chain attacks might manifest and how different tools and approaches can help mitigate them.
+The purpose of the project is to provide a set of tools, patterns, and polices in order to build artifacts with increased confidence around its authenticity and integrity, and with traceable provenance.
 
-## Monitoring build with eBPF
+### Built With
 
-The set of examples under `build_with_ebpf` are a few examples of how without the right preventive controls around your supply chain you will have to rely on detective controls. It is still good practice from a defense in depth approach to still apply monitoring like this on the builds to still detect anomalous behaviors or when your preventive controls fail for any reason.
+Platform:
+* [Kubernetes](http://k8s.io/)
+* [Tekton Pipelines](https://tekton.dev/)
+* [Tekton Chains](https://github.com/tektoncd/chains)
+* [Spire](https://spiffe.io/)
+* [Kyverno](https://kyverno.io/)
 
-### Threats
+Tooling:
+* [Cosign/Sget](https://github.com/sigstore/cosign)
+* [Crane](https://github.com/google/go-containerregistry)
+* [Make](https://www.gnu.org/software/make/)
 
-The threats these examples emulate are the following:
+## Getting Started
 
-* Injecting unknown build tools into a container - DONE
-* Injecting unknown source code into shared drive - NOT DONE
-* Build scripts attempting to call out to internet - NOT DONE
-* Approved build tools performing suspicious activities like injecting binaries into memory and executing directly - DONE
+The following describes how to set up a dev environment with the Secure Software Factory installed.
 
-### Pre-Requisites
+### Prerequisites
 
-In order to run these examples, you'll need a system with the following
+Required:
+* Make
+* Kubernetes cluster (if not using local Minikube)
 
-* [Rust & Cargo](https://doc.rust-lang.org/cargo/getting-started/installation.html)
-  * Ensure you have x86_64-unknown-linux-musl target installed for static linking
-    `rustup target add x86_64-unknown-linux-musl`
-* [Nix](https://nixos.org/guides/install-nix.html)
+Optional Tools:
+* Crane
 
-### Setup
+### Installation
 
-TODO: Publish artifacts of binaries + containers
-
-```bash
-cd build_with_ebpf/bad_cargo
-./build.sh
-```
-
-## Emulating Attacks
-
-### Build on Host
-
-Normal Build:
-
-```bash
-cd build_with_ebpf/real_project
-cargo build --release
-```
-
-Build that hijacks the source files:
-
-```bash
-cd build_with_ebpf/real_project
-../bad_cargo/target/release/bad_cargo_inputs build --release
-```
-
-Build that hijacks the output:
-
-```bash
-cd build_with_ebpf/real_project
-../bad_cargo/target/release/bad_cargo_outputs build --release
-```
-
-Once you have run any of the above you can test it via:
-
-```bash
-./target/release/real_project
-```
-
-You should get a "Goodbye, World" output on the hijacked ones.
-
-### Build in Container
+TODO: Put key makefile commands
 
 
-Normal Build:
+## Usage
 
-```bash
-cd containers/real_project
-nix-build default.nix
-docker load < result
-docker run --rm -v <outputs_dir>:/src/target:z -v `pwd`/../../real_project:/src:z real_project:<hash>
-```
+See `/examples` for examples of the 
 
-Build that hijacks the source files:
+## Roadmap
 
-```bash
-cd container/hijack_inputs_build
-nix-build default.nix
-docker load < result
-docker run --rm -v <outputs_dir>:/src/target:z -v `pwd`/../../real_project:/src:z real_project:<hash>
-```
-
-Build that hijacks the output:
-
-```bash
-cd container/hijack_outputs_build
-nix-build default.nix
-docker load < result
-docker run --rm -v <outputs_dir>:/src/target:z -v `pwd`/../../real_project:/src:z real_project:<hash>
-```
-
-Once you have run any of the above you can test it via:
-
-```bash
-<outputs_dir>/target/release/real_project
-```
-
-## How to detect compromise
-
-TODO: Flesh this out
-
-* You can use a tool like Falco or Tracee to monitor for memfd creations and execve's against the memfds and capture the memfds.
-* You can also capture the executed tools, inputs and outputs and their hashes and compare it to known good hashes.
-    * Compare captured cargo that is run against the build against cargo inputs
-    * Compare source inputs with upstream sources
-    * You can debug captured suspicious binaries in sandboxed environments
-
-## Kubernetes Demos
-
-These showcase how to leverage Kubernetes, especialy using [Tekton], to improve
-the security of the supply chain.
-
-The scripts provided help provisioning and configuring environments quickly,
-either for an investigation purpose, either for demonstration.
-
-You could find more details in the [README.md](kubernetes/README.md) of the
-dedicated folder.
+TODO: Put roadmap
 
 
+## Contributing
 
-[Tekton]: https://tekton.dev/
+TODO: Create CONTRIBUTING.MD
+
+## License
+
+See LICENSE.MD

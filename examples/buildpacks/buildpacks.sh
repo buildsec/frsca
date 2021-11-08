@@ -2,8 +2,9 @@
 set -euo pipefail
 
 # Define variables.
-TOP=$(git root)
+GIT_ROOT=$(git rev-parse --show-toplevel)
 
 # Install the buildpacks pipelinerun.
-kubectl apply -f ${TOP}/resources/tekton/examples/buildpacks/pipelinerun-buildpacks.yaml
+kubectl apply -f ${GIT_ROOT}/examples/buildpacks/pipeline-pvc.yaml
+kubectl create -f ${GIT_ROOT}/examples/buildpacks/pipelinerun-buildpacks.yaml
 tkn pipelinerun describe --last

@@ -1,11 +1,8 @@
 #!/bin/bash
-set -xeuo pipefail
+set -euo pipefail
 
-# Spire setup from the getting started tutorial:
-#   https://spiffe.io/docs/latest/try/getting-started-k8s/
-#
-# The resources can be found on GitHub at:
-#   https://github.com/spiffe/spire-tutorials
+GIT_ROOT=$(git rev-parse --show-toplevel)
+QUICKSTART_DIR=$GIT_ROOT/platform/vendor/spire/quickstart
 
 # Define variables.
 C_GREEN='\033[32m'
@@ -16,10 +13,8 @@ C_RESET_ALL='\033[0m'
 # Wait until pods are ready.
 # $1: namespace, $2: app label
 wait_for_pods () {
-  while [[ $(kubectl get pods --namespace $1 -l app=$2 -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do
-    echo -e "${C_YELLOW}Waiting for $2 pods in $1...${C_RESET_ALL}"
-    sleep 1
-  done
+  echo -e "${C_YELLOW}Waiting: $2 pods in $1...${C_RESET_ALL}"
+  kubectl wait --timeout=5m --for=condition=ready pods -l app=$2 -n $1
 }
 
 spire_apply() {
@@ -40,32 +35,29 @@ spire_apply() {
     /opt/spire/bin/spire-server entry create "$@"
 }
 
-# Define variables.
-QUICKSTART_URL="https://raw.githubusercontent.com/spiffe/spire-tutorials/master/k8s/quickstart"
-
 # Configure Kubernetes Namespace for SPIRE Components.
-kubectl apply -f "${QUICKSTART_URL}/spire-namespace.yaml"
+kubectl apply -f "${QUICKSTART_DIR}/spire-namespace.yaml"
 
 # Configure SPIRE Server.
 # Create Server Bundle Configmap, Role & ClusterRoleBinding.
 kubectl apply \
-  -f "${QUICKSTART_URL}/server-account.yaml" \
-  -f "${QUICKSTART_URL}/spire-bundle-configmap.yaml" \
-  -f "${QUICKSTART_URL}/server-cluster-role.yaml"
+  -f "${QUICKSTART_DIR}/server-account.yaml" \
+  -f "${QUICKSTART_DIR}/spire-bundle-configmap.yaml" \
+  -f "${QUICKSTART_DIR}/server-cluster-role.yaml"
 
 # Create Server Configmap.
 kubectl apply \
-  -f "${QUICKSTART_URL}/server-configmap.yaml" \
-  -f "${QUICKSTART_URL}/server-statefulset.yaml" \
-  -f "${QUICKSTART_URL}/server-service.yaml"
+  -f "${QUICKSTART_DIR}/server-configmap.yaml" \
+  -f "${QUICKSTART_DIR}/server-statefulset.yaml" \
+  -f "${QUICKSTART_DIR}/server-service.yaml"
 
 # Configure and deploy the SPIRE Agent.
 kubectl apply \
-  -f "${QUICKSTART_URL}/agent-account.yaml" \
-  -f "${QUICKSTART_URL}/agent-cluster-role.yaml"
+  -f "${QUICKSTART_DIR}/agent-account.yaml" \
+  -f "${QUICKSTART_DIR}/agent-cluster-role.yaml"
 kubectl apply \
-  -f "${QUICKSTART_URL}/agent-configmap.yaml" \
-  -f "${QUICKSTART_URL}/agent-daemonset.yaml"
+  -f "${QUICKSTART_DIR}/agent-configmap.yaml" \
+  -f "${QUICKSTART_DIR}/agent-daemonset.yaml"
 
 # Wait for spire-server and then spire-agent
 wait_for_pods spire spire-server
@@ -85,9 +77,10 @@ spire_apply \
   -selector k8s:sa:default
 
 # Configure a Workload Container to Access SPIRE.
-kubectl apply -f "${QUICKSTART_URL}/client-deployment.yaml"
+kubectl apply -f "${QUICKSTART_DIR}/client-deployment.yaml"
 
 # Wait for the client
+sleep 1
 wait_for_pods default client
 sleep 5
 

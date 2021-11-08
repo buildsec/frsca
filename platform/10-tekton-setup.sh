@@ -1,6 +1,8 @@
 #!/bin/bash
 set -euo pipefail
 
+GIT_ROOT=$(git rev-parse --show-toplevel)
+
 # Define variables.
 C_GREEN='\033[32m'
 C_YELLOW='\033[33m'
@@ -18,7 +20,7 @@ done
 
 # Setup Tekton.
 echo -e "${C_GREEN}Setting up Tekton CD...${C_RESET_ALL}"
-kubectl apply --filename https://storage.googleapis.com/tekton-releases/pipeline/latest/release.yaml
+kubectl apply --filename $GIT_ROOT/platform/vendor/tekton/pipeline/release.yaml
 wait_for_pods tekton-pipelines-controller
 
 # Setup the Dashboard.

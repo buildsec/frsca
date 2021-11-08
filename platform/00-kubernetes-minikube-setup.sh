@@ -1,6 +1,28 @@
 #!/bin/bash
 set -euo pipefail
 
+# TODO: Pin Brew versions for Mac
+# TODO: Figure out a better mechanism for pinning versions in general
+#       There are multiple ways to validate signatures, checksums, etc.
+
+# PINNED VERSIONS GO HERE
+MINIKUBE_VERSION=v1.24.0
+MINIKUBE_FILE_NAME=minikube-linux-amd64
+MINIKUBE_URL=https://github.com/kubernetes/minikube/releases/download/$MINIKUBE_VERSION/$MINIKUBE_FILE_NAME
+MINIKUBE_SHA256=3bc218476cf205acf11b078d45210a4882e136d24a3cbb7d8d645408e423b8fe
+
+HELM_VERSION=v3.7.1
+HELM_FILE_NAME=helm-v3.7.1-linux-amd64.tar.gz
+HELM_URL=https://get.helm.sh/$HELM_FILE_NAME
+HELM_SHA256=6cd6cad4b97e10c33c978ff3ac97bb42b68f79766f1d2284cfd62ec04cd177f4
+
+TKN_VERSION=0.21.0
+TKN_FILE_NAME=tkn_0.21.0_Linux_x86_64.tar.gz
+TKN_URL=https://github.com/tektoncd/cli/releases/download/v$TKN_VERSION/$TKN_FILE_NAME
+TKN_SHA256=2158a202e4b04ff73e6427b565355c7bfc8cbe16dc7058a0414fb16e7b97008c
+
+INSTALL_DIR=/usr/local/bin
+
 # Define variables.
 C_GREEN='\033[32m'
 C_YELLOW='\033[33m'
@@ -21,31 +43,49 @@ case "${PLATFORM}" in
     ;;
 
   Linux)
-    minikube version || (
+    [[ $(minikube version | awk '{print $3}' | xargs) == $MINIKUBE_VERSION ]] || (
       TMP=$(mktemp -d)
       pushd $TMP
-      curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
-      sudo install minikube-linux-amd64 /usr/local/bin/minikube
-      rm minikube-linux-amd64
+      curl -LO $MINIKUBE_URL
+      ACTUAL_SHA256=$(sha256sum $MINIKUBE_FILE_NAME | awk '{print $1}')
+      [[ $ACTUAL_SHA256 == $MINIKUBE_SHA256 ]] || (
+        echo "Expected SHA256 for $MINIKUBE_FILE_NAME: $MINIKUBE_SHA256"
+        echo "Actual SHA256 for $MINIKUBE_FILE_NAME: $ACTUAL_SHA256"
+        exit 1
+      )
+      sudo install $MINIKUBE_FILE_NAME $INSTALL_DIR/minikube
+      rm $MINIKUBE_FILE_NAME
       popd
       rmdir $TMP
     )
-    helm version || (
+    [[ $(helm version | awk '{print $1 }' | sed -r 's/.*Version:\"(.*)\",/\1/') == $HELM_VERSION ]] || (
       TMP=$(mktemp -d)
       pushd $TMP
-      curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
-      chmod 700 get_helm.sh
-      ./get_helm.sh
-      rm ./get_helm.sh
+      curl -LO $HELM_URL
+      ACTUAL_SHA256=$(sha256sum $HELM_FILE_NAME | awk '{print $1}')
+      [[ $ACTUAL_SHA256 == $HELM_SHA256 ]] || (
+        echo "Expected SHA256 for $HELM_FILE_NAME: $HELM_SHA256"
+        echo "Actual SHA256 for $HELM_FILE_NAME: $ACTUAL_SHA256"
+        exit 1
+      )
+      tar xvf $HELM_FILE_NAME
+      sudo install linux-amd64/helm $INSTALL_DIR/helm
+      rm -rf linux-amd64
       popd
       rmdir $TMP
     )
     tkn version || (
       TMP=$(mktemp -d)
-      pushd $(mktemp -d)
-      curl -LO https://github.com/tektoncd/cli/releases/download/v0.20.0/tkn_0.20.0_Linux_x86_64.tar.gz
-      sudo tar xvzf tkn_0.20.0_Linux_x86_64.tar.gz -C /usr/local/bin tkn
-      rm tkn_0.20.0_Linux_x86_64.tar.gz
+      pushd $TMP
+      curl -LO $TKN_URL
+      ACTUAL_SHA256=$(sha256sum $TKN_FILE_NAME | awk '{print $1}')
+      [[ $ACTUAL_SHA256 == $TKN_SHA256 ]] || (
+        echo "Expected SHA256 for $TKN_FILE_NAME: $TKN_SHA256"
+        echo "Actual SHA256 for $TKN_FILE_NAME: $ACTUAL_SHA256"
+        exit 1
+      )
+      sudo tar xvzf $TKN_FILE_NAME -C /usr/local/bin tkn
+      rm TKN_FILE_NAME
       popd
       rmdir $TMP
     )

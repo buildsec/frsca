@@ -1,6 +1,8 @@
 #!/bin/bash
 set -euo pipefail
 
+GIT_ROOT=$(git rev-parse --show-toplevel)
+
 # Setup tekton Chains and install Cosign if needed.
 #
 # Environment variables:
@@ -12,7 +14,7 @@ set -euo pipefail
 : ${TKN_CHAINS_FORMAT:=""}
 
 # Install Chains.
-kubectl apply --filename https://storage.googleapis.com/tekton-releases/chains/latest/release.yaml
+kubectl apply --filename $GIT_ROOT/platform/vendor/tekton/chains/release.yaml
 
 # Patch chains to generate in-toto provenance.
 case "${TKN_CHAINS_FORMAT}" in

@@ -1,0 +1,3 @@
+data: 
+  artifacts.taskrun.storage: oci
+  artifacts.taskrun.format: tekton-provenance

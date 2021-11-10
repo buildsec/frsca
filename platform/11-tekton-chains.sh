@@ -16,22 +16,22 @@ GIT_ROOT=$(git rev-parse --show-toplevel)
 # Install Chains.
 kubectl apply --filename $GIT_ROOT/platform/vendor/tekton/chains/release.yaml
 
+kubectl patch \
+      configmap chains-config \
+      -n tekton-chains \
+      --patch-file $GIT_ROOT/platform/components/tekton/chains/patch_config_oci.yaml
+
 # Patch chains to generate in-toto provenance.
 case "${TKN_CHAINS_FORMAT}" in
   intoto)
     kubectl patch \
       configmap chains-config \
       -n tekton-chains \
-      -p='{"data":{"artifacts.taskrun.format": "in-toto"}}'
+      --patch-file $GIT_ROOT/platform/components/tekton/chains/patch_config_intoto.yaml
     ;;
   *)
     ;;
 esac
-
-kubectl patch \
-      configmap chains-config \
-      -n tekton-chains \
-      -p='{"data": {"artifacts.taskrun.storage": "oci", "artifacts.taskrun.format": "tekton-provenance"}}'
 
 # Install Cosign if needed.
 if ! cosign version; then

@@ -7,7 +7,8 @@ IqozONbbdbqz11hlRJy9c7SG+hdcFl9jE9uE/dwtuwU2MqU9T/cN0YkWww==
 -----END PUBLIC KEY-----"
 
 GIT_ROOT=$(git rev-parse --show-toplevel)
-KYVERNO_DIR=${GIT_ROOT}/platform/vendor/kyverno/release
+KYVERNO_INSTALL_DIR=${GIT_ROOT}/platform/vendor/kyverno/release
+KYVERNO_RESOURCE_DIR=${GIT_ROOT}/resources/kyverno/admission-control-policy
 
 # Define variables.
 KYVERNO_TAG_RELEASE=v1.5.1
@@ -24,6 +25,6 @@ KYVERNOCLI_LATEST_STATUS=$?
 
 if [ $KYVERNO_LATEST_STATUS -eq 0 ] && [ $KYVERNOPRE_LATEST_STATUS -eq 0 ] && [ $KYVERNOCLI_LATEST_STATUS -eq 0 ] ; then
   # Download the release file
-  curl "$KYVERNO_URL" > $KYVERNO_DIR/release.yaml
-  cue export $KYVERNO_DIR/admission-control-verify-image-resources.cue -e template -t key="$USERPUBKEY" --out yaml > $KYVERNO_DIR/admission-control-verify-image-resources.yaml
+  curl "$KYVERNO_URL" > $KYVERNO_INSTALL_DIR/release.yaml
+  cue export $KYVERNO_RESOURCE_DIR/admission-control-verify-image-resources.cue -e template -t key="$USERPUBKEY" --out yaml > $KYVERNO_RESOURCE_DIR/admission-control-verify-image-resources.yaml
 fi

@@ -1,0 +1,4 @@
+package kyverno
+
+configMap: "keys": {
+}

@@ -11,10 +11,15 @@ GIT_ROOT=$(git rev-parse --show-toplevel)
 #     Possibles values: `intoto`. Any other value would simply use the default
 #     behaviour.
 
-: ${TKN_CHAINS_FORMAT:=""}
+: "${TKN_CHAINS_FORMAT:=""}"
 
 # Install Chains.
-kubectl apply --filename $GIT_ROOT/platform/vendor/tekton/chains/release.yaml
+kubectl apply --filename "$GIT_ROOT"/platform/vendor/tekton/chains/release.yaml
+
+kubectl patch \
+      configmap chains-config \
+      -n tekton-chains \
+      --patch-file "$GIT_ROOT"/platform/components/tekton/chains/patch_config_oci.yaml
 
 # Patch chains to generate in-toto provenance.
 case "${TKN_CHAINS_FORMAT}" in
@@ -22,18 +27,9 @@ case "${TKN_CHAINS_FORMAT}" in
     kubectl patch \
       configmap chains-config \
       -n tekton-chains \
-      -p='{"data":{"artifacts.taskrun.format": "in-toto"}}'
+      --patch-file "$GIT_ROOT"/platform/components/tekton/chains/patch_config_intoto.yaml
     ;;
   *)
     ;;
 esac
 
-kubectl patch \
-      configmap chains-config \
-      -n tekton-chains \
-      -p='{"data": {"artifacts.taskrun.storage": "oci", "artifacts.taskrun.format": "tekton-provenance"}}'
-
-# Install Cosign if needed.
-if ! cosign version; then
-  ./12-cosign-installer.sh
-fi

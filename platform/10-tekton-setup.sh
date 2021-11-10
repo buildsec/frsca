@@ -12,7 +12,7 @@ C_RESET_ALL='\033[0m'
 # Wait until pods are ready.
 # $1: app label
 wait_for_pods () {
-  while [[ $(kubectl get pods --namespace tekton-pipelines -l app=$1 -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do
+  while [[ $(kubectl get pods --namespace tekton-pipelines -l app="$1" -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do
   echo -e "${C_YELLOW}Waiting for $1 pods...${C_RESET_ALL}"
   sleep 1
 done
@@ -20,7 +20,7 @@ done
 
 # Setup Tekton.
 echo -e "${C_GREEN}Setting up Tekton CD...${C_RESET_ALL}"
-kubectl apply --filename $GIT_ROOT/platform/vendor/tekton/pipeline/release.yaml
+kubectl apply --filename "$GIT_ROOT"/platform/vendor/tekton/pipeline/release.yaml
 wait_for_pods tekton-pipelines-controller
 
 # Setup the Dashboard.
@@ -29,11 +29,3 @@ wait_for_pods tekton-pipelines-controller
 #   to access it.
 kubectl apply --filename https://github.com/tektoncd/dashboard/releases/latest/download/tekton-dashboard-release.yaml
 wait_for_pods tekton-dashboard
-
-# Install shared tasks.
-kubectl apply -f https://raw.githubusercontent.com/tektoncd/catalog/main/task/git-clone/0.4/git-clone.yaml
-kubectl apply -f https://raw.githubusercontent.com/buildpacks/tekton-integration/main/task/buildpacks/0.4/buildpacks.yaml
-kubectl apply -f https://raw.githubusercontent.com/tektoncd/catalog/main/task/buildpacks-phases/0.2/buildpacks-phases.yaml
-
-# Install shared pipeline.
-kubectl apply -f https://raw.githubusercontent.com/tektoncd/catalog/main/pipeline/buildpacks/0.1/buildpacks.yaml

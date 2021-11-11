@@ -1,3 +1,5 @@
+package policy
+
 key: {
     public: string @tag(key)
 }

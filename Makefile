@@ -30,6 +30,11 @@ setup-tekton-chains: ## Setup a Tekton CD with Chains.
 	bash platform/10-tekton-setup.sh
 	bash platform/11-tekton-chains.sh
 
+
+.PHONY: setup-opa-gatekeeper
+setup-opa-gatekeeper: ##  Setup opa gatekeeper
+	bash platform/31-opa-gatekeeper-setup.sh
+
 .PHONY: tekton-generate-keys
 tekton-generate-keys: ## Generate key pair for Tekton.
 	bash scripts/gen-keys.sh
@@ -37,3 +42,5 @@ tekton-generate-keys: ## Generate key pair for Tekton.
 .PHONY: tekton-verify-taskrun
 tekton-verify-taskrun: ## Verify taskrun payload against signature
 	bash scripts/provenance.sh
+
+

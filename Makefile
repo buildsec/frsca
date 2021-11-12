@@ -43,4 +43,6 @@ tekton-generate-keys: ## Generate key pair for Tekton.
 tekton-verify-taskrun: ## Verify taskrun payload against signature
 	bash scripts/provenance.sh
 
-
+.PHONY: setup-kyverno
+setup-kyverno: ## Setup Kyverno.
+	bash platform/30-kyverno-setup.sh

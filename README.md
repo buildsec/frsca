@@ -21,6 +21,8 @@ Tooling:
 * [Cosign/Sget](https://github.com/sigstore/cosign)
 * [Crane](https://github.com/google/go-containerregistry)
 * [Make](https://www.gnu.org/software/make/)
+* [Rekor CLI](https://github.com/sigstore/rekor)
+* [Cue](https://cuelang.org/)
 
 ## Getting Started
 
@@ -31,9 +33,11 @@ The following describes how to set up a dev environment with the Secure Software
 Required:
 * Make
 * Kubernetes cluster (if not using local Minikube)
+* Cuelang CLI tooling
 
 Optional Tools:
 * Crane
+* Rekor CLI (for vendoring)
 
 ### Installation
 

@@ -3,6 +3,7 @@ set -euo pipefail
 SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 # Update below if you have a different config.json you want to use.
 DOCKER_CONFIG_JSON=$HOME/.docker/config.json
+OPA_GATEKEEPER_VERSION=3.6.0
 
 # Helm setup from the getting install docs:
 #   https://open-policy-agent.github.io/gatekeeper/website/docs/install/
@@ -23,7 +24,7 @@ cleanup_cluster(){
 
 install_opa_gatekeeper(){
     helm repo add gatekeeper https://open-policy-agent.github.io/gatekeeper/charts
-    helm upgrade -f ${SCRIPT_DIR}/../resources/opa-gatekeeper/enable-mutating.yaml --install gatekeeper gatekeeper/gatekeeper 
+    helm upgrade -f ${SCRIPT_DIR}/../resources/opa-gatekeeper/enable-mutating.yaml --install gatekeeper gatekeeper/gatekeeper --version $OPA_GATEKEEPER_VERSION
 }
 
 

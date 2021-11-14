@@ -16,10 +16,15 @@ HELM_FILE_NAME=helm-v3.7.1-linux-amd64.tar.gz
 HELM_URL=https://get.helm.sh/$HELM_FILE_NAME
 HELM_SHA256=6cd6cad4b97e10c33c978ff3ac97bb42b68f79766f1d2284cfd62ec04cd177f4
 
-TKN_VERSION=0.21.0
+TKN_VERSION=v0.21.0
 TKN_FILE_NAME=tkn_0.21.0_Linux_x86_64.tar.gz
-TKN_URL=https://github.com/tektoncd/cli/releases/download/v$TKN_VERSION/$TKN_FILE_NAME
+TKN_URL=https://github.com/tektoncd/cli/releases/download/$TKN_VERSION/$TKN_FILE_NAME
 TKN_SHA256=2158a202e4b04ff73e6427b565355c7bfc8cbe16dc7058a0414fb16e7b97008c
+
+KUBECTL_VERSION=v1.22.3
+KUBECTL_FILE_NAME=kubectl
+KUBECTL_URL=https://dl.k8s.io/release/$KUBECTL_VERSION/bin/linux/amd64/kubectl
+KUBECTL_VALIDATE_CHECKSUM_URL=$KUBECTL_URL.sha256
 
 INSTALL_DIR=/usr/local/bin
 
@@ -40,10 +45,12 @@ case "${PLATFORM}" in
     minikube version || brew install minikube
     helm version || brew install helm
     tkn version || brew install tektoncd-cli
+    kubectl version || brew install kubectl
     ;;
 
   Linux)
     [[ $(minikube version | awk '{print $3}' | xargs) == $MINIKUBE_VERSION ]] || (
+      echo -e "${C_GREEN}minikube not found, installing...${C_RESET_ALL}"
       TMP=$(mktemp -d)
       pushd $TMP
       curl -LO $MINIKUBE_URL
@@ -59,6 +66,7 @@ case "${PLATFORM}" in
       rmdir $TMP
     )
     [[ $(helm version | awk '{print $1 }' | sed -r 's/.*Version:\"(.*)\",/\1/') == $HELM_VERSION ]] || (
+      echo -e "${C_GREEN}helm not found, installing...${C_RESET_ALL}"
       TMP=$(mktemp -d)
       pushd $TMP
       curl -LO $HELM_URL
@@ -71,10 +79,12 @@ case "${PLATFORM}" in
       tar xvf $HELM_FILE_NAME
       sudo install linux-amd64/helm $INSTALL_DIR/helm
       rm -rf linux-amd64
+      rm $HELM_FILE_NAME
       popd
       rmdir $TMP
     )
     tkn version || (
+      echo -e "${C_GREEN}tkn not found, installing...${C_RESET_ALL}"
       TMP=$(mktemp -d)
       pushd $TMP
       curl -LO $TKN_URL
@@ -85,7 +95,20 @@ case "${PLATFORM}" in
         exit 1
       )
       sudo tar xvzf $TKN_FILE_NAME -C /usr/local/bin tkn
-      rm TKN_FILE_NAME
+      rm $TKN_FILE_NAME
+      popd
+      rmdir $TMP
+    )
+    kubectl version || (
+      echo -e "${C_GREEN}kubectl not found, installing...${C_RESET_ALL}"
+      TMP=$(mktemp -d)
+      pushd $TMP
+      curl -LO $KUBECTL_URL
+      curl -LO $KUBECTL_VALIDATE_CHECKSUM_URL
+      echo "$(<kubectl.sha256) kubectl" | sha256sum --check
+      sudo install kubectl $INSTALL_DIR/kubectl
+      rm $KUBECTL_FILE_NAME
+      rm $KUBECTL_FILE_NAME.sha256
       popd
       rmdir $TMP
     )

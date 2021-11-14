@@ -49,13 +49,13 @@ case "${PLATFORM}" in
     ;;
 
   Linux)
-    [[ $(minikube version | awk '{print $3}' | xargs) == $MINIKUBE_VERSION ]] || (
+    [[ $(minikube version | awk '{print $3}' | xargs) == "$MINIKUBE_VERSION" ]] || (
       echo -e "${C_GREEN}minikube not found, installing...${C_RESET_ALL}"
       TMP=$(mktemp -d)
-      pushd $TMP
+      pushd "$TMP"
       curl -LO $MINIKUBE_URL
       ACTUAL_SHA256=$(sha256sum $MINIKUBE_FILE_NAME | awk '{print $1}')
-      [[ $ACTUAL_SHA256 == $MINIKUBE_SHA256 ]] || (
+      [[ $ACTUAL_SHA256 == "$MINIKUBE_SHA256" ]] || (
         echo "Expected SHA256 for $MINIKUBE_FILE_NAME: $MINIKUBE_SHA256"
         echo "Actual SHA256 for $MINIKUBE_FILE_NAME: $ACTUAL_SHA256"
         exit 1
@@ -63,15 +63,15 @@ case "${PLATFORM}" in
       sudo install $MINIKUBE_FILE_NAME $INSTALL_DIR/minikube
       rm $MINIKUBE_FILE_NAME
       popd
-      rmdir $TMP
+      rmdir "$TMP"
     )
-    [[ $(helm version | awk '{print $1 }' | sed -r 's/.*Version:\"(.*)\",/\1/') == $HELM_VERSION ]] || (
+    [[ $(helm version | awk '{print $1 }' | sed -r 's/.*Version:\"(.*)\",/\1/') == "$HELM_VERSION" ]] || (
       echo -e "${C_GREEN}helm not found, installing...${C_RESET_ALL}"
       TMP=$(mktemp -d)
-      pushd $TMP
+      pushd "$TMP"
       curl -LO $HELM_URL
       ACTUAL_SHA256=$(sha256sum $HELM_FILE_NAME | awk '{print $1}')
-      [[ $ACTUAL_SHA256 == $HELM_SHA256 ]] || (
+      [[ $ACTUAL_SHA256 == "$HELM_SHA256" ]] || (
         echo "Expected SHA256 for $HELM_FILE_NAME: $HELM_SHA256"
         echo "Actual SHA256 for $HELM_FILE_NAME: $ACTUAL_SHA256"
         exit 1
@@ -81,15 +81,15 @@ case "${PLATFORM}" in
       rm -rf linux-amd64
       rm $HELM_FILE_NAME
       popd
-      rmdir $TMP
+      rmdir "$TMP"
     )
     tkn version || (
       echo -e "${C_GREEN}tkn not found, installing...${C_RESET_ALL}"
       TMP=$(mktemp -d)
-      pushd $TMP
+      pushd "$TMP"
       curl -LO $TKN_URL
       ACTUAL_SHA256=$(sha256sum $TKN_FILE_NAME | awk '{print $1}')
-      [[ $ACTUAL_SHA256 == $TKN_SHA256 ]] || (
+      [[ $ACTUAL_SHA256 == "$TKN_SHA256" ]] || (
         echo "Expected SHA256 for $TKN_FILE_NAME: $TKN_SHA256"
         echo "Actual SHA256 for $TKN_FILE_NAME: $ACTUAL_SHA256"
         exit 1
@@ -97,12 +97,12 @@ case "${PLATFORM}" in
       sudo tar xvzf $TKN_FILE_NAME -C /usr/local/bin tkn
       rm $TKN_FILE_NAME
       popd
-      rmdir $TMP
+      rmdir "$TMP"
     )
     kubectl version || (
       echo -e "${C_GREEN}kubectl not found, installing...${C_RESET_ALL}"
       TMP=$(mktemp -d)
-      pushd $TMP
+      pushd "$TMP"
       curl -LO $KUBECTL_URL
       curl -LO $KUBECTL_VALIDATE_CHECKSUM_URL
       echo "$(<kubectl.sha256) kubectl" | sha256sum --check
@@ -110,7 +110,7 @@ case "${PLATFORM}" in
       rm $KUBECTL_FILE_NAME
       rm $KUBECTL_FILE_NAME.sha256
       popd
-      rmdir $TMP
+      rmdir "$TMP"
     )
     ;;
 

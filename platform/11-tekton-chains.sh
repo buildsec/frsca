@@ -35,5 +35,5 @@ esac
 
 # Install Cosign if needed.
 if ! cosign version; then
-  ./12-cosign-installer.sh
+  bash "$GIT_ROOT"/platform/12-cosign-installer.sh
 fi

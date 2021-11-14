@@ -26,6 +26,24 @@ KUBECTL_FILE_NAME=kubectl
 KUBECTL_URL=https://dl.k8s.io/release/$KUBECTL_VERSION/bin/linux/amd64/kubectl
 KUBECTL_VALIDATE_CHECKSUM_URL=$KUBECTL_URL.sha256
 
+case $(uname -m) in
+  x86_64)
+    COSIGN_ARCH=amd64
+  ;;
+  arm)
+    COSIGN_ARCH=arm
+  ;;
+  aarch64)
+    COSIGN_ARCH=arm64
+  ;;
+esac
+COSIGN_BIN=cosign
+COSIGN_OS=$(uname | tr '[:upper:]' '[:lower:]')
+COSIGN_VERSION=v1.2.1
+COSIGN_RELEASE_URL="https://github.com/sigstore/cosign/releases/download/${COSIGN_VERSION}"
+COSIGN_CHECKSUMS="cosign_checksums.txt"
+COSIGN_ASSET="${COSIGN_BIN}-${COSIGN_OS}-${COSIGN_ARCH}"
+
 INSTALL_DIR=/usr/local/bin
 
 # Define variables.
@@ -46,6 +64,7 @@ case "${PLATFORM}" in
     helm version || brew install helm
     tkn version || brew install tektoncd-cli
     kubectl version || brew install kubectl
+    cosign version || brew install sigstore/tap/cosign
     ;;
 
   Linux)
@@ -112,6 +131,22 @@ case "${PLATFORM}" in
       sudo install kubectl $INSTALL_DIR/kubectl
       rm $KUBECTL_FILE_NAME
       rm $KUBECTL_FILE_NAME.sha256
+      popd
+      rmdir "$TMP"
+    )
+
+    cosign version || (
+      echo -e "${C_GREEN}cosign not found, installing...${C_RESET_ALL}"
+      TMP=$(mktemp -d)
+      pushd "$TMP"
+      curl -sLO "${COSIGN_RELEASE_URL}/${COSIGN_ASSET}"
+      curl -sLO "${COSIGN_RELEASE_URL}/${COSIGN_ASSET}.sig"
+      curl -sLO "${COSIGN_RELEASE_URL}/${COSIGN_CHECKSUMS}"
+      sha256sum --ignore-missing -c "${COSIGN_CHECKSUMS}"
+      sudo install "$COSIGN_ASSET" $INSTALL_DIR/cosign
+      rm "$COSIGN_ASSET"
+      rm $COSIGN_CHECKSUMS
+      rm "$COSIGN_ASSET".sig
       popd
       rmdir "$TMP"
     )

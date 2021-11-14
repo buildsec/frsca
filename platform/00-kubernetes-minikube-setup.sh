@@ -65,6 +65,7 @@ case "${PLATFORM}" in
       popd
       rmdir "$TMP"
     )
+
     [[ $(helm version | awk '{print $1 }' | sed -r 's/.*Version:\"(.*)\",/\1/') == "$HELM_VERSION" ]] || (
       echo -e "${C_GREEN}helm not found, installing...${C_RESET_ALL}"
       TMP=$(mktemp -d)
@@ -83,6 +84,7 @@ case "${PLATFORM}" in
       popd
       rmdir "$TMP"
     )
+
     tkn version || (
       echo -e "${C_GREEN}tkn not found, installing...${C_RESET_ALL}"
       TMP=$(mktemp -d)
@@ -99,6 +101,7 @@ case "${PLATFORM}" in
       popd
       rmdir "$TMP"
     )
+
     kubectl version || (
       echo -e "${C_GREEN}kubectl not found, installing...${C_RESET_ALL}"
       TMP=$(mktemp -d)

@@ -24,14 +24,14 @@ cleanup_cluster(){
 
 install_opa_gatekeeper(){
     helm repo add gatekeeper https://open-policy-agent.github.io/gatekeeper/charts
-    helm upgrade -f ${SCRIPT_DIR}/../resources/opa-gatekeeper/enable-mutating.yaml --install gatekeeper gatekeeper/gatekeeper --version $OPA_GATEKEEPER_VERSION
+    helm upgrade -f "${SCRIPT_DIR}"/../resources/opa-gatekeeper/enable-mutating.yaml --install gatekeeper gatekeeper/gatekeeper --version $OPA_GATEKEEPER_VERSION
 }
 
 
 install_secrets(){
     # Create secrets for gatekeeper/cosign wrapper api and kubernetes image pull
     kubectl create namespace gatekeeper --dry-run=client -o yaml | kubectl apply -f -
-    kubectl create secret generic regcred --type=kubernetes.io/dockerconfigjson --from-file=.dockerconfigjson=$DOCKER_CONFIG_JSON -n gatekeeper  --dry-run=client -o yaml | kubectl apply -f -
+    kubectl create secret generic regcred --type=kubernetes.io/dockerconfigjson --from-file=.dockerconfigjson="$DOCKER_CONFIG_JSON" -n gatekeeper  --dry-run=client -o yaml | kubectl apply -f -
 }
 
 

@@ -44,6 +44,11 @@ COSIGN_RELEASE_URL="https://github.com/sigstore/cosign/releases/download/${COSIG
 COSIGN_CHECKSUMS="cosign_checksums.txt"
 COSIGN_ASSET="${COSIGN_BIN}-${COSIGN_OS}-${COSIGN_ARCH}"
 
+CUE_VERSION=v0.4.0
+CUE_FILE_NAME=cue_${CUE_VERSION}_linux_amd64.tar.gz
+CUE_URL=https://github.com/cue-lang/cue/releases/download/${CUE_VERSION}
+CUE_CHECKSUMS=checksums.txt
+
 INSTALL_DIR=/usr/local/bin
 
 # Define variables.
@@ -65,6 +70,7 @@ case "${PLATFORM}" in
     tkn version || brew install tektoncd-cli
     kubectl version || brew install kubectl
     cosign version || brew install sigstore/tap/cosign
+    cue version || brew install cuelang/tap/cue
     ;;
 
   Linux)
@@ -147,6 +153,22 @@ case "${PLATFORM}" in
       rm "$COSIGN_ASSET"
       rm $COSIGN_CHECKSUMS
       rm "$COSIGN_ASSET".sig
+      popd
+      rmdir "$TMP"
+    )
+
+    cue version || (
+      echo -e "${C_GREEN}cue not found, installing...${C_RESET_ALL}"
+      TMP=$(mktemp -d)
+      pushd "$TMP"
+      curl -LO "${CUE_URL}/${CUE_FILE_NAME}"
+      curl -LO "${CUE_URL}/${CUE_CHECKSUMS}"
+      sha256sum --ignore-missing -c "${CUE_CHECKSUMS}"
+      tar -xzf $CUE_FILE_NAME
+      sudo install cue $INSTALL_DIR/cue
+      rm "${CUE_CHECKSUMS}"
+      rm $CUE_FILE_NAME
+      rm -rf doc LICENSE README.md cue
       popd
       rmdir "$TMP"
     )

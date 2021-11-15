@@ -33,7 +33,3 @@ case "${TKN_CHAINS_FORMAT}" in
     ;;
 esac
 
-# Install Cosign if needed.
-if ! cosign version; then
-  bash "$GIT_ROOT"/platform/12-cosign-installer.sh
-fi

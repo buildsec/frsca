@@ -26,17 +26,7 @@ KUBECTL_FILE_NAME=kubectl
 KUBECTL_URL=https://dl.k8s.io/release/$KUBECTL_VERSION/bin/linux/amd64/kubectl
 KUBECTL_VALIDATE_CHECKSUM_URL=$KUBECTL_URL.sha256
 
-case $(uname -m) in
-  x86_64)
-    COSIGN_ARCH=amd64
-  ;;
-  arm)
-    COSIGN_ARCH=arm
-  ;;
-  aarch64)
-    COSIGN_ARCH=arm64
-  ;;
-esac
+COSIGN_ARCH=amd64
 COSIGN_BIN=cosign
 COSIGN_OS=$(uname | tr '[:upper:]' '[:lower:]')
 COSIGN_VERSION=v1.2.1

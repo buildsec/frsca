@@ -41,3 +41,7 @@ tekton-verify-taskrun: ## Verify taskrun payload against signature
 .PHONY: setup-kyverno
 setup-kyverno: ## Setup Kyverno.
 	bash platform/30-kyverno-setup.sh
+
+.PHONY: setup-opa-gatekeeper
+setup-opa-gatekeeper: ##  Setup opa gatekeeper
+	bash platform/31-opa-gatekeeper-setup.sh

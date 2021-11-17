@@ -25,6 +25,10 @@ help: # Display help
 setup-minikube: ## Setup a Kubernetes cluster using Minikube.
 	bash platform/00-kubernetes-minikube-setup.sh
 
+.PHONY: registry-proxy
+registry-proxy: ## Forward the minikube registry to the host.
+	bash platform/05-minikube-registry-proxy.sh
+
 .PHONY: setup-tekton-chains
 setup-tekton-chains: ## Setup a Tekton CD with Chains.
 	bash platform/10-tekton-setup.sh
@@ -45,3 +49,7 @@ setup-kyverno: ## Setup Kyverno.
 .PHONY: setup-opa-gatekeeper
 setup-opa-gatekeeper: ##  Setup opa gatekeeper
 	bash platform/31-opa-gatekeeper-setup.sh
+
+.PHONY: example-ibm-tutorial
+example-ibm-tutorial: ## Run the IBM pipeline example.
+	bash examples/ibm-tutorial/ibm-tutorial.sh

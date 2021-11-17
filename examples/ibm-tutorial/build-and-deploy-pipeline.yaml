@@ -40,7 +40,7 @@ spec:
           value: "true"
     - name: source-to-image
       taskRef:
-        name: kaniko
+        name: kaniko-chains
       runAfter:
         - clone-repo
       workspaces:

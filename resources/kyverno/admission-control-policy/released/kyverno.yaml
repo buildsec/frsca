@@ -1,0 +1,130 @@
+AttestationClusterPolicy: {}
+ImageClusterPolicy: {}
+configMap: {}
+---
+AttestationClusterPolicy:
+  attest-code-review:
+    apiVersion: kyverno.io/v1
+    kind: ClusterPolicy
+    metadata:
+      annotations:
+        pod-policies.kyverno.io/autogen-controllers: none
+      name: attest-code-review
+    spec:
+      validationFailureAction: enforce
+      background: false
+      webhookTimeoutSeconds: 30
+      failurePolicy: Fail
+      rules:
+      - verifyImages:
+        - attestations:
+          - predicateType: https://in-toto.io/Provenance/v0.1
+            conditions:
+            - all:
+              - key: '{{ repo.uri }}'
+                operator: Equals
+                value: https://git-repo.com/org/app
+              - key: '{{ repo.branch }}'
+                operator: Equals
+                value: main
+              - key: '{{ reviewers }}'
+                operator: In
+                value:
+                - ana@example.com
+                - bob@example.com
+          image: yolo
+          key: |-
+            -----BEGIN PUBLIC KEY-----
+            MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEhyQCx0E9wQWSFI9ULGwy3BuRklnt
+            IqozONbbdbqz11hlRJy9c7SG+hdcFl9jE9uE/dwtuwU2MqU9T/cN0YkWww==
+            -----END PUBLIC KEY-----
+        name: attest-code-review
+        match:
+          resources:
+            kinds:
+            - Pod
+            namespaces:
+            - default
+        context:
+        - name: keys
+          configMap:
+            name: keys
+            namespace: default
+ImageClusterPolicy:
+  verify-image:
+    apiVersion: kyverno.io/v1
+    kind: ClusterPolicy
+    metadata:
+      annotations:
+        policies.kyverno.io/title: Verify Image
+        policies.kyverno.io/category: Sample
+        policies.kyverno.io/severity: medium
+        policies.kyverno.io/subject: Pod
+        policies.kyverno.io/minversion: 1.4.2
+        policies.kyverno.io/description: Using the Cosign project, OCI images may
+          be signed to ensure supply chain security is maintained. Those signatures
+          can be verified before pulling into a cluster. This policy checks the signature
+          of an image repo called ghcr.io/kyverno/test-verify-image to ensure it has
+          been signed by verifying its signature against the provided public key.
+          This policy serves as an illustration for how to configure a similar rule
+          and will require replacing with your image(s) and keys.
+      name: verify-image
+    spec:
+      validationFailureAction: enforce
+      background: false
+      webhookTimeoutSeconds: 30
+      failurePolicy: Fail
+      rules:
+      - verifyImages:
+        - image: gcr.io/tekton-releases/github.com/tektoncd/*
+          key: '{{ keys.data.tektoncd }}'
+        - image: gcr.io/projectsigstore/*
+          key: '{{ keys.data.projectsigstore }}'
+        - image: ghcr.io/*
+          key: '{{ keys.data.ghcrio }}'
+        - image: ttl.sh/*
+          key: '{{ keys.data.ttlsh }}'
+        name: verify-image
+        match:
+          resources:
+            kinds:
+            - Pod
+            namespaces:
+            - default
+        context:
+        - name: keys
+          configMap:
+            name: keys
+            namespace: default
+configMap: {}
+---
+AttestationClusterPolicy: {}
+ImageClusterPolicy: {}
+configMap:
+  keys:
+    apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: keys
+      namespace: default
+    data:
+      tektoncd: |-
+        -----BEGIN PUBLIC KEY-----
+        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEnLNw3RYx9xQjXbUEw8vonX3U4+tB
+        kPnJq+zt386SCoG0ewIH5MB8+GjIDGArUULSDfjfM31Eae/71kavAUI0OA==
+        -----END PUBLIC KEY-----
+      projectsigstore: |-
+        -----BEGIN PUBLIC KEY-----
+        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEhyQCx0E9wQWSFI9ULGwy3BuRklnt
+        IqozONbbdbqz11hlRJy9c7SG+hdcFl9jE9uE/dwtuwU2MqU9T/cN0YkWww==
+        -----END PUBLIC KEY-----
+      ghcrio: |-
+        -----BEGIN PUBLIC KEY-----
+        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEhyQCx0E9wQWSFI9ULGwy3BuRklnt
+        IqozONbbdbqz11hlRJy9c7SG+hdcFl9jE9uE/dwtuwU2MqU9T/cN0YkWww==
+        -----END PUBLIC KEY-----
+      ttlsh: |-
+        -----BEGIN PUBLIC KEY-----
+        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEhyQCx0E9wQWSFI9ULGwy3BuRklnt
+        IqozONbbdbqz11hlRJy9c7SG+hdcFl9jE9uE/dwtuwU2MqU9T/cN0YkWww==
+        -----END PUBLIC KEY-----

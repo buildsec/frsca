@@ -1,0 +1,18 @@
+name: CI
+on:
+  - pull_request
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    name: build example and deploy to minikube
+    steps:
+    - uses: actions/checkout@v2
+    - name: Start minikube
+      uses: medyagh/setup-minikube@master
+    - name: Try the cluster !
+      run: kubectl get pods -A
+    - name: Deploy SSF to minikube
+      run:
+        ./platform/10-tekton-setup.sh
+        ./platform/11-tekton-chains.sh
+

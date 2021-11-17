@@ -50,6 +50,10 @@ setup-kyverno: ## Setup Kyverno.
 setup-opa-gatekeeper: ##  Setup opa gatekeeper
 	bash platform/31-opa-gatekeeper-setup.sh
 
+.PHONY: example-buildpacks
+example-buildpacks: ## Run the buildpacks example.
+	bash examples/buildpacks/buildpacks.sh
+
 .PHONY: example-ibm-tutorial
 example-ibm-tutorial: ## Run the IBM pipeline example.
 	bash examples/ibm-tutorial/ibm-tutorial.sh

@@ -74,5 +74,9 @@ kubectl patch \
   --type json --patch-file "${GIT_ROOT}"/platform/components/kyverno/patch_container_args.json
 
 echo -e "${C_GREEN}Creating verify-image admission control policy...${C_RESET_ALL}"
-cue eval ./... -t repo="$REPO" -t key="$USERPUBKEY" --out yaml > $KYVERNO_RESOURCE_DIR/released/admission-control.yaml
+pushd "$KYVERNO_RESOURCE_DIR"
+cue export -e 'ImageClusterPolicy["verify-image"]' -t repo="$REPO" -t key="$USERPUBKEY" > $KYVERNO_RESOURCE_DIR/released/verify-signature.json
+cue export -e 'AttestationClusterPolicy["attest-code-review"]' -t repo="$REPO" -t key="$USERPUBKEY" > $KYVERNO_RESOURCE_DIR/released/verify-attestation.json
+cue export -e 'configMap["keys"]' -t repo="$REPO" -t key="$USERPUBKEY" > $KYVERNO_RESOURCE_DIR/released/configmap-keys.json
+popd
 kubectl apply -f $KYVERNO_RESOURCE_DIR/released

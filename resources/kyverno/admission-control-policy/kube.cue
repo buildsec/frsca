@@ -51,7 +51,7 @@ AttestationClusterPolicy: [ID=_]: _spec & {
     _annotations: "pod-policies.kyverno.io/autogen-controllers": "none"
     spec: rules: [{ verifyImages: 
             [{ image: #public.repo
-				key: #public.key
+				key: "{{ keys.data.ttlsh }}"
             }] 
         }]
 }

@@ -1,4 +1,0 @@
-package kube
-
-configMap: keys: {
-}

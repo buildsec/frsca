@@ -53,3 +53,11 @@ setup-opa-gatekeeper: ##  Setup opa gatekeeper
 .PHONY: example-ibm-tutorial
 example-ibm-tutorial: ## Run the IBM pipeline example.
 	bash examples/ibm-tutorial/ibm-tutorial.sh
+
+.PHONY: docs-setup
+docs-setup: ## Install the tool to build the documentation
+	bash docs/bootstrap.sh
+
+.PHONY: docs-serve
+docs-serve: ## Serve the site locally with hot-reloading
+	cd docs && zola serve

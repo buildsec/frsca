@@ -17,10 +17,10 @@ C_RESET_ALL='\033[0m'
 
 # Wait until pods are ready.
 # $1: namespace, $2: app label
-wait_for_pods () {
-  sleep 1
-  echo -e "${C_YELLOW}Waiting: $2 pods in $1...${C_RESET_ALL}"
-  kubectl wait --timeout=5m --for=condition=ready pods -l app="$2" -n "$1"
+wait_for_pods() {
+	sleep 1
+	echo -e "${C_YELLOW}Waiting: $2 pods in $1...${C_RESET_ALL}"
+	kubectl wait --timeout=5m --for=condition=ready pods -l app="$2" -n "$1"
 }
 
 # Update below if you have a different config.json you want to use.
@@ -40,7 +40,7 @@ echo -e "${C_GREEN}Creating docker config secrets...${C_RESET_ALL}"
 kubectl create secret generic secret-dockerconfigjson --type=opaque --from-file=config.json="$DOCKER_CONFIG_JSON" --dry-run=client -o yaml | kubectl apply -f -
 
 # NOTE: Pull secret needs to exist in both kyverno namespace as well as the tekton task namespace (default in this case)
-kubectl create secret generic regcred --type=kubernetes.io/dockerconfigjson --from-file=.dockerconfigjson="$DOCKER_CONFIG_JSON" -n kyverno  --dry-run=client -o yaml | kubectl apply -f -
+kubectl create secret generic regcred --type=kubernetes.io/dockerconfigjson --from-file=.dockerconfigjson="$DOCKER_CONFIG_JSON" -n kyverno --dry-run=client -o yaml | kubectl apply -f -
 kubectl create secret generic regcred --type=kubernetes.io/dockerconfigjson --from-file=.dockerconfigjson="$DOCKER_CONFIG_JSON" --dry-run=client -o yaml | kubectl apply -f -
 
 ### HACK - setting to Jim's personal image repo for kyverno to resolve
@@ -50,10 +50,10 @@ kubectl set image -n kyverno deploy/kyverno kyverno=ghcr.io/jimbugwadia/kyverno:
 
 echo -e "${C_GREEN}Patching Kyverno deployment...${C_RESET_ALL}"
 kubectl patch \
-  deployment kyverno \
-  -n kyverno \
-  --type json --patch-file "${GIT_ROOT}"/platform/components/kyverno/patch_container_args.json
+	deployment kyverno \
+	-n kyverno \
+	--type json --patch-file "${GIT_ROOT}"/platform/components/kyverno/patch_container_args.json
 
 echo -e "${C_GREEN}Creating verify-image admission control policy...${C_RESET_ALL}"
-cue export "$KYVERNO_RESOURCE_DIR"/admission-control-verify-image-resources.cue -e template -t key="$USERPUBKEY" --out yaml > "$KYVERNO_RESOURCE_DIR"/admission-control-verify-image-resources.yaml
+cue export "$KYVERNO_RESOURCE_DIR"/admission-control-verify-image-resources.cue -e template -t key="$USERPUBKEY" --out yaml >"$KYVERNO_RESOURCE_DIR"/admission-control-verify-image-resources.yaml
 kubectl apply -f "$KYVERNO_RESOURCE_DIR"

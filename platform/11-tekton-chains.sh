@@ -17,19 +17,18 @@ GIT_ROOT=$(git rev-parse --show-toplevel)
 kubectl apply --filename "$GIT_ROOT"/platform/vendor/tekton/chains/release.yaml
 
 kubectl patch \
-      configmap chains-config \
-      -n tekton-chains \
-      --patch-file "$GIT_ROOT"/platform/components/tekton/chains/patch_config_oci.yaml
+	configmap chains-config \
+	-n tekton-chains \
+	--patch-file "$GIT_ROOT"/platform/components/tekton/chains/patch_config_oci.yaml
 
 # Patch chains to generate in-toto provenance.
 case "${TKN_CHAINS_FORMAT}" in
-  intoto)
-    kubectl patch \
-      configmap chains-config \
-      -n tekton-chains \
-      --patch-file "$GIT_ROOT"/platform/components/tekton/chains/patch_config_intoto.yaml
-    ;;
-  *)
-    ;;
-esac
+intoto)
+	kubectl patch \
+		configmap chains-config \
+		-n tekton-chains \
+		--patch-file "$GIT_ROOT"/platform/components/tekton/chains/patch_config_intoto.yaml
+	;;
+*) ;;
 
+esac

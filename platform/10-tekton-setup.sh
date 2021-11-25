@@ -10,11 +10,11 @@ C_RESET_ALL='\033[0m'
 
 # Wait until pods are ready.
 # $1: app label
-wait_for_pods () {
-  while [[ $(kubectl get pods --namespace tekton-pipelines -l app="$1" -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do
-  echo -e "${C_YELLOW}Waiting for $1 pods...${C_RESET_ALL}"
-  sleep 1
-done
+wait_for_pods() {
+	while [[ $(kubectl get pods --namespace tekton-pipelines -l app="$1" -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do
+		echo -e "${C_YELLOW}Waiting for $1 pods...${C_RESET_ALL}"
+		sleep 1
+	done
 }
 
 # Setup Tekton.

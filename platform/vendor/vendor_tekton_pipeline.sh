@@ -12,18 +12,17 @@ TEKTON_DIR=tekton/pipeline
 REKOR_ATTESTATION_IMAGES=$(rekor-cli get --uuid "$REKOR_UUID" --format json | jq -r .Attestation | base64 --decode | jq -r '.subject[]|.name + ":v0.29.0@sha256:" + .digest.sha256')
 
 # Download the release file
-curl "$RELEASE_FILE" > $TEKTON_DIR/release.yaml
+curl "$RELEASE_FILE" >$TEKTON_DIR/release.yaml
 
 # For each image in the attestation, match it to the release file
 for image in $REKOR_ATTESTATION_IMAGES; do
-  printf "%s" "$image";
+	printf "%s" "$image"
 
-  if grep -q "$image" $TEKTON_DIR/release.yaml
-    then
-      echo " ===> ok"
-    else
-      echo " ===> no match";
-      exit 1
-  fi
+	if grep -q "$image" $TEKTON_DIR/release.yaml; then
+		echo " ===> ok"
+	else
+		echo " ===> no match"
+		exit 1
+	fi
 
 done

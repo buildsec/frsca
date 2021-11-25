@@ -24,5 +24,5 @@ KYVERNO_URL="https://raw.githubusercontent.com/kyverno/kyverno/main/config/insta
 
 # if [ $KYVERNO_LATEST_STATUS -eq 0 ] && [ $KYVERNOPRE_LATEST_STATUS -eq 0 ] && [ $KYVERNOCLI_LATEST_STATUS -eq 0 ] ; then
 #   # Download the release file
-  curl "$KYVERNO_URL" > "$KYVERNO_INSTALL_DIR"/release.yaml
+curl "$KYVERNO_URL" >"$KYVERNO_INSTALL_DIR"/release.yaml
 #fi

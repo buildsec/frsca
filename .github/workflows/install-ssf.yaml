@@ -8,6 +8,12 @@ jobs:
     name: Test SSF Installation
     steps:
     - uses: actions/checkout@v2
+    - name: Install Shellcheck
+      run: |
+        apt-get install shellcheck
+    - name: Lint shell files
+      run: |
+        find . -type f -name "*.sh" -print0 | xargs -0 shellcheck
     - name: Start minikube
       run: |
         make setup-minikube

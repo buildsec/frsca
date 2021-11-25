@@ -3,9 +3,9 @@ set -euo pipefail
 
 GIT_ROOT=$(git rev-parse --show-toplevel)
 KYVERNO_INSTALL_DIR=${GIT_ROOT}/platform/vendor/kyverno/release
-KYVERNO_RESOURCE_DIR=${GIT_ROOT}/resources/kyverno/admission-control-policy
+# KYVERNO_RESOURCE_DIR=${GIT_ROOT}/resources/kyverno/admission-control-policy
 
-### HACK to work around the latest version of Kyverno not having the updates Jim made for us with configmaps. 
+### HACK to work around the latest version of Kyverno not having the updates Jim made for us with configmaps.
 ### Once offically released. We will go back to using the versioned release.
 KYVERNO_URL="https://raw.githubusercontent.com/kyverno/kyverno/main/config/install.yaml"
 
@@ -24,5 +24,5 @@ KYVERNO_URL="https://raw.githubusercontent.com/kyverno/kyverno/main/config/insta
 
 # if [ $KYVERNO_LATEST_STATUS -eq 0 ] && [ $KYVERNOPRE_LATEST_STATUS -eq 0 ] && [ $KYVERNOCLI_LATEST_STATUS -eq 0 ] ; then
 #   # Download the release file
-  curl "$KYVERNO_URL" > $KYVERNO_INSTALL_DIR/release.yaml
+  curl "$KYVERNO_URL" > "$KYVERNO_INSTALL_DIR"/release.yaml
 #fi

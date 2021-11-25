@@ -30,6 +30,6 @@ filesToDownload=( \
 )
 
 # Download quick start files
-for file in ${filesToDownload[@]}; do
-  curl "${QUICKSTART_URL}/${file}" > ${QUICKSTART_DIR}/${file}
+for file in "${filesToDownload[@]}"; do
+  curl "${QUICKSTART_URL}/${file}" > "${QUICKSTART_DIR}"/"${file}"
 done

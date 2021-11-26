@@ -21,6 +21,14 @@ help: # Display help
 			printf "\033[36m%-30s\033[0m %s\n", $$1, $$NF \
 		}' $(MAKEFILE_LIST) | sort
 
+.PHONY: format
+format: ## Autoformatting for codebase.
+	shfmt -f ./ | xargs shfmt -w
+
+.PHONY: lint
+lint: ## Lint checking for codebase.
+	find . -type f -name "*.sh" -print0 | xargs -0 shellcheck
+
 .PHONY: setup-minikube
 setup-minikube: ## Setup a Kubernetes cluster using Minikube.
 	bash platform/00-kubernetes-minikube-setup.sh

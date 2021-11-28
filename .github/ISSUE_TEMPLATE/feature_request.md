@@ -1,20 +1,26 @@
 ---
 name: Feature request
 about: Suggest an idea for this project
-title: ''
 labels: enhancement
-assignees: ''
-
 ---
+<!-- Provide a general summary of the issue in the title above. -->
 
-**Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+Current Behavior
+----------------
+<!-- Tell us what is currently happening. -->
 
-**Describe the solution you'd like**
-A clear and concise description of what you want to happen.
+Expected Behavior
+-----------------
+<!-- Tell us how it should work, how it differs from the current implementation. -->
 
-**Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
+Possible Solution or Alternative
+---------------------------------
+<!--
+Suggest ideas how to implement the addition or change, or a clear and concise
+description of any alternative solutions or features you've considered.
+Delete if not applicable/relevant.
+-->
 
-**Additional context**
-Add any other context or screenshots about the feature request here.
+Context
+-------
+<!-- Add any other context or screenshots about the feature request here. -->

@@ -1,0 +1,67 @@
+{
+    "apiVersion": "kyverno.io/v1",
+    "kind": "ClusterPolicy",
+    "metadata": {
+        "annotations": {
+            "pod-policies.kyverno.io/autogen-controllers": "none"
+        },
+        "name": "attest-code-review"
+    },
+    "spec": {
+        "validationFailureAction": "enforce",
+        "background": false,
+        "webhookTimeoutSeconds": 30,
+        "failurePolicy": "Fail",
+        "rules": [
+            {
+                "verifyImages": [
+                    {
+                        "attestations": [
+                            {
+                                "predicateType": "https://slsa.dev/provenance/v0.1",
+                                "conditions": [
+                                    {
+                                        "all": [
+                                            {
+                                                "key": "{{ builder.id }}",
+                                                "operator": "Equals",
+                                                "value": "tekton-chains"
+                                            },
+                                            {
+                                                "key": "{{ recipe.type }}",
+                                                "operator": "Equals",
+                                                "value": "https://tekton.dev/attestations/chains@v1"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ],
+                        "image": "ttl.sh/*",
+                        "key": "{{ keys.data.ttlsh }}"
+                    }
+                ],
+                "name": "attest-code-review",
+                "match": {
+                    "resources": {
+                        "kinds": [
+                            "Pod"
+                        ],
+                        "namespaces": [
+                            "prod"
+                        ]
+                    }
+                },
+                "context": [
+                    {
+                        "name": "keys",
+                        "configMap": {
+                            "name": "keys",
+                            "namespace": "default"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+}

@@ -6,6 +6,8 @@ MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEhyQCx0E9wQWSFI9ULGwy3BuRklnt
 IqozONbbdbqz11hlRJy9c7SG+hdcFl9jE9uE/dwtuwU2MqU9T/cN0YkWww==
 -----END PUBLIC KEY-----"
 
+REPO="ttl.sh/*"
+
 GIT_ROOT=$(git rev-parse --show-toplevel)
 KYVERNO_INSTALL_DIR=${GIT_ROOT}/platform/vendor/kyverno/release
 KYVERNO_RESOURCE_DIR=${GIT_ROOT}/resources/kyverno/admission-control-policy
@@ -46,7 +48,7 @@ kubectl create secret generic regcred --type=kubernetes.io/dockerconfigjson --fr
 ### HACK - setting to Jim's personal image repo for kyverno to resolve
 ### failed calling webhook "mutate.kyverno.svc-fail" error. Once this image
 ### is offically released, this will be removed.
-kubectl set image -n kyverno deploy/kyverno kyverno=ghcr.io/jimbugwadia/kyverno:v1.5.2-rc3-311-g4835157c
+kubectl set image -n kyverno deploy/kyverno kyverno=ghcr.io/jimbugwadia/kyverno:v1.6.0-130-g8a0d465d
 
 echo -e "${C_GREEN}Patching Kyverno deployment...${C_RESET_ALL}"
 kubectl patch \
@@ -55,5 +57,9 @@ kubectl patch \
   --type json --patch-file "${GIT_ROOT}"/platform/components/kyverno/patch_container_args.json
 
 echo -e "${C_GREEN}Creating verify-image admission control policy...${C_RESET_ALL}"
-cue export "$KYVERNO_RESOURCE_DIR"/admission-control-verify-image-resources.cue -e template -t key="$USERPUBKEY" --out yaml > "$KYVERNO_RESOURCE_DIR"/admission-control-verify-image-resources.yaml
-kubectl apply -f "$KYVERNO_RESOURCE_DIR"
+pushd "$KYVERNO_RESOURCE_DIR"
+cue export -e 'ImageClusterPolicy["verify-image"]' -t repo="$REPO" -t key="$USERPUBKEY" > "$KYVERNO_RESOURCE_DIR"/released/verify-signature.json
+cue export -e 'AttestationClusterPolicy["attest-code-review"]' -t repo="$REPO" -t key="$USERPUBKEY" > "$KYVERNO_RESOURCE_DIR"/released/verify-attestation.json
+cue export -e 'configMap["keys"]' -t repo="$REPO" -t key="$USERPUBKEY" > "$KYVERNO_RESOURCE_DIR"/released/configmap-keys.json
+popd
+kubectl apply -f "$KYVERNO_RESOURCE_DIR"/released

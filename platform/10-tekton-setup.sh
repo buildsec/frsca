@@ -29,3 +29,6 @@ wait_for_pods tekton-pipelines-controller
 #   to access it.
 kubectl apply --filename https://github.com/tektoncd/dashboard/releases/latest/download/tekton-dashboard-release.yaml
 wait_for_pods tekton-dashboard
+
+# Wait for tekton pipelines configuration webhook to come up
+wait_for_pods tekton-pipelines-webhook

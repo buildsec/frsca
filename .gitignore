@@ -6,3 +6,4 @@ kubernetes/scripts/payload
 kubernetes/scripts/signature
 result
 target/
+*.pub

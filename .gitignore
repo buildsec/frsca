@@ -5,3 +5,6 @@ result
 kubernetes/scripts/*.json
 kubernetes/scripts/payload
 kubernetes/scripts/signature
+
+#ignore keys
+*.pub

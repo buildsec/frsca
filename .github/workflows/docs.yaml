@@ -1,0 +1,33 @@
+name: docs
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+    paths:
+      - '.github/**'
+      - 'docs/**'
+  push:
+    branches:
+      - main
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: build
+        if: github.ref != 'refs/heads/main'
+        uses: shalzz/zola-deploy-action@v0.14.1
+        env:
+          BUILD_DIR: docs
+          BUILD_ONLY: true
+          TOKEN: ${{ secrets.TOKEN }}
+      - name: deploy
+        if: github.ref == 'refs/heads/main'
+        uses: shalzz/zola-deploy-action@v0.14.1
+        env:
+          BUILD_DIR: docs
+          PAGES_BRANCH: gh-pages
+          TOKEN: ${{ secrets.TOKEN }}
+

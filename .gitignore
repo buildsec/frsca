@@ -1,7 +1,8 @@
-hello.txt
 base64_*
-target/
-result
+docs/public/
+hello.txt
 kubernetes/scripts/*.json
 kubernetes/scripts/payload
 kubernetes/scripts/signature
+result
+target/

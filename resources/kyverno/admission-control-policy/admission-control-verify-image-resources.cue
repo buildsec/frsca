@@ -1,4 +1,4 @@
 package kyverno
 
-configMap: "keys": {
+configMap: "\(#keys.name)": {
 }

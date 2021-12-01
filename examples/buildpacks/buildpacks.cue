@@ -1,12 +1,10 @@
-_REPOSITORY: string @tag(repository)
+package ssf
 
-apiVersion: "tekton.dev/v1beta1"
-kind:       "PipelineRun"
-metadata: {
-	generateName: "cache-image-pipelinerun-"
-	labels: "app.kubernetes.io/description": "PipelineRun"
-}
-spec: {
+_REPOSITORY: *"ttl.sh" | string @tag(repository)
+_APP_IMAGE: *"\(_REPOSITORY)/slsapoc" | string @tag(appImage)
+_CACHE_IMAGE: *"\(_REPOSITORY)/slsapoc-cache" | string @tag(cacheImage)
+
+pipelineRun: "cache-image-pipelinerun-": spec: {
 	pipelineRef: name: "buildpacks"
 	params: [{
 		name:  "BUILDER_IMAGE"
@@ -16,7 +14,7 @@ spec: {
 		value: "true"
 	}, {
 		name:  "APP_IMAGE"
-		value: "\(_REPOSITORY)/slsapoc"
+		value: _APP_IMAGE
 	}, {
 		name:  "SOURCE_URL"
 		value: "https://github.com/buildpacks/samples"
@@ -25,12 +23,11 @@ spec: {
 		value: "apps/ruby-bundler"
 	}, {
 		name:  "CACHE_IMAGE"
-		value: "\(_REPOSITORY)/slsapoc-cache"
+		value: _CACHE_IMAGE
 	}]
 	workspaces: [{
 		name:    "source-ws"
 		subPath: "source"
-		persistentVolumeClaim: claimName: "cache-image-ws-pvc"
 	}, {
 		// NOTE: Pipeline hangs if optional cache workspace is missing so we provide an empty directory
 		name: "cache-ws"

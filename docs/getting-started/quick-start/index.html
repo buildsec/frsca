@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://thesecuresoftwarefactory.github.io/ssf/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://thesecuresoftwarefactory.github.io/ssf/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://thesecuresoftwarefactory.github.io/ssf/main.css">
+
+
+
+  
+  
+    
+  
+
+  
+  
+    
+  
+  
+  
+    
+  
+  
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>Quick Start</title>
+<meta name="description" content="One page summary about how to setup a new SSF.">
+<link rel="canonical" href="https://thesecuresoftwarefactory.github.io/ssf/docs/getting-started/quick-start/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://thesecuresoftwarefactory.github.io/ssf/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Docs",
+            "item": "https://thesecuresoftwarefactory.github.io/ssf/docs/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Getting Started",
+            "item": "https://thesecuresoftwarefactory.github.io/ssf/docs/getting-started/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  4 ,
+            "name": "Quick Start",
+            "item": "https://thesecuresoftwarefactory.github.io/ssf/docs/getting-started/quick-start/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+  <meta name="theme-color" content="#fff">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://thesecuresoftwarefactory.github.io/ssf/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://thesecuresoftwarefactory.github.io/ssf/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://thesecuresoftwarefactory.github.io/ssf/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://thesecuresoftwarefactory.github.io/ssf/site.webmanifest">
+  
+
+
+  
+
+</head>
+
+  
+
+<body class="docs single">
+  
+  
+  
+  
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://thesecuresoftwarefactory.github.io/ssf">AdiDoks</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+				<li class="nav-item">
+					<a class="nav-link" href="https://twitter.com/aaranxu"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-twitter"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg><span class="ms-2 visually-hidden">Twitter</span></a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="https://github.com/aaranxu/adidoks"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg><span class="ms-2 visually-hidden">GitHub</span></a>
+				</li>
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+						<li class="nav-item docs active">
+							<a class="nav-link" href="https://thesecuresoftwarefactory.github.io/ssf/docs/getting-started/introduction/">Docs</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+				<form class="navbar-form flex-grow-1 order-7 order-md-3">
+					<input id="userinput" class="form-control is-search" type="search" placeholder="Search docs..."
+						aria-label="Search docs..." autocomplete="off">
+					<div id="suggestions" class="shadow bg-white rounded"></div>
+				</form>
+			
+		</div>
+	</div>
+</header>
+
+
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row flex-xl-nowrap">
+	  
+<div class="col-lg-5 col-xl-4 docs-sidebar">
+	<nav class="docs-links" aria-label="Main navigation">
+			
+			
+			
+			
+					
+					
+					
+							<h3>Getting Started</h3>
+							<ul class="list-unstyled">
+							                           
+									<li><a class="docs-link" href="https://thesecuresoftwarefactory.github.io/ssf/docs/getting-started/introduction/">Introduction</a></li>
+							                           
+									<li><a class="docs-link active" href="https://thesecuresoftwarefactory.github.io/ssf/docs/getting-started/quick-start/">Quick Start</a></li>
+							
+					</ul>
+					
+					
+					
+					
+							<h3>Contributing</h3>
+							<ul class="list-unstyled">
+							                           
+									<li><a class="docs-link" href="https://thesecuresoftwarefactory.github.io/ssf/docs/contributing/how-to-contribute/">How to Contribute</a></li>
+							
+					</ul>
+					
+					
+					
+					
+							<h3>Help</h3>
+							<ul class="list-unstyled">
+							                           
+									<li><a class="docs-link" href="https://thesecuresoftwarefactory.github.io/ssf/docs/help/faq/">FAQ</a></li>
+							
+					</ul>
+					
+					
+			
+	</nav>
+</div>
+
+	  
+  
+  <nav class="docs-toc d-none d-xl-block col-xl-3" aria-label="Secondary navigation">
+  	<div class="page-links">
+  			<h3>On this page</h3>
+  			<nav id="TableOfContents">
+  					<ul>
+  							
+  							<li><a href="https://thesecuresoftwarefactory.github.io/ssf/docs/getting-started/quick-start/#requirements">Requirements</a></li>
+  							
+  							
+  							<li><a href="https://thesecuresoftwarefactory.github.io/ssf/docs/getting-started/quick-start/#installation-steps">Installation steps</a></li>
+  							
+  									<ul>
+  											
+  											<li><a href="https://thesecuresoftwarefactory.github.io/ssf/docs/getting-started/quick-start/#step-1-start-your-cluster-optional">Step 1: start your cluster (optional)</a></li>
+  											
+  											<li><a href="https://thesecuresoftwarefactory.github.io/ssf/docs/getting-started/quick-start/#step-2-prepare-minikube-registry-optional">Step 2: prepare minikube registry (optional)</a></li>
+  											
+  											<li><a href="https://thesecuresoftwarefactory.github.io/ssf/docs/getting-started/quick-start/#step-3-setup-tekton-w-chains">Step 3: setup tekton w&#x2F; chains</a></li>
+  											
+  											<li><a href="https://thesecuresoftwarefactory.github.io/ssf/docs/getting-started/quick-start/#step-4-run-a-new-pipeline">Step 4: run a new pipeline</a></li>
+  											
+  											<li><a href="https://thesecuresoftwarefactory.github.io/ssf/docs/getting-started/quick-start/#step-5-validations">Step 5: validations</a></li>
+  											
+  									</ul>
+  							
+  							
+  							<li><a href="https://thesecuresoftwarefactory.github.io/ssf/docs/getting-started/quick-start/#requirement-list">Requirement list</a></li>
+  							
+  									<ul>
+  											
+  											<li><a href="https://thesecuresoftwarefactory.github.io/ssf/docs/getting-started/quick-start/#platform">Platform</a></li>
+  											
+  											<li><a href="https://thesecuresoftwarefactory.github.io/ssf/docs/getting-started/quick-start/#tooling">Tooling</a></li>
+  											
+  									</ul>
+  							
+  							
+  							<li><a href="https://thesecuresoftwarefactory.github.io/ssf/docs/getting-started/quick-start/#todo-before-mergeable">TODO BEFORE MERGEABLE</a></li>
+  							
+  							
+  					</ul>
+  			</nav>
+  	</div>
+  </nav>
+  
+
+      <main class="docs-content col-lg-11 col-xl-9">
+        <h1>Quick Start</h1>
+        <p class="lead">One page summary of how to setup a new SSF.</p>
+        <h2 id="requirements">Requirements</h2>
+<p>The requirements will be installed automatically by the scripts if they are not
+detected, but for information they are listed in a
+<a href="https://thesecuresoftwarefactory.github.io/ssf/docs/getting-started/quick-start/#requirement-list">dedicated section bellow</a> .</p>
+<h2 id="installation-steps">Installation steps</h2>
+<h3 id="step-1-start-your-cluster-optional">Step 1: start your cluster (optional)</h3>
+<p>If you do not have a Kubernetes cluster ready to use, this command will
+provision and configure <code>minikube</code>:</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">make</span><span> setup-minikube
+</span></code></pre>
+<h3 id="step-2-prepare-minikube-registry-optional">Step 2: prepare minikube registry (optional)</h3>
+<p>The examples use the <a href="https://ttl.sh">ttl.sh</a> registry to upload images by
+default. It is possible to change it to any registry of your choice.</p>
+<p>You may also use the registry addon coming with <code>minikube</code>. To do so, open a
+separate terminal run the following command to enable port forwarding:</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">./platform/05-minikube-registry-proxy.sh
+</span></code></pre>
+<h3 id="step-3-setup-tekton-w-chains">Step 3: setup tekton w/ chains</h3>
+<p><a href="https://tekton.dev/">Tekton Pipelines</a> and <a href="https://github.com/tektoncd/chains">Tekton Chains</a> are the foundations of the secure
+software factory. The next command will deploy and configure them:</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">make</span><span> setup-tekton-chains tekton-generate-keys setup-kyverno
+</span></code></pre>
+<h3 id="step-4-run-a-new-pipeline">Step 4: run a new pipeline</h3>
+<p>Several pipelines are provided as examples, feel free to choose any of them.</p>
+<p>An installer is provided with each example. They can be executed from the root
+of this repository using the following syntax:</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">./examples/</span><span>&lt;tutorial-name&gt;/&lt;tutorial-name&gt;.sh
+</span></code></pre>
+<p>For instance:</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">./examples/ibm-tutorial/ibm-tutorial.sh
+</span></code></pre>
+<p>Follow the progression and wait until the pipeline completes to proceed with the
+next steps. The logs can be displayed with:</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">tkn</span><span> pr logs</span><span style="color:#bf616a;"> --last -f
+</span></code></pre>
+<h3 id="step-5-validations">Step 5: validations</h3>
+<h4 id="first-some-convenience-exports">First some convenience exports</h4>
+<p>We start by defining some variables to simplify the validation commands:</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">IMAGE_URL</span><span>=$</span><span style="color:#a3be8c;">(</span><span style="color:#bf616a;">tkn</span><span style="color:#a3be8c;"> pr describe</span><span style="color:#bf616a;"> --last -o</span><span style="color:#a3be8c;"> json </span><span>| </span><span style="color:#bf616a;">jq -r </span><span>&#39;</span><span style="color:#a3be8c;">.spec.params[] | select(.name==&quot;imageUrl&quot;) | .value</span><span>&#39;</span><span style="color:#a3be8c;">)
+</span><span style="color:#b48ead;">export </span><span style="color:#bf616a;">IMAGE_URL</span><span>=</span><span style="color:#a3be8c;">localhost:8888</span><span>$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">IMAGE_URL</span><span>#&quot;</span><span style="color:#a3be8c;">registry.kube-system.svc.cluster.local</span><span>&quot;</span><span style="color:#a3be8c;">}
+</span><span style="color:#b48ead;">export </span><span style="color:#bf616a;">IMAGE_TAG</span><span>=$</span><span style="color:#a3be8c;">(</span><span style="color:#bf616a;">tkn</span><span style="color:#a3be8c;"> pr describe</span><span style="color:#bf616a;"> --last -o</span><span style="color:#a3be8c;"> json </span><span>| </span><span style="color:#bf616a;">jq -r </span><span>&#39;</span><span style="color:#a3be8c;">.spec.params[] | select(.name==&quot;imageTag&quot;) | .value</span><span>&#39;</span><span style="color:#a3be8c;">)
+</span><span style="color:#b48ead;">export </span><span style="color:#bf616a;">DOCKER_IMG</span><span>=&quot;$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">IMAGE_URL</span><span style="color:#a3be8c;">}:</span><span>$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">IMAGE_TAG</span><span style="color:#a3be8c;">}</span><span>&quot;
+</span><span style="color:#b48ead;">export </span><span style="color:#bf616a;">COSIGN_KEY</span><span>=&quot;</span><span style="color:#a3be8c;">k8s://tekton-chains/signing-secrets</span><span>&quot;
+</span></code></pre>
+<h4 id="ensure-the-task-has-been-signed">Ensure the task has been signed</h4>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">tkn</span><span> tr describe</span><span style="color:#bf616a;"> --last -o</span><span> json | </span><span style="color:#bf616a;">jq -r </span><span>&#39;</span><span style="color:#a3be8c;">.metadata.annotations[&quot;chains.tekton.dev/signed&quot;]</span><span>&#39;
+</span><span style="color:#65737e;"># Should output &quot;true&quot;
+</span></code></pre>
+<h4 id="ensure-the-attestation-and-the-signature-were-uploaded-to-oci">Ensure the attestation and the signature were uploaded to OCI</h4>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">crane</span><span> ls &quot;$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">IMAGE_URL</span><span style="color:#a3be8c;">}</span><span>&quot;
+</span></code></pre>
+<h4 id="verify-the-image-and-the-attestation">Verify the image and the attestation</h4>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">cosign</span><span> verify</span><span style="color:#bf616a;"> --key </span><span>&quot;$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">COSIGN_KEY</span><span style="color:#a3be8c;">}</span><span>&quot; &quot;$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">DOCKER_IMG</span><span style="color:#a3be8c;">}</span><span>&quot;
+</span><span style="color:#bf616a;">cosign</span><span> verify-attestation</span><span style="color:#bf616a;"> --key </span><span>&quot;$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">COSIGN_KEY</span><span style="color:#a3be8c;">}</span><span>&quot; &quot;$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">DOCKER_IMG</span><span style="color:#a3be8c;">}</span><span>&quot;
+</span></code></pre>
+<h2 id="requirement-list">Requirement list</h2>
+<h3 id="platform">Platform</h3>
+<ul>
+<li><a href="http://k8s.io/">Kubernetes</a></li>
+<li><a href="https://tekton.dev/">Tekton Pipelines</a></li>
+<li><a href="https://github.com/tektoncd/chains">Tekton Chains</a></li>
+<li><a href="https://spiffe.io/">Spire</a></li>
+<li><a href="https://kyverno.io/">Kyverno</a></li>
+</ul>
+<h3 id="tooling">Tooling</h3>
+<ul>
+<li><a href="https://github.com/sigstore/cosign">Cosign/Sget</a></li>
+<li><a href="https://github.com/google/go-containerregistry">Crane</a></li>
+<li><a href="https://www.gnu.org/software/make/">Make</a></li>
+<li><a href="https://github.com/sigstore/rekor">Rekor CLI</a></li>
+<li><a href="https://cuelang.org/">Cue</a></li>
+</ul>
+<h2 id="todo-before-mergeable">TODO BEFORE MERGEABLE</h2>
+<ul>
+<li>Everything should come from the Makefile
+<ul>
+<li>make start-registry-proxy</li>
+<li>make example-buildpacks</li>
+<li>probably also the verification commands</li>
+</ul>
+</li>
+<li>Provide output examples when applicable
+<ul>
+<li>crane ls IMG</li>
+</ul>
+</li>
+</ul>
+
+        
+        
+<div class="docs-navigation d-flex justify-content-between">
+  
+  
+  
+  
+  
+  <a href="https:&#x2F;&#x2F;thesecuresoftwarefactory.github.io&#x2F;ssf&#x2F;docs&#x2F;getting-started&#x2F;introduction&#x2F;">
+    <div class="card my-1">
+      <div class="card-body py-2">
+        &larr; Introduction
+      </div>
+    </div>
+  </a>
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+      
+      
+        
+          
+          
+          <a class="ms-auto" href="https:&#x2F;&#x2F;thesecuresoftwarefactory.github.io&#x2F;ssf&#x2F;docs&#x2F;contributing&#x2F;how-to-contribute&#x2F;">
+            <div class="card my-1">
+              <div class="card-body py-2">
+                How to Contribute &rarr;
+              </div>
+            </div>
+          </a>
+          
+          
+          
+        
+      
+    
+      
+      
+        
+      
+    
+  
+</div>
+
+      </main>
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+						<li class="list-inline-item">Powered by <a href="https://www.getzola.org/">Zola</a>, and <a href="https://github.com/aaranxu/adidoks">AdiDoks</a></li>
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script src="https://thesecuresoftwarefactory.github.io/ssf/js/main.js" defer></script>
+
+  <script src="https://thesecuresoftwarefactory.github.io/ssf/plugins/elasticlunr.min.js" defer></script>
+  <script src="https://thesecuresoftwarefactory.github.io/ssf/search_index.en.js" defer></script>
+  <script src="https://thesecuresoftwarefactory.github.io/ssf/js/search.js" defer></script>
+
+  
+</body>
+</html>

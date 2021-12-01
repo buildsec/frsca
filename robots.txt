@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://thesecuresoftwarefactory.github.io/ssf/sitemap.xml

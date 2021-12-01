@@ -22,12 +22,12 @@ jobs:
         env:
           BUILD_DIR: docs
           BUILD_ONLY: true
-          TOKEN: ${{ secrets.TOKEN }}
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: deploy
         if: github.ref == 'refs/heads/main'
         uses: shalzz/zola-deploy-action@v0.14.1
         env:
           BUILD_DIR: docs
           PAGES_BRANCH: gh-pages
-          TOKEN: ${{ secrets.TOKEN }}
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

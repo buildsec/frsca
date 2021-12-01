@@ -1,21 +1,11 @@
 {
-    "apiVersion": "kyverno.io/v1",
-    "kind": "ClusterPolicy",
-    "metadata": {
-        "annotations": {
-            "pod-policies.kyverno.io/autogen-controllers": "none"
-        },
-        "name": "attest-code-review"
-    },
     "spec": {
-        "validationFailureAction": "enforce",
-        "background": false,
-        "webhookTimeoutSeconds": 30,
-        "failurePolicy": "Fail",
         "rules": [
             {
+                "name": "attest-code-review",
                 "verifyImages": [
                     {
+                        "image": "ttl.sh/*",
                         "attestations": [
                             {
                                 "predicateType": "https://slsa.dev/provenance/v0.1",
@@ -37,11 +27,9 @@
                                 ]
                             }
                         ],
-                        "image": "ttl.sh/*",
                         "key": "{{ keys.data.ttlsh }}"
                     }
                 ],
-                "name": "attest-code-review",
                 "match": {
                     "resources": {
                         "kinds": [
@@ -62,6 +50,18 @@
                     }
                 ]
             }
-        ]
-    }
+        ],
+        "failurePolicy": "Fail",
+        "validationFailureAction": "enforce",
+        "background": false,
+        "webhookTimeoutSeconds": 30
+    },
+    "metadata": {
+        "name": "attest-code-review",
+        "annotations": {
+            "pod-policies.kyverno.io/autogen-controllers": "none"
+        }
+    },
+    "kind": "ClusterPolicy",
+    "apiVersion": "kyverno.io/v1"
 }

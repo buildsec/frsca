@@ -20,8 +20,9 @@ kubectl apply -f https://raw.githubusercontent.com/tektoncd/catalog/main/task/bu
 kubectl apply -f https://raw.githubusercontent.com/tektoncd/catalog/main/pipeline/buildpacks/0.1/buildpacks.yaml
 
 # Install the buildpacks pipelinerun.
-kubectl apply -f ${GIT_ROOT}/examples/buildpacks/pipeline-pvc.yaml
-
 echo -e "${C_GREEN}Creating a buildpacks pipelinerun: REPOSITORY=${REPOSITORY}${C_RESET_ALL}"
-cue export ${GIT_ROOT}/examples/buildpacks/pipelinerun-buildpacks.cue -t repository="${REPOSITORY}" | kubectl create -f -
+pushd "${GIT_ROOT}"
+cue -t "repository=${REGISTRY}" apply ./examples/buildpacks | kubectl apply -f -
+cue -t "repository=${REGISTRY}" create ./examples/buildpacks | kubectl create -f -
+popd
 tkn pipelinerun describe --last

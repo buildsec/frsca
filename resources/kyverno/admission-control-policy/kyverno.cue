@@ -1,5 +1,9 @@
 package kyverno
 
+import (
+	"github.com/thesecuresoftwarefactory/ssf"
+)
+
 #keys: {
     name:      "keys"
     namespace: "default"
@@ -10,23 +14,15 @@ package kyverno
     key: string @tag(key)
 }
 
-_spec: {
-	_name: string
-    _annotations: {}
-
-    apiVersion: "kyverno.io/v1"
-    kind:       "ClusterPolicy"
-    metadata: {
-        annotations: _annotations
-        name: _name
-    }
+clusterPolicy: ssf.clusterPolicy
+clusterPolicy: [Name=_]: {
     spec: {
 		validationFailureAction: "enforce"
 		background:              false
 		webhookTimeoutSeconds:   *30 | int
 		failurePolicy:           "Fail"
         rules: [{
-            name: _name
+            name: Name
 			match: resources: {
 				kinds: [
 					"Pod",
@@ -43,9 +39,9 @@ _spec: {
     }
 }
 
-AttestationClusterPolicy: [ID=_]: _spec & {
-    _name: ID
-    _annotations: "pod-policies.kyverno.io/autogen-controllers": "none"
+AttestationClusterPolicy: clusterPolicy
+AttestationClusterPolicy: [ID=_]: {
+    metadata: annotations: "pod-policies.kyverno.io/autogen-controllers": "none"
 	spec: rules: [{ match: resources: namespaces: [
 					"prod",
 				] }]
@@ -56,9 +52,9 @@ AttestationClusterPolicy: [ID=_]: _spec & {
         }]
 }
 
-ImageClusterPolicy: [ID=_]: _spec & {
-    _name: ID
-    _annotations: {	
+ImageClusterPolicy: clusterPolicy
+ImageClusterPolicy: [ID=_]: {
+    metadata: annotations: {	
         "policies.kyverno.io/title":       "Verify Image"
 		"policies.kyverno.io/category":    "Sample"
 		"policies.kyverno.io/severity":    "medium"
@@ -73,13 +69,9 @@ ImageClusterPolicy: [ID=_]: _spec & {
            
 }
 
+configMap: ssf.configMap
 configMap: [ID=_]: {
-    apiVersion: "v1"
-    kind:       "ConfigMap"
-    metadata: {
-        name: #keys.name
-        namespace: #keys.namespace
-    }
+    metadata: namespace: #keys.namespace
     data: {
     	tektoncd: """
 			-----BEGIN PUBLIC KEY-----

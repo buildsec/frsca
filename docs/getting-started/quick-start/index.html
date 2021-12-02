@@ -21,6 +21,7 @@
   
   
     
+    
   
   
   
@@ -45,7 +46,7 @@
 
 	
 
-<title>Quick Start</title>
+<title>Quick Start | SSF</title>
 <meta name="description" content="One page summary about how to setup a new SSF.">
 <link rel="canonical" href="https://thesecuresoftwarefactory.github.io/ssf/docs/getting-started/quick-start/">
 
@@ -163,7 +164,7 @@
 	<div class="container">
 		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
 		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
-		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://thesecuresoftwarefactory.github.io/ssf">AdiDoks</a>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://thesecuresoftwarefactory.github.io/ssf">SSF</a>
 		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
 			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
 			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
@@ -289,9 +290,6 @@
   									</ul>
   							
   							
-  							<li><a href="https://thesecuresoftwarefactory.github.io/ssf/docs/getting-started/quick-start/#todo-before-mergeable">TODO BEFORE MERGEABLE</a></li>
-  							
-  							
   					</ul>
   			</nav>
   	</div>
@@ -315,8 +313,8 @@ provision and configure <code>minikube</code>:</p>
 <p>The examples use the <a href="https://ttl.sh">ttl.sh</a> registry to upload images by
 default. It is possible to change it to any registry of your choice.</p>
 <p>You may also use the registry addon coming with <code>minikube</code>. To do so, open a
-separate terminal run the following command to enable port forwarding:</p>
-<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">./platform/05-minikube-registry-proxy.sh
+separate terminal and run the following command to enable port forwarding:</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">make</span><span> registry-proxy
 </span></code></pre>
 <h3 id="step-3-setup-tekton-w-chains">Step 3: setup tekton w/ chains</h3>
 <p><a href="https://tekton.dev/">Tekton Pipelines</a> and <a href="https://github.com/tektoncd/chains">Tekton Chains</a> are the foundations of the secure
@@ -327,10 +325,10 @@ software factory. The next command will deploy and configure them:</p>
 <p>Several pipelines are provided as examples, feel free to choose any of them.</p>
 <p>An installer is provided with each example. They can be executed from the root
 of this repository using the following syntax:</p>
-<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">./examples/</span><span>&lt;tutorial-name&gt;/&lt;tutorial-name&gt;.sh
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">make</span><span> example-&lt;tutorial-name&gt;
 </span></code></pre>
 <p>For instance:</p>
-<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">./examples/ibm-tutorial/ibm-tutorial.sh
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">make</span><span> example-ibm-tutorial.sh
 </span></code></pre>
 <p>Follow the progression and wait until the pipeline completes to proceed with the
 next steps. The logs can be displayed with:</p>
@@ -352,6 +350,12 @@ next steps. The logs can be displayed with:</p>
 <h4 id="ensure-the-attestation-and-the-signature-were-uploaded-to-oci">Ensure the attestation and the signature were uploaded to OCI</h4>
 <pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">crane</span><span> ls &quot;$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">IMAGE_URL</span><span style="color:#a3be8c;">}</span><span>&quot;
 </span></code></pre>
+<p>The output should look similar to this:</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> crane ls ttl.sh/b4527e3a81ef1b77b96d390163ddaad9/slsapoc
+</span><span style="color:#bf616a;">latest
+</span><span style="color:#bf616a;">sha256-f82fe2b635e304c7d8445c0117a4dbe35dd3c840078a39e21c88073a885c5e0f.att
+</span><span style="color:#bf616a;">sha256-f82fe2b635e304c7d8445c0117a4dbe35dd3c840078a39e21c88073a885c5e0f.sig
+</span></code></pre>
 <h4 id="verify-the-image-and-the-attestation">Verify the image and the attestation</h4>
 <pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">cosign</span><span> verify</span><span style="color:#bf616a;"> --key </span><span>&quot;$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">COSIGN_KEY</span><span style="color:#a3be8c;">}</span><span>&quot; &quot;$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">DOCKER_IMG</span><span style="color:#a3be8c;">}</span><span>&quot;
 </span><span style="color:#bf616a;">cosign</span><span> verify-attestation</span><span style="color:#bf616a;"> --key </span><span>&quot;$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">COSIGN_KEY</span><span style="color:#a3be8c;">}</span><span>&quot; &quot;$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">DOCKER_IMG</span><span style="color:#a3be8c;">}</span><span>&quot;
@@ -372,21 +376,6 @@ next steps. The logs can be displayed with:</p>
 <li><a href="https://www.gnu.org/software/make/">Make</a></li>
 <li><a href="https://github.com/sigstore/rekor">Rekor CLI</a></li>
 <li><a href="https://cuelang.org/">Cue</a></li>
-</ul>
-<h2 id="todo-before-mergeable">TODO BEFORE MERGEABLE</h2>
-<ul>
-<li>Everything should come from the Makefile
-<ul>
-<li>make start-registry-proxy</li>
-<li>make example-buildpacks</li>
-<li>probably also the verification commands</li>
-</ul>
-</li>
-<li>Provide output examples when applicable
-<ul>
-<li>crane ls IMG</li>
-</ul>
-</li>
 </ul>
 
         

@@ -1,14 +1,20 @@
 ---
 name: Question
 about: Need help? Ask away!
-title: ''
 labels: question
-assignees: ''
 
 ---
 
-** Question **
-Describe what you need help with.  As always, the more details you provide, the easier we can help you!
+<!-- Provide a general summary of the issue in the title above. -->
 
-** Additional Context **
-Any additional context around the question you have.
+Problem/Question
+----------------
+<!-- Describe your problem or state your question. -->
+
+<!-- What have you attempted to do to workaround the problem? -->
+
+<!-- What type of help do you need from us? -->
+
+Context
+-------
+<!-- Add any other context or information to help us help you. -->

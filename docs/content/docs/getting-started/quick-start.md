@@ -37,10 +37,10 @@ The examples use the [ttl.sh](https://ttl.sh) registry to upload images by
 default. It is possible to change it to any registry of your choice.
 
 You may also use the registry addon coming with `minikube`. To do so, open a
-separate terminal run the following command to enable port forwarding:
+separate terminal and run the following command to enable port forwarding:
 
 ```bash
-./platform/05-minikube-registry-proxy.sh
+make registry-proxy
 ```
 
 ### Step 3: setup tekton w/ chains
@@ -60,13 +60,13 @@ An installer is provided with each example. They can be executed from the root
 of this repository using the following syntax:
 
 ```bash
-./examples/<tutorial-name>/<tutorial-name>.sh
+make example-<tutorial-name>
 ```
 
 For instance:
 
 ```bash
-./examples/ibm-tutorial/ibm-tutorial.sh
+make example-ibm-tutorial.sh
 ```
 
 Follow the progression and wait until the pipeline completes to proceed with the
@@ -103,6 +103,15 @@ tkn tr describe --last -o json | jq -r '.metadata.annotations["chains.tekton.dev
 crane ls "${IMAGE_URL}"
 ```
 
+The output should look similar to this:
+
+```bash
+$ crane ls ttl.sh/b4527e3a81ef1b77b96d390163ddaad9/slsapoc
+latest
+sha256-f82fe2b635e304c7d8445c0117a4dbe35dd3c840078a39e21c88073a885c5e0f.att
+sha256-f82fe2b635e304c7d8445c0117a4dbe35dd3c840078a39e21c88073a885c5e0f.sig
+```
+
 #### Verify the image and the attestation
 
 ```bash
@@ -127,15 +136,6 @@ cosign verify-attestation --key "${COSIGN_KEY}" "${DOCKER_IMG}"
 * [Make](https://www.gnu.org/software/make/)
 * [Rekor CLI](https://github.com/sigstore/rekor)
 * [Cue](https://cuelang.org/)
-
-## TODO BEFORE MERGEABLE
-
-* Everything should come from the Makefile
-  * make start-registry-proxy
-  * make example-buildpacks
-  * probably also the verification commands
-* Provide output examples when applicable
-  * crane ls IMG
 
 [Tekton Chains]: https://github.com/tektoncd/chains
 [Tekton Pipelines]: https://tekton.dev/

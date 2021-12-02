@@ -22,11 +22,11 @@ help: # Display help
 		}' $(MAKEFILE_LIST) | sort
 
 .PHONY: setup-minikube
-setup-minikube: ## Setup a Kubernetes cluster using Minikube.
+setup-minikube: ## Setup a Kubernetes cluster using Minikube
 	bash platform/00-kubernetes-minikube-setup.sh
 
 .PHONY: registry-proxy
-registry-proxy: ## Forward the minikube registry to the host.
+registry-proxy: ## Forward the minikube registry to the host
 	bash platform/05-minikube-registry-proxy.sh
 
 .PHONY: setup-tekton-chains
@@ -51,11 +51,11 @@ setup-opa-gatekeeper: ##  Setup opa gatekeeper
 	bash platform/31-opa-gatekeeper-setup.sh
 
 .PHONY: example-buildpacks
-example-buildpacks: ## Run the buildpacks example.
+example-buildpacks: ## Run the buildpacks example
 	bash examples/buildpacks/buildpacks.sh
 
 .PHONY: example-ibm-tutorial
-example-ibm-tutorial: ## Run the IBM pipeline example.
+example-ibm-tutorial: ## Run the IBM pipeline example
 	bash examples/ibm-tutorial/ibm-tutorial.sh
 
 .PHONY: docs-setup

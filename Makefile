@@ -21,6 +21,9 @@ help: # Display help
 			printf "\033[36m%-30s\033[0m %s\n", $$1, $$NF \
 		}' $(MAKEFILE_LIST) | sort
 
+.PHONY: quickstart
+setup: setup-minikube setup-tekton-chains tekton-generate-keys setup-kyverno example-buildpacks ## Spin up the SSF project into minikube
+
 .PHONY: setup-minikube
 setup-minikube: ## Setup a Kubernetes cluster using Minikube
 	bash platform/00-kubernetes-minikube-setup.sh

@@ -1,22 +1,20 @@
-+++
-title = "How to Contribute"
-description = "Contribute to to the Secure Software Factory."
-date = 2021-11-25T18:10:00+00:00
-updated = 2021-11-25T18:10:00+00:00
-draft = false
-weight = 410
-sort_by = "weight"
-template = "docs/page.html"
-+++
+---
+title: "How to Contribute"
+description: "Contribute to to the Secure Software Factory."
+date: 2021-11-25T18:10:00+00:00
+updated: 2021-11-25T18:10:00+00:00
+draft: false
+weight: 410
+sort_by: "weight"
+template: "docs/page.html"
+---
 
 The SSF project welcomes any kind of contributions, from code to documentation
 via fixing typos. Please feel free to raise an [issue] if you would like to
 work on something major to ensure efficient collaboration and avoid duplicate
 effort.
 
-The project follows the
-[CNCf Code of Conduct](https://github.com/cncf/foundation/blob/master/code-of-conduct.md)
-and the code lives in the
+The code lives in the
 [ssf repository](https://github.com/thesecuresoftwarefactory/ssf).
 
 ## Guidelines

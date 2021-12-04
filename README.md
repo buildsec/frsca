@@ -1,4 +1,17 @@
-# The Secure Software Factory
+---
+title: "The Secure Software Factory"
+description: "AdiDoks is a Zola theme helping you build modern documentation websites, which is a port of the Hugo theme Doks for Zola."
+date: 2021-05-01T08:00:00+00:00
+updated: 2021-05-01T08:00:00+00:00
+draft: false
+weight: 10
+sort_by: "weight"
+template: "docs/page.html"
+
+extra:
+  toc: true
+  top: false
+---
 
 ## About The Project
 
@@ -13,7 +26,7 @@ and integrity, and with traceable provenance.
 ## Quickstart
 
 To quickly provision a Minikube cluster with [Tekton Pipelines],
-[Tekton Chains], and the buildpacks pipeline, simply run:
+[Tekton Chains], and the [buildpacks] pipeline, simply run:
 
 ```bash
 make quickstart
@@ -28,19 +41,20 @@ The full documentation is available at
 
 Platform:
 
+* [Kyverno](https://kyverno.io/)
 * [Kubernetes](http://k8s.io/)
 * [Tekton Pipelines]
 * [Tekton Chains]
 * [Spire](https://spiffe.io/)
-* [Kyverno](https://kyverno.io/)
 
 Tooling:
 
 * [Cosign/Sget](https://github.com/sigstore/cosign)
 * [Crane](https://github.com/google/go-containerregistry)
+* [Cue](https://cuelang.org/)
 * [Make](https://www.gnu.org/software/make/)
 * [Rekor CLI](https://github.com/sigstore/rekor)
-* [Cue](https://cuelang.org/)
 
+[buildpacks]: https://buildpacks.io/
 [Tekton Chains]: https://github.com/tektoncd/chains
 [Tekton Pipelines]: https://tekton.dev/

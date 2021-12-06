@@ -22,7 +22,7 @@ help: # Display help
 		}' $(MAKEFILE_LIST) | sort
 
 .PHONY: quickstart
-setup: setup-minikube setup-tekton-chains tekton-generate-keys setup-kyverno example-buildpacks ## Spin up the SSF project into minikube
+quickstart: setup-minikube setup-tekton-chains tekton-generate-keys setup-kyverno example-buildpacks ## Spin up the SSF project into minikube
 
 .PHONY: setup-minikube
 setup-minikube: ## Setup a Kubernetes cluster using Minikube

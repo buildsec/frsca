@@ -17,8 +17,7 @@ top = false
 ## Requirements
 
 The requirements will be installed automatically by the scripts if they are not
-detected, but for information they are listed in a
-[dedicated section bellow](#requirement-list) .
+detected, but for information they are listed on the introduction page.
 
 ## Installation steps
 
@@ -118,24 +117,3 @@ sha256-f82fe2b635e304c7d8445c0117a4dbe35dd3c840078a39e21c88073a885c5e0f.sig
 cosign verify --key "${COSIGN_KEY}" "${DOCKER_IMG}"
 cosign verify-attestation --key "${COSIGN_KEY}" "${DOCKER_IMG}"
 ```
-
-## Requirement list
-
-### Platform
-
-* [Kubernetes](http://k8s.io/)
-* [Tekton Pipelines]
-* [Tekton Chains]
-* [Spire](https://spiffe.io/)
-* [Kyverno](https://kyverno.io/)
-
-### Tooling
-
-* [Cosign/Sget](https://github.com/sigstore/cosign)
-* [Crane](https://github.com/google/go-containerregistry)
-* [Make](https://www.gnu.org/software/make/)
-* [Rekor CLI](https://github.com/sigstore/rekor)
-* [Cue](https://cuelang.org/)
-
-[Tekton Chains]: https://github.com/tektoncd/chains
-[Tekton Pipelines]: https://tekton.dev/

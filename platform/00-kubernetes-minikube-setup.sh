@@ -60,7 +60,8 @@ case "${PLATFORM}" in
     tkn version || brew install tektoncd-cli
     kubectl version || brew install kubectl
     cosign version || brew install sigstore/tap/cosign
-    cue version || brew install cuelang/tap/cue
+    cue version || brew install cuelang/tap/cue 
+    jq version || brew install jq
     ;;
 
   Linux)

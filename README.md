@@ -1,62 +1,60 @@
-> **NOTE: See [old README](README.old.md) for out of date info that provides some context while the Secure Software Factory is being rearchitected**
+---
+title: "The Secure Software Factory"
+description: "AdiDoks is a Zola theme helping you build modern documentation websites, which is a port of the Hugo theme Doks for Zola."
+date: 2021-05-01T08:00:00+00:00
+updated: 2021-05-01T08:00:00+00:00
+draft: false
+weight: 10
+sort_by: "weight"
+template: "docs/page.html"
 
-# The Secure Software Factory
+extra:
+  toc: true
+  top: false
+---
 
 ## About The Project
 
-The Secure Software Factory is a prototype implementation of the CNCF's [Secure Software Factory Reference Architecture](https://docs.google.com/document/d/1FwyOIDramwCnivuvUxrMmHmCr02ARoA3jw76o1mGfGQ/edit#heading=h.ufqjnib6ho5z) which is based on the CNCF's [Software Supply Chain Best Practices White Paper](https://github.com/cncf/tag-security/blob/main/supply-chain-security/supply-chain-security-paper/CNCF_SSCP_v1.pdf)
+The Secure Software Factory is a prototype implementation of the CNCF's
+[Secure Software Factory Reference Architecture](https://docs.google.com/document/d/1FwyOIDramwCnivuvUxrMmHmCr02ARoA3jw76o1mGfGQ/edit#heading=h.ufqjnib6ho5z)
+which is based on the CNCF's [Software Supply Chain Best Practices White Paper](https://github.com/cncf/tag-security/blob/main/supply-chain-security/supply-chain-security-paper/CNCF_SSCP_v1.pdf)
 
-The purpose of the project is to provide a set of tools, patterns, and polices in order to build artifacts with increased confidence around its authenticity and integrity, and with traceable provenance.
+The purpose of the project is to provide a set of tools, patterns, and polices
+in order to build artifacts with increased confidence around its authenticity
+and integrity, and with traceable provenance.
+
+## Quickstart
+
+To quickly provision a Minikube cluster with [Tekton Pipelines],
+[Tekton Chains], and the [buildpacks] pipeline, simply run:
+
+```bash
+make quickstart
+```
+
+## Going further
+
+The full documentation is available at
+<https://thesecuresoftwarefactory.github.io/ssf/>
 
 ### Built With
 
 Platform:
-* [Kubernetes](http://k8s.io/)
-* [Tekton Pipelines](https://tekton.dev/)
-* [Tekton Chains](https://github.com/tektoncd/chains)
-* [Spire](https://spiffe.io/)
+
 * [Kyverno](https://kyverno.io/)
+* [Kubernetes](http://k8s.io/)
+* [Tekton Pipelines]
+* [Tekton Chains]
+* [Spire](https://spiffe.io/)
 
 Tooling:
+
 * [Cosign/Sget](https://github.com/sigstore/cosign)
 * [Crane](https://github.com/google/go-containerregistry)
+* [Cue](https://cuelang.org/)
 * [Make](https://www.gnu.org/software/make/)
 * [Rekor CLI](https://github.com/sigstore/rekor)
-* [Cue](https://cuelang.org/)
 
-## Getting Started
-
-The following describes how to set up a dev environment with the Secure Software Factory installed.
-
-### Prerequisites
-
-Required:
-* Make
-* Kubernetes cluster (if not using local Minikube)
-* Cuelang CLI tooling
-
-Optional Tools:
-* Crane
-* Rekor CLI (for vendoring)
-
-### Installation
-
-TODO: Put key makefile commands
-
-
-## Usage
-
-See `/examples` for examples of the 
-
-## Roadmap
-
-TODO: Put roadmap
-
-
-## Contributing
-
-TODO: Create CONTRIBUTING.MD
-
-## License
-
-See LICENSE.MD
+[buildpacks]: https://buildpacks.io/
+[Tekton Chains]: https://github.com/tektoncd/chains
+[Tekton Pipelines]: https://tekton.dev/

@@ -46,7 +46,7 @@
 
 	
 
-<title>Introduction | SSF</title>
+<title>The Secure Software Factory | SSF</title>
 <meta name="description" content="AdiDoks is a Zola theme helping you build modern documentation websites, which is a port of the Hugo theme Doks for Zola.">
 <link rel="canonical" href="https://thesecuresoftwarefactory.github.io/ssf/docs/getting-started/introduction/">
 
@@ -217,7 +217,7 @@
 							<h3>Getting Started</h3>
 							<ul class="list-unstyled">
 							                           
-									<li><a class="docs-link active" href="https://thesecuresoftwarefactory.github.io/ssf/docs/getting-started/introduction/">Introduction</a></li>
+									<li><a class="docs-link active" href="https://thesecuresoftwarefactory.github.io/ssf/docs/getting-started/introduction/">The Secure Software Factory</a></li>
 							                           
 									<li><a class="docs-link" href="https://thesecuresoftwarefactory.github.io/ssf/docs/getting-started/quick-start/">Quick Start</a></li>
 							
@@ -256,13 +256,19 @@
   			<nav id="TableOfContents">
   					<ul>
   							
-  							<li><a href="https://thesecuresoftwarefactory.github.io/ssf/docs/getting-started/introduction/#quick-start">Quick Start</a></li>
+  							<li><a href="https://thesecuresoftwarefactory.github.io/ssf/docs/getting-started/introduction/#about-the-project">About The Project</a></li>
   							
   							
-  							<li><a href="https://thesecuresoftwarefactory.github.io/ssf/docs/getting-started/introduction/#contributing">Contributing</a></li>
+  							<li><a href="https://thesecuresoftwarefactory.github.io/ssf/docs/getting-started/introduction/#quickstart">Quickstart</a></li>
   							
   							
-  							<li><a href="https://thesecuresoftwarefactory.github.io/ssf/docs/getting-started/introduction/#help">Help</a></li>
+  							<li><a href="https://thesecuresoftwarefactory.github.io/ssf/docs/getting-started/introduction/#going-further">Going further</a></li>
+  							
+  									<ul>
+  											
+  											<li><a href="https://thesecuresoftwarefactory.github.io/ssf/docs/getting-started/introduction/#built-with">Built With</a></li>
+  											
+  									</ul>
   							
   							
   					</ul>
@@ -272,14 +278,40 @@
   
 
       <main class="docs-content col-lg-11 col-xl-9">
-        <h1>Introduction</h1>
-        <p class="lead">The Secure Software Factory is a prototype implementation of the CNCF's<a href="https://docs.google.com/document/d/1FwyOIDramwCnivuvUxrMmHmCr02ARoA3jw76o1mGfGQ/edit#heading=h.ufqjnib6ho5z">Secure Software Factory Reference Architecture</a> which is based on the CNCF s <a href="https://github.com/cncf/tag-security/blob/main/supply-chain-security/supply-chain-security-paper/CNCF_SSCP_v1.pdf">Software Supply Chain Best Practices White Paper</a>.</p>
-        <h2 id="quick-start">Quick Start</h2>
-<p>One page summary of how to start setup the SSF. <a href="../quick-start/">Quick Start →</a></p>
-<h2 id="contributing">Contributing</h2>
-<p>Find out how to contribute to this project. <a href="../../contributing/how-to-contribute/">Contributing →</a></p>
-<h2 id="help">Help</h2>
-<p>Get some help. <a href="../../help/faq/">Help →</a></p>
+        <h1>The Secure Software Factory</h1>
+        
+        <h2 id="about-the-project">About The Project</h2>
+<p>The Secure Software Factory is a prototype implementation of the CNCF's
+<a href="https://docs.google.com/document/d/1FwyOIDramwCnivuvUxrMmHmCr02ARoA3jw76o1mGfGQ/edit#heading=h.ufqjnib6ho5z">Secure Software Factory Reference Architecture</a>
+which is based on the CNCF's <a href="https://github.com/cncf/tag-security/blob/main/supply-chain-security/supply-chain-security-paper/CNCF_SSCP_v1.pdf">Software Supply Chain Best Practices White Paper</a></p>
+<p>The purpose of the project is to provide a set of tools, patterns, and polices
+in order to build artifacts with increased confidence around its authenticity
+and integrity, and with traceable provenance.</p>
+<h2 id="quickstart">Quickstart</h2>
+<p>To quickly provision a Minikube cluster with <a href="https://tekton.dev/">Tekton Pipelines</a>,
+<a href="https://github.com/tektoncd/chains">Tekton Chains</a>, and the <a href="https://buildpacks.io/">buildpacks</a> pipeline, simply run:</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">make</span><span> quickstart
+</span></code></pre>
+<h2 id="going-further">Going further</h2>
+<p>The full documentation is available at
+<a href="https://thesecuresoftwarefactory.github.io/ssf/">https://thesecuresoftwarefactory.github.io/ssf/</a></p>
+<h3 id="built-with">Built With</h3>
+<p>Platform:</p>
+<ul>
+<li><a href="https://kyverno.io/">Kyverno</a></li>
+<li><a href="http://k8s.io/">Kubernetes</a></li>
+<li><a href="https://tekton.dev/">Tekton Pipelines</a></li>
+<li><a href="https://github.com/tektoncd/chains">Tekton Chains</a></li>
+<li><a href="https://spiffe.io/">Spire</a></li>
+</ul>
+<p>Tooling:</p>
+<ul>
+<li><a href="https://github.com/sigstore/cosign">Cosign/Sget</a></li>
+<li><a href="https://github.com/google/go-containerregistry">Crane</a></li>
+<li><a href="https://cuelang.org/">Cue</a></li>
+<li><a href="https://www.gnu.org/software/make/">Make</a></li>
+<li><a href="https://github.com/sigstore/rekor">Rekor CLI</a></li>
+</ul>
 
         
         

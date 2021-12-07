@@ -220,7 +220,7 @@
 							<h3>Getting Started</h3>
 							<ul class="list-unstyled">
 							                           
-									<li><a class="docs-link" href="https://thesecuresoftwarefactory.github.io/ssf/docs/getting-started/introduction/">Introduction</a></li>
+									<li><a class="docs-link" href="https://thesecuresoftwarefactory.github.io/ssf/docs/getting-started/introduction/">The Secure Software Factory</a></li>
 							                           
 									<li><a class="docs-link active" href="https://thesecuresoftwarefactory.github.io/ssf/docs/getting-started/quick-start/">Quick Start</a></li>
 							
@@ -279,17 +279,6 @@
   									</ul>
   							
   							
-  							<li><a href="https://thesecuresoftwarefactory.github.io/ssf/docs/getting-started/quick-start/#requirement-list">Requirement list</a></li>
-  							
-  									<ul>
-  											
-  											<li><a href="https://thesecuresoftwarefactory.github.io/ssf/docs/getting-started/quick-start/#platform">Platform</a></li>
-  											
-  											<li><a href="https://thesecuresoftwarefactory.github.io/ssf/docs/getting-started/quick-start/#tooling">Tooling</a></li>
-  											
-  									</ul>
-  							
-  							
   					</ul>
   			</nav>
   	</div>
@@ -301,8 +290,7 @@
         <p class="lead">One page summary of how to setup a new SSF.</p>
         <h2 id="requirements">Requirements</h2>
 <p>The requirements will be installed automatically by the scripts if they are not
-detected, but for information they are listed in a
-<a href="https://thesecuresoftwarefactory.github.io/ssf/docs/getting-started/quick-start/#requirement-list">dedicated section bellow</a> .</p>
+detected, but for information they are listed on the introduction page.</p>
 <h2 id="installation-steps">Installation steps</h2>
 <h3 id="step-1-start-your-cluster-optional">Step 1: start your cluster (optional)</h3>
 <p>If you do not have a Kubernetes cluster ready to use, this command will
@@ -317,7 +305,7 @@ separate terminal and run the following command to enable port forwarding:</p>
 <pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">make</span><span> registry-proxy
 </span></code></pre>
 <h3 id="step-3-setup-tekton-w-chains">Step 3: setup tekton w/ chains</h3>
-<p><a href="https://tekton.dev/">Tekton Pipelines</a> and <a href="https://github.com/tektoncd/chains">Tekton Chains</a> are the foundations of the secure
+<p>[Tekton Pipelines] and [Tekton Chains] are the foundations of the secure
 software factory. The next command will deploy and configure them:</p>
 <pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">make</span><span> setup-tekton-chains tekton-generate-keys setup-kyverno
 </span></code></pre>
@@ -360,23 +348,6 @@ next steps. The logs can be displayed with:</p>
 <pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">cosign</span><span> verify</span><span style="color:#bf616a;"> --key </span><span>&quot;$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">COSIGN_KEY</span><span style="color:#a3be8c;">}</span><span>&quot; &quot;$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">DOCKER_IMG</span><span style="color:#a3be8c;">}</span><span>&quot;
 </span><span style="color:#bf616a;">cosign</span><span> verify-attestation</span><span style="color:#bf616a;"> --key </span><span>&quot;$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">COSIGN_KEY</span><span style="color:#a3be8c;">}</span><span>&quot; &quot;$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">DOCKER_IMG</span><span style="color:#a3be8c;">}</span><span>&quot;
 </span></code></pre>
-<h2 id="requirement-list">Requirement list</h2>
-<h3 id="platform">Platform</h3>
-<ul>
-<li><a href="http://k8s.io/">Kubernetes</a></li>
-<li><a href="https://tekton.dev/">Tekton Pipelines</a></li>
-<li><a href="https://github.com/tektoncd/chains">Tekton Chains</a></li>
-<li><a href="https://spiffe.io/">Spire</a></li>
-<li><a href="https://kyverno.io/">Kyverno</a></li>
-</ul>
-<h3 id="tooling">Tooling</h3>
-<ul>
-<li><a href="https://github.com/sigstore/cosign">Cosign/Sget</a></li>
-<li><a href="https://github.com/google/go-containerregistry">Crane</a></li>
-<li><a href="https://www.gnu.org/software/make/">Make</a></li>
-<li><a href="https://github.com/sigstore/rekor">Rekor CLI</a></li>
-<li><a href="https://cuelang.org/">Cue</a></li>
-</ul>
 
         
         
@@ -389,7 +360,7 @@ next steps. The logs can be displayed with:</p>
   <a href="https:&#x2F;&#x2F;thesecuresoftwarefactory.github.io&#x2F;ssf&#x2F;docs&#x2F;getting-started&#x2F;introduction&#x2F;">
     <div class="card my-1">
       <div class="card-body py-2">
-        &larr; Introduction
+        &larr; The Secure Software Factory
       </div>
     </div>
   </a>

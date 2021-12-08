@@ -34,7 +34,7 @@ DOCKER_CONFIG_JSON=$HOME/.docker/config.json
 #   Installation: https://kyverno.io/docs/installation/
 
 echo -e "${C_GREEN}Installing Kyverno...${C_RESET_ALL}"
-kubectl apply -f "$KYVERNO_INSTALL_DIR"/release.yaml
+kubectl apply -f "$KYVERNO_INSTALL_DIR"/install.yaml
 # Wait for kyverno deployment to complete
 wait_for_pods kyverno kyverno
 

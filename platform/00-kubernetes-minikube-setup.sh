@@ -61,7 +61,7 @@ case "${PLATFORM}" in
     kubectl version || brew install kubectl
     cosign version || brew install sigstore/tap/cosign
     cue version || brew install cuelang/tap/cue 
-    jq version || brew install jq
+    jq --version || brew install jq
     ;;
 
   Linux)

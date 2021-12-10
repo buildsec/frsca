@@ -12,6 +12,7 @@ applySets: [
 	roleBinding,
 	persistentVolumeClaim,
 	pipeline,
+	task,
 ]
 
 creatables: [ for x in createSets for y in x {y}]

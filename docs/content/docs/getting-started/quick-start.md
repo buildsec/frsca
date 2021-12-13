@@ -65,7 +65,7 @@ make example-<tutorial-name>
 For instance:
 
 ```bash
-make example-ibm-tutorial.sh
+make example-ibm-tutorial
 ```
 
 Follow the progression and wait until the pipeline completes to proceed with the
@@ -77,22 +77,24 @@ tkn pr logs --last -f
 
 ### Step 5: validations
 
+> **_NOTE:_** The following assumes you are running a local registry proxy (i.e. `make registry-proxy`).
+It also assumes you have run the IBM tutorial example (i.e. `make example-ibm-tutorial`).
+
 #### First some convenience exports
 
 We start by defining some variables to simplify the validation commands:
 
 ```bash
-IMAGE_URL=$(tkn pr describe --last -o json | jq -r '.spec.params[] | select(.name=="imageUrl") | .value')
+IMAGE_URL=$(tkn pr describe --last -o jsonpath='{.spec.params[?(@.name=="imageUrl")].value}')
 export IMAGE_URL=localhost:8888${IMAGE_URL#"registry.kube-system.svc.cluster.local"}
-export IMAGE_TAG=$(tkn pr describe --last -o json | jq -r '.spec.params[] | select(.name=="imageTag") | .value')
+export IMAGE_TAG=$(tkn pr describe --last -o jsonpath='{.spec.params[?(@.name=="imageTag")].value}')
 export DOCKER_IMG="${IMAGE_URL}:${IMAGE_TAG}"
-export COSIGN_KEY="k8s://tekton-chains/signing-secrets"
 ```
 
 #### Ensure the task has been signed
 
 ```bash
-tkn tr describe --last -o json | jq -r '.metadata.annotations["chains.tekton.dev/signed"]'
+tkn tr describe --last -o jsonpath='{.metadata.annotations.chains\.tekton\.dev/signed}'
 # Should output "true"
 ```
 
@@ -114,6 +116,6 @@ sha256-f82fe2b635e304c7d8445c0117a4dbe35dd3c840078a39e21c88073a885c5e0f.sig
 #### Verify the image and the attestation
 
 ```bash
-cosign verify --key "${COSIGN_KEY}" "${DOCKER_IMG}"
-cosign verify-attestation --key "${COSIGN_KEY}" "${DOCKER_IMG}"
+cosign verify --key k8s://tekton-chains/signing-secrets "${DOCKER_IMG}"
+cosign verify-attestation --key k8s://tekton-chains/signing-secrets "${DOCKER_IMG}"
 ```

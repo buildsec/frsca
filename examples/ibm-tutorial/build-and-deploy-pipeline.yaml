@@ -1,3 +1,4 @@
+---
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
@@ -13,7 +14,7 @@ spec:
       description: Git revision to check out
       default: master
     - name: pathToContext
-      description: The path to the build context, used by Kaniko - within the workspace
+      description: Path to the build context, used by Kaniko - within workspace
       default: src
     - name: pathToYamlFile
       description: The path to the yaml file to deploy within the git source
@@ -51,7 +52,7 @@ spec:
           value: $(params.pathToContext)
         - name: IMAGE
           value: $(params.imageUrl):$(params.imageTag)
-    # - name: source-to-image
+    #    - name: source-to-image
     #   taskRef:
     #     name: docker-build
     #   runAfter:

@@ -50,7 +50,7 @@ kubectl create secret generic regcred --type=kubernetes.io/dockerconfigjson --fr
 ### failed calling webhook "mutate.kyverno.svc-fail" error. Once this image
 ### is offically released, this will be removed.
 echo -e "${C_GREEN}Patching Kyverno image until release of v1.6.0...${C_RESET_ALL}"
-kubectl set image -n kyverno deploy/kyverno kyverno=ghcr.io/jimbugwadia/kyverno:v1.6.0-130-g8a0d465d
+kubectl set image -n kyverno deploy/kyverno kyverno=ghcr.io/jimbugwadia/kyverno:v1.6.0-latest
 
 echo -e "${C_GREEN}Patching Kyverno deployment...${C_RESET_ALL}"
 kubectl patch \

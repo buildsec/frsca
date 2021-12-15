@@ -316,23 +316,26 @@ of this repository using the following syntax:</p>
 <pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">make</span><span> example-&lt;tutorial-name&gt;
 </span></code></pre>
 <p>For instance:</p>
-<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">make</span><span> example-ibm-tutorial.sh
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">make</span><span> example-ibm-tutorial
 </span></code></pre>
 <p>Follow the progression and wait until the pipeline completes to proceed with the
 next steps. The logs can be displayed with:</p>
 <pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">tkn</span><span> pr logs</span><span style="color:#bf616a;"> --last -f
 </span></code></pre>
 <h3 id="step-5-validations">Step 5: validations</h3>
+<blockquote>
+<p><strong><em>NOTE:</em></strong> The following assumes you are running a local registry proxy (i.e. <code>make registry-proxy</code>).
+It also assumes you have run the IBM tutorial example (i.e. <code>make example-ibm-tutorial</code>).</p>
+</blockquote>
 <h4 id="first-some-convenience-exports">First some convenience exports</h4>
 <p>We start by defining some variables to simplify the validation commands:</p>
-<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">IMAGE_URL</span><span>=$</span><span style="color:#a3be8c;">(</span><span style="color:#bf616a;">tkn</span><span style="color:#a3be8c;"> pr describe</span><span style="color:#bf616a;"> --last -o</span><span style="color:#a3be8c;"> json </span><span>| </span><span style="color:#bf616a;">jq -r </span><span>&#39;</span><span style="color:#a3be8c;">.spec.params[] | select(.name==&quot;imageUrl&quot;) | .value</span><span>&#39;</span><span style="color:#a3be8c;">)
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">IMAGE_URL</span><span>=$</span><span style="color:#a3be8c;">(</span><span style="color:#bf616a;">tkn</span><span style="color:#a3be8c;"> pr describe</span><span style="color:#bf616a;"> --last -o</span><span style="color:#a3be8c;"> jsonpath=</span><span>&#39;</span><span style="color:#a3be8c;">{.spec.params[?(@.name==&quot;imageUrl&quot;)].value}</span><span>&#39;</span><span style="color:#a3be8c;">)
 </span><span style="color:#b48ead;">export </span><span style="color:#bf616a;">IMAGE_URL</span><span>=</span><span style="color:#a3be8c;">localhost:8888</span><span>$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">IMAGE_URL</span><span>#&quot;</span><span style="color:#a3be8c;">registry.kube-system.svc.cluster.local</span><span>&quot;</span><span style="color:#a3be8c;">}
-</span><span style="color:#b48ead;">export </span><span style="color:#bf616a;">IMAGE_TAG</span><span>=$</span><span style="color:#a3be8c;">(</span><span style="color:#bf616a;">tkn</span><span style="color:#a3be8c;"> pr describe</span><span style="color:#bf616a;"> --last -o</span><span style="color:#a3be8c;"> json </span><span>| </span><span style="color:#bf616a;">jq -r </span><span>&#39;</span><span style="color:#a3be8c;">.spec.params[] | select(.name==&quot;imageTag&quot;) | .value</span><span>&#39;</span><span style="color:#a3be8c;">)
+</span><span style="color:#b48ead;">export </span><span style="color:#bf616a;">IMAGE_TAG</span><span>=$</span><span style="color:#a3be8c;">(</span><span style="color:#bf616a;">tkn</span><span style="color:#a3be8c;"> pr describe</span><span style="color:#bf616a;"> --last -o</span><span style="color:#a3be8c;"> jsonpath=</span><span>&#39;</span><span style="color:#a3be8c;">{.spec.params[?(@.name==&quot;imageTag&quot;)].value}</span><span>&#39;</span><span style="color:#a3be8c;">)
 </span><span style="color:#b48ead;">export </span><span style="color:#bf616a;">DOCKER_IMG</span><span>=&quot;$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">IMAGE_URL</span><span style="color:#a3be8c;">}:</span><span>$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">IMAGE_TAG</span><span style="color:#a3be8c;">}</span><span>&quot;
-</span><span style="color:#b48ead;">export </span><span style="color:#bf616a;">COSIGN_KEY</span><span>=&quot;</span><span style="color:#a3be8c;">k8s://tekton-chains/signing-secrets</span><span>&quot;
 </span></code></pre>
 <h4 id="ensure-the-task-has-been-signed">Ensure the task has been signed</h4>
-<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">tkn</span><span> tr describe</span><span style="color:#bf616a;"> --last -o</span><span> json | </span><span style="color:#bf616a;">jq -r </span><span>&#39;</span><span style="color:#a3be8c;">.metadata.annotations[&quot;chains.tekton.dev/signed&quot;]</span><span>&#39;
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">tkn</span><span> tr describe</span><span style="color:#bf616a;"> --last -o</span><span> jsonpath=&#39;</span><span style="color:#a3be8c;">{.metadata.annotations.chains\.tekton\.dev/signed}</span><span>&#39;
 </span><span style="color:#65737e;"># Should output &quot;true&quot;
 </span></code></pre>
 <h4 id="ensure-the-attestation-and-the-signature-were-uploaded-to-oci">Ensure the attestation and the signature were uploaded to OCI</h4>
@@ -345,8 +348,8 @@ next steps. The logs can be displayed with:</p>
 </span><span style="color:#bf616a;">sha256-f82fe2b635e304c7d8445c0117a4dbe35dd3c840078a39e21c88073a885c5e0f.sig
 </span></code></pre>
 <h4 id="verify-the-image-and-the-attestation">Verify the image and the attestation</h4>
-<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">cosign</span><span> verify</span><span style="color:#bf616a;"> --key </span><span>&quot;$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">COSIGN_KEY</span><span style="color:#a3be8c;">}</span><span>&quot; &quot;$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">DOCKER_IMG</span><span style="color:#a3be8c;">}</span><span>&quot;
-</span><span style="color:#bf616a;">cosign</span><span> verify-attestation</span><span style="color:#bf616a;"> --key </span><span>&quot;$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">COSIGN_KEY</span><span style="color:#a3be8c;">}</span><span>&quot; &quot;$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">DOCKER_IMG</span><span style="color:#a3be8c;">}</span><span>&quot;
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">cosign</span><span> verify</span><span style="color:#bf616a;"> --key</span><span> k8s://tekton-chains/signing-secrets &quot;$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">DOCKER_IMG</span><span style="color:#a3be8c;">}</span><span>&quot;
+</span><span style="color:#bf616a;">cosign</span><span> verify-attestation</span><span style="color:#bf616a;"> --key</span><span> k8s://tekton-chains/signing-secrets &quot;$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">DOCKER_IMG</span><span style="color:#a3be8c;">}</span><span>&quot;
 </span></code></pre>
 
         

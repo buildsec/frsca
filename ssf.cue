@@ -37,6 +37,18 @@ roleBinding: [Name=_]: k8sRbacV1.#RoleBinding & {
 	metadata: name: *Name | string
 }
 
+task: [Name=_]: pipelineV1Beta1.#Task & {
+	apiVersion: "tekton.dev/v1beta1"
+	kind:       "Task"
+	metadata: name: *Name | string
+}
+
+taskRun: [Name=_]: pipelineV1Beta1.#TaskRun & {
+	apiVersion: "tekton.dev/v1beta1"
+	kind:       "TaskRun"
+	metadata: name: *Name | string
+}
+
 pipeline: [Name=_]: pipelineV1Beta1.#Pipeline & {
 	apiVersion: "tekton.dev/v1beta1"
 	kind:       "Pipeline"

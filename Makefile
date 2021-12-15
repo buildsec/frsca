@@ -57,6 +57,10 @@ setup-opa-gatekeeper: ##  Setup opa gatekeeper
 example-buildpacks: ## Run the buildpacks example
 	bash examples/buildpacks/buildpacks.sh
 
+.PHONY: example-sample-pipeline
+example-sample-pipeline: ## Run the sample-pipeline example
+	bash examples/sample-pipeline/sample-pipeline.sh
+
 .PHONY: example-ibm-tutorial
 example-ibm-tutorial: ## Run the IBM pipeline example
 	bash examples/ibm-tutorial/ibm-tutorial.sh

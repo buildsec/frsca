@@ -7,9 +7,7 @@ docs: _#baseWorkflow & {
 		"docs/**",
 	]
 
-	jobs: docs: steps: [{
-		uses: "actions/checkout@v2"
-	}, {
+	jobs: docs: steps: [_#checkoutCode, {
 		name: "build"
 		uses: "shalzz/zola-deploy-action@v0.14.1"
 		env: {

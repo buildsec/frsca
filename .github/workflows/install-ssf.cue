@@ -5,9 +5,7 @@ CI: _#baseWorkflow & {
 	on: workflow_dispatch: {}
 	jobs: job1: {
 		name: "Test SSF Installation"
-		steps: [{
-			uses: "actions/checkout@v2"
-		}, {
+		steps: [_#checkoutCode, {
 			name: "Install CUE"
 			uses: "cue-lang/setup-cue@v0.0.1"
 			with: version: "v0.4.1-beta.6"

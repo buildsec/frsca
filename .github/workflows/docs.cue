@@ -2,14 +2,10 @@ package workflows
 
 docs: _#baseWorkflow & {
 	name: "docs"
-	on: {
-		pull_request: {
-			paths: [
-				".github/**",
-				"docs/**",
-			]
-		}
-	}
+	on: pull_request: paths: [
+		".github/**",
+		"docs/**",
+	]
 
 	jobs: docs: steps: [{
 		uses: "actions/checkout@v2"

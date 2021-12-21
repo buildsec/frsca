@@ -2,9 +2,7 @@ package workflows
 
 CI: _#baseWorkflow & {
 	name: "CI"
-	on: {
-		workflow_dispatch: {}
-	}
+	on: workflow_dispatch: {}
 	jobs: job1: {
 		name: "Test SSF Installation"
 		steps: [{
@@ -14,9 +12,9 @@ CI: _#baseWorkflow & {
 			uses: "cue-lang/setup-cue@v0.0.1"
 			with: version: "v0.4.1-beta.6"
 		}, {
-			name: "Regenerate YAML from CUE"
+			name:                "Regenerate YAML from CUE"
 			"working-directory": ".github/workflows"
-			run: "cue cmd genworkflows"
+			run:                 "cue cmd genworkflows"
 		}, {
 			name: "Check commit is clean"
 			run:  #"test -z "$(git status --porcelain)" || (git status; git diff; false)"#

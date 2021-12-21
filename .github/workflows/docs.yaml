@@ -1,17 +1,16 @@
 name: docs
-on:
+"on":
   pull_request:
     types:
       - opened
       - synchronize
       - reopened
     paths:
-      - '.github/**'
-      - 'docs/**'
+      - .github/**
+      - docs/**
   push:
     branches:
       - main
-
 jobs:
   docs:
     runs-on: ubuntu-latest
@@ -28,5 +27,3 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs/public
-
-

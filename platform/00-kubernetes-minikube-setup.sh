@@ -58,7 +58,7 @@ case "${PLATFORM}" in
     minikube version || brew install minikube
     helm version || brew install helm
     tkn version || brew install tektoncd-cli
-    kubectl version || brew install kubectl
+    kubectl version --client || brew install kubectl
     cosign version || brew install sigstore/tap/cosign
     cue version || brew install cuelang/tap/cue 
     jq --version || brew install jq
@@ -118,7 +118,7 @@ case "${PLATFORM}" in
       rmdir "$TMP"
     )
 
-    kubectl version || (
+    kubectl version --client || (
       echo -e "${C_GREEN}kubectl not found, installing...${C_RESET_ALL}"
       TMP=$(mktemp -d)
       pushd "$TMP"

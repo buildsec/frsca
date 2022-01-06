@@ -16,7 +16,7 @@ extra:
 ## About The Project
 
 The Secure Software Factory is a prototype implementation of the CNCF's
-[Secure Software Factory Reference Architecture](https://docs.google.com/document/d/1FwyOIDramwCnivuvUxrMmHmCr02ARoA3jw76o1mGfGQ/edit#heading=h.ufqjnib6ho5z)
+[Secure Software Factory Reference Architecture](https://docs.google.com/document/d/1FwyOIDramwCnivuvUxrMmHmCr02ARoA3jw76o1mGfGQ)
 which is based on the CNCF's [Software Supply Chain Best Practices White Paper](https://github.com/cncf/tag-security/blob/main/supply-chain-security/supply-chain-security-paper/CNCF_SSCP_v1.pdf)
 
 The purpose of the project is to provide a set of tools, patterns, and polices

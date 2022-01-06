@@ -46,9 +46,9 @@
 
 	
 
-<title>The Secure Software Factory | SSF</title>
-<meta name="description" content="AdiDoks is a Zola theme helping you build modern documentation websites, which is a port of the Hugo theme Doks for Zola.">
-<link rel="canonical" href="https://thesecuresoftwarefactory.github.io/ssf/docs/getting-started/introduction/">
+<title>Using CUE | SSF</title>
+<meta name="description" content="Working with CUE in the Secure Software Factory.">
+<link rel="canonical" href="https://thesecuresoftwarefactory.github.io/ssf/docs/help/using-cue/">
 
 
 
@@ -98,19 +98,19 @@
         
         
         
-        
-        
-        
           
           
           {
             "@type": "ListItem",
             "position":  3 ,
-            "name": "Getting Started",
-            "item": "https://thesecuresoftwarefactory.github.io/ssf/docs/getting-started/"
+            "name": "Help",
+            "item": "https://thesecuresoftwarefactory.github.io/ssf/docs/help/"
           },
         
       
+        
+        
+        
         
         
         
@@ -124,8 +124,8 @@
           {
             "@type": "ListItem",
             "position":  4 ,
-            "name": "Introduction",
-            "item": "https://thesecuresoftwarefactory.github.io/ssf/docs/getting-started/introduction/"
+            "name": "Using Cue",
+            "item": "https://thesecuresoftwarefactory.github.io/ssf/docs/help/using-cue/"
           },
         
       
@@ -217,7 +217,7 @@
 							<h3>Getting Started</h3>
 							<ul class="list-unstyled">
 							                           
-									<li><a class="docs-link active" href="https://thesecuresoftwarefactory.github.io/ssf/docs/getting-started/introduction/">The Secure Software Factory</a></li>
+									<li><a class="docs-link" href="https://thesecuresoftwarefactory.github.io/ssf/docs/getting-started/introduction/">The Secure Software Factory</a></li>
 							                           
 									<li><a class="docs-link" href="https://thesecuresoftwarefactory.github.io/ssf/docs/getting-started/quick-start/">Quick Start</a></li>
 							
@@ -241,7 +241,7 @@
 							                           
 									<li><a class="docs-link" href="https://thesecuresoftwarefactory.github.io/ssf/docs/help/faq/">FAQ</a></li>
 							                           
-									<li><a class="docs-link" href="https://thesecuresoftwarefactory.github.io/ssf/docs/help/using-cue/">Using CUE</a></li>
+									<li><a class="docs-link active" href="https://thesecuresoftwarefactory.github.io/ssf/docs/help/using-cue/">Using CUE</a></li>
 							
 					</ul>
 					
@@ -258,19 +258,16 @@
   			<nav id="TableOfContents">
   					<ul>
   							
-  							<li><a href="https://thesecuresoftwarefactory.github.io/ssf/docs/getting-started/introduction/#about-the-project">About The Project</a></li>
+  							<li><a href="https://thesecuresoftwarefactory.github.io/ssf/docs/help/using-cue/#cue-module-structure">CUE Module Structure</a></li>
   							
   							
-  							<li><a href="https://thesecuresoftwarefactory.github.io/ssf/docs/getting-started/introduction/#quickstart">Quickstart</a></li>
+  							<li><a href="https://thesecuresoftwarefactory.github.io/ssf/docs/help/using-cue/#adding-or-modifying">Adding or Modifying</a></li>
   							
   							
-  							<li><a href="https://thesecuresoftwarefactory.github.io/ssf/docs/getting-started/introduction/#going-further">Going further</a></li>
+  							<li><a href="https://thesecuresoftwarefactory.github.io/ssf/docs/help/using-cue/#using-cue-tool">Using CUE Tool</a></li>
   							
-  									<ul>
-  											
-  											<li><a href="https://thesecuresoftwarefactory.github.io/ssf/docs/getting-started/introduction/#built-with">Built With</a></li>
-  											
-  									</ul>
+  							
+  							<li><a href="https://thesecuresoftwarefactory.github.io/ssf/docs/help/using-cue/#references">References</a></li>
   							
   							
   					</ul>
@@ -280,39 +277,58 @@
   
 
       <main class="docs-content col-lg-11 col-xl-9">
-        <h1>The Secure Software Factory</h1>
-        
-        <h2 id="about-the-project">About The Project</h2>
-<p>The Secure Software Factory is a prototype implementation of the CNCF's
-<a href="https://docs.google.com/document/d/1FwyOIDramwCnivuvUxrMmHmCr02ARoA3jw76o1mGfGQ">Secure Software Factory Reference Architecture</a>
-which is based on the CNCF's <a href="https://github.com/cncf/tag-security/blob/main/supply-chain-security/supply-chain-security-paper/CNCF_SSCP_v1.pdf">Software Supply Chain Best Practices White Paper</a></p>
-<p>The purpose of the project is to provide a set of tools, patterns, and polices
-in order to build artifacts with increased confidence around its authenticity
-and integrity, and with traceable provenance.</p>
-<h2 id="quickstart">Quickstart</h2>
-<p>To quickly provision a Minikube cluster with <a href="https://tekton.dev/">Tekton Pipelines</a>,
-<a href="https://github.com/tektoncd/chains">Tekton Chains</a>, and the <a href="https://buildpacks.io/">buildpacks</a> pipeline, simply run:</p>
-<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">make</span><span> quickstart
+        <h1>Using CUE</h1>
+        <p class="lead">Working with CUE in the Secure Software Factory.</p>
+        <h2 id="cue-module-structure">CUE Module Structure</h2>
+<p>The top level of the Secure Software Factory (SSF) is structured as a <a href="https://cuelang.org/docs/concepts/packages/">CUE module</a>
+and follows the <a href="https://cuelang.org/docs/concepts/packages/#file-organization">schema/policy/data</a> pattern for organizing the
+files.</p>
+<p>The <a href="https://cuelang.org/docs/concepts/packages/#the-cuemod-directory"><code>cue.mod</code></a> directory is predominantly for CUE package
+management. All of the files in <code>cue.mod/gen/...</code> are generated from the <code>cue get go ...</code> command importing go modules and
+converting them to CUE. These can then be imported and used to verify the structure of things such as <code>ConfigMap</code>. <code>ssf.cue</code>
+imports several of these and creates base structures based on these imported go structs.</p>
+<p>For the most part, CUE expects the evaluation to be done relative to the root of the CUE module. Evaluation can be narrowed by
+providing a path to a subdirectory (e.g. <code>cue eval ./examples/buildpacks</code>). CUE will then only evaluate things in that
+subdirectory (<code>./examples/buildpacks</code>) or its parent directories (<code>.</code> and <code>./examples</code>), but will not evaluate things in
+adjacent or sibling directories (e.g. <code>./resources/...</code> or <code>./examples/sample-pipeline</code>).</p>
+<h2 id="adding-or-modifying">Adding or Modifying</h2>
+<p>Typically new <code>.cue</code> files will be added in a subdirectory similar to what has been done in the <code>examples/...</code> directories.
+In the case of <code>examples</code> there is <code>examples.cue</code> which holds some definitions that are shared across all of the examples.
+Of particular note is a comprehension that creates a persistent volume claim (PVC) for each pipeline run. A reference to
+the PVC is added to the pipeline run definition by default.</p>
+<pre data-lang="text" style="background-color:#2b303b;color:#c0c5ce;" class="language-text "><code class="language-text" data-lang="text"><span>// generate a PVC for each pipelineRun
+</span><span>persistentVolumeClaim: {
+</span><span> for pr in pipelineRun {
+</span><span>  &quot;\(pr.metadata.generateName)source-ws-pvc&quot;: spec: {
+</span><span>   accessModes: [&quot;ReadWriteOnce&quot;]
+</span><span>   resources: requests: storage: &quot;500Mi&quot;
+</span><span>  }
+</span><span> }
+</span><span>}
+</span><span>
+</span><span>pipelineRun: [Name=_]: spec: workspaces: [{
+</span><span> name: *&quot;\(Name)ws&quot; | string
+</span><span> persistentVolumeClaim: claimName: &quot;\(Name)source-ws-pvc&quot;
+</span><span>}, ...]
 </span></code></pre>
-<h2 id="going-further">Going further</h2>
-<p>The full documentation is available at
-<a href="https://thesecuresoftwarefactory.github.io/ssf/">https://thesecuresoftwarefactory.github.io/ssf/</a></p>
-<h3 id="built-with">Built With</h3>
-<p>Platform:</p>
+<h2 id="using-cue-tool">Using CUE Tool</h2>
+<p>SSF uses the <code>cue cmd</code> support (see <code>cue cmd --help</code> and <a href="https://blog.patapon.info/cue-tool/">cue tooling layer</a>
+for more details) for selecting and exporting definitions. This can be seen in <code>ssf_tool.cue</code> which defines
+commands for exporting things that can be used in conjunction with <code>kubectl</code>. An example of its usage can be seen in
+<code>examples/buildpacks/buildpacks.sh</code>.</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">cue -t </span><span>&quot;</span><span style="color:#a3be8c;">repository=</span><span>$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">REGISTRY</span><span style="color:#a3be8c;">}</span><span>&quot; apply ./examples/buildpacks | </span><span style="color:#bf616a;">kubectl</span><span> apply</span><span style="color:#bf616a;"> -f</span><span> -
+</span><span style="color:#bf616a;">cue -t </span><span>&quot;</span><span style="color:#a3be8c;">repository=</span><span>$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">REGISTRY</span><span style="color:#a3be8c;">}</span><span>&quot; create ./examples/buildpacks | </span><span style="color:#bf616a;">kubectl</span><span> create</span><span style="color:#bf616a;"> -f</span><span> -
+</span></code></pre>
+<p>Here we are using the <code>cue apply ...</code> command to export definitions from <code>./examples/buildpacks</code>
+that can be used with <code>kubectl apply ...</code>. And similarly <code>cue create ...</code> exports definitions
+from <code>./examples/buildpacks</code> that can be used with <code>kubectl create ...</code>.</p>
+<p>The above example also shows the usage of a tag (<code>cue -t ...</code>) for passing values (<code>repository</code> in this case)
+into the CUE definitions.</p>
+<h2 id="references">References</h2>
 <ul>
-<li><a href="https://kyverno.io/">Kyverno</a></li>
-<li><a href="http://k8s.io/">Kubernetes</a></li>
-<li><a href="https://tekton.dev/">Tekton Pipelines</a></li>
-<li><a href="https://github.com/tektoncd/chains">Tekton Chains</a></li>
-<li><a href="https://spiffe.io/">Spire</a></li>
-</ul>
-<p>Tooling:</p>
-<ul>
-<li><a href="https://github.com/sigstore/cosign">Cosign/Sget</a></li>
-<li><a href="https://github.com/google/go-containerregistry">Crane</a></li>
-<li><a href="https://cuelang.org/">Cue</a></li>
-<li><a href="https://www.gnu.org/software/make/">Make</a></li>
-<li><a href="https://github.com/sigstore/rekor">Rekor CLI</a></li>
+<li><a href="https://cuelang.org/docs/">https://cuelang.org/docs/</a></li>
+<li><a href="https://cuelang.org/docs/concepts/packages/">https://cuelang.org/docs/concepts/packages/</a></li>
+<li><a href="https://blog.patapon.info/cue-tool/">https://blog.patapon.info/cue-tool/</a></li>
 </ul>
 
         
@@ -323,12 +339,13 @@ and integrity, and with traceable provenance.</p>
   
   
   
-    
-    
-    
-    
-      
-    
+  <a href="https:&#x2F;&#x2F;thesecuresoftwarefactory.github.io&#x2F;ssf&#x2F;docs&#x2F;help&#x2F;faq&#x2F;">
+    <div class="card my-1">
+      <div class="card-body py-2">
+        &larr; FAQ
+      </div>
+    </div>
+  </a>
   
 
   
@@ -336,13 +353,24 @@ and integrity, and with traceable provenance.</p>
   
   
   
-    <a class="ms-auto" href="https:&#x2F;&#x2F;thesecuresoftwarefactory.github.io&#x2F;ssf&#x2F;docs&#x2F;getting-started&#x2F;quick-start&#x2F;">
-      <div class="card my-1">
-        <div class="card-body py-2">
-          Quick Start &rarr;
-        </div>
-      </div>
-    </a>
+    
+    
+    
+      
+      
+        
+      
+    
+      
+      
+        
+      
+    
+      
+      
+        
+      
+    
   
 </div>
 

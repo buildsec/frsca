@@ -60,9 +60,9 @@ kubectl patch \
 wait_for_pods kyverno kyverno
 
 echo -e "${C_GREEN}Creating verify-image admission control policy...${C_RESET_ALL}"
-pushd "$KYVERNO_RESOURCE_DIR"
-cue export -e 'ImageClusterPolicy["verify-image"]' -t repo="$REPO" -t key="$USERPUBKEY" > "$KYVERNO_RESOURCE_DIR"/released/verify-signature.json
-cue export -e 'AttestationClusterPolicy["attest-code-review"]' -t repo="$REPO" -t key="$USERPUBKEY" > "$KYVERNO_RESOURCE_DIR"/released/verify-attestation.json
-cue export -e 'configMap["keys"]' -t repo="$REPO" -t key="$USERPUBKEY" > "$KYVERNO_RESOURCE_DIR"/released/configmap-keys.json
+pushd "$GIT_ROOT"
+cue export ./resources/kyverno/admission-control-policy -e 'ImageClusterPolicy["verify-image"]' -t repo="$REPO" -t key="$USERPUBKEY" > "$KYVERNO_RESOURCE_DIR"/released/verify-signature.json
+cue export ./resources/kyverno/admission-control-policy -e 'AttestationClusterPolicy["attest-code-review"]' -t repo="$REPO" -t key="$USERPUBKEY" > "$KYVERNO_RESOURCE_DIR"/released/verify-attestation.json
+cue export ./resources/kyverno/admission-control-policy -e 'configMap["keys"]' -t repo="$REPO" -t key="$USERPUBKEY" > "$KYVERNO_RESOURCE_DIR"/released/configmap-keys.json
 popd
 kubectl apply -f "$KYVERNO_RESOURCE_DIR"/released

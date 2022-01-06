@@ -1,14 +1,17 @@
 #!/bin/bash
 set -euo pipefail
 
+# Define variables.
 GIT_ROOT=$(git rev-parse --show-toplevel)
+C_GREEN='\033[32m'
+C_RESET_ALL='\033[0m'
 
-# This IBM tutorial looks great:
-#   https://developer.ibm.com/devpractices/devops/tutorials/build-and-deploy-a-docker-image-on-kubernetes-using-tekton-pipelines/#create-a-task-to-clone-the-git-repository
+# Create the IBM tutorial pipelinerun.
+echo -e "${C_GREEN}Creating a IBM tutorial pipelinerun...${C_RESET_ALL}"
 kubectl apply -f "${GIT_ROOT}"/platform/vendor/tekton/catalog/main/task/git-clone/0.4/git-clone.yaml
 kubectl apply -f https://raw.githubusercontent.com/tektoncd/chains/main/examples/kaniko/kaniko.yaml
-kubectl apply -f "$GIT_ROOT"/examples/ibm-tutorial/pipeline-pvc.yaml
-kubectl apply -f "$GIT_ROOT"/examples/ibm-tutorial/pipeline-account.yaml
-kubectl apply -f "$GIT_ROOT"/examples/ibm-tutorial/build-and-deploy-pipeline.yaml
-kubectl create -f "$GIT_ROOT"/examples/ibm-tutorial/pipeline-run.yaml
+pushd "${GIT_ROOT}"
+cue apply ./examples/ibm-tutorial | kubectl apply -f -
+cue create ./examples/ibm-tutorial | kubectl create -f -
+popd
 tkn pipelinerun describe --last

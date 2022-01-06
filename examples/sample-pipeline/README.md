@@ -11,30 +11,6 @@ In this example, we are going to build and deploy
 application.
 You can use `minikube` to run your tekton pipeline and deploy this application.
 
-## Getting ready
-
-1. Make sure you have `kubectl` configured with access to some kubernetes
-  cluster
-2. You have access to some container registry and update registry credentials
-in `registry-secret.yaml`
-
-```bash
-  # replace <oci-registry> with your container registry url
-  # replace <api-key> with your api key
-  # replace <api-user> with your username
-  #replace <email-address> with your email
-
-  kubectl create secret  
-    --dry-run=true \
-    -o yaml docker-registry registry-key \
-    --docker-server=<oci-registry> \
-    --docker-password=<api-key\ 
-    --docker-username=<api-user> \
-    --docker-email=<email-address>
-```
-
-Copy `.dockerconfigjson` value from the output to `registry-secret.yaml`
-
 ## Verify your pipeline
 
 Before we start using our pipeline, we should always ensure the pipeline
@@ -61,42 +37,37 @@ the provided public key.
 % tapestry-pipelines tkn verify -d . -i icr.io/gitsecure -t v1 -key ssf-verify.pub
 ```
 
-## Setup Pipeline
+## Starting Demo
 
 ```bash
-# Setup access secrets
-% kubectl create -f registry-secret.yaml
-% kubectl create -f pipeline-account.yaml
+# Only if a cluster is needed.
+make setup-minikube
 
-# Setup core tasks
-% kubectl create -f task-git-clone.yaml
-% kubectl create -f task-build-push-image.yaml
-% kubectl create -f task-deploy.yaml
-% kubectl create -f task-syft-bom-generation.yaml
-% kubectl create -f task-gyrpe-scan.yaml
+# Setup tekton w/ chains
+make setup-tekton-chains tekton-generate-keys setup-kyverno
 
-# Setup pipeline
-% kubectl create -f ssf-pipeline.yaml
+# Run a new pipeline.
+make example-sample-pipeline
+
+# Export the value of imageUrl from the pipelinerun describe as DOCKER_IMG:
+export IMAGE_URL=$(tkn pr describe --last -o jsonpath='{.spec.params[?(@.name=="imageUrl")].value}')
+export IMAGE_TAG=$(tkn pr describe --last -o jsonpath='{.spec.params[?(@.name=="imageTag")].value}')
+export DOCKER_IMG="${IMAGE_URL}:${IMAGE_TAG}"
+
+# Wait until it completes.
+tkn pr logs --last -f
+
+# Ensure it has been signed.
+tkn tr describe --last -o jsonpath='{.metadata.annotations.chains\.tekton\.dev/signed}'
+# Should output "true"
+
+# Double check that the attestation and the signature were uploaded to the OCI.
+crane ls "${IMAGE_URL}"
+
+# Verify the image and the attestation.
+cosign verify --key k8s://tekton-chains/signing-secrets "${DOCKER_IMG}"
+cosign verify-attestation --key k8s://tekton-chains/signing-secrets "${DOCKER_IMG}"
 ```
-
-## Run Pipeline
-
-In this example, we are using
-[tekton-tutorial-openshift](https://github.com/IBM/tekton-tutorial-openshift)
-application sample application. If you want to use other application,
-make sure to make corresponding changes to `ssf-run.yaml`.
-You may also have to change params to `build` and `deploy` tasks
-to reflect correct location for `Dockerfile` context and deployment file resp.
-
-```bash
-% kubectl create -f ssf-run.yaml
-```
-
-## Observing
-
-To observe execution of the pipeline, consider setting up
-[tektoncd/dashboard](https://github.com/tektoncd/dashboard).
-The SBOM and vulnerability-report are accessible only in the task logs.
 
 Once successfully completed. You should be able to see your application
 deployed on the cluster

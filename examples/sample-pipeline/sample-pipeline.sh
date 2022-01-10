@@ -13,7 +13,7 @@ C_RESET_ALL='\033[0m'
 # Install the sample pipeline.
 echo -e "${C_GREEN}Creating a sample-pipeline: REPOSITORY=${REPOSITORY}${C_RESET_ALL}"
 pushd "${GIT_ROOT}"
-cue -t "repository=${REGISTRY}" apply ./examples/sample-pipeline | kubectl apply -f -
-cue -t "repository=${REGISTRY}" create ./examples/sample-pipeline | kubectl create -f -
+cue -t "repository=${REPOSITORY}" apply ./examples/sample-pipeline | kubectl apply -f -
+cue -t "repository=${REPOSITORY}" create ./examples/sample-pipeline | kubectl create -f -
 popd
 tkn pipelinerun describe --last

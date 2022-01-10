@@ -7,8 +7,6 @@ DEFAULT_REPOSITORY=$(xxd -l 16 -c 16 -p < /dev/random)
 : "${REGISTRY:=ttl.sh}"
 : "${REPOSITORY:=$REGISTRY/$DEFAULT_REPOSITORY}"
 C_GREEN='\033[32m'
-C_YELLOW='\033[33m'
-C_RED='\033[31m'
 C_RESET_ALL='\033[0m'
 
 # Install shared tasks.
@@ -22,7 +20,7 @@ kubectl apply -f https://raw.githubusercontent.com/tektoncd/catalog/main/pipelin
 # Install the buildpacks pipelinerun.
 echo -e "${C_GREEN}Creating a buildpacks pipelinerun: REPOSITORY=${REPOSITORY}${C_RESET_ALL}"
 pushd "${GIT_ROOT}"
-cue -t "repository=${REGISTRY}" apply ./examples/buildpacks | kubectl apply -f -
-cue -t "repository=${REGISTRY}" create ./examples/buildpacks | kubectl create -f -
+cue -t "repository=${REPOSITORY}" apply ./examples/buildpacks | kubectl apply -f -
+cue -t "repository=${REPOSITORY}" create ./examples/buildpacks | kubectl create -f -
 popd
 tkn pipelinerun describe --last

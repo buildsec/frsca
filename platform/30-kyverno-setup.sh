@@ -1,10 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-USERPUBKEY="-----BEGIN PUBLIC KEY-----
-MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEhyQCx0E9wQWSFI9ULGwy3BuRklnt
-IqozONbbdbqz11hlRJy9c7SG+hdcFl9jE9uE/dwtuwU2MqU9T/cN0YkWww==
------END PUBLIC KEY-----"
+USERPUBKEY=$(cosign public-key --key k8s://tekton-chains/signing-secrets)
 
 REPO="ttl.sh/*"
 

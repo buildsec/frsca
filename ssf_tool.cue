@@ -6,6 +6,8 @@ appliables: [ for x in applySets for y in x {y}]
 
 // Things that can be used with 'kubectl apply ...'
 applySets: [
+	clusterPolicy,
+	configMap,
 	secret,
 	serviceAccount,
 	role,

@@ -31,9 +31,21 @@ role: [Name=_]: k8sRbacV1.#Role & {
 	metadata: name: *Name | string
 }
 
+clusterRole: [Name=_]: k8sRbacV1.#ClusterRole & {
+	kind:       "ClusterRole"
+	apiVersion: "rbac.authorization.k8s.io/v1"
+	metadata: name: *Name | string
+}
+
 roleBinding: [Name=_]: k8sRbacV1.#RoleBinding & {
 	apiVersion: "rbac.authorization.k8s.io/v1"
 	kind:       "RoleBinding"
+	metadata: name: *Name | string
+}
+
+clusterRoleBinding: [Name=_]: k8sRbacV1.#ClusterRoleBinding & {
+	apiVersion: "rbac.authorization.k8s.io/v1"
+	kind:       "ClusterRoleBinding"
 	metadata: name: *Name | string
 }
 

@@ -8,7 +8,7 @@ secret: "kube-api-secret": {
 serviceAccount: "pipeline-account": {
 }
 
-role: "pipeline-role": rules: [{
+clusterRole: "pipeline-role": rules: [{
 	apiGroups: [""]
 	resources: ["services"]
 	verbs: ["get", "create", "update", "patch"]
@@ -18,14 +18,15 @@ role: "pipeline-role": rules: [{
 	verbs: ["get", "create", "update", "patch"]
 }]
 
-roleBinding: "pipeline-role-binding": {
+clusterRoleBinding: "pipeline-role-binding": {
 	roleRef: {
 		apiGroup: "rbac.authorization.k8s.io"
-		kind:     "Role"
+		kind:     "ClusterRole"
 		name:     "pipeline-role"
 	}
 	subjects: [{
 		kind: "ServiceAccount"
+		namespace: "default"
 		name: "pipeline-account"
 	}]
 }

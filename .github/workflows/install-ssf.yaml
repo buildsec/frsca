@@ -23,10 +23,12 @@ jobs:
     - name: Deploy SSF to minikube
       run: |
         make setup-tekton-chains
-        make setup-kyverno
     - name: Generate temp keys
       run: |
         make tekton-generate-keys
+    - name: Setup Kyverno
+      run: |
+        make setup-kyverno
     - name: Run test pipeline
       run: |
         ./examples/buildpacks/buildpacks.sh

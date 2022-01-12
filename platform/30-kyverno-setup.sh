@@ -1,16 +1,12 @@
 #!/bin/bash
 set -euo pipefail
 
-USERPUBKEY="-----BEGIN PUBLIC KEY-----
-MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEhyQCx0E9wQWSFI9ULGwy3BuRklnt
-IqozONbbdbqz11hlRJy9c7SG+hdcFl9jE9uE/dwtuwU2MqU9T/cN0YkWww==
------END PUBLIC KEY-----"
+USERPUBKEY=$(cosign public-key --key k8s://tekton-chains/signing-secrets)
 
 REPO="ttl.sh/*"
 
 GIT_ROOT=$(git rev-parse --show-toplevel)
 KYVERNO_INSTALL_DIR=${GIT_ROOT}/platform/vendor/kyverno/release
-KYVERNO_RESOURCE_DIR=${GIT_ROOT}/resources/kyverno/admission-control-policy
 
 # Define variables.
 C_GREEN='\033[32m'
@@ -61,8 +57,5 @@ wait_for_pods kyverno kyverno
 
 echo -e "${C_GREEN}Creating verify-image admission control policy...${C_RESET_ALL}"
 pushd "$GIT_ROOT"
-cue export ./resources/kyverno/admission-control-policy -e 'ImageClusterPolicy["verify-image"]' -t repo="$REPO" -t key="$USERPUBKEY" > "$KYVERNO_RESOURCE_DIR"/released/verify-signature.json
-cue export ./resources/kyverno/admission-control-policy -e 'AttestationClusterPolicy["attest-code-review"]' -t repo="$REPO" -t key="$USERPUBKEY" > "$KYVERNO_RESOURCE_DIR"/released/verify-attestation.json
-cue export ./resources/kyverno/admission-control-policy -e 'configMap["keys"]' -t repo="$REPO" -t key="$USERPUBKEY" > "$KYVERNO_RESOURCE_DIR"/released/configmap-keys.json
+cue -t repo="$REPO" -t key="$USERPUBKEY" apply ./resources/kyverno/admission-control-policy | kubectl apply -f -
 popd
-kubectl apply -f "$KYVERNO_RESOURCE_DIR"/released

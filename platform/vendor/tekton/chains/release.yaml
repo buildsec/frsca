@@ -30,7 +30,7 @@ metadata:
     app.kubernetes.io/instance: default
     app.kubernetes.io/part-of: tekton-pipelines
     pipeline.tekton.dev/release: "devel"
-    version: "v0.5.0"
+    version: "v0.6.1"
 
 # The data is populated at install time.
 # data:
@@ -45,7 +45,7 @@ metadata:
     app.kubernetes.io/instance: default
     app.kubernetes.io/part-of: tekton-pipelines
     pipeline.tekton.dev/release: "devel"
-    version: "v0.5.0"
+    version: "v0.6.1"
 
 # The data can be tweaked at install time, it is commented out
 # because these are the default settings.
@@ -66,7 +66,7 @@ metadata:
     app.kubernetes.io/name: tekton-pipelines
     app.kubernetes.io/component: chains
     pipeline.tekton.dev/release: "devel"
-    version: "v0.5.0"
+    version: "v0.6.1"
 spec:
   replicas: 1
   selector:
@@ -82,12 +82,12 @@ spec:
         app.kubernetes.io/component: controller
         # # tekton.dev/release value replaced with inputs.params.versionTag in pipeline/tekton/publish.yaml
         # pipeline.tekton.dev/release: "devel"
-        version: "v0.5.0"
+        version: "v0.6.1"
     spec:
       serviceAccountName: tekton-chains-controller
       containers:
         - name: tekton-chains-controller
-          image: gcr.io/tekton-releases/github.com/tektoncd/chains/cmd/controller:v0.5.0@sha256:3b9d98af5fcdb3c9e481d3cbf80d5d89ffc933883bc5e221bfae3a50f1535a63
+          image: gcr.io/tekton-releases/github.com/tektoncd/chains/cmd/controller:v0.6.1@sha256:8faf79b4bf92078feb4b3b5229eeccc19a32512f847abc95c109d37842cb51f3
           volumeMounts:
             - name: signing-secrets
               mountPath: /etc/signing-secrets

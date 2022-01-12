@@ -76,3 +76,4 @@ deployed on the cluster
 % kubectl get pod
 NAME                                         READY   STATUS      RESTARTS   AGE
 picalc-cf9dddfdf-bnwv8                       1/1     Running     0          59m
+```

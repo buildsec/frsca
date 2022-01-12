@@ -60,8 +60,8 @@ commands for exporting things that can be used in conjunction with `kubectl`. An
 `examples/buildpacks/buildpacks.sh`.
 
 ```bash
-cue -t "repository=${REGISTRY}" apply ./examples/buildpacks | kubectl apply -f -
-cue -t "repository=${REGISTRY}" create ./examples/buildpacks | kubectl create -f -
+cue -t "repository=${REPOSITORY}" apply ./examples/buildpacks | kubectl apply -f -
+cue -t "repository=${REPOSITORY}" create ./examples/buildpacks | kubectl create -f -
 ```
 
 Here we are using the `cue apply ...` command to export definitions from `./examples/buildpacks`

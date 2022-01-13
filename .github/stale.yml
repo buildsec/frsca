@@ -1,3 +1,4 @@
+---
 # Number of days of inactivity before a PR becomes stale.
 daysUntilStale: 21
 # Number of days of inactivity before a stale PR is closed.
@@ -13,7 +14,8 @@ exemptLabels:
 
 # Comment to post when marking an issue as stale. Set to `false` to disable.
 markComment: >
-  This pull request has been automatically marked as stale because it has not had
+  This pull request has been automatically marked as stale because it has not
+   had
   recent activity.
 
   It will be closed in 7 days if no further activity occurs.

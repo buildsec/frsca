@@ -72,9 +72,3 @@ docs-serve: ## Serve the site locally with hot-reloading
 .PHONY: docs-build
 docs-build: ## Build the documentation site
 	cd docs && zola build
-
-.PHONY: lint-yaml
-lint-yaml: ## Lint Yaml files
-	cd resources && yamllint .
-	cd platform && yamllint .
-	cd examples && yamllint .

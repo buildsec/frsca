@@ -10,7 +10,10 @@ on:
 =======
     paths-ignore:
       - "docs/**"
+<<<<<<< HEAD
 >>>>>>> ac6b20b (Edit yaml files)
+=======
+>>>>>>> bdea19bc189941946c1566293a0b3b09b86d8dea
   push:
     branches:
       - main
@@ -20,6 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Test SSF Installation
     steps:
+<<<<<<< HEAD
 <<<<<<< HEAD
     - uses: actions/checkout@v2
     - name: Start minikube
@@ -47,6 +51,8 @@ jobs:
         cosign verify --key k8s://tekton-chains/signing-secrets ${DOCKER_IMG}
         cosign verify-attestation --key k8s://tekton-chains/signing-secrets ${DOCKER_IMG}
 =======
+=======
+>>>>>>> bdea19bc189941946c1566293a0b3b09b86d8dea
       - uses: actions/checkout@v2
       - name: Start minikube
         run: |
@@ -70,4 +76,7 @@ jobs:
           tkn tr describe --last -o json | jq -r '.metadata.annotations["chains.tekton.dev/signed"]'
           cosign verify --key k8s://tekton-chains/signing-secrets ${DOCKER_IMG}
           cosign verify-attestation --key k8s://tekton-chains/signing-secrets ${DOCKER_IMG}
+<<<<<<< HEAD
 >>>>>>> ac6b20b (Edit yaml files)
+=======
+>>>>>>> bdea19bc189941946c1566293a0b3b09b86d8dea

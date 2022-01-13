@@ -1,0 +1,64 @@
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  annotations:
+    cosign.sigstore.dev/imageRef: icr.io/gitsecure/syft-bom-generator:v1
+  name: syft-bom-generator
+spec:
+  params:
+    - description: image reference
+      name: image-ref
+    - description: image digest
+      name: image-digest
+    - default: "0"
+      description: toggles debug mode for the pipeline
+      name: pipeline-debug
+    - default: ssf-sbom.json
+      description: filepath to store the sbom artifacts
+      name: sbom-filepath
+  results:
+    - description: status of syft task, possible value are-success|failure
+      name: status
+    - description: filepath to store syft bom record
+      name: sbom-store
+  stepTemplate:
+    env:
+      - name: PIPELINE_DEBUG
+        value: $(params.pipeline-debug)
+      - name: DOCKER_CONFIG
+        value: /steps
+  steps:
+    - args:
+        - -o
+        - json
+        - --file
+        - $(workspaces.source.path)/$(params.sbom-filepath)
+        - $(params.image-ref)
+      image: icr.io/gitsecure/syft:v0.27.0
+      name: syft-bom-generator
+      volumeMounts:
+        - mountPath: /steps
+          name: steps-volume
+    - image: icr.io/gitsecure/bash
+      name: print-sbom
+      script: |
+        set -e
+        cat $(workspaces.source.path)/$(params.sbom-filepath)
+      securityContext:
+        runAsUser: 0
+      volumeMounts:
+        - mountPath: /steps
+          name: steps-volume
+    - image: icr.io/gitsecure/bash
+      name: write-url
+      script: |
+        set -e
+        echo $(params.sbom-filepath) | tee $(results.sbom-store.path)
+      securityContext:
+        runAsUser: 0
+  volumes:
+    - emptyDir: {}
+      name: steps-volume
+  workspaces:
+    - name: source

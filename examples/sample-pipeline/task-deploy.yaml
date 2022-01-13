@@ -1,0 +1,41 @@
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  annotations:
+    cosign.sigstore.dev/imageRef: icr.io/gitsecure/deploy-using-kubectl:v1
+  name: deploy-using-kubectl
+spec:
+  params:
+    - description: The path to the yaml file to deploy within the git source
+      name: pathToYamlFile
+    - description: Image name including repository
+      name: imageUrl
+    - default: latest
+      description: Image tag
+      name: imageTag
+    - description: Digest of the image to be used.
+      name: imageDigest
+  steps:
+    - args:
+        - -i
+        - -e
+        - s;__IMAGE__;$(params.imageUrl):$(params.imageTag);g
+        - -e
+        - s;__DIGEST__;$(params.imageDigest);g
+        - $(workspaces.git-source.path)/$(params.pathToYamlFile)
+      command:
+        - sed
+      image: icr.io/gitsecure/alpine
+      name: update-yaml
+    - args:
+        - apply
+        - -f
+        - $(workspaces.git-source.path)/$(params.pathToYamlFile)
+      command:
+        - kubectl
+      image: icr.io/gitsecure/k8s-kubectl
+      name: run-kubectl
+  workspaces:
+    - description: The git repo
+      name: git-source

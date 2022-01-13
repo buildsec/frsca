@@ -76,6 +76,7 @@ docs-serve: ## Serve the site locally with hot-reloading
 .PHONY: docs-build
 docs-build: ## Build the documentation site
 	cd docs && zola build
+<<<<<<< HEAD
 
 .PHONY: linter-markdown
 linter-markdown: ## Lint markdown files
@@ -86,3 +87,5 @@ lint-yaml: ## Lint yaml files
 	cd resources && yamllint .
 	cd examples && yamllint .
 	cd platform && yamllint . 
+=======
+>>>>>>> 7d8ea02 (Revert "Edit yaml files and add task in Makefile")

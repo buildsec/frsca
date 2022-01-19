@@ -30,7 +30,7 @@ metadata:
     app.kubernetes.io/instance: default
     app.kubernetes.io/part-of: tekton-pipelines
     pipeline.tekton.dev/release: "devel"
-    version: "v0.6.1"
+    version: "v0.7.0"
 
 # The data is populated at install time.
 # data:
@@ -45,7 +45,7 @@ metadata:
     app.kubernetes.io/instance: default
     app.kubernetes.io/part-of: tekton-pipelines
     pipeline.tekton.dev/release: "devel"
-    version: "v0.6.1"
+    version: "v0.7.0"
 
 # The data can be tweaked at install time, it is commented out
 # because these are the default settings.
@@ -66,7 +66,7 @@ metadata:
     app.kubernetes.io/name: tekton-pipelines
     app.kubernetes.io/component: chains
     pipeline.tekton.dev/release: "devel"
-    version: "v0.6.1"
+    version: "v0.7.0"
 spec:
   replicas: 1
   selector:
@@ -82,15 +82,17 @@ spec:
         app.kubernetes.io/component: controller
         # # tekton.dev/release value replaced with inputs.params.versionTag in pipeline/tekton/publish.yaml
         # pipeline.tekton.dev/release: "devel"
-        version: "v0.6.1"
+        version: "v0.7.0"
     spec:
       serviceAccountName: tekton-chains-controller
       containers:
         - name: tekton-chains-controller
-          image: gcr.io/tekton-releases/github.com/tektoncd/chains/cmd/controller:v0.6.1@sha256:8faf79b4bf92078feb4b3b5229eeccc19a32512f847abc95c109d37842cb51f3
+          image: gcr.io/tekton-releases/github.com/tektoncd/chains/cmd/controller:v0.7.0@sha256:7a4407056f73435bd869d0292ebdb788a99f22f26f4eb0dab59c6bcf7fd16fb6
           volumeMounts:
             - name: signing-secrets
               mountPath: /etc/signing-secrets
+            - name: oidc-info
+              mountPath: /var/run/sigstore/cosign
           env:
             - name: SYSTEM_NAMESPACE
               valueFrom:
@@ -102,6 +104,18 @@ spec:
         - name: signing-secrets
           secret:
             secretName: signing-secrets
+        - name: oidc-info
+          projected:
+            sources:
+              # The "public good" instance supports tokens from EKS and GKE by default.
+              # The fulcio URL can also be redirected to an instance that has been
+              # configured to accept other issuers as well.  Removing this volume
+              # completely will direct chains to use alternate ambient credentials
+              # (e.g. GKE workload identity, SPIFFE)
+              - serviceAccountToken:
+                  path: oidc-token
+                  expirationSeconds: 600 # Use as short-lived as possible.
+                  audience: sigstore
 
 ---
 # Copyright 2021 The Tekton Authors

@@ -9,6 +9,10 @@ DEFAULT_REPOSITORY=$(xxd -l 16 -c 16 -p < /dev/random)
 C_GREEN='\033[32m'
 C_RESET_ALL='\033[0m'
 
+# Create prod namespace for deployment if it does not already exit
+kubectl create namespace prod --dry-run=client -o yaml | kubectl apply -f -
+# Create prod service account for deployment if it does not already exit
+kubectl create sa pipeline-account -n prod --dry-run=client -o yaml | kubectl apply -f -
 
 # Install the sample pipeline.
 echo -e "${C_GREEN}Creating a sample-pipeline: REPOSITORY=${REPOSITORY}${C_RESET_ALL}"

@@ -32,7 +32,7 @@ jobs:
       - name: Setup Kyverno
         run: |
           make setup-kyverno
-      - name: Run test pipeline
+      - name: Run buildpacks pipeline
         run: |
           ./examples/buildpacks/buildpacks.sh
           export DOCKER_IMG=$(tkn pr describe --last -o jsonpath='{.spec.params[?(@.name=="APP_IMAGE")].value}')
@@ -42,3 +42,20 @@ jobs:
           tkn tr describe --last -o json | jq -r '.metadata.annotations["chains.tekton.dev/signed"]'
           cosign verify --key k8s://tekton-chains/signing-secrets ${DOCKER_IMG}
           cosign verify-attestation --key k8s://tekton-chains/signing-secrets ${DOCKER_IMG}
+      - name: Run sample pipeline to test kyverno
+        run: |
+          make example-sample-pipeline
+          export IMAGE_URL=$(tkn pr describe --last -o jsonpath='{.spec.params[?(@.name=="imageUrl")].value}')
+          export IMAGE_TAG=$(tkn pr describe --last -o jsonpath='{.spec.params[?(@.name=="imageTag")].value}')
+          export DOCKER_IMG="${IMAGE_URL}:${IMAGE_TAG}"
+
+          tkn pr logs --last -f
+          sleep 60
+          docker run --rm gcr.io/go-containerregistry/crane ls "${IMAGE_URL}"
+
+          cosign verify --key k8s://tekton-chains/signing-secrets "${DOCKER_IMG}"
+          cosign verify-attestation --key k8s://tekton-chains/signing-secrets "${DOCKER_IMG}"
+
+          kubectl wait --timeout=5m --for=condition=ready pods -l app=picalc -n prod
+
+

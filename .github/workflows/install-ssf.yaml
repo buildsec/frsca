@@ -1,3 +1,4 @@
+---
 name: CI
 on:
   pull_request:
@@ -5,6 +6,8 @@ on:
       - opened
       - synchronize
       - reopened
+    paths-ignore:
+      - "docs/**"
   push:
     branches:
       - main
@@ -14,28 +17,28 @@ jobs:
     runs-on: ubuntu-latest
     name: Test SSF Installation
     steps:
-    - uses: actions/checkout@v2
-    - name: Start minikube
-      run: |
-        make setup-minikube
-    - name: Try the cluster !
-      run: kubectl get pods -A
-    - name: Deploy SSF to minikube
-      run: |
-        make setup-tekton-chains
-    - name: Generate temp keys
-      run: |
-        make tekton-generate-keys
-    - name: Setup Kyverno
-      run: |
-        make setup-kyverno
-    - name: Run test pipeline
-      run: |
-        ./examples/buildpacks/buildpacks.sh
-        export DOCKER_IMG=$(tkn pr describe --last -o jsonpath='{.spec.params[?(@.name=="APP_IMAGE")].value}')
-        tkn pr logs --last -f
-        sleep 60
-        docker run --rm gcr.io/go-containerregistry/crane ls $DOCKER_IMG
-        tkn tr describe --last -o json | jq -r '.metadata.annotations["chains.tekton.dev/signed"]'
-        cosign verify --key k8s://tekton-chains/signing-secrets ${DOCKER_IMG}
-        cosign verify-attestation --key k8s://tekton-chains/signing-secrets ${DOCKER_IMG}
+      - uses: actions/checkout@v2
+      - name: Start minikube
+        run: |
+          make setup-minikube
+      - name: Try the cluster !
+        run: kubectl get pods -A
+      - name: Deploy SSF to minikube
+        run: |
+          make setup-tekton-chains
+      - name: Generate temp keys
+        run: |
+          make tekton-generate-keys
+      - name: Setup Kyverno
+        run: |
+          make setup-kyverno
+      - name: Run test pipeline
+        run: |
+          ./examples/buildpacks/buildpacks.sh
+          export DOCKER_IMG=$(tkn pr describe --last -o jsonpath='{.spec.params[?(@.name=="APP_IMAGE")].value}')
+          tkn pr logs --last -f
+          sleep 60
+          docker run --rm gcr.io/go-containerregistry/crane ls $DOCKER_IMG
+          tkn tr describe --last -o json | jq -r '.metadata.annotations["chains.tekton.dev/signed"]'
+          cosign verify --key k8s://tekton-chains/signing-secrets ${DOCKER_IMG}
+          cosign verify-attestation --key k8s://tekton-chains/signing-secrets ${DOCKER_IMG}

@@ -84,3 +84,9 @@ docs-build: ## Build the documentation site
 .PHONY: linter-markdown
 linter-markdown: ## Lint markdown files
 	npx markdownlint-cli2  "**/*.md" "#docs"
+
+.PHONY: lint-yaml
+lint-yaml: ## Lint yaml files
+	cd resources && yamllint .
+	cd examples && yamllint .
+	cd platform && yamllint . 

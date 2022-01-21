@@ -11,6 +11,8 @@ applySets: [
 	secret,
 	serviceAccount,
 	role,
+	clusterRole,
+	clusterRoleBinding,
 	roleBinding,
 	persistentVolumeClaim,
 	pipeline,

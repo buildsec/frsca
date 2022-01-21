@@ -278,6 +278,8 @@ task: "deploy-using-kubectl": {
 		}, {
 			args: [
 				"apply",
+				"-n",
+				"prod",
 				"-f",
 				"$(workspaces.git-source.path)/$(params.pathToYamlFile)",
 			]

@@ -1,3 +1,4 @@
-data: 
+---
+data:
   artifacts.taskrun.storage: oci
   artifacts.taskrun.format: in-toto

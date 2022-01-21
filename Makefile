@@ -57,6 +57,10 @@ setup-opa-gatekeeper: ##  Setup opa gatekeeper
 example-buildpacks: ## Run the buildpacks example
 	bash examples/buildpacks/buildpacks.sh
 
+.PHONY: example-golang-pipeline
+example-golang-pipeline: ## Run the go-pipeline example
+	bash examples/go-pipeline/go-pipeline.sh
+
 .PHONY: example-sample-pipeline
 example-sample-pipeline: ## Run the sample-pipeline example
 	bash examples/sample-pipeline/sample-pipeline.sh

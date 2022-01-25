@@ -57,10 +57,6 @@ export DOCKER_IMG="${IMAGE_URL}:${IMAGE_TAG}"
 # Wait until it completes.
 tkn pr logs --last -f
 
-# Ensure it has been signed.
-tkn tr describe --last -o jsonpath='{.metadata.annotations.chains\.tekton\.dev/signed}'
-# Should output "true"
-
 # Double check that the attestation and the signature were uploaded to the OCI.
 crane ls "${IMAGE_URL}"
 

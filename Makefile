@@ -57,6 +57,10 @@ setup-opa-gatekeeper: ##  Setup opa gatekeeper
 example-buildpacks: ## Run the buildpacks example
 	bash examples/buildpacks/buildpacks.sh
 
+.PHONY: example-golang-pipeline
+example-golang-pipeline: ## Run the go-pipeline example
+	bash examples/go-pipeline/go-pipeline.sh
+
 .PHONY: example-sample-pipeline
 example-sample-pipeline: ## Run the sample-pipeline example
 	bash examples/sample-pipeline/sample-pipeline.sh
@@ -80,6 +84,12 @@ docs-build: ## Build the documentation site
 .PHONY: linter-markdown
 linter-markdown: ## Lint markdown files
 	npx markdownlint-cli2  "**/*.md" "#docs"
+
+.PHONY: lint-yaml
+lint-yaml: ## Lint yaml files
+	cd resources && yamllint .
+	cd examples && yamllint .
+	cd platform && yamllint . 
 
 .PHONY: shell-linter
 shell-linter: ## Lint shell files

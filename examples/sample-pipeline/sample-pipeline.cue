@@ -1,7 +1,8 @@
 package ssf
 
-_REPOSITORY: *"ttl.sh" | string @tag(repository)
-_APP_IMAGE: *"\(_REPOSITORY)/hello-ssf" | string @tag(appImage)
+_image: {
+	name: "hello-ssf"
+}
 
 pipeline: "build-and-deploy-pipeline": {
 	metadata: annotations: "cosign.sigstore.dev/imageRef": "icr.io/gitsecure/build-and-deploy-pipeline:v1"

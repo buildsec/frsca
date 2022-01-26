@@ -1,5 +1,14 @@
 package ssf
 
+#Image: {
+	name: string
+}
+
+_image: #Image & {}
+
+_REPOSITORY: *"ttl.sh" | string @tag(repository)
+_APP_IMAGE: *"\(_REPOSITORY)/\(_image.name)" | string @tag(appImage)
+
 secret: "kube-api-secret": {
 	metadata: annotations: "kubernetes.io/service-account.name": "pipeline-account"
 	type: "kubernetes.io/service-account-token"

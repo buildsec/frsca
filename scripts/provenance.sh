@@ -17,7 +17,7 @@ jq \
   | base64 --decode > payload.json
 jq \
   -r ".metadata.annotations[\"chains.tekton.dev/signature-taskrun-$TASKRUN_UID\"]" \
-  "$TASKRUN_JSON "> signature.pub
+  "$TASKRUN_JSON"> signature.pub
 
 echo "Verifying signature with cosign..."
 cosign verify-blob -key cosign.pub -signature ./signature.pub ./payload.json

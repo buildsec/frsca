@@ -5,9 +5,7 @@ GIT_ROOT=$(git rev-parse --show-toplevel)
 QUICKSTART_DIR=$GIT_ROOT/platform/vendor/spire/quickstart
 
 # Define variables.
-#C_GREEN='\033[32m'
 C_YELLOW='\033[33m'
-#C_RED='\033[31m'
 C_RESET_ALL='\033[0m'
 
 # Wait until pods are ready.
@@ -18,7 +16,7 @@ wait_for_pods () {
 }
 
 spire_apply() {
-  if [ $# -lt 2 ] || [ $# -lt "$1" ] || [ $# != "-spiffeID" ]; then
+  if [ $# -lt 2 ] || [ "$1" != "-spiffeID" ]; then
     echo "spire_apply requires a spiffeID as the first arg" >&2
     exit 1
   fi

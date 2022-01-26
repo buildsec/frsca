@@ -91,6 +91,6 @@ lint-yaml: ## Lint yaml files
 	cd examples && yamllint .
 	cd platform && yamllint . 
 
-.PHONY: shell-linter
-shell-linter: ## Lint shell files
-	shellcheck "**/*.sh" "#docs" "#platform" "#scripts"
+.PHONY: Lint-shell
+lint-shell: ## Lint shell files
+	shfmt -f ./ | xargs shellcheck

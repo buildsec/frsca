@@ -18,7 +18,7 @@ wait_for_pods () {
 }
 
 spire_apply() {
-  if [ $# -lt 2 ] || [ $# -lt "$1" ] || [ $# != "-spiffeID" ]; then
+  if [ $# -lt 2 ] || [ "$1" != "-spiffeID" ]; then
     echo "spire_apply requires a spiffeID as the first arg" >&2
     exit 1
   fi

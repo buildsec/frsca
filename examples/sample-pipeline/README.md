@@ -69,7 +69,16 @@ Once successfully completed. You should be able to see your application
 deployed on the cluster
 
 ```bash
-% kubectl get pod
-NAME                                         READY   STATUS      RESTARTS   AGE
-picalc-cf9dddfdf-bnwv8                       1/1     Running     0          59m
+% kubectl get all -n prod
+NAME                          READY   STATUS    RESTARTS   AGE
+pod/picalc-576dd6b788-sszmh   1/1     Running   0          32s
+
+NAME             TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
+service/picalc   NodePort   10.107.77.128   <none>        8080:30907/TCP   37s
+
+NAME                     READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/picalc   1/1     1            1           38s
+
+NAME                                DESIRED   CURRENT   READY   AGE
+replicaset.apps/picalc-576dd6b788   1         1         1       38s
 ```

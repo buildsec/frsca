@@ -81,7 +81,9 @@ docs-serve: ## Serve the site locally with hot-reloading
 docs-build: ## Build the documentation site
 	cd docs && zola build
   
-  Task: linter-markdown lint-yaml lint-shell 
+.PHONY: linter
+linter:	linter-markdown lint-yaml lint-shell ## Run all linters
+
 .PHONY: linter-markdown
 linter-markdown: ## Lint markdown files
 	npx markdownlint-cli2  "**/*.md" "#docs"

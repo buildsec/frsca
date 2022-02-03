@@ -21,7 +21,7 @@ set -ea
 
 export NAMESPACE=tekton-chains
 export SECRET_NAME=signing-secrets
-: ${COSIGN_PASSWORD:=""}
+: "${COSIGN_PASSWORD:=}"
 
 kubectl delete secret ${SECRET_NAME} -n ${NAMESPACE} || true
 echo "cosign generate-key-pair k8s://${NAMESPACE}/${SECRET_NAME}"

@@ -1,8 +1,10 @@
 package ssf
 
-_REPOSITORY: *"ttl.sh" | string @tag(repository)
-_APP_IMAGE: *"\(_REPOSITORY)/slsapoc" | string @tag(appImage)
-_CACHE_IMAGE: *"\(_REPOSITORY)/slsapoc-cache" | string @tag(cacheImage)
+_image: {
+	name: "slsa"
+}
+
+_CACHE_IMAGE: *"\(_APP_IMAGE)-cache" | string @tag(cacheImage)
 
 pipelineRun: "cache-image-pipelinerun-": spec: {
 	pipelineRef: name: "buildpacks"

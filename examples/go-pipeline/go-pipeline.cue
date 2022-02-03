@@ -1,7 +1,8 @@
 package ssf
 
-_REPOSITORY: *"ttl.sh" | string                           @tag(repository)
-_APP_IMAGE:  *"\(_REPOSITORY)/go-build-test-ssf" | string @tag(appImage)
+_image: {
+	name: "go-build-test-ssf"
+}
 
 pipeline: "pipeline-go-test": spec: {
 	workspaces: [{

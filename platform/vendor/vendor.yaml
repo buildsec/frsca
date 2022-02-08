@@ -13,3 +13,4 @@ files:
     destination_dir: "kyverno/release"
     sha256: "36040e11630c4730df1a279ecc29ac6aabfd03b7b3790fc192b574b4125b56d0"
     validation_type: "sha256"
+    version: "v1.6.0"

@@ -30,7 +30,7 @@ metadata:
     app.kubernetes.io/instance: default
     app.kubernetes.io/part-of: tekton-pipelines
     pipeline.tekton.dev/release: "devel"
-    version: "v0.7.0"
+    version: "v0.8.0"
 
 # The data is populated at install time.
 # data:
@@ -45,7 +45,7 @@ metadata:
     app.kubernetes.io/instance: default
     app.kubernetes.io/part-of: tekton-pipelines
     pipeline.tekton.dev/release: "devel"
-    version: "v0.7.0"
+    version: "v0.8.0"
 
 # The data can be tweaked at install time, it is commented out
 # because these are the default settings.
@@ -66,7 +66,7 @@ metadata:
     app.kubernetes.io/name: tekton-pipelines
     app.kubernetes.io/component: chains
     pipeline.tekton.dev/release: "devel"
-    version: "v0.7.0"
+    version: "v0.8.0"
 spec:
   replicas: 1
   selector:
@@ -82,12 +82,12 @@ spec:
         app.kubernetes.io/component: controller
         # # tekton.dev/release value replaced with inputs.params.versionTag in pipeline/tekton/publish.yaml
         # pipeline.tekton.dev/release: "devel"
-        version: "v0.7.0"
+        version: "v0.8.0"
     spec:
       serviceAccountName: tekton-chains-controller
       containers:
         - name: tekton-chains-controller
-          image: gcr.io/tekton-releases/github.com/tektoncd/chains/cmd/controller:v0.7.0@sha256:7a4407056f73435bd869d0292ebdb788a99f22f26f4eb0dab59c6bcf7fd16fb6
+          image: gcr.io/tekton-releases/github.com/tektoncd/chains/cmd/controller:v0.8.0@sha256:599b81739a1171874ee506c314686ff854c64b909df80d9ed558ccce115cee95
           volumeMounts:
             - name: signing-secrets
               mountPath: /etc/signing-secrets
@@ -100,6 +100,11 @@ spec:
                   fieldPath: metadata.namespace
             - name: METRICS_DOMAIN
               value: tekton.dev/chains
+          securityContext:
+            allowPrivilegeEscalation: false
+            # User 65532 is the distroless nonroot user ID
+            runAsUser: 65532
+            runAsGroup: 65532
       volumes:
         - name: signing-secrets
           secret:
@@ -258,6 +263,77 @@ roleRef:
   kind: Role
   name: tekton-chains-leader-election
   apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: tekton-chains-info
+  namespace: tekton-chains
+  labels:
+    app.kubernetes.io/component: chains
+    app.kubernetes.io/instance: default
+    app.kubernetes.io/part-of: tekton-chains
+rules:
+  # All system:authenticated users need to have access
+  # to the chains-info ConfigMap even if they don't
+  # have access to other resources present in the
+  # installed namespace
+  - apiGroups: [""]
+    resources: ["configmaps"]
+    resourceNames: ["chains-info"]
+    verbs: ["get"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: tekton-chains-info
+  namespace: tekton-chains
+  labels:
+    app.kubernetes.io/component: chains
+    app.kubernetes.io/instance: default
+    app.kubernetes.io/part-of: tekton-chains
+subjects:
+  # Giving all system:authenticated users the access to the
+  # ConfigMap which contains version information
+  - kind: Group
+    name: system:authenticated
+    apiGroup: rbac.authorization.k8s.io
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: tekton-chains-info
+
+---
+# Copyright 2022 The Tekton Authors
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: chains-info
+  namespace: tekton-chains
+  labels:
+    app.kubernetes.io/component: chains
+    app.kubernetes.io/instance: default
+    app.kubernetes.io/part-of: tekton-chains
+data:
+  # Contains chains version which can be queried by external
+  # tools such as CLI. Elevated permissions are given to
+  # this ConfigMap such that even if we don't have access to
+  # other resources in the namespace, we can still access
+  # this ConfigMap.
+  version: "v0.8.0"
 
 ---
 # Copyright 2019 Tekton Authors LLC

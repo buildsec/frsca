@@ -1,8 +1,9 @@
-package kyverno
+package ssf
 
-AttestationClusterPolicy: "attest-code-review": 
+clusterPolicy: "attest-code-review": {
 	spec: rules: [{
 			verifyImages: [{
+				image: #public.repo
 				attestations: [{
 					predicateType: "https://slsa.dev/provenance/v0.2"
 					conditions: [{
@@ -17,6 +18,9 @@ AttestationClusterPolicy: "attest-code-review":
 						}]
 					}]
 				}]
+				key: "{{ keys.data.ttlsh }}"
 			}]
+			match: resources: namespaces: ["prod"]
 		}]
-
+	metadata: annotations: "pod-policies.kyverno.io/autogen-controllers": "none"
+}

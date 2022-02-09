@@ -103,8 +103,8 @@ _APP_IMAGE: *"\(_REPOSITORY)/slsapoc" | string @tag(appImage)
 _CACHE_IMAGE: *"\(_REPOSITORY)/slsapoc-cache" | string @tag(cacheImage)
 ```
 
-The rest of the `.cue` file is straightforward to read as is ressembles to
-standard YAML, with the use of the varaibles previously defined.
+The rest of the `.cue` file is straightforward to read as is resembles to
+standard YAML, with the use of the variables previously defined.
 
 The pipeline is then being created is `cue` and `kubectl`.
 

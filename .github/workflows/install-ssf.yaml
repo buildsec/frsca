@@ -13,8 +13,20 @@ on:
       - main
   workflow_dispatch: {}
 jobs:
-  job1:
+  lint:
     runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Lint markdown
+        run: make lint-md
+      - name: Lint yaml
+        run: make lint-sass
+
+
+  setup:
+    runs-on: ubuntu-latest
+    needs:
+      lint
     name: Test SSF Installation
     steps:
       - uses: actions/checkout@v2
@@ -57,5 +69,3 @@ jobs:
           cosign verify-attestation --key k8s://tekton-chains/signing-secrets "${DOCKER_IMG}"
 
           kubectl wait --timeout=5m --for=condition=ready pods -l app=picalc -n prod
-
-

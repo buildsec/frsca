@@ -22,4 +22,5 @@ according to specific, externally defined end-user requirements through an
 assembly process. A software factory applies manufacturing techniques and
 principles to software development to mimic the benefits of traditional
 manufacturing. Software factories are generally involved with outsourced
-software creation. [-- Wikipedia](https://en.wikipedia.org/wiki/Software_factory)
+software creation.
+[-- Wikipedia](https://en.wikipedia.org/wiki/Software_factory)

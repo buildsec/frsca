@@ -280,22 +280,30 @@
         <h1>Using CUE</h1>
         <p class="lead">Working with CUE in the Secure Software Factory.</p>
         <h2 id="cue-module-structure">CUE Module Structure</h2>
-<p>The top level of the Secure Software Factory (SSF) is structured as a <a href="https://cuelang.org/docs/concepts/packages/">CUE module</a>
-and follows the <a href="https://cuelang.org/docs/concepts/packages/#file-organization">schema/policy/data</a> pattern for organizing the
-files.</p>
-<p>The <a href="https://cuelang.org/docs/concepts/packages/#the-cuemod-directory"><code>cue.mod</code></a> directory is predominantly for CUE package
-management. All of the files in <code>cue.mod/gen/...</code> are generated from the <code>cue get go ...</code> command importing go modules and
-converting them to CUE. These can then be imported and used to verify the structure of things such as <code>ConfigMap</code>. <code>ssf.cue</code>
-imports several of these and creates base structures based on these imported go structs.</p>
-<p>For the most part, CUE expects the evaluation to be done relative to the root of the CUE module. Evaluation can be narrowed by
-providing a path to a subdirectory (e.g. <code>cue eval ./examples/buildpacks</code>). CUE will then only evaluate things in that
-subdirectory (<code>./examples/buildpacks</code>) or its parent directories (<code>.</code> and <code>./examples</code>), but will not evaluate things in
-adjacent or sibling directories (e.g. <code>./resources/...</code> or <code>./examples/sample-pipeline</code>).</p>
+<p>The top level of the Secure Software Factory (SSF) is structured as a
+<a href="https://cuelang.org/docs/concepts/packages/">CUE module</a> and follows the
+<a href="https://cuelang.org/docs/concepts/packages/#file-organization">schema/policy/data</a>
+pattern for organizing the files.</p>
+<p>The
+<a href="https://cuelang.org/docs/concepts/packages/#the-cuemod-directory"><code>cue.mod</code></a>
+directory is predominantly for CUE package management. All of the files in
+<code>cue.mod/gen/...</code> are generated from the <code>cue get go ...</code> command importing go
+modules and converting them to CUE. These can then be imported and used to
+verify the structure of things such as <code>ConfigMap</code>. <code>ssf.cue</code> imports several of
+these and creates base structures based on these imported go structs.</p>
+<p>For the most part, CUE expects the evaluation to be done relative to the root of
+the CUE module. Evaluation can be narrowed by providing a path to a subdirectory
+(e.g. <code>cue eval ./examples/buildpacks</code>). CUE will then only evaluate things in
+that subdirectory (<code>./examples/buildpacks</code>) or its parent directories (<code>.</code> and
+<code>./examples</code>), but will not evaluate things in adjacent or sibling directories
+(e.g. <code>./resources/...</code> or <code>./examples/sample-pipeline</code>).</p>
 <h2 id="adding-or-modifying">Adding or Modifying</h2>
-<p>Typically new <code>.cue</code> files will be added in a subdirectory similar to what has been done in the <code>examples/...</code> directories.
-In the case of <code>examples</code> there is <code>examples.cue</code> which holds some definitions that are shared across all of the examples.
-Of particular note is a comprehension that creates a persistent volume claim (PVC) for each pipeline run. A reference to
-the PVC is added to the pipeline run definition by default.</p>
+<p>Typically new <code>.cue</code> files will be added in a subdirectory similar to what has
+been done in the <code>examples/...</code> directories. In the case of <code>examples</code> there is
+<code>examples.cue</code> which holds some definitions that are shared across all of the
+examples. Of particular note is a comprehension that creates a persistent volume
+claim (PVC) for each pipeline run. A reference to the PVC is added to the
+pipeline run definition by default.</p>
 <pre data-lang="text" style="background-color:#2b303b;color:#c0c5ce;" class="language-text "><code class="language-text" data-lang="text"><span>// generate a PVC for each pipelineRun
 </span><span>persistentVolumeClaim: {
 </span><span> for pr in pipelineRun {
@@ -312,18 +320,21 @@ the PVC is added to the pipeline run definition by default.</p>
 </span><span>}, ...]
 </span></code></pre>
 <h2 id="using-cue-tool">Using CUE Tool</h2>
-<p>SSF uses the <code>cue cmd</code> support (see <code>cue cmd --help</code> and <a href="https://blog.patapon.info/cue-tool/">cue tooling layer</a>
-for more details) for selecting and exporting definitions. This can be seen in <code>ssf_tool.cue</code> which defines
-commands for exporting things that can be used in conjunction with <code>kubectl</code>. An example of its usage can be seen in
+<p>SSF uses the <code>cue cmd</code> support (see <code>cue cmd --help</code> and
+<a href="https://blog.patapon.info/cue-tool/">cue tooling layer</a> for more details) for
+selecting and exporting definitions. This can be seen in <code>ssf_tool.cue</code> which
+defines commands for exporting things that can be used in conjunction with
+<code>kubectl</code>. An example of its usage can be seen in
 <code>examples/buildpacks/buildpacks.sh</code>.</p>
 <pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">cue -t </span><span>&quot;</span><span style="color:#a3be8c;">repository=</span><span>$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">REPOSITORY</span><span style="color:#a3be8c;">}</span><span>&quot; apply ./examples/buildpacks | </span><span style="color:#bf616a;">kubectl</span><span> apply</span><span style="color:#bf616a;"> -f</span><span> -
 </span><span style="color:#bf616a;">cue -t </span><span>&quot;</span><span style="color:#a3be8c;">repository=</span><span>$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">REPOSITORY</span><span style="color:#a3be8c;">}</span><span>&quot; create ./examples/buildpacks | </span><span style="color:#bf616a;">kubectl</span><span> create</span><span style="color:#bf616a;"> -f</span><span> -
 </span></code></pre>
-<p>Here we are using the <code>cue apply ...</code> command to export definitions from <code>./examples/buildpacks</code>
-that can be used with <code>kubectl apply ...</code>. And similarly <code>cue create ...</code> exports definitions
-from <code>./examples/buildpacks</code> that can be used with <code>kubectl create ...</code>.</p>
-<p>The above example also shows the usage of a tag (<code>cue -t ...</code>) for passing values (<code>repository</code> in this case)
-into the CUE definitions.</p>
+<p>Here we are using the <code>cue apply ...</code> command to export definitions from
+<code>./examples/buildpacks</code> that can be used with <code>kubectl apply ...</code>. And similarly
+<code>cue create ...</code> exports definitions from <code>./examples/buildpacks</code> that can be
+used with <code>kubectl create ...</code>.</p>
+<p>The above example also shows the usage of a tag (<code>cue -t ...</code>) for passing
+values (<code>repository</code> in this case) into the CUE definitions.</p>
 <h2 id="references">References</h2>
 <ul>
 <li><a href="https://cuelang.org/docs/">https://cuelang.org/docs/</a></li>

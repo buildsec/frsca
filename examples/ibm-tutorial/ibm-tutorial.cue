@@ -49,7 +49,7 @@ pipeline: "build-and-deploy-pipeline": spec: {
 		}]
 	}, {
 		name: "source-to-image"
-		taskRef: name: "kaniko-chains"
+		taskRef: name: "kaniko"
 		runAfter: [
 			"clone-repo",
 		]

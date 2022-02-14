@@ -15,9 +15,9 @@ An organization's security policy or regulatory requirements may dictate the
 data needs to be stored within multiple systems be it for redundancy or
 different methods of analysis/usage:
 
-* e.g. docdb for querying, oci for keeping the provenance next to signatures,
-  or gcs for longer term archive storage
-* if there is an issue with one of the storage methods either due to chains or
+- e.g. docdb for querying, oci for keeping the provenance next to signatures, or
+  gcs for longer term archive storage
+- if there is an issue with one of the storage methods either due to chains or
   an outage with that particular method of storage
 
 ## Setup

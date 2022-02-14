@@ -1,6 +1,6 @@
 # SSF Sample Tekton Pipeline
 
-This is a sample tekton based application build pipepline.
+This is a sample tekton based application build pipeline.
 
 > :warning: This pipeline is not intended to be used in production
 

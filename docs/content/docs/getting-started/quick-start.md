@@ -77,8 +77,9 @@ tkn pr logs --last -f
 
 ### Step 5: validations
 
-> **_NOTE:_** The following assumes you are running a local registry proxy (i.e. `make registry-proxy`).
-It also assumes you have run the IBM tutorial example (i.e. `make example-ibm-tutorial`).
+> **_NOTE:_** The following assumes you are running a local registry proxy (i.e.
+> `make registry-proxy`). It also assumes you have run the IBM tutorial example
+> (i.e. `make example-ibm-tutorial`).
 
 #### First some convenience exports
 

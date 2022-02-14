@@ -2,7 +2,9 @@
 extends: default
 
 rules:
+  document-start: disable
   line-length: disable
+  truthy: disable
 
 ignore: |
   platform/vendor

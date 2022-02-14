@@ -13,11 +13,11 @@ repo_url = "https://github.com/aaranxu/adidoks"
 
 [[extra.list]]
 title = "Secure by default 🔐"
-content = "The design and configuration were carefuly crafted to provide a secure platform"
+content = "The design and configuration were carefully crafted to provide a secure platform"
 
 [[extra.list]]
 title = "SLSA ready 💃"
-content = "Implemeting the SLSA guidelines to ensure software security and supply chain integrity"
+content = "Implementing the SLSA guidelines to ensure software security and supply chain integrity"
 
 [[extra.list]]
 title = "Simple & Fast ⚡️"

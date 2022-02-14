@@ -45,7 +45,7 @@ cosign-sign: ## Sign the container image
 cosign-verify: ## Verify the signature of the container image
 	cosign verify -key cosign.pub $(DOCKER_IMG)
 
-.PHONY: cosign-atach
+.PHONY: cosign-attach
 cosign-attach: sbom ## Attach the SBOM to the container image
 	# We were not able to 1) retrieve the sbom attached with the image, 2) verify
 	# whether the sbom was signed. Therefore we decided to use the upload command

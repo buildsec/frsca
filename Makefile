@@ -92,6 +92,10 @@ lint-md: ## Lint markdown files
 lint-shell: ## Lint shell files
 	shfmt -f ./ | xargs shellcheck
 
+.PHONY: lint-spellcheck
+lint-spellcheck:
+	npx --yes cspell --no-progress --show-suggestions --show-context "**/*"
+
 .PHONY: lint-yaml
 lint-yaml: ## Lint yaml files
 	yamllint .

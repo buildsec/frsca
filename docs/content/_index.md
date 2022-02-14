@@ -17,7 +17,7 @@ content = "The design and configuration were carefully crafted to provide a secu
 
 [[extra.list]]
 title = "SLSA ready 💃"
-content = "implementing the SLSA guidelines to ensure software security and supply chain integrity"
+content = "Implementing the SLSA guidelines to ensure software security and supply chain integrity"
 
 [[extra.list]]
 title = "Simple & Fast ⚡️"

@@ -6,8 +6,9 @@ This is a sample GOlang tekton pipeline.
 
 ## M1 Mac Issue
 
-The "golang-test" task fails to run on M1 Macs due to mis-match in architecture. Setting the parameter of "GOARCH" to nothing resolves this
-and allows for GO to auto determine the architecture. 
+The "golang-test" task fails to run on M1 Macs due to mis-match in architecture.
+Setting the parameter of "GOARCH" to nothing resolves this and allows for GO to
+auto determine the architecture.
 
 ## Starting Demo
 

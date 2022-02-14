@@ -80,20 +80,22 @@ docs-serve: ## Serve the site locally with hot-reloading
 .PHONY: docs-build
 docs-build: ## Build the documentation site
 	cd docs && zola build
-  
-.PHONY: linter
-linter:	linter-markdown lint-yaml lint-shell ## Run all linters
 
-.PHONY: linter-markdown
-linter-markdown: ## Lint markdown files
-	npx markdownlint-cli2  "**/*.md" "#docs"
+.PHONY: lint
+lint: lint-md lint-yaml lint-shell ## Run all linters
+
+.PHONY: lint-md
+lint-md: ## Lint markdown files
+	npx --yes markdownlint-cli2  "**/*.md" "#docs/themes"
+
+.PHONY: lint-shell
+lint-shell: ## Lint shell files
+	shfmt -f ./ | xargs shellcheck
 
 .PHONY: lint-yaml
 lint-yaml: ## Lint yaml files
-	cd resources && yamllint .
-	cd examples && yamllint .
-	cd platform && yamllint . 
+	yamllint .
 
-.PHONY: Lint-shell
-lint-shell: ## Lint shell files
-	shfmt -f ./ | xargs shellcheck
+.PHONY: fmt-md ## Format markdown files
+fmt-md:
+	npx --yes prettier --write --prose-wrap always **/*.md

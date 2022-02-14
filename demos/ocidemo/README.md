@@ -4,20 +4,22 @@
 
 The goal of this demo is to show how to:
 
-  1. Build a Docker image and sign it
-  2. Attach the SBOM of the project to the OCI repository
-  3. Verify that the image and the SBOM are correctly signed
+1. Build a Docker image and sign it
+2. Attach the SBOM of the project to the OCI repository
+3. Verify that the image and the SBOM are correctly signed
 
 ## Requirements
 
 This demo assumes the following tools are installed:
 
-* `rust` ([official](https://www.rust-lang.org/tools/install))
-* `docker` ([official](https://docs.docker.com/engine/install/))
-* `cosign` ([github](https://github.com/sigstore/cosign))
-* `sget` ([github](https://github.com/sigstore/cosign/blob/main/README.md#sget))
-* `crane` ([github](https://github.com/google/go-containerregistry/blob/main/cmd/crane/README.md))
-* `cyclonedx` for rust ([github](https://github.com/CycloneDX/cyclonedx-rust-cargo))
+- `rust` ([official](https://www.rust-lang.org/tools/install))
+- `docker` ([official](https://docs.docker.com/engine/install/))
+- `cosign` ([github](https://github.com/sigstore/cosign))
+- `sget` ([github](https://github.com/sigstore/cosign/blob/main/README.md#sget))
+- `crane`
+  ([github](https://github.com/google/go-containerregistry/blob/main/cmd/crane/README.md))
+- `cyclonedx` for rust
+  ([github](https://github.com/CycloneDX/cyclonedx-rust-cargo))
 
 ## Workflow
 

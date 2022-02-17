@@ -15,6 +15,8 @@ extra:
   top: false
 ---
 
+[![ci-workflow](https://github.com/thesecuresoftwarefactory/ssf/actions/workflows/install-ssf.yaml/badge.svg)](https://github.com/thesecuresoftwarefactory/ssf/actions/workflows/install-ssf.yaml)
+
 ## About The Project
 
 The Secure Software Factory is a prototype implementation of the CNCF's

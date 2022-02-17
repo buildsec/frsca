@@ -14,9 +14,6 @@ extra:
   toc: true
   top: false
 ---
-
-[![ci-workflow](https://github.com/thesecuresoftwarefactory/ssf/actions/workflows/install-ssf.yaml/badge.svg)](https://github.com/thesecuresoftwarefactory/ssf/actions/workflows/install-ssf.yaml)
-
 ## About The Project
 
 The Secure Software Factory is a prototype implementation of the CNCF's
@@ -63,3 +60,5 @@ Tooling:
 [buildpacks]: https://buildpacks.io/
 [tekton chains]: https://github.com/tektoncd/chains
 [tekton pipelines]: https://tekton.dev/
+
+[![ci-workflow](https://github.com/thesecuresoftwarefactory/ssf/actions/workflows/install-ssf.yaml/badge.svg)](https://github.com/thesecuresoftwarefactory/ssf/actions/workflows/install-ssf.yaml)

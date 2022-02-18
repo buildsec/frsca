@@ -90,3 +90,6 @@ lint-yaml: ## Lint yaml files
 	cd resources && yamllint .
 	cd examples && yamllint .
 	cd platform && yamllint . 
+
+.PHONY: maven-pipeline
+maven-pipeline: ## Build maven-pipeline

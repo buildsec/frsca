@@ -15,9 +15,9 @@ An organization's security policy or regulatory requirements may dictate the
 data needs to be stored within multiple systems be it for redundancy or
 different methods of analysis/usage:
 
-* e.g. docdb for querying, oci for keeping the provenance next to signatures,
-  or gcs for longer term archive storage
-* if there is an issue with one of the storage methods either due to chains or
+- e.g. docdb for querying, oci for keeping the provenance next to signatures, or
+  gcs for longer term archive storage
+- if there is an issue with one of the storage methods either due to chains or
   an outage with that particular method of storage
 
 ## Setup
@@ -103,8 +103,8 @@ _APP_IMAGE: *"\(_REPOSITORY)/slsapoc" | string @tag(appImage)
 _CACHE_IMAGE: *"\(_REPOSITORY)/slsapoc-cache" | string @tag(cacheImage)
 ```
 
-The rest of the `.cue` file is straightforward to read as is ressembles to
-standard YAML, with the use of the varaibles previously defined.
+The rest of the `.cue` file is straightforward to read as is resembles to
+standard YAML, with the use of the variables previously defined.
 
 The pipeline is then being created is `cue` and `kubectl`.
 

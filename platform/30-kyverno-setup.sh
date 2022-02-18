@@ -10,17 +10,7 @@ KYVERNO_INSTALL_DIR=${GIT_ROOT}/platform/vendor/kyverno/release
 
 # Define variables.
 C_GREEN='\033[32m'
-C_YELLOW='\033[33m'
 C_RESET_ALL='\033[0m'
-
-# Wait until pods are ready.
-# $1: namespace, $2: app label
-wait_for_pods () {
-  while [[ $(kubectl get pods --namespace "$1" -l app="$2" -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do
-  echo -e "${C_YELLOW}Waiting: $2 pods in $1...${C_RESET_ALL}"
-  sleep 1
-done
-}
 
 # Update below if you have a different config.json you want to use.
 DOCKER_CONFIG_JSON=$HOME/.docker/config.json
@@ -32,7 +22,7 @@ DOCKER_CONFIG_JSON=$HOME/.docker/config.json
 echo -e "${C_GREEN}Installing Kyverno...${C_RESET_ALL}"
 kubectl apply -f "$KYVERNO_INSTALL_DIR"/install.yaml
 # Wait for kyverno deployment to complete
-wait_for_pods kyverno kyverno
+kubectl rollout status -n kyverno deployment/kyverno
 
 echo -e "${C_GREEN}Creating docker config secrets...${C_RESET_ALL}"
 # TODO: This should just be the normal secret if the kaniko task is updated to correctly use the docker config secret instead of requiring it to be hardcoded as config.json
@@ -42,18 +32,12 @@ kubectl create secret generic secret-dockerconfigjson --type=opaque --from-file=
 kubectl create secret generic regcred --type=kubernetes.io/dockerconfigjson --from-file=.dockerconfigjson="$DOCKER_CONFIG_JSON" -n kyverno  --dry-run=client -o yaml | kubectl apply -f -
 kubectl create secret generic regcred --type=kubernetes.io/dockerconfigjson --from-file=.dockerconfigjson="$DOCKER_CONFIG_JSON" --dry-run=client -o yaml | kubectl apply -f -
 
-### HACK - setting to Jim's personal image repo for kyverno to resolve
-### failed calling webhook "mutate.kyverno.svc-fail" error. Once this image
-### is offically released, this will be removed.
-echo -e "${C_GREEN}Patching Kyverno image until release of v1.6.0...${C_RESET_ALL}"
-kubectl set image -n kyverno deploy/kyverno kyverno=ghcr.io/jimbugwadia/kyverno:v1.6.0-latest
-
 echo -e "${C_GREEN}Patching Kyverno deployment...${C_RESET_ALL}"
 kubectl patch \
   deployment kyverno \
   -n kyverno \
   --type json --patch-file "${GIT_ROOT}"/platform/components/kyverno/patch_container_args.json
-wait_for_pods kyverno kyverno
+kubectl rollout status -n kyverno deployment/kyverno
 
 echo -e "${C_GREEN}Creating verify-image admission control policy...${C_RESET_ALL}"
 pushd "$GIT_ROOT"

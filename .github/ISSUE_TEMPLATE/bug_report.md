@@ -3,32 +3,31 @@ name: Bug report
 about: Create a report to help us improve
 labels: bug
 ---
+
 <!-- Provide a general summary of the issue in the title above. -->
 
-Current Behavior
-----------------
+## Current Behavior
+
 <!--
 Tell us what is currently happening. If applicable, add screenshots to help
 explain your problem.
 -->
 
+## Expected Behavior
 
-
-Expected Behavior
------------------
 <!--
 Tell us how it should work, how it differs from the current implementation.
 -->
 
-Possible Solution
------------------
+## Possible Solution
+
 <!--
 Suggest a fix/reason for the bug, or ideas how to implement it.
 Delete if not applicable/relevant.
 -->
 
-Steps to Reproduce
-------------------
+## Steps to Reproduce
+
 <!--
 Provide a link to a live example, or an unambiguous set of steps to
 reproduce this bug. Include code to reproduce, if relevant.
@@ -38,16 +37,16 @@ reproduce this bug. Include code to reproduce, if relevant.
 2.
 3.
 
-Context
--------
+## Context
+
 <!--
 How has this issue affected you? What are you trying to accomplish?
 Providing context helps us come up with a solution that is most useful
 in the real world.
 -->
 
-Your Environment
-----------------
+## Your Environment
+
 <!--
 Instructions:
   * Run the following script in a terminal

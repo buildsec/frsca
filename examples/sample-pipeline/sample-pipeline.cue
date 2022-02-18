@@ -1,10 +1,10 @@
 package ssf
 
-_REPOSITORY: *"ttl.sh" | string @tag(repository)
-_APP_IMAGE: *"\(_REPOSITORY)/hello-ssf" | string @tag(appImage)
+_image: {
+	name: "hello-ssf"
+}
 
 pipeline: "build-and-deploy-pipeline": {
-	metadata: annotations: "cosign.sigstore.dev/imageRef": "icr.io/gitsecure/build-and-deploy-pipeline:v1"
 	spec: {
 		params: [{
 			description: "Git repository url"
@@ -143,7 +143,6 @@ pipelineRun: "ssf-lab-pipelinerun-": spec: {
 task: "kaniko": {
 	metadata: {
 		annotations: {
-			"cosign.sigstore.dev/imageRef":    "icr.io/gitsecure/kaniko:v1"
 			"tekton.dev/categories":           "Image Build"
 			"tekton.dev/pipelines.minVersion": "0.12.1"
 			"tekton.dev/tags":                 "image-build"
@@ -170,10 +169,6 @@ task: "kaniko": {
 		}, {
 			default: ""
 			name:    "EXTRA_ARGS"
-		}, {
-			default:     "gcr.io/kaniko-project/executor:v1.5.1@sha256:c6166717f7fe0b7da44908c986137ecfeab21f31ec3992f6e128fff8a94be8a5"
-			description: "The image on which builds will run (default is v1.5.1)"
-			name:        "BUILDER_IMAGE"
 		}]
 		results: [{
 			description: "Digest of the image just built."
@@ -194,7 +189,7 @@ task: "kaniko": {
 				name:  "DOCKER_CONFIG"
 				value: "/kaniko/.docker/"
 			}]
-			image: "icr.io/gitsecure/executor:v1.5.1"
+			image: "icr.io/gitsecure/executor:v1.5.1@sha256:c812530c2ea981d3316c7544b180289abfbd9adf1dde6f1345692b8fb0a65cb0"
 			name:  "build-and-push"
 			securityContext: runAsUser: 0
 			// volumeMounts: [{
@@ -210,12 +205,12 @@ task: "kaniko": {
 			command: [
 				"/ko-app/imagedigestexporter",
 			]
-			image: "icr.io/gitsecure/imagedigestexporter:v0.16.2"
+			image: "icr.io/gitsecure/imagedigestexporter:v0.16.2@sha256:542d437868a0168f0771d840233110fbf860b210b0e9becce5d75628c694b958"
 			name:  "write-digest"
 			securityContext: runAsUser: 0
 			workingDir: "$(workspaces.source.path)"
 		}, {
-			image: "icr.io/gitsecure/jq"
+			image: "icr.io/gitsecure/jq:latest@sha256:3d349004b4332571a9a14acf8c26088c7d289cf6a6d69ada982001a8779d2bbf"
 			name:  "digest-to-results"
 			script: """
 				cat $(params.CONTEXT)/image-digested | jq '.[0].value' -rj | tee /tekton/results/IMAGE_DIGEST
@@ -225,7 +220,7 @@ task: "kaniko": {
 			workingDir: "$(workspaces.source.path)"
 		}, {
 			name:  "write-url"
-			image: "bash"
+			image: "icr.io/gitsecure/bash:latest@sha256:b69c5fe80a41b5c9053db41c81074dd894bbb47bf292e5763d053440eddaafdc"
 			script: """
 				set -e
 				echo $(params.IMAGE) | tee $(results.IMAGE_URL.path)
@@ -245,7 +240,6 @@ task: "kaniko": {
 }
 
 task: "deploy-using-kubectl": {
-	metadata: annotations: "cosign.sigstore.dev/imageRef": "icr.io/gitsecure/deploy-using-kubectl:v1"
 	spec: {
 		params: [{
 			description: "The path to the yaml file to deploy within the git source"
@@ -273,7 +267,7 @@ task: "deploy-using-kubectl": {
 			command: [
 				"sed",
 			]
-			image: "icr.io/gitsecure/alpine"
+			image: "icr.io/gitsecure/alpine:latest@sha256:69704ef328d05a9f806b6b8502915e6a0a4faa4d72018dc42343f511490daf8a"
 			name:  "update-yaml"
 		}, {
 			args: [
@@ -286,7 +280,7 @@ task: "deploy-using-kubectl": {
 			command: [
 				"kubectl",
 			]
-			image: "icr.io/gitsecure/k8s-kubectl"
+			image: "icr.io/gitsecure/k8s-kubectl:latest@sha256:00e810f695528eb20ce91ce11346ef2ba59f1ea4fafc0d0d44101e63991d1567"
 			name:  "run-kubectl"
 		}]
 		workspaces: [{
@@ -299,7 +293,6 @@ task: "deploy-using-kubectl": {
 task: "git-clone": {
 	metadata: {
 		annotations: {
-			"cosign.sigstore.dev/imageRef":    "icr.io/gitsecure/git-clone:v1"
 			"tekton.dev/categories":           "Git"
 			"tekton.dev/displayName":          "git clone"
 			"tekton.dev/pipelines.minVersion": "0.21.0"
@@ -464,7 +457,7 @@ task: "git-clone": {
 				name:  "WORKSPACE_BASIC_AUTH_DIRECTORY_PATH"
 				value: "$(workspaces.basic-auth.path)"
 			}]
-			image: "icr.io/gitsecure/git-init:v0.21.0"
+			image: "icr.io/gitsecure/git-init:v0.21.0@sha256:322e3502c1e6fba5f1869efb55cfd998a3679e073840d33eb0e3c482b5d5609b"
 			name:  "clone"
 			script: """
 				#!/usr/bin/env sh
@@ -564,7 +557,6 @@ task: "git-clone": {
 }
 
 task: "grype-vulnerability-scan": {
-	metadata: annotations: "cosign.sigstore.dev/imageRef": "icr.io/gitsecure/grype-vulnerability-scan:v1"
 	spec: {
 		params: [{
 			description: "image reference"
@@ -621,14 +613,13 @@ task: "grype-vulnerability-scan": {
 				"/bin/sh",
 				"-c",
 			]
-			image: "icr.io/gitsecure/anchore-grype:0.23"
+			image: "icr.io/gitsecure/anchore-grype:0.23@sha256:0e948bb5e7534c2191d2877352e52a317dc91e52192e8723749bf7ff018168da"
 			name:  "grype-scanner"
 		}]
 	}
 }
 
 task: "syft-bom-generator": {
-	metadata: annotations: "cosign.sigstore.dev/imageRef": "icr.io/gitsecure/syft-bom-generator:v1"
 	spec: {
 		params: [{
 			description: "image reference"
@@ -670,14 +661,14 @@ task: "syft-bom-generator": {
 				"$(workspaces.source.path)/$(params.sbom-filepath)",
 				"$(params.image-ref)",
 			]
-			image: "icr.io/gitsecure/syft:v0.27.0"
+			image: "icr.io/gitsecure/syft:v0.27.0@sha256:c03549c863ccc4c60e795d7299624bb7e686248c537adff4246b8031904c7743"
 			name:  "syft-bom-generator"
 			volumeMounts: [{
 				mountPath: "/steps"
 				name:      "steps-volume"
 			}]
 		}, {
-			image: "icr.io/gitsecure/bash"
+			image: "icr.io/gitsecure/bash:latest@sha256:b69c5fe80a41b5c9053db41c81074dd894bbb47bf292e5763d053440eddaafdc"
 			name:  "print-sbom"
 			script: """
 				set -e
@@ -691,7 +682,7 @@ task: "syft-bom-generator": {
 				name:      "steps-volume"
 			}]
 		}, {
-			image: "icr.io/gitsecure/bash"
+			image: "icr.io/gitsecure/bash:latest@sha256:b69c5fe80a41b5c9053db41c81074dd894bbb47bf292e5763d053440eddaafdc"
 			name:  "write-url"
 			script: """
 				set -e

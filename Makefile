@@ -57,6 +57,10 @@ setup-opa-gatekeeper: ##  Setup opa gatekeeper
 example-buildpacks: ## Run the buildpacks example
 	bash examples/buildpacks/buildpacks.sh
 
+.PHONY: example-maven
+example-maven: ## Run the maven example
+	bash examples/maven/maven.sh
+
 .PHONY: example-golang-pipeline
 example-golang-pipeline: ## Run the go-pipeline example
 	bash examples/go-pipeline/go-pipeline.sh
@@ -81,15 +85,25 @@ docs-serve: ## Serve the site locally with hot-reloading
 docs-build: ## Build the documentation site
 	cd docs && zola build
 
-.PHONY: linter-markdown
-linter-markdown: ## Lint markdown files
-	npx markdownlint-cli2  "**/*.md" "#docs"
+.PHONY: lint
+lint: lint-md lint-yaml lint-shell ## Run all linters
+
+.PHONY: lint-md
+lint-md: ## Lint markdown files
+	npx --yes markdownlint-cli2  "**/*.md" "#docs/themes"
+
+.PHONY: lint-shell
+lint-shell: ## Lint shell files
+	shfmt -f ./ | xargs shellcheck
+
+.PHONY: lint-spellcheck
+lint-spellcheck:
+	npx --yes cspell --no-progress --show-suggestions --show-context "**/*"
 
 .PHONY: lint-yaml
 lint-yaml: ## Lint yaml files
-	cd resources && yamllint .
-	cd examples && yamllint .
-	cd platform && yamllint . 
+	yamllint .
 
-.PHONY: maven-pipeline
-maven-pipeline: ## Build maven-pipeline
+.PHONY: fmt-md ## Format markdown files
+fmt-md:
+	npx --yes prettier --write --prose-wrap always **/*.md

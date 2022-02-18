@@ -21,4 +21,3 @@ tkn pr logs --last -f
 
 # to do 
 verify jar-file
-

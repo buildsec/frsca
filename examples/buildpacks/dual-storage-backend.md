@@ -80,11 +80,13 @@ tkn tr describe --last -o jsonpath="{.metadata.annotations.chains\.tekton\.dev/p
 tkn tr describe --last -o jsonpath="{.metadata.annotations.chains\.tekton\.dev/signature-taskrun-$TASKRUN_UID}" | base64 -d | jq
 ```
 
-Verify annotations with cosign:
+Verify the attestation with cosign 1.5.1+:
 
-_In progress - see
-[tektoncd/chains#329](https://github.com/tektoncd/chains/issues/329),
-[sigstore/cosign#1321](https://github.com/sigstore/cosign/issues/1321)_.
+```bash
+tkn tr describe --last -o jsonpath="{.metadata.annotations.chains\.tekton\.dev/signature-taskrun-$TASKRUN_UID}" | base64 -d > sig
+cosign verify-blob --key k8s://tekton-chains/signing-secrets --signature sig sig
+# Should output `Verified OK`
+```
 
 ## Advanced concepts
 

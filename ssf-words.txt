@@ -13,7 +13,6 @@ CNCF's
 Configmap
 configmap
 cuelang
-# customised
 cyclonedx
 daemonset
 docdb
@@ -24,7 +23,6 @@ elif
 entryid
 gitsecure
 GOARCH
-# Implemeting
 jimbugwadia
 jsonpath
 kaniko
@@ -51,7 +49,6 @@ openshift
 Parametrizing
 picalc
 pipelinerun
-# pipepline
 pkgs
 QUICKSTART
 Quickstart

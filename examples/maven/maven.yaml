@@ -16,7 +16,7 @@ spec:
           workspace: shared-workspace
       params:
         - name: url
-          value: https://github.com/redhat-scholars/tekton-tutorial-greeter   
+          value: https://github.com/redhat-scholars/tekton-tutorial-greeter
         - name: subdirectory
           value: ""
         - name: deleteExisting

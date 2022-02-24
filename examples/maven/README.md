@@ -14,10 +14,17 @@ make setup-minikube
 make setup-tekton-chains tekton-generate-keys setup-kyverno
 
 # Run a new pipeline.
-make example-maven-pipeline
+make example-maven
 
 # Wait until it completes.
 tkn pr logs --last -f
 
 # to do 
 verify jar-file
+```
+
+## References
+
+- <https://github.com/redhat-scholars/tekton-tutorial>
+- <https://redhat-scholars.github.io/tekton-tutorial/tekton-tutorial/>
+- <https://github.com/redhat-scholars/tekton-tutorial-greeter>

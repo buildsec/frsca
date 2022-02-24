@@ -16,7 +16,7 @@ spec:
           workspace: shared-workspace
       params:
         - name: url
-          value: https://github.com/redhat-developer-demos/tekton-tutorial
+          value: https://github.com/redhat-scholars/tekton-tutorial-greeter   
         - name: subdirectory
           value: ""
         - name: deleteExisting
@@ -27,8 +27,6 @@ spec:
       runAfter:
         - fetch-repository
       params:
-        - name: CONTEXT_DIR
-          value: "apps/greeter/java/quarkus"
         - name: GOALS
           value:
             - -DskipTests
@@ -50,17 +48,3 @@ spec:
   resources:
     requests:
       storage: 500Mi
----
-apiVersion: tekton.dev/v1beta1
-kind: PipelineRun
-metadata:
-  name: maven-test-pipeline-run
-spec:
-  pipelineRef:
-    name: maven-test-pipeline
-  workspaces:
-    - name: maven-settings
-      emptyDir: {}
-    - name: shared-workspace
-      persistentvolumeclaim:
-        claimName: maven-source-pvc

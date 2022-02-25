@@ -6,8 +6,6 @@ on:
       - opened
       - synchronize
       - reopened
-    paths-ignore:
-      - "docs/**"
   push:
     branches:
       - main

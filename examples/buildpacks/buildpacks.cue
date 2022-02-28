@@ -18,6 +18,12 @@ pipelineRun: "cache-image-pipelinerun-": spec: {
 		name:  "APP_IMAGE"
 		value: _APP_IMAGE
 	}, {
+		name:  "imageUrl"
+		value: _APP_IMAGE
+	}, {
+		name:  "imageTag"
+		value: "latest"
+	}, {
 		name:  "SOURCE_URL"
 		value: "https://github.com/buildpacks/samples"
 	}, {

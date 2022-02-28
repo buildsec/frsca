@@ -1,5 +1,9 @@
 package ssf
 
+_image: {
+	name: "picalc"
+}
+
 pipeline: "build-and-deploy-pipeline": spec: {
 	workspaces: [{
 		name:        "git-source"
@@ -80,10 +84,10 @@ pipelineRun: "picalc-pr-": spec: {
 		value: "kubernetes/picalc.yaml"
 	}, {
 		name:  "imageUrl"
-		value: "registry.kube-system.svc.cluster.local/citi/picalc"
+		value: _APP_IMAGE
 	}, {
 		name:  "imageTag"
-		value: "1.0"
+		value: "1h"
 	}]
 	serviceAccountName: "pipeline-account"
 	workspaces: [{

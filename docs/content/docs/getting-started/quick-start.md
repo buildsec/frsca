@@ -86,8 +86,7 @@ tkn pr logs --last -f
 We start by defining some variables to simplify the validation commands:
 
 ```bash
-IMAGE_URL=$(tkn pr describe --last -o jsonpath='{.spec.params[?(@.name=="imageUrl")].value}')
-export IMAGE_URL=localhost:8888${IMAGE_URL#"registry.kube-system.svc.cluster.local"}
+export IMAGE_URL=$(tkn pr describe --last -o jsonpath='{.spec.params[?(@.name=="imageUrl")].value}')
 export IMAGE_TAG=$(tkn pr describe --last -o jsonpath='{.spec.params[?(@.name=="imageTag")].value}')
 export DOCKER_IMG="${IMAGE_URL}:${IMAGE_TAG}"
 ```

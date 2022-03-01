@@ -195,17 +195,8 @@ kubectl config use-context minikube
 # Display a message to tell to update the environment variables.
 minikube docker-env
 
-# Note(rgreinhofer): this is currently not supported for M1 chips.
-#   ❌  Exiting due to MK_USAGE: Due to networking limitations of driver docker
-#       on darwin, ingress addon is not supported.
-#   Alternatively to use this addon you can use a vm-based driver:
-#
-# 	  'minikube start --vm=true'
-#
-#   To track the update on this work in progress feature please check:
-#   https://github.com/kubernetes/minikube/issues/7332
 # Manage default Ingress Controller.
-# minikube addons enable ingress
+minikube addons enable ingress
 
 # Setup Minikube's registry.
 minikube addons enable registry

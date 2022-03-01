@@ -18,3 +18,4 @@ files:
     destination_dir: "tekton/catalog/main/task/maven/0.2"
     sha256: "f86c0ed09ebf31f10851639aea928ab69e1d17f7e9e60932aaa6981fd9df34d2"
     validation_type: "sha256"
+    

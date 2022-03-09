@@ -12,8 +12,9 @@ clusterPolicy: "verify-image": {
 			image: "ttl.sh/*"
 			key:   "{{ keys.data.ttlsh }}"
 		}, {
-			image:  "ghcr.io/google/ko"
-			issuer: "https://token.actions.githubusercontent.com"
+			image:   "ghcr.io/google/ko"
+			subject: "https://github.com/google/ko/*"
+			issuer:  "https://token.actions.githubusercontent.com"
 			roots: """
 				-----BEGIN CERTIFICATE-----
 				MIIB9zCCAXygAwIBAgIUALZNAPFdxHPwjeDloDwyYChAO/4wCgYIKoZIzj0EAwMw
@@ -29,8 +30,6 @@ clusterPolicy: "verify-image": {
 				TNMea7Ix/stJ5TfcLLeABLE4BNJOsQ4vnBHJ
 				-----END CERTIFICATE-----
 				"""
-
-			subject: "https://github.com/google/ko/*"
 		}]
 		match: resources: namespaces: ["default"]
 	}]

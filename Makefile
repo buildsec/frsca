@@ -57,6 +57,10 @@ setup-opa-gatekeeper: ##  Setup opa gatekeeper
 example-buildpacks: ## Run the buildpacks example
 	bash examples/buildpacks/buildpacks.sh
 
+.PHONY: example-cosign
+example-cosign: ## Run the cosign example
+	bash examples/cosign/cosign.sh
+
 .PHONY: example-maven
 example-maven: ## Run the maven example
 	bash examples/maven/maven.sh

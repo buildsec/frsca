@@ -1,0 +1,74 @@
+---
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: ko
+  labels:
+    app.kubernetes.io/version: "0.1"
+  annotations:
+    tekton.dev/pipelines.minVersion: "0.23.0"
+    tekton.dev/tags: image-build
+    tekton.dev/displayName: "Ko"
+    tekton.dev/platforms: "linux/amd64"
+spec:
+  description: >-
+    This  pipeline builds a Golang application source from a Git repository into
+    a container image and pushes it to a registry, using Ko.
+  workspaces:
+    - name: source-ws
+      description: Location where source is stored.
+
+  params:
+    - name: APP_IMAGE
+      description: The name of where to store the app image.
+      default: ""
+    - name: SOURCE_URL
+      description: A git repo url where the source code resides.
+    - name: SOURCE_REFERENCE
+      description: The branch, tag or SHA to checkout.
+      default: ""
+    - name: SOURCE_SUBPATH
+      description: >-
+        A subpath within checked out source where the source to build is
+        located.
+      default: ""
+    - name: ENV_VARS
+      type: array
+      description: Environment variables to set during _build-time_.
+      default: []
+    - name: KO_DOCKER_REPO
+      description: Identifies where the built images should be pushed.
+
+  tasks:
+    - name: fetch-from-git
+      taskRef:
+        name: git-clone
+      params:
+        - name: url
+          value: "$(params.SOURCE_URL)"
+        - name: revision
+          value: "$(params.SOURCE_REFERENCE)"
+      workspaces:
+        - name: output
+          workspace: source-ws
+    - name: build-with-ko
+      runAfter:
+        - fetch-from-git
+      taskRef:
+        name: ko
+      params:
+        - name: SOURCE_SUBPATH
+          value: "$(params.SOURCE_SUBPATH)"
+        - name: KO_DOCKER_REPO
+          value: "$(params.KO_DOCKER_REPO)"
+      workspaces:
+        - name: source
+          workspace: source-ws
+    - name: scan-with-grype
+      taskRef:
+        name: grype-vulnerability-scan
+      params:
+        - name: image-ref
+          value: "$(tasks.build-with-ko.results.IMAGE_URL)"
+        - name: image-digest
+          value: "$(tasks.build-with-ko.results.IMAGE_DIGEST)"

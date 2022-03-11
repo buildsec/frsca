@@ -122,6 +122,6 @@ cosign verify-attestation --key k8s://tekton-chains/signing-secrets "${IMAGE_URL
 With Tekton CLI (v0.23.0+):
 
 ```bash
-tkn chain signature "$TASK_RUN"
-tkn chain payload "$TASK_RUN"
+tkn chain signature "${TASK_RUN}"
+tkn chain payload "${TASK_RUN}"
 ```

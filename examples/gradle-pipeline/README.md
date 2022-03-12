@@ -34,4 +34,3 @@ cosign verify-attestation --key k8s://tekton-chains/signing-secrets "${IMAGE_URL
 tkn chain signature "$TASK_RUN"
 tkn chain payload "$TASK_RUN"
 ```
-

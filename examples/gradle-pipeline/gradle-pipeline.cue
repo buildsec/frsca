@@ -49,7 +49,7 @@ pipeline: "pipeline-gradle-test": spec: {
 			value: "true"
 		}]
 	}, {
-		name: "run-build"
+		name: "run-build-push"
 		taskRef: name: "jib-gradle"
 		runAfter: [
 			"clone",
@@ -61,25 +61,6 @@ pipeline: "pipeline-gradle-test": spec: {
 		params: [{
 			name:  "IMAGE"
 			value: "$(params.image)"
-		}]
-	}, {
-		name: "kaniko"
-		taskRef: name: "kaniko"
-		runAfter: [
-			"trivy-scan-local-fs",
-		]
-		workspaces: [{
-			name:      "source"
-			workspace: "pipeline-pvc"
-		}]
-		params: [{
-			name:  "IMAGE"
-			value: "$(params.image)"
-		}, {
-			name: "EXTRA_ARGS"
-			value: [
-				"--skip-tls-verify",
-			]
 		}]
 	}, {
 		name: "trivy-scan-local-fs"
@@ -108,7 +89,7 @@ pipeline: "pipeline-gradle-test": spec: {
 			kind: "Task"
 		}
 		runAfter: [
-			"kaniko",
+			"run-build-push",
 		]
 		params: [{
 			name: "ARGS"

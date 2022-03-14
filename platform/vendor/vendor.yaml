@@ -23,3 +23,7 @@ files:
     destination_dir: "tekton/catalog/main/task/maven/0.2"
     sha256: "f86c0ed09ebf31f10851639aea928ab69e1d17f7e9e60932aaa6981fd9df34d2"
     validation_type: "sha256"
+  - release_file: "https://raw.githubusercontent.com/tektoncd/catalog/main/task/kaniko/0.6/kaniko.yaml"
+    destination_dir: "tekton/catalog/main/task/kaniko/0.6"
+    sha256: "92d44e556f64282f3ebc395ae5fa2cc1ea1a3de60177aaeedc49957360280717"
+    validation_type: "sha256"

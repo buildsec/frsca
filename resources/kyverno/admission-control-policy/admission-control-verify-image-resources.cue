@@ -17,7 +17,7 @@ configMap: "\(#keys.name)": {
 			-----END PUBLIC KEY-----
 			"""
 
-		ghcrio: #public.key
+		//ghcrio: #public.key
 
 		ttlsh: #public.key
 	}

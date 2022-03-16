@@ -569,16 +569,9 @@ task: "grype-vulnerability-scan": {
 			description: "toggles debug mode for the pipeline"
 			name:        "pipeline-debug"
 		}, {
-			default:     "ssf-vulnerability-report.json"
-			description: "filepath to store the vulnerability report"
-			name:        "vulnerability-report-filepath"
-		}]
-		results: [{
-			description: "status of syft task, possible value are-success|failure"
-			name:        "status"
-		}, {
-			description: "filepath to store vulnerability report"
-			name:        "vulnerability-report"
+			name: "fail-on"
+			description: "set the return code to 1 if a vulnerability is found with a severity >= the given severity, options=[negligible low medium high critical]"
+			default: "medium"
 		}]
 		stepTemplate: {
 			name: "PIPELINE_DEBUG"
@@ -589,31 +582,12 @@ task: "grype-vulnerability-scan": {
 		}
 		steps: [{
 			args: [
-				"""
-					#!/bin/sh
-					if [ \"$PIPELINE_DEBUG\" == \"1\" ]; then
-					  set -x +e
-					fi
-					imgRef=$(params.image-ref)@$(params.image-digest)
-					echo \"running vulnerability scan on $imgRef\"
-					grype $imgRef > vulnerability-report.txt
-					cat vulnerability-report.txt
-					okMsg=\"No vulnerabilities found\"
-
-					if [ \"$okMsg\" == \"$(cat vulnerability-report.txt)\" ] ;then
-					  exit 0
-					else
-					  exit 1
-					fi
-
-					""",
+				"$(params.image-ref)@$(params.image-digest)",
+				"-v",
+				"-f",
+				"$(params.fail-on)",
 			]
-
-			command: [
-				"/bin/sh",
-				"-c",
-			]
-			image: "icr.io/gitsecure/anchore-grype:0.23@sha256:0e948bb5e7534c2191d2877352e52a317dc91e52192e8723749bf7ff018168da"
+			image: "anchore/grype:v0.34.1@sha256:4808f489d418599be4970108535cd1a0638027719b55df653646be0c9613a954"
 			name:  "grype-scanner"
 		}]
 	}

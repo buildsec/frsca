@@ -29,9 +29,6 @@ make example-buildpacks
 # Or re-run the last one.
 # tkn pipeline start buildpacks -L
 
-# Export the value of APP_IMAGE from the pipelinerun describe as DOCKER_IMG:
-export DOCKER_IMG=$(tkn pr describe --last -o jsonpath='{.spec.params[?(@.name=="APP_IMAGE")].value}')
-
 # Wait until it completes.
 tkn pr logs --last -f
 
@@ -39,12 +36,20 @@ tkn pr logs --last -f
 tkn tr describe --last -o jsonpath='{.metadata.annotations.chains\.tekton\.dev/signed}'
 # Should output "true"
 
+# Export the value of IMAGE_URL from the last pipeline run and the associated taskrun name:
+export IMAGE_URL=$(tkn pr describe --last -o jsonpath='{..taskResults}' | jq -r '.[] | select(.name | match("IMAGE_URL$")) | .value')
+export TASK_RUN=$(tkn pr describe --last -o json | jq -r '.status.taskRuns | keys[] as $k | {"k": $k, "v": .[$k]} | select(.v.status.taskResults[]?.name | match("IMAGE_URL$")) | .k')
+
 # Double check that the attestation and the signature were uploaded to the OCI.
-crane ls "${DOCKER_IMG}"
+crane ls "${IMAGE_URL%:*}"
 
 # Verify the image and the attestation.
-cosign verify --key k8s://tekton-chains/signing-secrets "${DOCKER_IMG}"
-cosign verify-attestation --key k8s://tekton-chains/signing-secrets "${DOCKER_IMG}"
+cosign verify --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
+cosign verify-attestation --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
+
+# Verify the signature and attestation with tkn.
+tkn chain signature "${TASK_RUN}"
+tkn chain payload "${TASK_RUN}"
 ```
 
 ## Links

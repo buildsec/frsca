@@ -48,20 +48,23 @@ make setup-tekton-chains tekton-generate-keys setup-kyverno
 # Run a new pipeline.
 make example-sample-pipeline
 
-# Export the value of imageUrl from the pipelinerun describe as DOCKER_IMG:
-export IMAGE_URL=$(tkn pr describe --last -o jsonpath='{.spec.params[?(@.name=="imageUrl")].value}')
-export IMAGE_TAG=$(tkn pr describe --last -o jsonpath='{.spec.params[?(@.name=="imageTag")].value}')
-export DOCKER_IMG="${IMAGE_URL}:${IMAGE_TAG}"
-
 # Wait until it completes.
 tkn pr logs --last -f
 
+# Export the value of IMAGE_URL from the last taskrun and the taskrun name:
+export IMAGE_URL=$(tkn pr describe --last -o jsonpath='{..taskResults}' | jq -r '.[] | select(.name | match("IMAGE_URL$")) | .value')
+export TASK_RUN=$(tkn pr describe --last -o json | jq -r '.status.taskRuns | keys[] as $k | {"k": $k, "v": .[$k]} | select(.v.status.taskResults[]?.name | match("IMAGE_URL$")) | .k')
+
 # Double check that the attestation and the signature were uploaded to the OCI.
-crane ls "${IMAGE_URL}"
+crane ls "${IMAGE_URL%:*}"
 
 # Verify the image and the attestation.
-cosign verify --key k8s://tekton-chains/signing-secrets "${DOCKER_IMG}"
-cosign verify-attestation --key k8s://tekton-chains/signing-secrets "${DOCKER_IMG}"
+cosign verify --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
+cosign verify-attestation --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
+
+# Verify the signature and attestation with tkn.
+tkn chain signature "${TASK_RUN}"
+tkn chain payload "${TASK_RUN}"
 ```
 
 Once successfully completed. You should be able to see your application deployed

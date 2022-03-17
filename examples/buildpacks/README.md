@@ -45,6 +45,9 @@ crane ls "${DOCKER_IMG}"
 # Verify the image and the attestation.
 cosign verify --key k8s://tekton-chains/signing-secrets "${DOCKER_IMG}"
 cosign verify-attestation --key k8s://tekton-chains/signing-secrets "${DOCKER_IMG}"
+
+# Read the content of the attesation
+cosign verify-attestation --key k8s://tekton-chains/signing-secrets "${DOCKER_IMG}" | jq .payload | tr -d '"' | base64 --decode | jq
 ```
 
 ## Links

@@ -86,9 +86,8 @@ tkn pr logs --last -f
 We start by defining some variables to simplify the validation commands:
 
 ```bash
-export IMAGE_URL=$(tkn pr describe --last -o jsonpath='{.spec.params[?(@.name=="imageUrl")].value}')
-export IMAGE_TAG=$(tkn pr describe --last -o jsonpath='{.spec.params[?(@.name=="imageTag")].value}')
-export DOCKER_IMG="${IMAGE_URL}:${IMAGE_TAG}"
+export IMAGE_URL=$(tkn pr describe --last -o jsonpath='{..taskResults}' | jq -r '.[] | select(.name | match("IMAGE_URL$")) | .value')
+export TASK_RUN=$(tkn pr describe --last -o json | jq -r '.status.taskRuns | keys[] as $k | {"k": $k, "v": .[$k]} | select(.v.status.taskResults[]?.name | match("IMAGE_URL$")) | .k')
 ```
 
 #### Ensure the task has been signed
@@ -101,7 +100,7 @@ tkn tr describe --last -o jsonpath='{.metadata.annotations.chains\.tekton\.dev/s
 #### Ensure the attestation and the signature were uploaded to OCI
 
 ```bash
-crane ls "${IMAGE_URL}"
+crane ls "${IMAGE_URL%:*}"
 ```
 
 The output should look similar to this:
@@ -116,6 +115,13 @@ sha256-f82fe2b635e304c7d8445c0117a4dbe35dd3c840078a39e21c88073a885c5e0f.sig
 #### Verify the image and the attestation
 
 ```bash
-cosign verify --key k8s://tekton-chains/signing-secrets "${DOCKER_IMG}"
-cosign verify-attestation --key k8s://tekton-chains/signing-secrets "${DOCKER_IMG}"
+cosign verify --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
+cosign verify-attestation --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
+```
+
+With Tekton CLI (v0.23.0+):
+
+```bash
+tkn chain signature "${TASK_RUN}"
+tkn chain payload "${TASK_RUN}"
 ```

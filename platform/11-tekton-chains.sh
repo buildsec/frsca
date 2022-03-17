@@ -20,4 +20,9 @@ kubectl patch \
       -n tekton-chains \
       --patch-file "$GIT_ROOT"/platform/components/tekton/chains/patch_config_kms.yaml
 
+kubectl patch \
+      deployment tekton-chains-controller \
+      -n tekton-chains \
+      --patch-file "$GIT_ROOT"/platform/components/tekton/chains/patch_spire.json
+
 kubectl rollout status -n tekton-chains deployment/tekton-chains-controller

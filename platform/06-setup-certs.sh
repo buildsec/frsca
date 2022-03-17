@@ -1,23 +1,16 @@
 #!/bin/bash
 set -euo pipefail
 
-# Define variables.
-C_GREEN='\033[32m'
-C_YELLOW='\033[33m'
-C_RED='\033[31m'
-C_RESET_ALL='\033[0m'
+GIT_ROOT=$(git rev-parse --show-toplevel)
 
-cd "$(dirname "$0")"
-
-[ -d "./certs" ] || mkdir -p certs
-cd certs
+[ -d "${GIT_ROOT}/platform/certs" ] || mkdir -p "${GIT_ROOT}/platform/certs"
 
 ## TODO: if openssl is not installed, consider running command with a temporary container
 
 # create the CA key/cert
-[ -d "./ca" ] || mkdir -p ca
-ca_key="ca/ca-key.pem"
-ca_cert="ca/ca.pem"
+[ -d "${GIT_ROOT}/platform/certs/ca" ] || mkdir -p "${GIT_ROOT}/platform/certs/ca"
+ca_key="${GIT_ROOT}/platform/certs/ca/ca-key.pem"
+ca_cert="${GIT_ROOT}/platform/certs/ca/ca.pem"
 [ -f "$ca_key" ] || openssl genrsa -out "$ca_key" 4096
 openssl req -new -x509 \
   -key "$ca_key" \
@@ -28,7 +21,7 @@ openssl req -new -x509 \
 
 node_cert() {
   node="$1"
-  dir="${node}"
+  dir="${GIT_ROOT}/platform/certs/${node}"
   [ -d "${dir}" ] || mkdir -p "${dir}"
   [ -f "${dir}/key.pem" ] || openssl genrsa -out "${dir}/key.pem" 2048
   openssl req \
@@ -55,5 +48,10 @@ node_cert spire-oidc DNS:spire-oidc.spire.svc.cluster.local,DNS:oidc.example.org
 
 kubectl create namespace spire --dry-run=client -o=yaml | kubectl apply -f -
 kubectl create namespace vault --dry-run=client -o=yaml | kubectl apply -f -
-kubectl -n spire create secret tls oidc-cert --cert="spire-oidc/cert-chain.pem" --key="spire-oidc/key.pem"  --dry-run=client -o=yaml | kubectl apply -f -
-kubectl -n vault create configmap ca-certs --from-file=spire-ca.pem="${ca_cert}" --dry-run=client -o=yaml | kubectl apply -f -
+kubectl -n spire create secret tls oidc-cert \
+  --cert="${GIT_ROOT}/platform/certs/spire-oidc/cert-chain.pem" \
+  --key="${GIT_ROOT}/platform/certs/spire-oidc/key.pem" \
+  --dry-run=client -o=yaml | kubectl apply -f -
+kubectl -n vault create configmap ca-certs \
+  --from-file=spire-ca.pem="${ca_cert}" \
+  --dry-run=client -o=yaml | kubectl apply -f -

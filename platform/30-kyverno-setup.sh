@@ -1,7 +1,8 @@
 #!/bin/bash
 set -euo pipefail
 
-USERPUBKEY=$(cosign public-key --key k8s://tekton-chains/signing-secrets)
+# USERPUBKEY=$(cosign public-key --key k8s://tekton-chains/signing-secrets)
+USERPUBKEY=$(kubectl -n vault get configmap ssf-certs -o jsonpath='{.data.ssf\.pem}')
 
 REPO="ttl.sh/*"
 

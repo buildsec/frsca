@@ -58,7 +58,13 @@ import (
 	// the admission review request (enforce), or allow (audit) the admission review request
 	// and report an error in a policy report. Optional. The default value is "audit".
 	// +optional
+	// +kubebuilder:validation:Enum=audit;enforce
 	validationFailureAction?: string @go(ValidationFailureAction)
+
+	// ValidationFailureActionOverrides is a Cluter Policy attribute that specifies ValidationFailureAction
+	// namespace-wise. It overrides ValidationFailureAction for the specified namespaces.
+	// +optional
+	validationFailureActionOverrides?: [...#ValidationFailureActionOverride] @go(ValidationFailureActionOverrides,[]ValidationFailureActionOverride)
 
 	// Background controls if rules are applied to existing resources during a background scan.
 	// Optional. Default value is "true". The value must be set to "false" if the policy rule
@@ -172,6 +178,24 @@ import (
 	// APICall defines an HTTP request to the Kubernetes API server. The JSON
 	// data retrieved is stored in the context.
 	apiCall?: null | #APICall @go(APICall,*APICall)
+
+	// ImageRegistry defines requests to an OCI/Docker V2 registry to fetch image
+	// details.
+	imageRegistry?: null | #ImageRegistry @go(ImageRegistry,*ImageRegistry)
+}
+
+// ImageRegistry defines requests to an OCI/Docker V2 registry to fetch image
+// details.
+#ImageRegistry: {
+	// Reference is image reference to a container image in the registry.
+	// Example: ghcr.io/kyverno/kyverno:latest
+	reference: string @go(Reference)
+
+	// JMESPath is an optional JSON Match Expression that can be used to
+	// transform the ImageData struct returned as a result of processing
+	// the image reference.
+	// +optional
+	jmesPath?: string @go(JMESPath)
 }
 
 // ConfigMapReference refers to a ConfigMap
@@ -208,8 +232,10 @@ import (
 	// +kubebuilder:validation:XPreserveUnknownFields
 	key?: apiextensions.#JSON @go(Key)
 
-	// Operator is the operation to perform. Valid operators
-	// are Equals, NotEquals, In, AnyIn, AllIn and NotIn, AnyNotIn, AllNotIn.
+	// Operator is the conditional operation to perform. Valid operators are:
+	// Equals, NotEquals, In, AnyIn, AllIn, NotIn, AnyNotIn, AllNotIn, GreaterThanOrEquals,
+	// GreaterThan, LessThanOrEquals, LessThan, DurationGreaterThanOrEquals, DurationGreaterThan,
+	// DurationLessThanOrEquals, DurationLessThan
 	operator?: #ConditionOperator @go(Operator)
 
 	// Value is the conditional value, or set of values. The values can be fixed set
@@ -221,83 +247,7 @@ import (
 
 // ConditionOperator is the operation performed on condition key and value.
 // +kubebuilder:validation:Enum=Equals;NotEquals;In;AnyIn;AllIn;NotIn;AnyNotIn;AllNotIn;GreaterThanOrEquals;GreaterThan;LessThanOrEquals;LessThan;DurationGreaterThanOrEquals;DurationGreaterThan;DurationLessThanOrEquals;DurationLessThan
-#ConditionOperator: string // #enumConditionOperator
-
-#enumConditionOperator:
-	#Equal |
-	#Equals |
-	#NotEqual |
-	#NotEquals |
-	#In |
-	#AnyIn |
-	#AllIn |
-	#NotIn |
-	#AnyNotIn |
-	#AllNotIn |
-	#GreaterThanOrEquals |
-	#GreaterThan |
-	#LessThanOrEquals |
-	#LessThan |
-	#DurationGreaterThanOrEquals |
-	#DurationGreaterThan |
-	#DurationLessThanOrEquals |
-	#DurationLessThan
-
-// Equal evaluates if the key is equal to the value.
-// Deprecated. Use Equals instead.
-#Equal: #ConditionOperator & "Equal"
-
-// Equals evaluates if the key is equal to the value.
-#Equals: #ConditionOperator & "Equals"
-
-// NotEqual evaluates if the key is not equal to the value.
-// Deprecated. Use NotEquals instead.
-#NotEqual: #ConditionOperator & "NotEqual"
-
-// NotEquals evaluates if the key is not equal to the value.
-#NotEquals: #ConditionOperator & "NotEquals"
-
-// In evaluates if the key is contained in the set of values.
-#In: #ConditionOperator & "In"
-
-// AnyIn evaluates if any of the keys are contained in the set of values.
-#AnyIn: #ConditionOperator & "AnyIn"
-
-// AllIn evaluates if all the keys are contained in the set of values.
-#AllIn: #ConditionOperator & "AllIn"
-
-// NotIn evaluates if the key is not contained in the set of values.
-#NotIn: #ConditionOperator & "NotIn"
-
-// AnyNotIn evaluates if any of the keys are not contained in the set of values.
-#AnyNotIn: #ConditionOperator & "AnyNotIn"
-
-// AllNotIn evaluates if all the keys are not contained in the set of values.
-#AllNotIn: #ConditionOperator & "AllNotIn"
-
-// GreaterThanOrEquals evaluates if the key (numeric) is greater than or equal to the value (numeric).
-#GreaterThanOrEquals: #ConditionOperator & "GreaterThanOrEquals"
-
-// GreaterThan evaluates if the key (numeric) is greater than the value (numeric).
-#GreaterThan: #ConditionOperator & "GreaterThan"
-
-// LessThanOrEquals evaluates if the key (numeric) is less than or equal to the value (numeric).
-#LessThanOrEquals: #ConditionOperator & "LessThanOrEquals"
-
-// LessThan evaluates if the key (numeric) is less than the value (numeric).
-#LessThan: #ConditionOperator & "LessThan"
-
-// DurationGreaterThanOrEquals evaluates if the key (duration) is greater than or equal to the value (duration)
-#DurationGreaterThanOrEquals: #ConditionOperator & "DurationGreaterThanOrEquals"
-
-// DurationGreaterThan evaluates if the key (duration) is greater than the value (duration)
-#DurationGreaterThan: #ConditionOperator & "DurationGreaterThan"
-
-// DurationLessThanOrEquals evaluates if the key (duration) is less than or equal to the value (duration)
-#DurationLessThanOrEquals: #ConditionOperator & "DurationLessThanOrEquals"
-
-// DurationLessThan evaluates if the key (duration) is greater than the value (duration)
-#DurationLessThan: #ConditionOperator & "DurationLessThan"
+#ConditionOperator: string
 
 // MatchResources is used to specify resource and admission review request data for
 // which a policy rule is applicable.
@@ -422,21 +372,6 @@ import (
 
 // Mutation defines how resource are modified.
 #Mutation: {
-	// Overlay specifies an overlay pattern to modify resources.
-	// DEPRECATED. Use PatchStrategicMerge instead. Scheduled for
-	// removal in release 1.5+.
-	// +kubebuilder:validation:XPreserveUnknownFields
-	// +optional
-	overlay?: apiextensions.#JSON @go(Overlay)
-
-	// Patches specifies a RFC 6902 JSON Patch to modify resources.
-	// DEPRECATED. Use PatchesJSON6902 instead. Scheduled for
-	// removal in release 1.5+.
-	// +kubebuilder:validation:XPreserveUnknownFields
-	// +nullable
-	// +optional
-	patches?: [...#Patch] @go(Patches,[]Patch)
-
 	// PatchStrategicMerge is a strategic merge patch used to modify resources.
 	// See https://kubernetes.io/docs/tasks/manage-kubernetes-objects/update-api-object-kubectl-patch/
 	// and https://kubectl.docs.kubernetes.io/references/kustomize/patchesstrategicmerge/.
@@ -477,22 +412,11 @@ import (
 	// +kubebuilder:validation:XPreserveUnknownFields
 	// +optional
 	patchStrategicMerge?: apiextensions.#JSON @go(PatchStrategicMerge)
-}
 
-// Patch is a RFC 6902 JSON Patch.
-// See: https://tools.ietf.org/html/rfc6902
-#Patch: {
-	// Path specifies path of the resource.
-	path?: string @go(Path)
-
-	// Operation specifies operations supported by JSON Patch.
-	// i.e:- add, replace and delete.
-	op?: string @go(Operation)
-
-	// Value specifies the value to be applied.
-	// +kubebuilder:validation:XPreserveUnknownFields
+	// PatchesJSON6902 is a list of RFC 6902 JSON Patch declarations used to modify resources.
+	// See https://tools.ietf.org/html/rfc6902 and https://kubectl.docs.kubernetes.io/references/kustomize/patchesjson6902/.
 	// +optional
-	value?: apiextensions.#JSON @go(Value)
+	patchesJson6902?: string @go(PatchesJSON6902)
 }
 
 // Validation defines checks to be performed on matching resources.
@@ -537,6 +461,12 @@ import (
 	// to which the validation logic is applied.
 	list?: string @go(List)
 
+	// ElementScope specifies whether to use the current list element as the scope for validation. Defaults to "true" if not specified.
+	// When set to "false", "request.object" is used as the validation scope within the foreach
+	// block to allow referencing other elements in the subtree.
+	// +optional
+	elementScope?: null | bool @go(ElementScope,*bool)
+
 	// Context defines variables and data sources that can be used during rule execution.
 	// +optional
 	context?: [...#ContextEntry] @go(Context,[]ContextEntry)
@@ -580,6 +510,14 @@ import (
 
 	// Subject is the verified identity used for keyless signing, for example the email address
 	subject?: string @go(Subject)
+
+	// Issuer is the certificate issuer used for keyless signing.
+	issuer?: string @go(Issuer)
+
+	// Annotations are used for image verification.
+	// Every specified key-value pair must exist and match in the verified payload.
+	// The payload may contain other key-value pairs.
+	annotations?: {[string]: string} @go(Annotations,map[string]string)
 
 	// Repository is an optional alternate OCI repository to use for image signatures that match this rule.
 	// If specified Repository will override the default OCI image repository configured for the installation.
@@ -664,4 +602,10 @@ import (
 
 	// Name specifies the resource name.
 	name?: string @go(Name)
+}
+
+#ValidationFailureActionOverride: {
+	// +kubebuilder:validation:Enum=audit;enforce
+	action?: string @go(Action)
+	namespaces?: [...string] @go(Namespaces,[]string)
 }

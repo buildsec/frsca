@@ -6,7 +6,10 @@ GIT_ROOT=$(git rev-parse --show-toplevel)
 # Setup tekton Chains
 
 # Install Chains.
-kubectl apply --filename "$GIT_ROOT"/platform/vendor/tekton/chains/release.yaml
+SECRETS=$(kubectl get secret signing-secrets -n tekton-chains -o jsonpath='{.immutable}' 2> /dev/null || true)
+if [ "$SECRETS" != "true" ]; then
+      kubectl apply --filename "$GIT_ROOT"/platform/vendor/tekton/chains/release.yaml
+fi
 kubectl rollout status -n tekton-chains deployment/tekton-chains-controller
 
 # Patch chains to generate in-toto provenance and store output in OCI

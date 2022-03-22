@@ -78,7 +78,7 @@ taskrun
 Tekton
 tekton
 tektoncd
-thesecuresoftwarefactory
+buildsec
 TOPDIR
 toplevel
 USERPUBKEY

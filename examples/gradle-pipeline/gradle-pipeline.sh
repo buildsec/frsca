@@ -13,7 +13,7 @@ C_RESET_ALL='\033[0m'
 kubectl apply -f "${GIT_ROOT}"/platform/vendor/tekton/catalog/main/task/git-clone/0.4/git-clone.yaml
 kubectl apply -f "${GIT_ROOT}"/platform/vendor/tekton/catalog/main/task/gradle/0.3/jib-gradle.yaml
 kubectl apply -f https://raw.githubusercontent.com/tektoncd/catalog/main/task/trivy-scanner/0.1/trivy-scanner.yaml
-kubectl apply -f "${GIT_ROOT}"/platform/vendor/tekton/catalog/main/task/kaniko/kaniko.yaml
+kubectl apply -f "${GIT_ROOT}"/platform/vendor/tekton/catalog/main/task/kaniko/0.6/kaniko.yaml
 
 # Install the buildpacks pipelinerun.
 echo -e "${C_GREEN}Creating a Gradle pipelinerun: REPOSITORY=${REPOSITORY}${C_RESET_ALL}"

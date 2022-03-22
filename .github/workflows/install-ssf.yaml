@@ -54,7 +54,7 @@ jobs:
           tkn pr logs --last -f
           sleep 60
           export IMAGE_URL=$(tkn pr describe --last -o jsonpath='{..taskResults}' | jq -r '.[] | select(.name | match("IMAGE_URL$")) | .value')
-          docker run --rm gcr.io/go-containerregistry/crane ls "$(sed 's|:[^/]*$||' <<< ${IMAGE_URL})"
+          docker run --rm gcr.io/go-containerregistry/crane ls "$(echo -n ${IMAGE_URL} | sed 's|:[^/]*$||')"
           tkn tr describe --last -o json | jq -r '.metadata.annotations["chains.tekton.dev/signed"]'
           cosign verify --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
           cosign verify-attestation --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
@@ -64,7 +64,7 @@ jobs:
           tkn pr logs --last -f
           sleep 60
           export IMAGE_URL=$(tkn pr describe --last -o jsonpath='{..taskResults}' | jq -r '.[] | select(.name | match("IMAGE_URL$")) | .value')
-          docker run --rm gcr.io/go-containerregistry/crane ls "$(sed 's|:[^/]*$||' <<< ${IMAGE_URL})"
+          docker run --rm gcr.io/go-containerregistry/crane ls "$(echo -n ${IMAGE_URL} | sed 's|:[^/]*$||')"
 
           cosign verify --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
           cosign verify-attestation --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"

@@ -100,7 +100,7 @@ tkn tr describe --last -o jsonpath='{.metadata.annotations.chains\.tekton\.dev/s
 #### Ensure the attestation and the signature were uploaded to OCI
 
 ```bash
-crane ls "$(sed 's|:[^/]*$||' <<< ${IMAGE_URL})"
+crane ls "$(echo -n ${IMAGE_URL} | sed 's|:[^/]*$||')"
 ```
 
 The output should look similar to this:

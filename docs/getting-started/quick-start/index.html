@@ -339,7 +339,7 @@ next steps. The logs can be displayed with:</p>
 </span><span style="color:#65737e;"># Should output &quot;true&quot;
 </span></code></pre>
 <h4 id="ensure-the-attestation-and-the-signature-were-uploaded-to-oci">Ensure the attestation and the signature were uploaded to OCI</h4>
-<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">crane</span><span> ls &quot;$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">IMAGE_URL</span><span>%</span><span style="color:#a3be8c;">:</span><span>*</span><span style="color:#a3be8c;">}</span><span>&quot;
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">crane</span><span> ls &quot;$</span><span style="color:#a3be8c;">(</span><span style="color:#96b5b4;">echo </span><span style="color:#bf616a;">-n </span><span>$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">IMAGE_URL</span><span style="color:#a3be8c;">} </span><span>| </span><span style="color:#bf616a;">sed </span><span>&#39;</span><span style="color:#a3be8c;">s|:[^/]*$||</span><span>&#39;</span><span style="color:#a3be8c;">)</span><span>&quot;
 </span></code></pre>
 <p>The output should look similar to this:</p>
 <pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> crane ls ttl.sh/b4527e3a81ef1b77b96d390163ddaad9/slsapoc

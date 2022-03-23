@@ -6,6 +6,7 @@ bnwv
 BUILDKIT
 Buildpacks
 buildpacks
+buildsec
 builtins
 chdir
 CNCF
@@ -78,7 +79,6 @@ taskrun
 Tekton
 tekton
 tektoncd
-buildsec
 TOPDIR
 toplevel
 USERPUBKEY

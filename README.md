@@ -38,7 +38,7 @@ make quickstart
 ## Going further
 
 The full documentation is available at
-<https://thesecuresoftwarefactory.github.io/ssf/>
+<https://buildsec.github.io/ssf/>
 
 ### Built With
 

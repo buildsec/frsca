@@ -1,1 +1,1 @@
-module: "github.com/thesecuresoftwarefactory/ssf"
+module: "github.com/buildsec/ssf"

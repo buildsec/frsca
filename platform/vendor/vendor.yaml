@@ -42,4 +42,4 @@ files:
   - release_file: "https://raw.githubusercontent.com/tektoncd/catalog/main/task/jib-gradle/0.4/jib-gradle.yaml"
     destination_dir: "tekton/catalog/main/task/jib-gradle/0.4"
     sha256: "6eeb03319667d31ab313983a012e24a7659e21e25f4cebd979c684e85f0c6c93"
-    validation_type: "sha256" 
+    validation_type: "sha256"

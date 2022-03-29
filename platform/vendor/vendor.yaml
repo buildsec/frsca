@@ -27,3 +27,7 @@ files:
     destination_dir: "tekton/catalog/main/task/kaniko/0.6"
     sha256: "92d44e556f64282f3ebc395ae5fa2cc1ea1a3de60177aaeedc49957360280717"
     validation_type: "sha256"
+  - release_file: "https://raw.githubusercontent.com/tektoncd/catalog/main/task/jib-gradle/0.4/jib-gradle.yaml"
+    destination_dir: "tekton/catalog/main/task/jib-gradle/0.4"
+    sha256: "6eeb03319667d31ab313983a012e24a7659e21e25f4cebd979c684e85f0c6c93"
+    validation_type: "sha256"  

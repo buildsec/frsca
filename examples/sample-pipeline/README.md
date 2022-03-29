@@ -10,32 +10,6 @@ application repository. In this example, we are going to build and deploy
 application. You can use `minikube` to run your tekton pipeline and deploy this
 application.
 
-## Verify your pipeline
-
-Before we start using our pipeline, we should always ensure the pipeline
-definitions are trusted. In this example, we have signed all the pipeline and
-task definitions, as well as all the images used in the tasks. We have used
-[sigstore/cosign](https://github.com/sigstore/cosign) to sign these resources,
-as annotated respectively.
-
-```yaml
-apiVersion: tekton.dev/v1beta1
-kind: Task
-metadata:
-  annotations:
-    cosign.sigstore.dev/imageRef: icr.io/gitsecure/git-clone:v1
-```
-
-You can verify these definitions using
-[tapstry-pipelines](https://github.com/tap8stry/tapestry-pipelines) tool using
-the provided public key.
-
-```bash
-# Assuming you have cloned this repo locally and `chdir` to `sample-pipeline`
-# directory
-% tapestry-pipelines tkn verify -d . -i icr.io/gitsecure -t v1 -key ssf-verify.pub
-```
-
 ## Starting Demo
 
 ```bash
@@ -56,7 +30,7 @@ export IMAGE_URL=$(tkn pr describe --last -o jsonpath='{..taskResults}' | jq -r 
 export TASK_RUN=$(tkn pr describe --last -o json | jq -r '.status.taskRuns | keys[] as $k | {"k": $k, "v": .[$k]} | select(.v.status.taskResults[]?.name | match("IMAGE_URL$")) | .k')
 
 # Double check that the attestation and the signature were uploaded to the OCI.
-crane ls "${IMAGE_URL%:*}"
+crane ls "$(echo -n ${IMAGE_URL} | sed 's|:[^/]*$||')"
 
 # Verify the image and the attestation.
 cosign verify --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"

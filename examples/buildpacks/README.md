@@ -41,7 +41,7 @@ export IMAGE_URL=$(tkn pr describe --last -o jsonpath='{..taskResults}' | jq -r 
 export TASK_RUN=$(tkn pr describe --last -o json | jq -r '.status.taskRuns | keys[] as $k | {"k": $k, "v": .[$k]} | select(.v.status.taskResults[]?.name | match("IMAGE_URL$")) | .k')
 
 # Double check that the attestation and the signature were uploaded to the OCI.
-crane ls "${IMAGE_URL%:*}"
+crane ls "$(echo -n ${IMAGE_URL} | sed 's|:[^/]*$||')"
 
 # Verify the image and the attestation.
 cosign verify --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"

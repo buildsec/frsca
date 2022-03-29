@@ -1,4 +1,4 @@
-module github.com/thesecuresoftwarefactory/ssf
+module github.com/buildsec/ssf
 
 go 1.17
 

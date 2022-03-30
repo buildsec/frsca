@@ -34,7 +34,7 @@ COSIGN_RELEASE_URL="https://github.com/sigstore/cosign/releases/download/${COSIG
 COSIGN_CHECKSUMS="cosign_checksums.txt"
 COSIGN_ASSET="${COSIGN_BIN}-${COSIGN_OS}-${COSIGN_ARCH}"
 
-CUE_VERSION=v0.4.0
+CUE_VERSION=v0.4.2
 CUE_FILE_NAME=cue_${CUE_VERSION}_linux_amd64.tar.gz
 CUE_URL=https://github.com/cue-lang/cue/releases/download/${CUE_VERSION}
 CUE_CHECKSUMS=checksums.txt

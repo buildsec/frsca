@@ -7,8 +7,8 @@ spec:
   pipelineRef:
     name: maven-test-pipeline
   workspaces:
+    - name: maven-test-pipeline-run-ws
+      persistentVolumeClaim:
+        claimName: maven-test-pipeline-run-source-ws-pvc
     - name: maven-settings
       emptyDir: {}
-    - name: shared-workspace
-      persistentvolumeclaim:
-        claimName: maven-source-pvc

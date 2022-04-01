@@ -52,6 +52,10 @@ jobs:
         run: |
           make example-buildpacks
           tkn pr logs --last -f
+          if [ "$(tkn pr describe --last -o jsonpath='{.status.conditions[?(@.type == "Succeeded")].status}')" != "True" ]; then
+            tkn pr describe --last
+            exit 1
+          fi
           sleep 60
           export IMAGE_URL=$(tkn pr describe --last -o jsonpath='{..taskResults}' | jq -r '.[] | select(.name | match("IMAGE_URL$")) | .value')
           docker run --rm gcr.io/go-containerregistry/crane ls "$(echo -n ${IMAGE_URL} | sed 's|:[^/]*$||')"
@@ -62,6 +66,10 @@ jobs:
         run: |
           make example-sample-pipeline
           tkn pr logs --last -f
+          if [ "$(tkn pr describe --last -o jsonpath='{.status.conditions[?(@.type == "Succeeded")].status}')" != "True" ]; then
+            tkn pr describe --last
+            exit 1
+          fi
           sleep 60
           export IMAGE_URL=$(tkn pr describe --last -o jsonpath='{..taskResults}' | jq -r '.[] | select(.name | match("IMAGE_URL$")) | .value')
           docker run --rm gcr.io/go-containerregistry/crane ls "$(echo -n ${IMAGE_URL} | sed 's|:[^/]*$||')"

@@ -5,7 +5,7 @@ metadata:
   name: maven-test-pipeline
 spec:
   workspaces:
-    - name: shared-workspace
+    - name: maven-test-pipeline-run-ws
     - name: maven-settings
   tasks:
     - name: fetch-repository
@@ -13,7 +13,7 @@ spec:
         name: git-clone
       workspaces:
         - name: output
-          workspace: shared-workspace
+          workspace: maven-test-pipeline-run-ws
       params:
         - name: url
           value: https://github.com/redhat-scholars/tekton-tutorial-greeter
@@ -36,12 +36,12 @@ spec:
         - name: maven-settings
           workspace: maven-settings
         - name: source
-          workspace: shared-workspace
+          workspace: maven-test-pipeline-run-ws
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: maven-source-pvc
+  name: maven-test-pipeline-run-source-ws-pvc
 spec:
   accessModes:
     - ReadWriteOnce

@@ -65,6 +65,10 @@ example-maven: ## Run the maven example
 example-golang-pipeline: ## Run the go-pipeline example
 	bash examples/go-pipeline/go-pipeline.sh
 
+.PHONY: example-gradle-pipeline
+example-gradle-pipeline: ## Run the gradle-pipeline example
+	bash examples/gradle-pipeline/gradle-pipeline.sh
+
 .PHONY: example-sample-pipeline
 example-sample-pipeline: ## Run the sample-pipeline example
 	bash examples/sample-pipeline/sample-pipeline.sh

@@ -25,7 +25,7 @@ files:
     validation_type: "sha256"
   - release_file: "https://raw.githubusercontent.com/tektoncd/catalog/main/task/kaniko/0.6/kaniko.yaml"
     destination_dir: "tekton/catalog/main/task/kaniko/0.6"
-    sha256: "92d44e556f64282f3ebc395ae5fa2cc1ea1a3de60177aaeedc49957360280717"
+    sha256: "595746871b33eb6dc84b56b1a94365d8707cbe7fcec91fb02218be834dce504c"
     validation_type: "sha256"
   - release_file: "https://raw.githubusercontent.com/buildpacks/tekton-integration/main/task/buildpacks/0.4/buildpacks.yaml"
     destination_dir: "buildpacks/tekton-integration/main/task/buildpacks/0.4"

@@ -1,6 +1,6 @@
 package ssf
 
-configMap: "\(#keys.name)": {
+ssf: configMap: "\(#keys.name)": {
 	metadata: namespace: #keys.namespace
 	data: {
 		tektoncd: """

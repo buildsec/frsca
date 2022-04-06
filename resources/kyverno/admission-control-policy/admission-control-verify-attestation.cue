@@ -1,6 +1,6 @@
 package ssf
 
-clusterPolicy: "attest-code-review": {
+ssf: clusterPolicy: "attest-code-review": {
 	spec: rules: [{
 		verifyImages: [{
 			image: #public.repo

@@ -13,8 +13,8 @@ C_RESET_ALL='\033[0m'
 echo -e "${C_GREEN}Creating a IBM tutorial pipelinerun: REPOSITORY=${REPOSITORY}${C_RESET_ALL}"
 kubectl apply -f "${GIT_ROOT}"/platform/vendor/tekton/catalog/main/task/git-clone/0.4/git-clone.yaml
 kubectl apply -f "${GIT_ROOT}"/platform/vendor/tekton/catalog/main/task/kaniko/0.6/kaniko.yaml
-pushd "${GIT_ROOT}"
-cue -t "repository=${REPOSITORY}" apply ./examples/ibm-tutorial | kubectl apply -f -
-cue -t "repository=${REPOSITORY}" create ./examples/ibm-tutorial | kubectl create -f -
+pushd "${GIT_ROOT}"/examples/ibm-tutorial
+cue cmd -t "repository=${REPOSITORY}" apply | kubectl apply -f -
+cue cmd -t "repository=${REPOSITORY}" create | kubectl create -f -
 popd
 tkn pipelinerun describe --last

@@ -40,6 +40,6 @@ kubectl patch \
 kubectl rollout status -n kyverno deployment/kyverno
 
 echo -e "${C_GREEN}Creating verify-image admission control policy...${C_RESET_ALL}"
-pushd "$GIT_ROOT"
-cue -t repo="$REPO" -t key="$USERPUBKEY" apply ./resources/kyverno/admission-control-policy | kubectl apply -f -
+pushd "$GIT_ROOT"/resources/kyverno/admission-control-policy
+cue cmd -t repo="$REPO" -t key="$USERPUBKEY" apply | kubectl apply -f -
 popd

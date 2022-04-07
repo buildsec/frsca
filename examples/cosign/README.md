@@ -50,6 +50,7 @@ Start by cloning the [cosign] repository:
 
 ```bash
 git clone git@github.com:sigstore/cosign.git
+cd cosign
 ```
 
 And step into it.

@@ -24,6 +24,10 @@ help: # Display help
 .PHONY: quickstart
 quickstart: setup-minikube setup-tekton-chains tekton-generate-keys setup-kyverno example-buildpacks ## Spin up the SSF project into minikube
 
+.PHONY: teardown
+teardown:
+	minikube delete
+
 .PHONY: setup-minikube
 setup-minikube: ## Setup a Kubernetes cluster using Minikube
 	bash platform/00-kubernetes-minikube-setup.sh

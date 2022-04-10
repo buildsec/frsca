@@ -35,6 +35,12 @@ Chains], and the [buildpacks] pipeline, simply run:
 make quickstart
 ```
 
+Tearing down the Minikube cluster generated in the quickstart, simply run:
+
+```bash
+make teardown
+```
+
 ## Going further
 
 The full documentation is available at

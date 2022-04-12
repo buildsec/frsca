@@ -14,8 +14,8 @@ kubectl apply -f "${GIT_ROOT}"/platform/vendor/tekton/catalog/main/task/git-clon
 
 # Install the buildpacks pipelinerun.
 echo -e "${C_GREEN}Creating a Ko pipelinerun: REPOSITORY=${REPOSITORY}${C_RESET_ALL}"
-pushd "${GIT_ROOT}"
-cue -t "repository=${REPOSITORY}" apply ./examples/cosign | kubectl apply -f -
-cue -t "repository=${REPOSITORY}" create ./examples/cosign | kubectl create -f -
+pushd "${GIT_ROOT}"/examples/cosign
+cue cmd -t "repository=${REPOSITORY}" apply | kubectl apply -f -
+cue cmd -t "repository=${REPOSITORY}" create | kubectl create -f -
 popd
 tkn pipelinerun describe --last

@@ -1,10 +1,8 @@
 package ssf
 
-_image: {
-	name: "gradle-build-test-ssf"
-}
+_IMAGE: name: "gradle-build-test-ssf"
 
-pipeline: "pipeline-gradle-test": spec: {
+ssf: pipeline: "pipeline-gradle-test": spec: {
 	workspaces: [{
 		name:     "pipeline-pvc"
 		optional: false
@@ -104,7 +102,7 @@ pipeline: "pipeline-gradle-test": spec: {
 		}]
 	}]
 }
-pipelineRun: "pipelinerun-gradle-test-": {
+ssf: pipelineRun: "pipelinerun-gradle-test-": {
 	spec: {
 		params: [{
 			name:  "image"

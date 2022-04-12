@@ -7,67 +7,67 @@ import (
 	pipelineV1Beta1 "github.com/tektoncd/pipeline/pkg/apis/pipeline/v1beta1"
 )
 
-configMap: [Name=_]: k8sCoreV1.#ConfigMap & {
+ssf: configMap?: [Name=_]: k8sCoreV1.#ConfigMap & {
 	apiVersion: "v1"
 	kind:       "ConfigMap"
 	metadata: name: *Name | string
 }
 
-secret: [Name=_]: k8sCoreV1.#Secret & {
+ssf: secret?: [Name=_]: k8sCoreV1.#Secret & {
 	apiVersion: "v1"
 	kind:       "Secret"
 	metadata: name: *Name | string
 }
 
-serviceAccount: [Name=_]: k8sCoreV1.#ServiceAccount & {
+ssf: serviceAccount?: [Name=_]: k8sCoreV1.#ServiceAccount & {
 	apiVersion: "v1"
 	kind:       "ServiceAccount"
 	metadata: name: *Name | string
 }
 
-role: [Name=_]: k8sRbacV1.#Role & {
+ssf: role?: [Name=_]: k8sRbacV1.#Role & {
 	kind:       "Role"
 	apiVersion: "rbac.authorization.k8s.io/v1"
 	metadata: name: *Name | string
 }
 
-clusterRole: [Name=_]: k8sRbacV1.#ClusterRole & {
+ssf: clusterRole?: [Name=_]: k8sRbacV1.#ClusterRole & {
 	kind:       "ClusterRole"
 	apiVersion: "rbac.authorization.k8s.io/v1"
 	metadata: name: *Name | string
 }
 
-roleBinding: [Name=_]: k8sRbacV1.#RoleBinding & {
+ssf: roleBinding?: [Name=_]: k8sRbacV1.#RoleBinding & {
 	apiVersion: "rbac.authorization.k8s.io/v1"
 	kind:       "RoleBinding"
 	metadata: name: *Name | string
 }
 
-clusterRoleBinding: [Name=_]: k8sRbacV1.#ClusterRoleBinding & {
+ssf: clusterRoleBinding?: [Name=_]: k8sRbacV1.#ClusterRoleBinding & {
 	apiVersion: "rbac.authorization.k8s.io/v1"
 	kind:       "ClusterRoleBinding"
 	metadata: name: *Name | string
 }
 
-task: [Name=_]: pipelineV1Beta1.#Task & {
+ssf: task?: [Name=_]: pipelineV1Beta1.#Task & {
 	apiVersion: "tekton.dev/v1beta1"
 	kind:       "Task"
 	metadata: name: *Name | string
 }
 
-taskRun: [Name=_]: pipelineV1Beta1.#TaskRun & {
+ssf: taskRun?: [Name=_]: pipelineV1Beta1.#TaskRun & {
 	apiVersion: "tekton.dev/v1beta1"
 	kind:       "TaskRun"
 	metadata: name: *Name | string
 }
 
-pipeline: [Name=_]: pipelineV1Beta1.#Pipeline & {
+ssf: pipeline?: [Name=_]: pipelineV1Beta1.#Pipeline & {
 	apiVersion: "tekton.dev/v1beta1"
 	kind:       "Pipeline"
 	metadata: name: *Name | string
 }
 
-pipelineRun: [GeneratedName=_]: pipelineV1Beta1.#PipelineRun & {
+ssf: pipelineRun?: [GeneratedName=_]: pipelineV1Beta1.#PipelineRun & {
 	apiVersion: "tekton.dev/v1beta1"
 	kind:       "PipelineRun"
 	metadata: {
@@ -76,13 +76,13 @@ pipelineRun: [GeneratedName=_]: pipelineV1Beta1.#PipelineRun & {
 	}
 }
 
-persistentVolumeClaim: [Name=_]: k8sCoreV1.#PersistentVolumeClaim & {
+ssf: persistentVolumeClaim?: [Name=_]: k8sCoreV1.#PersistentVolumeClaim & {
 	apiVersion: "v1"
 	kind:       "PersistentVolumeClaim"
 	metadata: name: *Name | string
 }
 
-clusterPolicy: [Name=_]: kyvernoV1.#ClusterPolicy & {
+ssf: clusterPolicy?: [Name=_]: kyvernoV1.#ClusterPolicy & {
 	apiVersion: "kyverno.io/v1"
 	kind:       "ClusterPolicy"
 	metadata: name: *Name | string

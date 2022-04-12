@@ -72,3 +72,5 @@ spec:
           value: "$(tasks.build-with-ko.results.IMAGE_URL)"
         - name: image-digest
           value: "$(tasks.build-with-ko.results.IMAGE_DIGEST)"
+        - name: fail-on
+          value: high

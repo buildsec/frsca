@@ -67,6 +67,10 @@ ssf: task: "grype-vulnerability-scan": {
 			name: "fail-on"
 			description: "set the return code to 1 if a vulnerability is found with a severity >= the given severity, options=[negligible low medium high critical]"
 			default: "medium"
+		}, {
+			name: "only-fixed"
+			description: "ignore matches for vulnerabilities that are not fixed (blank to disable)"
+			default: "--only-fixed"
 		}]
 		stepTemplate: {
 			name: "PIPELINE_DEBUG"
@@ -79,7 +83,8 @@ ssf: task: "grype-vulnerability-scan": {
 			args: [
 				"$(params.image-ref)@$(params.image-digest)",
 				"-v",
-				"-f",
+				"$(params.only-fixed)",
+				"--fail-on",
 				"$(params.fail-on)",
 			]
 			image: "anchore/grype:v0.34.1@sha256:4808f489d418599be4970108535cd1a0638027719b55df653646be0c9613a954"

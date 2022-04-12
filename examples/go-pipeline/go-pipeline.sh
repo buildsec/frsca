@@ -18,8 +18,8 @@ kubectl apply -f "${GIT_ROOT}"/platform/vendor/tekton/catalog/main/task/kaniko/0
 
 # Install the buildpacks pipelinerun.
 echo -e "${C_GREEN}Creating a Golang pipelinerun: REPOSITORY=${REPOSITORY}${C_RESET_ALL}"
-pushd "${GIT_ROOT}"
-cue -t "repository=${REPOSITORY}" apply ./examples/go-pipeline | kubectl apply -f -
-cue -t "repository=${REPOSITORY}" create ./examples/go-pipeline | kubectl create -f -
+pushd "${GIT_ROOT}"/examples/go-pipeline
+cue cmd -t "repository=${REPOSITORY}" apply | kubectl apply -f -
+cue cmd -t "repository=${REPOSITORY}" create | kubectl create -f -
 popd
 tkn pipelinerun describe --last

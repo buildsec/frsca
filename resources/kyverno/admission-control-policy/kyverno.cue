@@ -10,7 +10,7 @@ package ssf
 	key:  string @tag(key)
 }
 
-clusterPolicy: [Name=_]: spec: {
+ssf: clusterPolicy: [Name=_]: spec: {
 	validationFailureAction: "enforce"
 	background:              false
 	webhookTimeoutSeconds:   *30 | int

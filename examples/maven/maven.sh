@@ -15,5 +15,7 @@ kubectl apply -f "${GIT_ROOT}"/platform/vendor/tekton/catalog/main/task/maven/0.
 
 # Install the maven pipelinerun.
 echo -e "${C_GREEN}Creating a maven pipelinerun${C_RESET_ALL}"
-kubectl apply -f examples/maven/maven.yaml
-kubectl create -f examples/maven/maven-run.yaml
+pushd "${GIT_ROOT}"/examples/maven
+cue cmd apply | kubectl apply -f -
+cue cmd create | kubectl create -f -
+popd

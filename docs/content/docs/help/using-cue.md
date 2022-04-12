@@ -70,8 +70,10 @@ defines commands for exporting things that can be used in conjunction with
 `examples/buildpacks/buildpacks.sh`.
 
 ```bash
-cue -t "repository=${REPOSITORY}" apply ./examples/buildpacks | kubectl apply -f -
-cue -t "repository=${REPOSITORY}" create ./examples/buildpacks | kubectl create -f -
+pushd examples/buildpacks
+cue cmd -t "repository=${REPOSITORY}" apply | kubectl apply -f -
+cue cmd -t "repository=${REPOSITORY}" create | kubectl create -f -
+popd
 ```
 
 Here we are using the `cue apply ...` command to export definitions from

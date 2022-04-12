@@ -51,7 +51,7 @@ ssf: pipelineRun: [Name=_]: spec: workspaces: [{
 	persistentVolumeClaim: claimName: "\(Name)source-ws-pvc"
 }, ...]
 
-task: "grype-vulnerability-scan": {
+ssf: task: "grype-vulnerability-scan": {
 	spec: {
 		params: [{
 			description: "image reference"

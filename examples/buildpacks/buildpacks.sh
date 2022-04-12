@@ -19,8 +19,8 @@ kubectl apply -f "${GIT_ROOT}"/platform/vendor/buildpacks/tekton-integration/mai
 
 # Install the buildpacks pipelinerun.
 echo -e "${C_GREEN}Creating a buildpacks pipelinerun: REPOSITORY=${REPOSITORY}${C_RESET_ALL}"
-pushd "${GIT_ROOT}"
-cue -t "repository=${REPOSITORY}" apply ./examples/buildpacks | kubectl apply -f -
-cue -t "repository=${REPOSITORY}" create ./examples/buildpacks | kubectl create -f -
+pushd "${GIT_ROOT}"/examples/buildpacks
+cue cmd -t "repository=${REPOSITORY}" apply | kubectl apply -f -
+cue cmd -t "repository=${REPOSITORY}" create | kubectl create -f -
 popd
 tkn pipelinerun describe --last

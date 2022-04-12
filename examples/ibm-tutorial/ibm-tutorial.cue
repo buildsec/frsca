@@ -1,10 +1,8 @@
 package ssf
 
-_image: {
-	name: "picalc"
-}
+_IMAGE: name: "picalc"
 
-pipeline: "build-and-deploy-pipeline": spec: {
+ssf: pipeline: "build-and-deploy-pipeline": spec: {
 	workspaces: [{
 		name:        "git-source"
 		description: "The git repo"
@@ -71,7 +69,7 @@ pipeline: "build-and-deploy-pipeline": spec: {
 	}]
 }
 
-pipelineRun: "picalc-pr-": spec: {
+ssf: pipelineRun: "picalc-pr-": spec: {
 	pipelineRef: name: "build-and-deploy-pipeline"
 	params: [{
 		name:  "gitUrl"

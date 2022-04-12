@@ -1,6 +1,6 @@
 package ssf
 
-clusterPolicy: "verify-image": {
+ssf: clusterPolicy: "verify-image": {
 	spec: rules: [{
 		verifyImages: [{
 			image: "gcr.io/tekton-releases/github.com/tektoncd/*"

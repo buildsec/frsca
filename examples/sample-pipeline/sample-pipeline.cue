@@ -1,10 +1,8 @@
 package ssf
 
-_image: {
-	name: "hello-ssf"
-}
+_IMAGE: name: "hello-ssf"
 
-pipeline: "build-and-deploy-pipeline": {
+ssf: pipeline: "build-and-deploy-pipeline": {
 	spec: {
 		params: [{
 			description: "Git repository url"
@@ -119,7 +117,7 @@ pipeline: "build-and-deploy-pipeline": {
 	}
 }
 
-pipelineRun: "ssf-lab-pipelinerun-": spec: {
+ssf: pipelineRun: "ssf-lab-pipelinerun-": spec: {
 	pipelineRef: name: "build-and-deploy-pipeline"
 	params: [{
 		name:  "gitUrl"
@@ -140,7 +138,7 @@ pipelineRun: "ssf-lab-pipelinerun-": spec: {
 	}]
 }
 
-task: "deploy-using-kubectl": {
+ssf: task: "deploy-using-kubectl": {
 	spec: {
 		params: [{
 			description: "The path to the yaml file to deploy within the git source"
@@ -191,7 +189,7 @@ task: "deploy-using-kubectl": {
 	}
 }
 
-task: "grype-vulnerability-scan": {
+ssf: task: "grype-vulnerability-scan": {
 	spec: {
 		params: [{
 			description: "image reference"
@@ -228,7 +226,7 @@ task: "grype-vulnerability-scan": {
 	}
 }
 
-task: "syft-bom-generator": {
+ssf: task: "syft-bom-generator": {
 	spec: {
 		params: [{
 			description: "image reference"

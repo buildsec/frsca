@@ -1,10 +1,8 @@
 package ssf
 
-_image: {
-	name: "go-build-test-ssf"
-}
+_IMAGE: name: "go-build-test-ssf"
 
-pipeline: "pipeline-go-test": spec: {
+ssf: pipeline: "pipeline-go-test": spec: {
 	workspaces: [{
 		name:     "pipeline-pvc"
 		optional: false
@@ -143,7 +141,7 @@ pipeline: "pipeline-go-test": spec: {
 		}]
 	}]
 }
-pipelineRun: "pipelinerun-go-test-": {
+ssf: pipelineRun: "pipelinerun-go-test-": {
 	spec: {
 		params: [{
 			name:  "image"

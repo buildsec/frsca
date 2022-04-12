@@ -1,11 +1,9 @@
 package ssf
 
-_image: {
-	name: "slsa"
-}
+_IMAGE: name: "slsa"
 
 
-pipelineRun: "ko-pipelinerun-": spec: {
+ssf: pipelineRun: "ko-pipelinerun-": spec: {
 	pipelineRef: name: "ko"
 	params: [ {
 		name:  "APP_IMAGE"

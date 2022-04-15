@@ -57,6 +57,10 @@ setup-kyverno: ## Setup Kyverno.
 setup-opa-gatekeeper: ##  Setup opa gatekeeper
 	bash platform/31-opa-gatekeeper-setup.sh
 
+.PHONY: setup-efk-stack
+setup-efk-stack: ## Setup up EFK stack
+	bash platform/40-efk-stack-setup/40-efk-stack-setup.sh
+
 .PHONY: example-buildpacks
 example-buildpacks: ## Run the buildpacks example
 	bash examples/buildpacks/buildpacks.sh

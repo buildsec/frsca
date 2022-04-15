@@ -55,3 +55,7 @@ files:
     destination_dir: "tekton/catalog/main/task/trivy-scanner/0.1"
     sha256: "b43c6ed2eb4b2b04781c2643f139f60345e92504dd20365f4f888a41c45d42b5"
     validation_type: "sha256"
+  - release_file: "https://raw.githubusercontent.com/tektoncd/catalog/main/task/git-clone/0.6/git-clone.yaml"
+    destination_dir: "tekton/catalog/main/task/git-clone/0.6"
+    sha256: "42a0c585d4f0b26e08edd84c5a88684662575ca8e832eea7311a5c8ebf524c45"
+    validation_type: "sha256"

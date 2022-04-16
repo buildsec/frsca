@@ -78,3 +78,14 @@ jobs:
           cosign verify-attestation --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
 
           kubectl wait --timeout=5m --for=condition=ready pods -l app=picalc -n prod
+
+  tests:
+    runs-on: ubuntu-latest
+    needs:
+      setup
+    name: Functional tests
+    steps:
+      - uses: actions/checkout@v2
+      - name: Functional tests
+        run: |
+          make functional-tests

@@ -10,7 +10,7 @@ C_GREEN='\033[32m'
 C_RESET_ALL='\033[0m'
 
 # Install shared tasks.
-kubectl apply -f "${GIT_ROOT}"/platform/vendor/tekton/catalog/main/task/git-clone/0.4/git-clone.yaml
+kubectl apply -f "${GIT_ROOT}"/platform/vendor/tekton/catalog/main/task/git-clone/0.6/git-clone.yaml
 
 # Install the buildpacks pipelinerun.
 echo -e "${C_GREEN}Creating a Ko pipelinerun: REPOSITORY=${REPOSITORY}${C_RESET_ALL}"

@@ -60,7 +60,7 @@ case "${PLATFORM}" in
     tkn version || brew install tektoncd-cli
     kubectl version --client || brew install kubectl
     cosign version || brew install sigstore/tap/cosign
-    cue version || brew install cuelang/tap/cue
+    cue version || brew install cue-lang/tap/cue 
     jq --version || brew install jq
     ;;
 
@@ -180,7 +180,7 @@ if [ "${MINIKUBE_STATUS}" == "Running" ]; then
 else
   echo -e "${C_GREEN}Starting Minikube...${C_RESET_ALL}"
   minikube start \
-    --driver=docker \
+    --memory max --cpus max \
     --extra-config=apiserver.service-account-signing-key-file=/var/lib/minikube/certs/sa.key \
     --extra-config=apiserver.service-account-key-file=/var/lib/minikube/certs/sa.pub \
     --extra-config=apiserver.service-account-issuer=api \

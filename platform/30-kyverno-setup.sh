@@ -24,13 +24,15 @@ kubectl apply -f "$KYVERNO_INSTALL_DIR"/install.yaml
 # Wait for kyverno deployment to complete
 kubectl rollout status -n kyverno deployment/kyverno
 
-echo -e "${C_GREEN}Creating docker config secrets...${C_RESET_ALL}"
-# TODO: This should just be the normal secret if the kaniko task is updated to correctly use the docker config secret instead of requiring it to be hardcoded as config.json
-kubectl create secret generic secret-dockerconfigjson --type=opaque --from-file=config.json="$DOCKER_CONFIG_JSON" --dry-run=client -o yaml | kubectl apply -f -
+if [ -s "$DOCKER_CONFIG_JSON" ]; then
+  echo -e "${C_GREEN}Creating docker config secrets...${C_RESET_ALL}"
+  # TODO: This should just be the normal secret if the kaniko task is updated to correctly use the docker config secret instead of requiring it to be hardcoded as config.json
+  kubectl create secret generic secret-dockerconfigjson --type=opaque --from-file=config.json="$DOCKER_CONFIG_JSON" --dry-run=client -o yaml | kubectl apply -f -
 
-# NOTE: Pull secret needs to exist in both kyverno namespace as well as the tekton task namespace (default in this case)
-kubectl create secret generic regcred --type=kubernetes.io/dockerconfigjson --from-file=.dockerconfigjson="$DOCKER_CONFIG_JSON" -n kyverno  --dry-run=client -o yaml | kubectl apply -f -
-kubectl create secret generic regcred --type=kubernetes.io/dockerconfigjson --from-file=.dockerconfigjson="$DOCKER_CONFIG_JSON" --dry-run=client -o yaml | kubectl apply -f -
+  # NOTE: Pull secret needs to exist in both kyverno namespace as well as the tekton task namespace (default in this case)
+  kubectl create secret generic regcred --type=kubernetes.io/dockerconfigjson --from-file=.dockerconfigjson="$DOCKER_CONFIG_JSON" -n kyverno  --dry-run=client -o yaml | kubectl apply -f -
+  kubectl create secret generic regcred --type=kubernetes.io/dockerconfigjson --from-file=.dockerconfigjson="$DOCKER_CONFIG_JSON" --dry-run=client -o yaml | kubectl apply -f -
+fi
 
 echo -e "${C_GREEN}Patching Kyverno deployment...${C_RESET_ALL}"
 kubectl patch \

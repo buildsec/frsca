@@ -20,11 +20,19 @@ jobs:
         run: make lint
 
   setup:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        platform: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.platform }}
     needs:
       lint
     name: Test SSF Installation
     steps:
+      - name: Install minikube - MacOS
+        if: matrix.platform == 'macos-latest'
+        run: |
+          brew install hyperkit
+          brew install minikube
       - uses: actions/checkout@v2
       - name: Setup go
         uses: actions/setup-go@v2

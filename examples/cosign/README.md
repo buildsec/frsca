@@ -73,7 +73,6 @@ By default it looks like the SBOM does not perform any license detection.
 Generate the SBOM with [cyclonedx-gomod] from the [cosign] source repository:
 
 ```bash
-GOARCH=$(uname -m) GOOS=$(uname -s | tr '[:upper:]' '[:lower:]') \
   cyclonedx-gomod app \
   -output cyclonedx.sbom \
   -licenses \

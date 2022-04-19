@@ -60,7 +60,7 @@ case "${PLATFORM}" in
     tkn version || brew install tektoncd-cli
     kubectl version --client || brew install kubectl
     cosign version || brew install sigstore/tap/cosign
-    cue version || brew install cue-lang/tap/cue 
+    cue version || brew install cue-lang/tap/cue
     jq --version || brew install jq
     ;;
 
@@ -185,7 +185,8 @@ else
     --extra-config=apiserver.service-account-key-file=/var/lib/minikube/certs/sa.pub \
     --extra-config=apiserver.service-account-issuer=api \
     --extra-config=apiserver.service-account-api-audiences=api,spire-server \
-    --extra-config=apiserver.authorization-mode=Node,RBAC
+    --extra-config=apiserver.authorization-mode=Node,RBAC \
+    --memory max
 fi
 
 # Set up Minikube context.

@@ -1,0 +1,56 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: ko
+  labels:
+    app.kubernetes.io/version: "0.1"
+  annotations:
+    tekton.dev/pipelines.minVersion: "0.23.0"
+    tekton.dev/categories: Image Build
+    tekton.dev/tags: image-build
+    tekton.dev/displayName: "ko"
+    tekton.dev/platforms: "linux/amd64"
+spec:
+  description: >-
+    Ko is a simple, fast container image builder for Go applications.
+
+  params:
+    - name: LDFLAGS
+      description: The linker flags
+      default: ""
+    - name: KO_IMAGE
+      description: The name of the Ko image
+      default: "ghcr.io/google/ko:3cf55a10c9f6b4b2f0804c859a2ee01ec7d62d23"
+    - name: SOURCE_SUBPATH
+      description: >-
+        A subpath within checked out source where the source to build is
+        located.
+      default: ""
+    - name: KO_DOCKER_REPO
+      description: Identifies where the built images should be pushed.
+
+  results:
+    - name: IMAGE_DIGEST
+      description: The digest of the built image.
+    - name: IMAGE_URL
+      description: The URL of the built image.
+
+  workspaces:
+    - name: source
+
+  steps:
+    - name: ko-build
+      image: $(params.KO_IMAGE)
+      workingDir: $(workspaces.source.path)
+      securityContext:
+        privileged: true
+      script: |
+        export KO_DOCKER_REPO="$(params.KO_DOCKER_REPO)"
+        export LDFLAGS=""
+        export GIT_HASH="test"
+        export GIT_VERSION="test"
+        KO_IMAGE=$(ko build \
+          --base-import-paths \
+          "$(params.SOURCE_SUBPATH)")
+        echo -n "${KO_IMAGE}" | cut -d'@' -f1 | tr -d '[:space:]' | tee "$(results.IMAGE_URL.path)"
+        echo -n "${KO_IMAGE}" | cut -d'@' -f2 | tr -d '[:space:]' | tee "$(results.IMAGE_DIGEST.path)"

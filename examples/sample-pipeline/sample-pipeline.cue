@@ -189,43 +189,6 @@ ssf: task: "deploy-using-kubectl": {
 	}
 }
 
-ssf: task: "grype-vulnerability-scan": {
-	spec: {
-		params: [{
-			description: "image reference"
-			name:        "image-ref"
-		}, {
-			description: "image digest"
-			name:        "image-digest"
-		}, {
-			default:     "0"
-			description: "toggles debug mode for the pipeline"
-			name:        "pipeline-debug"
-		}, {
-			name: "fail-on"
-			description: "set the return code to 1 if a vulnerability is found with a severity >= the given severity, options=[negligible low medium high critical]"
-			default: "medium"
-		}]
-		stepTemplate: {
-			name: "PIPELINE_DEBUG"
-			env: [{
-				name:  "PIPELINE_DEBUG"
-				value: "$(params.pipeline-debug)"
-			}]
-		}
-		steps: [{
-			args: [
-				"$(params.image-ref)@$(params.image-digest)",
-				"-v",
-				"-f",
-				"$(params.fail-on)",
-			]
-			image: "anchore/grype:v0.34.1@sha256:4808f489d418599be4970108535cd1a0638027719b55df653646be0c9613a954"
-			name:  "grype-scanner"
-		}]
-	}
-}
-
 ssf: task: "syft-bom-generator": {
 	spec: {
 		params: [{

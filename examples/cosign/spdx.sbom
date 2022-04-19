@@ -1,0 +1,3767 @@
+SPDXVersion: SPDX-2.2
+DataLicense: CC0-1.0
+SPDXID: SPDXRef-DOCUMENT
+DocumentName: github.com/sigstore/cosign
+DocumentNamespace: http://spdx.org/spdxpackages/github.com/sigstore/cosign
+Creator: Tool: ko (devel)
+Created: 1970-01-01T00:00:00Z
+
+##### Package representing github.com/sigstore/cosign
+
+PackageName: github.com/sigstore/cosign
+SPDXID: SPDXRef-Package-github.com.sigstore.cosign
+PackageSupplier: Organization: github.com/sigstore/cosign
+PackageDownloadLocation: https://github.com/sigstore/cosign
+FilesAnalyzed: false
+PackageHomePage: https://github.com/sigstore/cosign
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+Relationship: SPDXRef-DOCUMENT DESCRIBES SPDXRef-Package-github.com.sigstore.cosign
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-cloud.google.com.go-v0.100.2
+
+##### Package representing cloud.google.com/go
+
+PackageName: cloud.google.com/go
+SPDXID: SPDXRef-Package-cloud.google.com.go-v0.100.2
+PackageVersion: v0.100.2
+PackageSupplier: Organization: cloud.google.com/go
+PackageDownloadLocation: https://proxy.golang.org/cloud.google.com/go/@v/v0.100.2.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: b7d230e501f9bf85ed94441a0ad518ef1eac080069b3cb16d1a730eded9643a6
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-cloud.google.com.go.compute-v1.5.0
+
+##### Package representing cloud.google.com/go/compute
+
+PackageName: cloud.google.com/go/compute
+SPDXID: SPDXRef-Package-cloud.google.com.go.compute-v1.5.0
+PackageVersion: v1.5.0
+PackageSupplier: Organization: cloud.google.com/go/compute
+PackageDownloadLocation: https://proxy.golang.org/cloud.google.com/go/compute/@v/v1.5.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 6f5cd6998bae1f3ee03bd90370cfc4a471abd3a520b18351a4d27323690588b3
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-cloud.google.com.go.iam-v0.1.1
+
+##### Package representing cloud.google.com/go/iam
+
+PackageName: cloud.google.com/go/iam
+SPDXID: SPDXRef-Package-cloud.google.com.go.iam-v0.1.1
+PackageVersion: v0.1.1
+PackageSupplier: Organization: cloud.google.com/go/iam
+PackageDownloadLocation: https://proxy.golang.org/cloud.google.com/go/iam/@v/v0.1.1.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: e026a94323458e292c92cd7fc7b8ecbecca014f86286c9589391a9b48ae55faf
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-cloud.google.com.go.kms-v1.3.0
+
+##### Package representing cloud.google.com/go/kms
+
+PackageName: cloud.google.com/go/kms
+SPDXID: SPDXRef-Package-cloud.google.com.go.kms-v1.3.0
+PackageVersion: v1.3.0
+PackageSupplier: Organization: cloud.google.com/go/kms
+PackageDownloadLocation: https://proxy.golang.org/cloud.google.com/go/kms/@v/v1.3.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 8561da1667d38ed5958127d7febcc4d6a9996bfd4016bffac505e19ee7e3c994
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-cloud.google.com.go.storage-v1.21.0
+
+##### Package representing cloud.google.com/go/storage
+
+PackageName: cloud.google.com/go/storage
+SPDXID: SPDXRef-Package-cloud.google.com.go.storage-v1.21.0
+PackageVersion: v1.21.0
+PackageSupplier: Organization: cloud.google.com/go/storage
+PackageDownloadLocation: https://proxy.golang.org/cloud.google.com/go/storage/@v/v1.21.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 1f09d3daed83df4f521431d0208ea6d7c1e5ac28b78c05e150c4cb3965d81f5e
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-cuelang.org.go-v0.4.2
+
+##### Package representing cuelang.org/go
+
+PackageName: cuelang.org/go
+SPDXID: SPDXRef-Package-cuelang.org.go-v0.4.2
+PackageVersion: v0.4.2
+PackageSupplier: Organization: cuelang.org/go
+PackageDownloadLocation: https://proxy.golang.org/cuelang.org/go/@v/v0.4.2.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 97ea6d823af2149fda8a48443127a6dfa2e85a4362e983459ac1115b6860c30e
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.Azure.azure-sdk-for-go-v61.5.0+incompatible
+
+##### Package representing github.com/Azure/azure-sdk-for-go
+
+PackageName: github.com/Azure/azure-sdk-for-go
+SPDXID: SPDXRef-Package-github.com.Azure.azure-sdk-for-go-v61.5.0+incompatible
+PackageVersion: v61.5.0+incompatible
+PackageSupplier: Organization: github.com/Azure/azure-sdk-for-go
+PackageDownloadLocation: https://proxy.golang.org/github.com/Azure/azure-sdk-for-go/@v/v61.5.0+incompatible.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 3921d215e366ec3d489c6b10ac58f237d869c43e4473ad0f76c596b9d0a96a1e
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.Azure.go-autorest.autorest-v0.11.24
+
+##### Package representing github.com/Azure/go-autorest/autorest
+
+PackageName: github.com/Azure/go-autorest/autorest
+SPDXID: SPDXRef-Package-github.com.Azure.go-autorest.autorest-v0.11.24
+PackageVersion: v0.11.24
+PackageSupplier: Organization: github.com/Azure/go-autorest/autorest
+PackageDownloadLocation: https://proxy.golang.org/github.com/Azure/go-autorest/autorest/@v/v0.11.24.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: d5f2068072aa566e782883d3faaf1999dd50955b261ea7941aca39aa6d81aaa1
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.Azure.go-autorest.autorest.adal-v0.9.18
+
+##### Package representing github.com/Azure/go-autorest/autorest/adal
+
+PackageName: github.com/Azure/go-autorest/autorest/adal
+SPDXID: SPDXRef-Package-github.com.Azure.go-autorest.autorest.adal-v0.9.18
+PackageVersion: v0.9.18
+PackageSupplier: Organization: github.com/Azure/go-autorest/autorest/adal
+PackageDownloadLocation: https://proxy.golang.org/github.com/Azure/go-autorest/autorest/adal/@v/v0.9.18.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 90b9cfb118f3659505dcae5112efca73ea8c42bbeecdad9bc129cd7619b32df4
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.Azure.go-autorest.autorest.azure.auth-v0.5.11
+
+##### Package representing github.com/Azure/go-autorest/autorest/azure/auth
+
+PackageName: github.com/Azure/go-autorest/autorest/azure/auth
+SPDXID: SPDXRef-Package-github.com.Azure.go-autorest.autorest.azure.auth-v0.5.11
+PackageVersion: v0.5.11
+PackageSupplier: Organization: github.com/Azure/go-autorest/autorest/azure/auth
+PackageDownloadLocation: https://proxy.golang.org/github.com/Azure/go-autorest/autorest/azure/auth/@v/v0.5.11.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 3fa6d85c5a1aa34e73e6e84e4336c2dd077c26a1778d4a287284de231929d9c0
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.Azure.go-autorest.autorest.azure.cli-v0.4.5
+
+##### Package representing github.com/Azure/go-autorest/autorest/azure/cli
+
+PackageName: github.com/Azure/go-autorest/autorest/azure/cli
+SPDXID: SPDXRef-Package-github.com.Azure.go-autorest.autorest.azure.cli-v0.4.5
+PackageVersion: v0.4.5
+PackageSupplier: Organization: github.com/Azure/go-autorest/autorest/azure/cli
+PackageDownloadLocation: https://proxy.golang.org/github.com/Azure/go-autorest/autorest/azure/cli/@v/v0.4.5.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: d16ff21a615d4c84fbedfbdd9466742cc212a0b1c527b4f1e14d32781fae16ce
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.Azure.go-autorest.autorest.date-v0.3.0
+
+##### Package representing github.com/Azure/go-autorest/autorest/date
+
+PackageName: github.com/Azure/go-autorest/autorest/date
+SPDXID: SPDXRef-Package-github.com.Azure.go-autorest.autorest.date-v0.3.0
+PackageVersion: v0.3.0
+PackageSupplier: Organization: github.com/Azure/go-autorest/autorest/date
+PackageDownloadLocation: https://proxy.golang.org/github.com/Azure/go-autorest/autorest/date/@v/v0.3.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: ee0524d54e4cfc241ba7d5a8aa29cdcc96abfbc298f8b3c8eb0896acffe6c87c
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.Azure.go-autorest.autorest.to-v0.4.0
+
+##### Package representing github.com/Azure/go-autorest/autorest/to
+
+PackageName: github.com/Azure/go-autorest/autorest/to
+SPDXID: SPDXRef-Package-github.com.Azure.go-autorest.autorest.to-v0.4.0
+PackageVersion: v0.4.0
+PackageSupplier: Organization: github.com/Azure/go-autorest/autorest/to
+PackageDownloadLocation: https://proxy.golang.org/github.com/Azure/go-autorest/autorest/to/@v/v0.4.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: a1756aaf16a4aaa5755197526b30ce3ce2ef388cfe5c0ebcdeef0472dc1ba079
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.Azure.go-autorest.autorest.validation-v0.3.1
+
+##### Package representing github.com/Azure/go-autorest/autorest/validation
+
+PackageName: github.com/Azure/go-autorest/autorest/validation
+SPDXID: SPDXRef-Package-github.com.Azure.go-autorest.autorest.validation-v0.3.1
+PackageVersion: v0.3.1
+PackageSupplier: Organization: github.com/Azure/go-autorest/autorest/validation
+PackageDownloadLocation: https://proxy.golang.org/github.com/Azure/go-autorest/autorest/validation/@v/v0.3.1.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 020caa8c077de1fc0d0284e397f5905e0e15bc57911693be521372457a85d5a7
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.Azure.go-autorest.logger-v0.2.1
+
+##### Package representing github.com/Azure/go-autorest/logger
+
+PackageName: github.com/Azure/go-autorest/logger
+SPDXID: SPDXRef-Package-github.com.Azure.go-autorest.logger-v0.2.1
+PackageVersion: v0.2.1
+PackageSupplier: Organization: github.com/Azure/go-autorest/logger
+PackageDownloadLocation: https://proxy.golang.org/github.com/Azure/go-autorest/logger/@v/v0.2.1.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 206ee2e29fe60dad827b84d1c803bc2079d5840545dd1154f99b5759299fe138
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.Azure.go-autorest.tracing-v0.6.0
+
+##### Package representing github.com/Azure/go-autorest/tracing
+
+PackageName: github.com/Azure/go-autorest/tracing
+SPDXID: SPDXRef-Package-github.com.Azure.go-autorest.tracing-v0.6.0
+PackageVersion: v0.6.0
+PackageSupplier: Organization: github.com/Azure/go-autorest/tracing
+PackageDownloadLocation: https://proxy.golang.org/github.com/Azure/go-autorest/tracing/@v/v0.6.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 4d88b8fb79b9b7a2b8f13188f4051d6fe2336e74b1be7bd431fba2b5f81c7eea
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.OneOfOne.xxhash-v1.2.8
+
+##### Package representing github.com/OneOfOne/xxhash
+
+PackageName: github.com/OneOfOne/xxhash
+SPDXID: SPDXRef-Package-github.com.OneOfOne.xxhash-v1.2.8
+PackageVersion: v1.2.8
+PackageSupplier: Organization: github.com/OneOfOne/xxhash
+PackageDownloadLocation: https://proxy.golang.org/github.com/OneOfOne/xxhash/@v/v1.2.8.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: df57332bf4c8f6c364c4829f6947c6954e3b040c50d33b4681df6f3f2aa299ff
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.PaesslerAG.gval-v1.0.0
+
+##### Package representing github.com/PaesslerAG/gval
+
+PackageName: github.com/PaesslerAG/gval
+SPDXID: SPDXRef-Package-github.com.PaesslerAG.gval-v1.0.0
+PackageVersion: v1.0.0
+PackageSupplier: Organization: github.com/PaesslerAG/gval
+PackageDownloadLocation: https://proxy.golang.org/github.com/PaesslerAG/gval/@v/v1.0.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 1842a74709160dd7fd74e98a70dadaafd100d5bcf5cfd0ea3c83b5fa22f385df
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.PaesslerAG.jsonpath-v0.1.1
+
+##### Package representing github.com/PaesslerAG/jsonpath
+
+PackageName: github.com/PaesslerAG/jsonpath
+SPDXID: SPDXRef-Package-github.com.PaesslerAG.jsonpath-v0.1.1
+PackageVersion: v0.1.1
+PackageSupplier: Organization: github.com/PaesslerAG/jsonpath
+PackageDownloadLocation: https://proxy.golang.org/github.com/PaesslerAG/jsonpath/@v/v0.1.1.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 735fc04e81d0315b1db8f01ae1587ac69d94d1ebf2e2df125a9f22984b329489
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.PuerkitoBio.purell-v1.1.1
+
+##### Package representing github.com/PuerkitoBio/purell
+
+PackageName: github.com/PuerkitoBio/purell
+SPDXID: SPDXRef-Package-github.com.PuerkitoBio.purell-v1.1.1
+PackageVersion: v1.1.1
+PackageSupplier: Organization: github.com/PuerkitoBio/purell
+PackageDownloadLocation: https://proxy.golang.org/github.com/PuerkitoBio/purell/@v/v1.1.1.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 58442a96a6866eb3e4c4b2567c1c1099f10013567b38d7432eaacddfcb4d15f2
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.PuerkitoBio.urlesc-v0.0.0-20170810143723-de5bf2ad4578
+
+##### Package representing github.com/PuerkitoBio/urlesc
+
+PackageName: github.com/PuerkitoBio/urlesc
+SPDXID: SPDXRef-Package-github.com.PuerkitoBio.urlesc-v0.0.0-20170810143723-de5bf2ad4578
+PackageVersion: v0.0.0-20170810143723-de5bf2ad4578
+PackageSupplier: Organization: github.com/PuerkitoBio/urlesc
+PackageDownloadLocation: https://proxy.golang.org/github.com/PuerkitoBio/urlesc/@v/v0.0.0-20170810143723-de5bf2ad4578.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 77e05cedae6b2ee7d5fec4a4ffc76782e7ea7a57e1ea39eb8bce6b88c01a17f3
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.ReneKroon.ttlcache.v2-v2.11.0
+
+##### Package representing github.com/ReneKroon/ttlcache/v2
+
+PackageName: github.com/ReneKroon/ttlcache/v2
+SPDXID: SPDXRef-Package-github.com.ReneKroon.ttlcache.v2-v2.11.0
+PackageVersion: v2.11.0
+PackageSupplier: Organization: github.com/ReneKroon/ttlcache/v2
+PackageDownloadLocation: https://proxy.golang.org/github.com/ReneKroon/ttlcache/v2/@v/v2.11.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 3af95c605622f78d5204ddeff5db03702d8df2f471c877029896f7565e103283
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.armon.go-metrics-v0.3.10
+
+##### Package representing github.com/armon/go-metrics
+
+PackageName: github.com/armon/go-metrics
+SPDXID: SPDXRef-Package-github.com.armon.go-metrics-v0.3.10
+PackageVersion: v0.3.10
+PackageSupplier: Organization: github.com/armon/go-metrics
+PackageDownloadLocation: https://proxy.golang.org/github.com/armon/go-metrics/@v/v0.3.10.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 151f9dadc412b4e7bedf6b18c8963267b148760a061819f02e5f9f968769f14a
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.armon.go-radix-v1.0.0
+
+##### Package representing github.com/armon/go-radix
+
+PackageName: github.com/armon/go-radix
+SPDXID: SPDXRef-Package-github.com.armon.go-radix-v1.0.0
+PackageVersion: v1.0.0
+PackageSupplier: Organization: github.com/armon/go-radix
+PackageDownloadLocation: https://proxy.golang.org/github.com/armon/go-radix/@v/v1.0.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 178cfa2b311e79020c78b15af7b89953abeea73a1e70a754e535f6e12369a572
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.asaskevich.govalidator-v0.0.0-20210307081110-f21760c49a8d
+
+##### Package representing github.com/asaskevich/govalidator
+
+PackageName: github.com/asaskevich/govalidator
+SPDXID: SPDXRef-Package-github.com.asaskevich.govalidator-v0.0.0-20210307081110-f21760c49a8d
+PackageVersion: v0.0.0-20210307081110-f21760c49a8d
+PackageSupplier: Organization: github.com/asaskevich/govalidator
+PackageDownloadLocation: https://proxy.golang.org/github.com/asaskevich/govalidator/@v/v0.0.0-20210307081110-f21760c49a8d.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 072bf4073125dff7ba0f908b7c8d23ffb862204b6f19514f099ec48b6a2af224
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.aws.aws-sdk-go-v1.43.0
+
+##### Package representing github.com/aws/aws-sdk-go
+
+PackageName: github.com/aws/aws-sdk-go
+SPDXID: SPDXRef-Package-github.com.aws.aws-sdk-go-v1.43.0
+PackageVersion: v1.43.0
+PackageSupplier: Organization: github.com/aws/aws-sdk-go
+PackageDownloadLocation: https://proxy.golang.org/github.com/aws/aws-sdk-go/@v/v1.43.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: cb852b3dbc54fe620bd3caa4b153c4fe7c07f485ee0b5b9d8ce68dca111efa92
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.aws.aws-sdk-go-v2-v1.13.0
+
+##### Package representing github.com/aws/aws-sdk-go-v2
+
+PackageName: github.com/aws/aws-sdk-go-v2
+SPDXID: SPDXRef-Package-github.com.aws.aws-sdk-go-v2-v1.13.0
+PackageVersion: v1.13.0
+PackageSupplier: Organization: github.com/aws/aws-sdk-go-v2
+PackageDownloadLocation: https://proxy.golang.org/github.com/aws/aws-sdk-go-v2/@v/v1.13.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: d5721701fc6c1266e16e3e6bcb70f7bd7fba65c518bc8a929b8096584b866420
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.aws.aws-sdk-go-v2.config-v1.13.1
+
+##### Package representing github.com/aws/aws-sdk-go-v2/config
+
+PackageName: github.com/aws/aws-sdk-go-v2/config
+SPDXID: SPDXRef-Package-github.com.aws.aws-sdk-go-v2.config-v1.13.1
+PackageVersion: v1.13.1
+PackageSupplier: Organization: github.com/aws/aws-sdk-go-v2/config
+PackageDownloadLocation: https://proxy.golang.org/github.com/aws/aws-sdk-go-v2/config/@v/v1.13.1.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: c8bbfc6df3684f8afe52f50a40aa91b5d9efb9618c2b96bcda5e2bbbd26f9eea
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.aws.aws-sdk-go-v2.credentials-v1.8.0
+
+##### Package representing github.com/aws/aws-sdk-go-v2/credentials
+
+PackageName: github.com/aws/aws-sdk-go-v2/credentials
+SPDXID: SPDXRef-Package-github.com.aws.aws-sdk-go-v2.credentials-v1.8.0
+PackageVersion: v1.8.0
+PackageSupplier: Organization: github.com/aws/aws-sdk-go-v2/credentials
+PackageDownloadLocation: https://proxy.golang.org/github.com/aws/aws-sdk-go-v2/credentials/@v/v1.8.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: f0ec3459cc837ac18d2f4368d758dc81bd4902d13e5adb9ba978e0c5abbe4b4a
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.aws.aws-sdk-go-v2.feature.ec2.imds-v1.10.0
+
+##### Package representing github.com/aws/aws-sdk-go-v2/feature/ec2/imds
+
+PackageName: github.com/aws/aws-sdk-go-v2/feature/ec2/imds
+SPDXID: SPDXRef-Package-github.com.aws.aws-sdk-go-v2.feature.ec2.imds-v1.10.0
+PackageVersion: v1.10.0
+PackageSupplier: Organization: github.com/aws/aws-sdk-go-v2/feature/ec2/imds
+PackageDownloadLocation: https://proxy.golang.org/github.com/aws/aws-sdk-go-v2/feature/ec2/imds/@v/v1.10.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 3484c3b9464edf89aab4ec05599897a3bc801e3ee47fe5cf13e1222ae0813542
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.aws.aws-sdk-go-v2.internal.configsources-v1.1.4
+
+##### Package representing github.com/aws/aws-sdk-go-v2/internal/configsources
+
+PackageName: github.com/aws/aws-sdk-go-v2/internal/configsources
+SPDXID: SPDXRef-Package-github.com.aws.aws-sdk-go-v2.internal.configsources-v1.1.4
+PackageVersion: v1.1.4
+PackageSupplier: Organization: github.com/aws/aws-sdk-go-v2/internal/configsources
+PackageDownloadLocation: https://proxy.golang.org/github.com/aws/aws-sdk-go-v2/internal/configsources/@v/v1.1.4.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 0918902781364617c376a6e27b56580e8f10b48a3be4c93ba1374949fc094cc4
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.aws.aws-sdk-go-v2.internal.endpoints.v2-v2.2.0
+
+##### Package representing github.com/aws/aws-sdk-go-v2/internal/endpoints/v2
+
+PackageName: github.com/aws/aws-sdk-go-v2/internal/endpoints/v2
+SPDXID: SPDXRef-Package-github.com.aws.aws-sdk-go-v2.internal.endpoints.v2-v2.2.0
+PackageVersion: v2.2.0
+PackageSupplier: Organization: github.com/aws/aws-sdk-go-v2/internal/endpoints/v2
+PackageDownloadLocation: https://proxy.golang.org/github.com/aws/aws-sdk-go-v2/internal/endpoints/v2/@v/v2.2.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: dc00e88a80cc3ad178ba22b9f6f0a9a65a42c2e80453ebf86450f6f630cbdd14
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.aws.aws-sdk-go-v2.internal.ini-v1.3.5
+
+##### Package representing github.com/aws/aws-sdk-go-v2/internal/ini
+
+PackageName: github.com/aws/aws-sdk-go-v2/internal/ini
+SPDXID: SPDXRef-Package-github.com.aws.aws-sdk-go-v2.internal.ini-v1.3.5
+PackageVersion: v1.3.5
+PackageSupplier: Organization: github.com/aws/aws-sdk-go-v2/internal/ini
+PackageDownloadLocation: https://proxy.golang.org/github.com/aws/aws-sdk-go-v2/internal/ini/@v/v1.3.5.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 8b1a2dc5b7d3085a6a6eec05bff45c670cb3864c4f4980d810c723e27881e549
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.aws.aws-sdk-go-v2.service.ecr-v1.14.0
+
+##### Package representing github.com/aws/aws-sdk-go-v2/service/ecr
+
+PackageName: github.com/aws/aws-sdk-go-v2/service/ecr
+SPDXID: SPDXRef-Package-github.com.aws.aws-sdk-go-v2.service.ecr-v1.14.0
+PackageVersion: v1.14.0
+PackageSupplier: Organization: github.com/aws/aws-sdk-go-v2/service/ecr
+PackageDownloadLocation: https://proxy.golang.org/github.com/aws/aws-sdk-go-v2/service/ecr/@v/v1.14.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 00064924010db10e3261b9dfbea3d94fc35cd58944779099e2eb329a50b66f85
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.aws.aws-sdk-go-v2.service.ecrpublic-v1.11.0
+
+##### Package representing github.com/aws/aws-sdk-go-v2/service/ecrpublic
+
+PackageName: github.com/aws/aws-sdk-go-v2/service/ecrpublic
+SPDXID: SPDXRef-Package-github.com.aws.aws-sdk-go-v2.service.ecrpublic-v1.11.0
+PackageVersion: v1.11.0
+PackageSupplier: Organization: github.com/aws/aws-sdk-go-v2/service/ecrpublic
+PackageDownloadLocation: https://proxy.golang.org/github.com/aws/aws-sdk-go-v2/service/ecrpublic/@v/v1.11.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 6b13a9d04700551ac5ec5f1df60a80a604fff518cddf8691f9cb96e4b4e044ea
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.aws.aws-sdk-go-v2.service.internal.presigned-url-v1.7.0
+
+##### Package representing github.com/aws/aws-sdk-go-v2/service/internal/presigned-url
+
+PackageName: github.com/aws/aws-sdk-go-v2/service/internal/presigned-url
+SPDXID: SPDXRef-Package-github.com.aws.aws-sdk-go-v2.service.internal.presigned-url-v1.7.0
+PackageVersion: v1.7.0
+PackageSupplier: Organization: github.com/aws/aws-sdk-go-v2/service/internal/presigned-url
+PackageDownloadLocation: https://proxy.golang.org/github.com/aws/aws-sdk-go-v2/service/internal/presigned-url/@v/v1.7.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: e1000e0772abbc8d40a492b5e2c9621abdc87b6a63caf372a67fe57f30c77d4c
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.aws.aws-sdk-go-v2.service.sso-v1.9.0
+
+##### Package representing github.com/aws/aws-sdk-go-v2/service/sso
+
+PackageName: github.com/aws/aws-sdk-go-v2/service/sso
+SPDXID: SPDXRef-Package-github.com.aws.aws-sdk-go-v2.service.sso-v1.9.0
+PackageVersion: v1.9.0
+PackageSupplier: Organization: github.com/aws/aws-sdk-go-v2/service/sso
+PackageDownloadLocation: https://proxy.golang.org/github.com/aws/aws-sdk-go-v2/service/sso/@v/v1.9.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: d6a2c979018198d416de604dccad82166ad0366a175abb1c3eab2b01a5356930
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.aws.aws-sdk-go-v2.service.sts-v1.14.0
+
+##### Package representing github.com/aws/aws-sdk-go-v2/service/sts
+
+PackageName: github.com/aws/aws-sdk-go-v2/service/sts
+SPDXID: SPDXRef-Package-github.com.aws.aws-sdk-go-v2.service.sts-v1.14.0
+PackageVersion: v1.14.0
+PackageSupplier: Organization: github.com/aws/aws-sdk-go-v2/service/sts
+PackageDownloadLocation: https://proxy.golang.org/github.com/aws/aws-sdk-go-v2/service/sts/@v/v1.14.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 92c8835e1bcd620d03dbf50590b7a3b1acf72eaa56e728cd43c371f529f67341
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.aws.smithy-go-v1.10.0
+
+##### Package representing github.com/aws/smithy-go
+
+PackageName: github.com/aws/smithy-go
+SPDXID: SPDXRef-Package-github.com.aws.smithy-go-v1.10.0
+PackageVersion: v1.10.0
+PackageSupplier: Organization: github.com/aws/smithy-go
+PackageDownloadLocation: https://proxy.golang.org/github.com/aws/smithy-go/@v/v1.10.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 82ca1940c3479d7f8f6a084dc38ca73ecc863fb6940aac79b18d9d94f42c674c
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.awslabs.amazon-ecr-credential-helper.ecr-login-v0.0.0-20220216180153-3d7835abdf40
+
+##### Package representing github.com/awslabs/amazon-ecr-credential-helper/ecr-login
+
+PackageName: github.com/awslabs/amazon-ecr-credential-helper/ecr-login
+SPDXID: SPDXRef-Package-github.com.awslabs.amazon-ecr-credential-helper.ecr-login-v0.0.0-20220216180153-3d7835abdf40
+PackageVersion: v0.0.0-20220216180153-3d7835abdf40
+PackageSupplier: Organization: github.com/awslabs/amazon-ecr-credential-helper/ecr-login
+PackageDownloadLocation: https://proxy.golang.org/github.com/awslabs/amazon-ecr-credential-helper/ecr-login/@v/v0.0.0-20220216180153-3d7835abdf40.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: b24cdb9f456442c5063adafc334036c528d9b272efabf15a15439df35154bbd0
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.beorn7.perks-v1.0.1
+
+##### Package representing github.com/beorn7/perks
+
+PackageName: github.com/beorn7/perks
+SPDXID: SPDXRef-Package-github.com.beorn7.perks-v1.0.1
+PackageVersion: v1.0.1
+PackageSupplier: Organization: github.com/beorn7/perks
+PackageDownloadLocation: https://proxy.golang.org/github.com/beorn7/perks/@v/v1.0.1.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 5656ca2a735f57c6c9cdeaa86b870e2aa3ba6d8af75a0299c4ef19d7afa1b0e3
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.blang.semver-v3.5.1+incompatible
+
+##### Package representing github.com/blang/semver
+
+PackageName: github.com/blang/semver
+SPDXID: SPDXRef-Package-github.com.blang.semver-v3.5.1+incompatible
+PackageVersion: v3.5.1+incompatible
+PackageSupplier: Organization: github.com/blang/semver
+PackageDownloadLocation: https://proxy.golang.org/github.com/blang/semver/@v/v3.5.1+incompatible.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 7103530a3a75dea2fc282dcd6f1affcb606a6fade85fac1d9e78e925b90ce094
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.cenkalti.backoff.v3-v3.2.2
+
+##### Package representing github.com/cenkalti/backoff/v3
+
+PackageName: github.com/cenkalti/backoff/v3
+SPDXID: SPDXRef-Package-github.com.cenkalti.backoff.v3-v3.2.2
+PackageVersion: v3.2.2
+PackageSupplier: Organization: github.com/cenkalti/backoff/v3
+PackageDownloadLocation: https://proxy.golang.org/github.com/cenkalti/backoff/v3/@v/v3.2.2.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 71f50000edf2bca31828faef843b874b0427859364fd130729d66a293c5f9ba3
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.cespare.xxhash.v2-v2.1.2
+
+##### Package representing github.com/cespare/xxhash/v2
+
+PackageName: github.com/cespare/xxhash/v2
+SPDXID: SPDXRef-Package-github.com.cespare.xxhash.v2-v2.1.2
+PackageVersion: v2.1.2
+PackageSupplier: Organization: github.com/cespare/xxhash/v2
+PackageDownloadLocation: https://proxy.golang.org/github.com/cespare/xxhash/v2/@v/v2.1.2.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 6115e129f4c36aebb86a3320d533e014ee639e50b61c26e62d731c4c6e5c6d81
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.chrismellard.docker-credential-acr-env-v0.0.0-20220119192733-fe33c00cee21
+
+##### Package representing github.com/chrismellard/docker-credential-acr-env
+
+PackageName: github.com/chrismellard/docker-credential-acr-env
+SPDXID: SPDXRef-Package-github.com.chrismellard.docker-credential-acr-env-v0.0.0-20220119192733-fe33c00cee21
+PackageVersion: v0.0.0-20220119192733-fe33c00cee21
+PackageSupplier: Organization: github.com/chrismellard/docker-credential-acr-env
+PackageDownloadLocation: https://proxy.golang.org/github.com/chrismellard/docker-credential-acr-env/@v/v0.0.0-20220119192733-fe33c00cee21.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 5e5a4bf441eb3ce04930b0c339fdf9fc6e2de6b18014d340650ddc0dc59abed7
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.cockroachdb.apd.v2-v2.0.1
+
+##### Package representing github.com/cockroachdb/apd/v2
+
+PackageName: github.com/cockroachdb/apd/v2
+SPDXID: SPDXRef-Package-github.com.cockroachdb.apd.v2-v2.0.1
+PackageVersion: v2.0.1
+PackageSupplier: Organization: github.com/cockroachdb/apd/v2
+PackageDownloadLocation: https://proxy.golang.org/github.com/cockroachdb/apd/v2/@v/v2.0.1.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: cb5461ded114f3d0feed381bc3e969e764faa7f1892e90e636faf5d145aa2d31
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.common-nighthawk.go-figure-v0.0.0-20210622060536-734e95fb86be
+
+##### Package representing github.com/common-nighthawk/go-figure
+
+PackageName: github.com/common-nighthawk/go-figure
+SPDXID: SPDXRef-Package-github.com.common-nighthawk.go-figure-v0.0.0-20210622060536-734e95fb86be
+PackageVersion: v0.0.0-20210622060536-734e95fb86be
+PackageSupplier: Organization: github.com/common-nighthawk/go-figure
+PackageDownloadLocation: https://proxy.golang.org/github.com/common-nighthawk/go-figure/@v/v0.0.0-20210622060536-734e95fb86be.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 27904bda4b2402557d724804b0d417b1c8c868b88e62267be5de1ef7813a75c4
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.containerd.stargz-snapshotter.estargz-v0.10.1
+
+##### Package representing github.com/containerd/stargz-snapshotter/estargz
+
+PackageName: github.com/containerd/stargz-snapshotter/estargz
+SPDXID: SPDXRef-Package-github.com.containerd.stargz-snapshotter.estargz-v0.10.1
+PackageVersion: v0.10.1
+PackageSupplier: Organization: github.com/containerd/stargz-snapshotter/estargz
+PackageDownloadLocation: https://proxy.golang.org/github.com/containerd/stargz-snapshotter/estargz/@v/v0.10.1.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 85dd44a158c8d80c7c0abeb8b5d62a9c9e22e29654e3d16411fe6453c2b14278
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.coreos.go-oidc.v3-v3.1.0
+
+##### Package representing github.com/coreos/go-oidc/v3
+
+PackageName: github.com/coreos/go-oidc/v3
+SPDXID: SPDXRef-Package-github.com.coreos.go-oidc.v3-v3.1.0
+PackageVersion: v3.1.0
+PackageSupplier: Organization: github.com/coreos/go-oidc/v3
+PackageDownloadLocation: https://proxy.golang.org/github.com/coreos/go-oidc/v3/@v/v3.1.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: e9abc4bdc76f4dad6a62c399e88e4f4644981f3a5335680a6266897da61bad1c
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.cyberphone.json-canonicalization-v0.0.0-20210823021906-dc406ceaf94b
+
+##### Package representing github.com/cyberphone/json-canonicalization
+
+PackageName: github.com/cyberphone/json-canonicalization
+SPDXID: SPDXRef-Package-github.com.cyberphone.json-canonicalization-v0.0.0-20210823021906-dc406ceaf94b
+PackageVersion: v0.0.0-20210823021906-dc406ceaf94b
+PackageSupplier: Organization: github.com/cyberphone/json-canonicalization
+PackageDownloadLocation: https://proxy.golang.org/github.com/cyberphone/json-canonicalization/@v/v0.0.0-20210823021906-dc406ceaf94b.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 94ccc0ef2613869c31ee260da537a2427447ea1e4949f498309773fa9c59396f
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.davecgh.go-spew-v1.1.1
+
+##### Package representing github.com/davecgh/go-spew
+
+PackageName: github.com/davecgh/go-spew
+SPDXID: SPDXRef-Package-github.com.davecgh.go-spew-v1.1.1
+PackageVersion: v1.1.1
+PackageSupplier: Organization: github.com/davecgh/go-spew
+PackageDownloadLocation: https://proxy.golang.org/github.com/davecgh/go-spew/@v/v1.1.1.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: be3f63feed5baa7bc211f24ec1486d94e011aacdfeae41d8635de36164d4f7b7
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.dimchansky.utfbom-v1.1.1
+
+##### Package representing github.com/dimchansky/utfbom
+
+PackageName: github.com/dimchansky/utfbom
+SPDXID: SPDXRef-Package-github.com.dimchansky.utfbom-v1.1.1
+PackageVersion: v1.1.1
+PackageSupplier: Organization: github.com/dimchansky/utfbom
+PackageDownloadLocation: https://proxy.golang.org/github.com/dimchansky/utfbom/@v/v1.1.1.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: bd5eb0d4084ae153278419e8fd33d50a82bd53f2cfd0f90b092f6d6f11dd8bf5
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.docker.cli-v20.10.12+incompatible
+
+##### Package representing github.com/docker/cli
+
+PackageName: github.com/docker/cli
+SPDXID: SPDXRef-Package-github.com.docker.cli-v20.10.12+incompatible
+PackageVersion: v20.10.12+incompatible
+PackageSupplier: Organization: github.com/docker/cli
+PackageDownloadLocation: https://proxy.golang.org/github.com/docker/cli/@v/v20.10.12+incompatible.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 959973d2ecc6f861fe734a654ad314745fea937a699a09ecc2947911bab35460
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.docker.distribution-v2.7.1+incompatible
+
+##### Package representing github.com/docker/distribution
+
+PackageName: github.com/docker/distribution
+SPDXID: SPDXRef-Package-github.com.docker.distribution-v2.7.1+incompatible
+PackageVersion: v2.7.1+incompatible
+PackageSupplier: Organization: github.com/docker/distribution
+PackageDownloadLocation: https://proxy.golang.org/github.com/docker/distribution/@v/v2.7.1+incompatible.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 6b99a5915ced87a5b90387ceb12dc3d843b90549ac269701f9c4652d4edc4ae8
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.docker.docker-v20.10.12+incompatible
+
+##### Package representing github.com/docker/docker
+
+PackageName: github.com/docker/docker
+SPDXID: SPDXRef-Package-github.com.docker.docker-v20.10.12+incompatible
+PackageVersion: v20.10.12+incompatible
+PackageSupplier: Organization: github.com/docker/docker
+PackageDownloadLocation: https://proxy.golang.org/github.com/docker/docker/@v/v20.10.12+incompatible.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 08478d98533441922c24264a324671d1971a85389ec24ae08b07d80fe75f9755
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.docker.docker-credential-helpers-v0.6.4
+
+##### Package representing github.com/docker/docker-credential-helpers
+
+PackageName: github.com/docker/docker-credential-helpers
+SPDXID: SPDXRef-Package-github.com.docker.docker-credential-helpers-v0.6.4
+PackageVersion: v0.6.4
+PackageSupplier: Organization: github.com/docker/docker-credential-helpers
+PackageDownloadLocation: https://proxy.golang.org/github.com/docker/docker-credential-helpers/@v/v0.6.4.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 6b10a4b3ec95fb6311dff9198409b2d3bc82e7a599d8fc2efdf296b4ab99074a
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.emicklei.proto-v1.6.15
+
+##### Package representing github.com/emicklei/proto
+
+PackageName: github.com/emicklei/proto
+SPDXID: SPDXRef-Package-github.com.emicklei.proto-v1.6.15
+PackageVersion: v1.6.15
+PackageSupplier: Organization: github.com/emicklei/proto
+PackageDownloadLocation: https://proxy.golang.org/github.com/emicklei/proto/@v/v1.6.15.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 5dba70c66b8e3eb7444bdec5ad27e9cb2ebb492095ff0048297aa027387a84dc
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.fatih.color-v1.13.0
+
+##### Package representing github.com/fatih/color
+
+PackageName: github.com/fatih/color
+SPDXID: SPDXRef-Package-github.com.fatih.color-v1.13.0
+PackageVersion: v1.13.0
+PackageSupplier: Organization: github.com/fatih/color
+PackageDownloadLocation: https://proxy.golang.org/github.com/fatih/color/@v/v1.13.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: f0b3987352983cf9b228cb8df105760cd45635b2e8e8b67488bb3cfa6947e77c
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.fsnotify.fsnotify-v1.5.1
+
+##### Package representing github.com/fsnotify/fsnotify
+
+PackageName: github.com/fsnotify/fsnotify
+SPDXID: SPDXRef-Package-github.com.fsnotify.fsnotify-v1.5.1
+PackageVersion: v1.5.1
+PackageSupplier: Organization: github.com/fsnotify/fsnotify
+PackageDownloadLocation: https://proxy.golang.org/github.com/fsnotify/fsnotify/@v/v1.5.1.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 9997105075505105a83d75edb9ff72b845cab9d915dacc75134e9469d296a602
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.ghodss.yaml-v1.0.0
+
+##### Package representing github.com/ghodss/yaml
+
+PackageName: github.com/ghodss/yaml
+SPDXID: SPDXRef-Package-github.com.ghodss.yaml-v1.0.0
+PackageVersion: v1.0.0
+PackageSupplier: Organization: github.com/ghodss/yaml
+PackageDownloadLocation: https://proxy.golang.org/github.com/ghodss/yaml/@v/v1.0.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: c101ca11a8612fac265ddcf0586d7580854290ebf4e5b34e87e4719f4ca78009
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.go-chi.chi-v4.1.2+incompatible
+
+##### Package representing github.com/go-chi/chi
+
+PackageName: github.com/go-chi/chi
+SPDXID: SPDXRef-Package-github.com.go-chi.chi-v4.1.2+incompatible
+PackageVersion: v4.1.2+incompatible
+PackageSupplier: Organization: github.com/go-chi/chi
+PackageDownloadLocation: https://proxy.golang.org/github.com/go-chi/chi/@v/v4.1.2+incompatible.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 7c6164d869a2fd82979343a619f061d168263775c1f25567132373df8b5045e7
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.go-logr.logr-v1.2.2
+
+##### Package representing github.com/go-logr/logr
+
+PackageName: github.com/go-logr/logr
+SPDXID: SPDXRef-Package-github.com.go-logr.logr-v1.2.2
+PackageVersion: v1.2.2
+PackageSupplier: Organization: github.com/go-logr/logr
+PackageDownloadLocation: https://proxy.golang.org/github.com/go-logr/logr/@v/v1.2.2.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 6a11e697fc94a6795bf7a469f070afb5854f63c658a71ab783b518721218c1bb
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.go-openapi.analysis-v0.21.2
+
+##### Package representing github.com/go-openapi/analysis
+
+PackageName: github.com/go-openapi/analysis
+SPDXID: SPDXRef-Package-github.com.go-openapi.analysis-v0.21.2
+PackageVersion: v0.21.2
+PackageSupplier: Organization: github.com/go-openapi/analysis
+PackageDownloadLocation: https://proxy.golang.org/github.com/go-openapi/analysis/@v/v0.21.2.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 85716b39814750031076eeb3c0088a2891c943c92a66cd6ec7faeed4fd702c95
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.go-openapi.errors-v0.20.2
+
+##### Package representing github.com/go-openapi/errors
+
+PackageName: github.com/go-openapi/errors
+SPDXID: SPDXRef-Package-github.com.go-openapi.errors-v0.20.2
+PackageVersion: v0.20.2
+PackageSupplier: Organization: github.com/go-openapi/errors
+PackageDownloadLocation: https://proxy.golang.org/github.com/go-openapi/errors/@v/v0.20.2.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 771cbb3c64ea121f78ce3d84de1d5c5264105a2335f9a78244e7c0af4d8498af
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.go-openapi.jsonpointer-v0.19.5
+
+##### Package representing github.com/go-openapi/jsonpointer
+
+PackageName: github.com/go-openapi/jsonpointer
+SPDXID: SPDXRef-Package-github.com.go-openapi.jsonpointer-v0.19.5
+PackageVersion: v0.19.5
+PackageSupplier: Organization: github.com/go-openapi/jsonpointer
+PackageDownloadLocation: https://proxy.golang.org/github.com/go-openapi/jsonpointer/@v/v0.19.5.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 819afe088601c94aa372078b5e742eda01d8402f68ef71b65d478e1581080ae6
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.go-openapi.jsonreference-v0.19.6
+
+##### Package representing github.com/go-openapi/jsonreference
+
+PackageName: github.com/go-openapi/jsonreference
+SPDXID: SPDXRef-Package-github.com.go-openapi.jsonreference-v0.19.6
+PackageVersion: v0.19.6
+PackageSupplier: Organization: github.com/go-openapi/jsonreference
+PackageDownloadLocation: https://proxy.golang.org/github.com/go-openapi/jsonreference/@v/v0.19.6.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 5012318e486df80588818cc20d2bf618df84feda207f05d42454535a1976263b
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.go-openapi.loads-v0.21.1
+
+##### Package representing github.com/go-openapi/loads
+
+PackageName: github.com/go-openapi/loads
+SPDXID: SPDXRef-Package-github.com.go-openapi.loads-v0.21.1
+PackageVersion: v0.21.1
+PackageSupplier: Organization: github.com/go-openapi/loads
+PackageDownloadLocation: https://proxy.golang.org/github.com/go-openapi/loads/@v/v0.21.1.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 59bde7559a5d1330d3725cbc4b81cc91ecba7e30114736fb8846b24a29a50d6d
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.go-openapi.runtime-v0.23.2
+
+##### Package representing github.com/go-openapi/runtime
+
+PackageName: github.com/go-openapi/runtime
+SPDXID: SPDXRef-Package-github.com.go-openapi.runtime-v0.23.2
+PackageVersion: v0.23.2
+PackageSupplier: Organization: github.com/go-openapi/runtime
+PackageDownloadLocation: https://proxy.golang.org/github.com/go-openapi/runtime/@v/v0.23.2.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 48ba1854cde8beafa5ca7a60ac7419e5641cc7e0811341c71c2654ddcda3428a
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.go-openapi.spec-v0.20.4
+
+##### Package representing github.com/go-openapi/spec
+
+PackageName: github.com/go-openapi/spec
+SPDXID: SPDXRef-Package-github.com.go-openapi.spec-v0.20.4
+PackageVersion: v0.20.4
+PackageSupplier: Organization: github.com/go-openapi/spec
+PackageDownloadLocation: https://proxy.golang.org/github.com/go-openapi/spec/@v/v0.20.4.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 3bc849aedd14327847725ba121d52008b456c8cdb1ed09015d1bceb3b9be3b53
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.go-openapi.strfmt-v0.21.2
+
+##### Package representing github.com/go-openapi/strfmt
+
+PackageName: github.com/go-openapi/strfmt
+SPDXID: SPDXRef-Package-github.com.go-openapi.strfmt-v0.21.2
+PackageVersion: v0.21.2
+PackageSupplier: Organization: github.com/go-openapi/strfmt
+PackageDownloadLocation: https://proxy.golang.org/github.com/go-openapi/strfmt/@v/v0.21.2.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: e4d0cd81a7625f55617a6b61fd31f88021a8a564937438f197ad07dc1edffa8b
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.go-openapi.swag-v0.21.1
+
+##### Package representing github.com/go-openapi/swag
+
+PackageName: github.com/go-openapi/swag
+SPDXID: SPDXRef-Package-github.com.go-openapi.swag-v0.21.1
+PackageVersion: v0.21.1
+PackageSupplier: Organization: github.com/go-openapi/swag
+PackageDownloadLocation: https://proxy.golang.org/github.com/go-openapi/swag/@v/v0.21.1.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: c26d2b8536f9cfbaa92511c174f38cb98e108d550c6c5ebf930a1879100eaca5
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.go-openapi.validate-v0.21.0
+
+##### Package representing github.com/go-openapi/validate
+
+PackageName: github.com/go-openapi/validate
+SPDXID: SPDXRef-Package-github.com.go-openapi.validate-v0.21.0
+PackageVersion: v0.21.0
+PackageSupplier: Organization: github.com/go-openapi/validate
+PackageDownloadLocation: https://proxy.golang.org/github.com/go-openapi/validate/@v/v0.21.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: f96aa4dfdc8a3a17e92ea34b102d3f7958829333391555d5aabbede76ebec1c2
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.go-playground.locales-v0.14.0
+
+##### Package representing github.com/go-playground/locales
+
+PackageName: github.com/go-playground/locales
+SPDXID: SPDXRef-Package-github.com.go-playground.locales-v0.14.0
+PackageVersion: v0.14.0
+PackageSupplier: Organization: github.com/go-playground/locales
+PackageDownloadLocation: https://proxy.golang.org/github.com/go-playground/locales/@v/v0.14.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: bb9d2cdf6de3b551ae80a95c61ecb30b47ad0f51e27cc8ea989a9bf16ba07d45
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.go-playground.universal-translator-v0.18.0
+
+##### Package representing github.com/go-playground/universal-translator
+
+PackageName: github.com/go-playground/universal-translator
+SPDXID: SPDXRef-Package-github.com.go-playground.universal-translator-v0.18.0
+PackageVersion: v0.18.0
+PackageSupplier: Organization: github.com/go-playground/universal-translator
+PackageDownloadLocation: https://proxy.golang.org/github.com/go-playground/universal-translator/@v/v0.18.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: f36772cbaa783ae26ae3f081c8534e9ff8d8ae744f02b1f001c98ba09671ca1a
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.go-playground.validator.v10-v10.10.0
+
+##### Package representing github.com/go-playground/validator/v10
+
+PackageName: github.com/go-playground/validator/v10
+SPDXID: SPDXRef-Package-github.com.go-playground.validator.v10-v10.10.0
+PackageVersion: v10.10.0
+PackageSupplier: Organization: github.com/go-playground/validator/v10
+PackageDownloadLocation: https://proxy.golang.org/github.com/go-playground/validator/v10/@v/v10.10.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 23b9ab4d8bfbf33f24f155dafea2653a51179ff9c187e045f1d1d7e67b7f76bd
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.go-stack.stack-v1.8.1
+
+##### Package representing github.com/go-stack/stack
+
+PackageName: github.com/go-stack/stack
+SPDXID: SPDXRef-Package-github.com.go-stack.stack-v1.8.1
+PackageVersion: v1.8.1
+PackageSupplier: Organization: github.com/go-stack/stack
+PackageDownloadLocation: https://proxy.golang.org/github.com/go-stack/stack/@v/v1.8.1.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 9ed107495c08b7b3cd5cda603e655f32b3612ed8239669d985ada43a9b91883c
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.gobwas.glob-v0.2.3
+
+##### Package representing github.com/gobwas/glob
+
+PackageName: github.com/gobwas/glob
+SPDXID: SPDXRef-Package-github.com.gobwas.glob-v0.2.3
+PackageVersion: v0.2.3
+PackageSupplier: Organization: github.com/gobwas/glob
+PackageDownloadLocation: https://proxy.golang.org/github.com/gobwas/glob/@v/v0.2.3.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 038c436e58c82d744e87e90e6c88b2e6421a3d80fc7bdeb1d6d80185423927e6
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.gogo.protobuf-v1.3.2
+
+##### Package representing github.com/gogo/protobuf
+
+PackageName: github.com/gogo/protobuf
+SPDXID: SPDXRef-Package-github.com.gogo.protobuf-v1.3.2
+PackageVersion: v1.3.2
+PackageSupplier: Organization: github.com/gogo/protobuf
+PackageDownloadLocation: https://proxy.golang.org/github.com/gogo/protobuf/@v/v1.3.2.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 3afd5cbdce7c505ddbe578c19d9bfbfa8a5c4dc40565e6d88d6ce2df8bdd9b84
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.golang-jwt.jwt.v4-v4.2.0
+
+##### Package representing github.com/golang-jwt/jwt/v4
+
+PackageName: github.com/golang-jwt/jwt/v4
+SPDXID: SPDXRef-Package-github.com.golang-jwt.jwt.v4-v4.2.0
+PackageVersion: v4.2.0
+PackageSupplier: Organization: github.com/golang-jwt/jwt/v4
+PackageDownloadLocation: https://proxy.golang.org/github.com/golang-jwt/jwt/v4/@v/v4.2.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 6deb200530bcc3c1e33fa37341dc70287f59e6840c676e13853ac7a77719f1e5
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.golang.glog-v1.0.0
+
+##### Package representing github.com/golang/glog
+
+PackageName: github.com/golang/glog
+SPDXID: SPDXRef-Package-github.com.golang.glog-v1.0.0
+PackageVersion: v1.0.0
+PackageSupplier: Organization: github.com/golang/glog
+PackageDownloadLocation: https://proxy.golang.org/github.com/golang/glog/@v/v1.0.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 9df3f7445ba0c67351c8a81e59de282359d8bd7a71af1f1c93c66b722cec85d4
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.golang.groupcache-v0.0.0-20210331224755-41bb18bfe9da
+
+##### Package representing github.com/golang/groupcache
+
+PackageName: github.com/golang/groupcache
+SPDXID: SPDXRef-Package-github.com.golang.groupcache-v0.0.0-20210331224755-41bb18bfe9da
+PackageVersion: v0.0.0-20210331224755-41bb18bfe9da
+PackageSupplier: Organization: github.com/golang/groupcache
+PackageDownloadLocation: https://proxy.golang.org/github.com/golang/groupcache/@v/v0.0.0-20210331224755-41bb18bfe9da.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: a08e710aab02a39eb897c88d53e0f00797a9c66b1aa81fab8462f49b98ed62a1
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.golang.protobuf-v1.5.2
+
+##### Package representing github.com/golang/protobuf
+
+PackageName: github.com/golang/protobuf
+SPDXID: SPDXRef-Package-github.com.golang.protobuf-v1.5.2
+PackageVersion: v1.5.2
+PackageSupplier: Organization: github.com/golang/protobuf
+PackageDownloadLocation: https://proxy.golang.org/github.com/golang/protobuf/@v/v1.5.2.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 44e3ca04d15f4203943227c7c8ff8a61bbe98db76814db3e68aec35e58e2d13c
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.golang.snappy-v0.0.4
+
+##### Package representing github.com/golang/snappy
+
+PackageName: github.com/golang/snappy
+SPDXID: SPDXRef-Package-github.com.golang.snappy-v0.0.4
+PackageVersion: v0.0.4
+PackageSupplier: Organization: github.com/golang/snappy
+PackageDownloadLocation: https://proxy.golang.org/github.com/golang/snappy/@v/v0.0.4.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: c80197ee1b861d795c2ce12d067178c3b150c00dbac288cd0b039800484b8d03
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.google.certificate-transparency-go-v1.1.2
+
+##### Package representing github.com/google/certificate-transparency-go
+
+PackageName: github.com/google/certificate-transparency-go
+SPDXID: SPDXRef-Package-github.com.google.certificate-transparency-go-v1.1.2
+PackageVersion: v1.1.2
+PackageSupplier: Organization: github.com/google/certificate-transparency-go
+PackageDownloadLocation: https://proxy.golang.org/github.com/google/certificate-transparency-go/@v/v1.1.2.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: e2113418421de8d016dbc745a42f8bad11b0417e5db665d01836e0f3efcc64e3
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.google.go-cmp-v0.5.7
+
+##### Package representing github.com/google/go-cmp
+
+PackageName: github.com/google/go-cmp
+SPDXID: SPDXRef-Package-github.com.google.go-cmp-v0.5.7
+PackageVersion: v0.5.7
+PackageSupplier: Organization: github.com/google/go-cmp
+PackageDownloadLocation: https://proxy.golang.org/github.com/google/go-cmp/@v/v0.5.7.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: f35fe293a8a90d04b66867017c83797470c1dfa070ad2b7278042ab92602578a
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.google.go-containerregistry-v0.8.1-0.20220209165246-a44adc326839
+
+##### Package representing github.com/google/go-containerregistry
+
+PackageName: github.com/google/go-containerregistry
+SPDXID: SPDXRef-Package-github.com.google.go-containerregistry-v0.8.1-0.20220209165246-a44adc326839
+PackageVersion: v0.8.1-0.20220209165246-a44adc326839
+PackageSupplier: Organization: github.com/google/go-containerregistry
+PackageDownloadLocation: https://proxy.golang.org/github.com/google/go-containerregistry/@v/v0.8.1-0.20220209165246-a44adc326839.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: ecfba7419c4c6a8daae3721ff202a3d49151cdaa668609f2f4d5b05d8e0f19ae
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.google.go-github.v42-v42.0.0
+
+##### Package representing github.com/google/go-github/v42
+
+PackageName: github.com/google/go-github/v42
+SPDXID: SPDXRef-Package-github.com.google.go-github.v42-v42.0.0
+PackageVersion: v42.0.0
+PackageSupplier: Organization: github.com/google/go-github/v42
+PackageDownloadLocation: https://proxy.golang.org/github.com/google/go-github/v42/@v/v42.0.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 60d4f41708cfac4cac4642c888ab847d2bc13c218aa615b9692e4fc706a82de7
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.google.go-querystring-v1.1.0
+
+##### Package representing github.com/google/go-querystring
+
+PackageName: github.com/google/go-querystring
+SPDXID: SPDXRef-Package-github.com.google.go-querystring-v1.1.0
+PackageVersion: v1.1.0
+PackageSupplier: Organization: github.com/google/go-querystring
+PackageDownloadLocation: https://proxy.golang.org/github.com/google/go-querystring/@v/v1.1.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 0270aba21ddfbf864181521fd48c2da2f8236b0fc688a268f0cf320ff7e1c89f
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.google.gofuzz-v1.2.0
+
+##### Package representing github.com/google/gofuzz
+
+PackageName: github.com/google/gofuzz
+SPDXID: SPDXRef-Package-github.com.google.gofuzz-v1.2.0
+PackageVersion: v1.2.0
+PackageSupplier: Organization: github.com/google/gofuzz
+PackageDownloadLocation: https://proxy.golang.org/github.com/google/gofuzz/@v/v1.2.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: c51cb803e46165a88a8c9d5b3dfc10f2c79d080f984b661c0875ba79cec9322d
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.google.trillian-v1.4.0
+
+##### Package representing github.com/google/trillian
+
+PackageName: github.com/google/trillian
+SPDXID: SPDXRef-Package-github.com.google.trillian-v1.4.0
+PackageVersion: v1.4.0
+PackageSupplier: Organization: github.com/google/trillian
+PackageDownloadLocation: https://proxy.golang.org/github.com/google/trillian/@v/v1.4.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 59aed71c257397c44bb143abd92ce81d4647623bf41bc28c3b5c5919a99891b0
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.google.uuid-v1.3.0
+
+##### Package representing github.com/google/uuid
+
+PackageName: github.com/google/uuid
+SPDXID: SPDXRef-Package-github.com.google.uuid-v1.3.0
+PackageVersion: v1.3.0
+PackageSupplier: Organization: github.com/google/uuid
+PackageDownloadLocation: https://proxy.golang.org/github.com/google/uuid/@v/v1.3.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: b7a2625e09b05cc8c4b3c56eb172099360571ec9fec31f0165d4daa19e5fbbb2
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.googleapis.gax-go.v2-v2.1.1
+
+##### Package representing github.com/googleapis/gax-go/v2
+
+PackageName: github.com/googleapis/gax-go/v2
+SPDXID: SPDXRef-Package-github.com.googleapis.gax-go.v2-v2.1.1
+PackageVersion: v2.1.1
+PackageSupplier: Organization: github.com/googleapis/gax-go/v2
+PackageDownloadLocation: https://proxy.golang.org/github.com/googleapis/gax-go/v2/@v/v2.1.1.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 769ddb58287e3cf3b5ce345188249ccc96afd77b01bc6e1484dc954dad4aa9d5
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.googleapis.gnostic-v0.5.5
+
+##### Package representing github.com/googleapis/gnostic
+
+PackageName: github.com/googleapis/gnostic
+SPDXID: SPDXRef-Package-github.com.googleapis.gnostic-v0.5.5
+PackageVersion: v0.5.5
+PackageSupplier: Organization: github.com/googleapis/gnostic
+PackageDownloadLocation: https://proxy.golang.org/github.com/googleapis/gnostic/@v/v0.5.5.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: f5f1c0b4ad2e0dfa6f79eaaaa3586411925c16f61702208ddd4bad2fc17dc47c
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.hashicorp.errwrap-v1.1.0
+
+##### Package representing github.com/hashicorp/errwrap
+
+PackageName: github.com/hashicorp/errwrap
+SPDXID: SPDXRef-Package-github.com.hashicorp.errwrap-v1.1.0
+PackageVersion: v1.1.0
+PackageSupplier: Organization: github.com/hashicorp/errwrap
+PackageDownloadLocation: https://proxy.golang.org/github.com/hashicorp/errwrap/@v/v1.1.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 3b1ace7a1ef91145cc63c4c18da8367f35c6678d0b07a20ac38e587865036362
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.hashicorp.go-cleanhttp-v0.5.2
+
+##### Package representing github.com/hashicorp/go-cleanhttp
+
+PackageName: github.com/hashicorp/go-cleanhttp
+SPDXID: SPDXRef-Package-github.com.hashicorp.go-cleanhttp-v0.5.2
+PackageVersion: v0.5.2
+PackageSupplier: Organization: github.com/hashicorp/go-cleanhttp
+PackageDownloadLocation: https://proxy.golang.org/github.com/hashicorp/go-cleanhttp/@v/v0.5.2.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: d37e452982168e650bc8544128fb3c4c14288b4c7a77d1b8c5cf677972560194
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.hashicorp.go-hclog-v1.2.0
+
+##### Package representing github.com/hashicorp/go-hclog
+
+PackageName: github.com/hashicorp/go-hclog
+SPDXID: SPDXRef-Package-github.com.hashicorp.go-hclog-v1.2.0
+PackageVersion: v1.2.0
+PackageSupplier: Organization: github.com/hashicorp/go-hclog
+PackageDownloadLocation: https://proxy.golang.org/github.com/hashicorp/go-hclog/@v/v1.2.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 2dad7d7fc77b588966e28833347074246aace40503019d947c2638b095dc25d3
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.hashicorp.go-immutable-radix-v1.3.1
+
+##### Package representing github.com/hashicorp/go-immutable-radix
+
+PackageName: github.com/hashicorp/go-immutable-radix
+SPDXID: SPDXRef-Package-github.com.hashicorp.go-immutable-radix-v1.3.1
+PackageVersion: v1.3.1
+PackageSupplier: Organization: github.com/hashicorp/go-immutable-radix
+PackageDownloadLocation: https://proxy.golang.org/github.com/hashicorp/go-immutable-radix/@v/v1.3.1.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 0ca1e60949b685104ae75d016a2665c2fa43e347fc6c915e667a5f9b628ba307
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.hashicorp.go-multierror-v1.1.1
+
+##### Package representing github.com/hashicorp/go-multierror
+
+PackageName: github.com/hashicorp/go-multierror
+SPDXID: SPDXRef-Package-github.com.hashicorp.go-multierror-v1.1.1
+PackageVersion: v1.1.1
+PackageSupplier: Organization: github.com/hashicorp/go-multierror
+PackageDownloadLocation: https://proxy.golang.org/github.com/hashicorp/go-multierror/@v/v1.1.1.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 1f90e412d7fa097745a74374126e540b04295cc5a47bc200d3e943e3c6b0318a
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.hashicorp.go-plugin-v1.4.3
+
+##### Package representing github.com/hashicorp/go-plugin
+
+PackageName: github.com/hashicorp/go-plugin
+SPDXID: SPDXRef-Package-github.com.hashicorp.go-plugin-v1.4.3
+PackageVersion: v1.4.3
+PackageSupplier: Organization: github.com/hashicorp/go-plugin
+PackageDownloadLocation: https://proxy.golang.org/github.com/hashicorp/go-plugin/@v/v1.4.3.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 0d79af8af6d60f9a9d881b6cf53a410bb0582f50226b9b316d181007ebfa5193
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.hashicorp.go-retryablehttp-v0.7.0
+
+##### Package representing github.com/hashicorp/go-retryablehttp
+
+PackageName: github.com/hashicorp/go-retryablehttp
+SPDXID: SPDXRef-Package-github.com.hashicorp.go-retryablehttp-v0.7.0
+PackageVersion: v0.7.0
+PackageSupplier: Organization: github.com/hashicorp/go-retryablehttp
+PackageDownloadLocation: https://proxy.golang.org/github.com/hashicorp/go-retryablehttp/@v/v0.7.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 7aed4423f99b8ab5203f90bc855b1335a199ade0439588b00b51595a4bd03d0e
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.hashicorp.go-rootcerts-v1.0.2
+
+##### Package representing github.com/hashicorp/go-rootcerts
+
+PackageName: github.com/hashicorp/go-rootcerts
+SPDXID: SPDXRef-Package-github.com.hashicorp.go-rootcerts-v1.0.2
+PackageVersion: v1.0.2
+PackageSupplier: Organization: github.com/hashicorp/go-rootcerts
+PackageDownloadLocation: https://proxy.golang.org/github.com/hashicorp/go-rootcerts/@v/v1.0.2.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 8f3840546b6a3ca6f0a7208f10b960356844d739eafaac09b56e4e8b6be21337
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.hashicorp.go-secure-stdlib.mlock-v0.1.2
+
+##### Package representing github.com/hashicorp/go-secure-stdlib/mlock
+
+PackageName: github.com/hashicorp/go-secure-stdlib/mlock
+SPDXID: SPDXRef-Package-github.com.hashicorp.go-secure-stdlib.mlock-v0.1.2
+PackageVersion: v0.1.2
+PackageSupplier: Organization: github.com/hashicorp/go-secure-stdlib/mlock
+PackageDownloadLocation: https://proxy.golang.org/github.com/hashicorp/go-secure-stdlib/mlock/@v/v0.1.2.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: a7800a5cf3d2db8b4ef1673c8b580bbd229d9a4892639c6e8eee7b73327f2094
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.hashicorp.go-secure-stdlib.parseutil-v0.1.3
+
+##### Package representing github.com/hashicorp/go-secure-stdlib/parseutil
+
+PackageName: github.com/hashicorp/go-secure-stdlib/parseutil
+SPDXID: SPDXRef-Package-github.com.hashicorp.go-secure-stdlib.parseutil-v0.1.3
+PackageVersion: v0.1.3
+PackageSupplier: Organization: github.com/hashicorp/go-secure-stdlib/parseutil
+PackageDownloadLocation: https://proxy.golang.org/github.com/hashicorp/go-secure-stdlib/parseutil/@v/v0.1.3.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 81e070dd206bc50abe6eebdb7f82be425b6fd608da5c9c72f1ab03e028c6628c
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.hashicorp.go-secure-stdlib.strutil-v0.1.2
+
+##### Package representing github.com/hashicorp/go-secure-stdlib/strutil
+
+PackageName: github.com/hashicorp/go-secure-stdlib/strutil
+SPDXID: SPDXRef-Package-github.com.hashicorp.go-secure-stdlib.strutil-v0.1.2
+PackageVersion: v0.1.2
+PackageSupplier: Organization: github.com/hashicorp/go-secure-stdlib/strutil
+PackageDownloadLocation: https://proxy.golang.org/github.com/hashicorp/go-secure-stdlib/strutil/@v/v0.1.2.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 91eb3c9a6c82a7126c23b153c2dcd1a84cbd09d8c2b6b5eb5c6b8ea71100ed3b
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.hashicorp.go-sockaddr-v1.0.2
+
+##### Package representing github.com/hashicorp/go-sockaddr
+
+PackageName: github.com/hashicorp/go-sockaddr
+SPDXID: SPDXRef-Package-github.com.hashicorp.go-sockaddr-v1.0.2
+PackageVersion: v1.0.2
+PackageSupplier: Organization: github.com/hashicorp/go-sockaddr
+PackageDownloadLocation: https://proxy.golang.org/github.com/hashicorp/go-sockaddr/@v/v1.0.2.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: ced733843d632f12118d57a3c3c805a2623505064e7b65a854ebb44b2b5e0907
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.hashicorp.go-uuid-v1.0.2
+
+##### Package representing github.com/hashicorp/go-uuid
+
+PackageName: github.com/hashicorp/go-uuid
+SPDXID: SPDXRef-Package-github.com.hashicorp.go-uuid-v1.0.2
+PackageVersion: v1.0.2
+PackageSupplier: Organization: github.com/hashicorp/go-uuid
+PackageDownloadLocation: https://proxy.golang.org/github.com/hashicorp/go-uuid/@v/v1.0.2.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 71f7a34be4e9729d77c9de6760758323aa950a7cbac325f632de521aeaf62061
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.hashicorp.go-version-v1.4.0
+
+##### Package representing github.com/hashicorp/go-version
+
+PackageName: github.com/hashicorp/go-version
+SPDXID: SPDXRef-Package-github.com.hashicorp.go-version-v1.4.0
+PackageVersion: v1.4.0
+PackageSupplier: Organization: github.com/hashicorp/go-version
+PackageDownloadLocation: https://proxy.golang.org/github.com/hashicorp/go-version/@v/v1.4.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 68043382a22b44a45aef0ef908aa5b07162c994a0f8f3566d56e7d71ad4bd09e
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.hashicorp.golang-lru-v0.5.4
+
+##### Package representing github.com/hashicorp/golang-lru
+
+PackageName: github.com/hashicorp/golang-lru
+SPDXID: SPDXRef-Package-github.com.hashicorp.golang-lru-v0.5.4
+PackageVersion: v0.5.4
+PackageSupplier: Organization: github.com/hashicorp/golang-lru
+PackageDownloadLocation: https://proxy.golang.org/github.com/hashicorp/golang-lru/@v/v0.5.4.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 6038eeb27dbd408fc36acda23bd3340479c86f13decae087b23316fa525fc937
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.hashicorp.hcl-v1.0.0
+
+##### Package representing github.com/hashicorp/hcl
+
+PackageName: github.com/hashicorp/hcl
+SPDXID: SPDXRef-Package-github.com.hashicorp.hcl-v1.0.0
+PackageVersion: v1.0.0
+PackageSupplier: Organization: github.com/hashicorp/hcl
+PackageDownloadLocation: https://proxy.golang.org/github.com/hashicorp/hcl/@v/v1.0.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: d009e5ce3a62e2f11ab1378d167da62c98134b0b74fbab1fb224c6f2a7161b1e
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.hashicorp.vault.api-v1.3.1
+
+##### Package representing github.com/hashicorp/vault/api
+
+PackageName: github.com/hashicorp/vault/api
+SPDXID: SPDXRef-Package-github.com.hashicorp.vault.api-v1.3.1
+PackageVersion: v1.3.1
+PackageSupplier: Organization: github.com/hashicorp/vault/api
+PackageDownloadLocation: https://proxy.golang.org/github.com/hashicorp/vault/api/@v/v1.3.1.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: a640e47204e1e3b3d18d8d4d1057a87ea4785bf1e43548bda886a41123b66913
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.hashicorp.vault.sdk-v0.4.1
+
+##### Package representing github.com/hashicorp/vault/sdk
+
+PackageName: github.com/hashicorp/vault/sdk
+SPDXID: SPDXRef-Package-github.com.hashicorp.vault.sdk-v0.4.1
+PackageVersion: v0.4.1
+PackageSupplier: Organization: github.com/hashicorp/vault/sdk
+PackageDownloadLocation: https://proxy.golang.org/github.com/hashicorp/vault/sdk/@v/v0.4.1.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: dd268738963af3b8d8d5f9c1eb53ed2f470e90a22da61adb2e6bb1ed3f761c1a
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.hashicorp.yamux-v0.0.0-20211028200310-0bc27b27de87
+
+##### Package representing github.com/hashicorp/yamux
+
+PackageName: github.com/hashicorp/yamux
+SPDXID: SPDXRef-Package-github.com.hashicorp.yamux-v0.0.0-20211028200310-0bc27b27de87
+PackageVersion: v0.0.0-20211028200310-0bc27b27de87
+PackageSupplier: Organization: github.com/hashicorp/yamux
+PackageDownloadLocation: https://proxy.golang.org/github.com/hashicorp/yamux/@v/v0.0.0-20211028200310-0bc27b27de87.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: c62c59d9b59ea1f595ebc27ec7a03398ab9533f256090c245a6e865bf31447a2
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.imdario.mergo-v0.3.12
+
+##### Package representing github.com/imdario/mergo
+
+PackageName: github.com/imdario/mergo
+SPDXID: SPDXRef-Package-github.com.imdario.mergo-v0.3.12
+PackageVersion: v0.3.12
+PackageSupplier: Organization: github.com/imdario/mergo
+PackageDownloadLocation: https://proxy.golang.org/github.com/imdario/mergo/@v/v0.3.12.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 6fa47606c9536c8113a002ca3fb2f152f8a34ec348f5301ef34a4b58dda0fc75
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.in-toto.in-toto-golang-v0.3.4-0.20211211042327-af1f9fb822bf
+
+##### Package representing github.com/in-toto/in-toto-golang
+
+PackageName: github.com/in-toto/in-toto-golang
+SPDXID: SPDXRef-Package-github.com.in-toto.in-toto-golang-v0.3.4-0.20211211042327-af1f9fb822bf
+PackageVersion: v0.3.4-0.20211211042327-af1f9fb822bf
+PackageSupplier: Organization: github.com/in-toto/in-toto-golang
+PackageDownloadLocation: https://proxy.golang.org/github.com/in-toto/in-toto-golang/@v/v0.3.4-0.20211211042327-af1f9fb822bf.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 154f2db8be085b1fc7ab9e403b8fb5dc0667dca77aba4dd9e38382219f5ca13c
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.jedisct1.go-minisign-v0.0.0-20210703085342-c1f07ee84431
+
+##### Package representing github.com/jedisct1/go-minisign
+
+PackageName: github.com/jedisct1/go-minisign
+SPDXID: SPDXRef-Package-github.com.jedisct1.go-minisign-v0.0.0-20210703085342-c1f07ee84431
+PackageVersion: v0.0.0-20210703085342-c1f07ee84431
+PackageSupplier: Organization: github.com/jedisct1/go-minisign
+PackageDownloadLocation: https://proxy.golang.org/github.com/jedisct1/go-minisign/@v/v0.0.0-20210703085342-c1f07ee84431.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: ceac95e63f7112e3d0c3699ae11cf34bd3bbe14c13ab7bdc326a681f22fac652
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.jmespath.go-jmespath-v0.4.0
+
+##### Package representing github.com/jmespath/go-jmespath
+
+PackageName: github.com/jmespath/go-jmespath
+SPDXID: SPDXRef-Package-github.com.jmespath.go-jmespath-v0.4.0
+PackageVersion: v0.4.0
+PackageSupplier: Organization: github.com/jmespath/go-jmespath
+PackageDownloadLocation: https://proxy.golang.org/github.com/jmespath/go-jmespath/@v/v0.4.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 04480b9f97298e7f14375980c38363c03ad2df939d79bc84b457bef583e84148
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.josharian.intern-v1.0.0
+
+##### Package representing github.com/josharian/intern
+
+PackageName: github.com/josharian/intern
+SPDXID: SPDXRef-Package-github.com.josharian.intern-v1.0.0
+PackageVersion: v1.0.0
+PackageSupplier: Organization: github.com/josharian/intern
+PackageDownloadLocation: https://proxy.golang.org/github.com/josharian/intern/@v/v1.0.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: be54b8cf9e2849d8e6d1b823462808f86d47a45fad23ef6b1392cbcce83c1e66
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.json-iterator.go-v1.1.12
+
+##### Package representing github.com/json-iterator/go
+
+PackageName: github.com/json-iterator/go
+SPDXID: SPDXRef-Package-github.com.json-iterator.go-v1.1.12
+PackageVersion: v1.1.12
+PackageSupplier: Organization: github.com/json-iterator/go
+PackageDownloadLocation: https://proxy.golang.org/github.com/json-iterator/go/@v/v1.1.12.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 3d5f29788e1ad32b27733ae0f8bb71ca40fc2df298f4c2fabb68e7c5a127ae73
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.klauspost.compress-v1.14.2
+
+##### Package representing github.com/klauspost/compress
+
+PackageName: github.com/klauspost/compress
+SPDXID: SPDXRef-Package-github.com.klauspost.compress-v1.14.2
+PackageVersion: v1.14.2
+PackageSupplier: Organization: github.com/klauspost/compress
+PackageDownloadLocation: https://proxy.golang.org/github.com/klauspost/compress/@v/v1.14.2.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 4b438794593f19ba27ff26ae149e057c9245e55d1f7391db05325ace2dbca51c
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.leodido.go-urn-v1.2.1
+
+##### Package representing github.com/leodido/go-urn
+
+PackageName: github.com/leodido/go-urn
+SPDXID: SPDXRef-Package-github.com.leodido.go-urn-v1.2.1
+PackageVersion: v1.2.1
+PackageSupplier: Organization: github.com/leodido/go-urn
+PackageDownloadLocation: https://proxy.golang.org/github.com/leodido/go-urn/@v/v1.2.1.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 06aa406800aecd54a08bf54bcc6648a1b4f6cf8bf9de98e8b3235df58bfa9ffc
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.magiconair.properties-v1.8.5
+
+##### Package representing github.com/magiconair/properties
+
+PackageName: github.com/magiconair/properties
+SPDXID: SPDXRef-Package-github.com.magiconair.properties-v1.8.5
+PackageVersion: v1.8.5
+PackageSupplier: Organization: github.com/magiconair/properties
+PackageDownloadLocation: https://proxy.golang.org/github.com/magiconair/properties/@v/v1.8.5.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 6fa909b3e1263c53181a4a30f46894c82c8ebc8c187ad609ddf49a59a93f1a5b
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.mailru.easyjson-v0.7.7
+
+##### Package representing github.com/mailru/easyjson
+
+PackageName: github.com/mailru/easyjson
+SPDXID: SPDXRef-Package-github.com.mailru.easyjson-v0.7.7
+PackageVersion: v0.7.7
+PackageSupplier: Organization: github.com/mailru/easyjson
+PackageDownloadLocation: https://proxy.golang.org/github.com/mailru/easyjson/@v/v0.7.7.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 506600bcac5edec06c103ccef1979639294841f5859716f32d97bb87015446bd
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.mattn.go-colorable-v0.1.12
+
+##### Package representing github.com/mattn/go-colorable
+
+PackageName: github.com/mattn/go-colorable
+SPDXID: SPDXRef-Package-github.com.mattn.go-colorable-v0.1.12
+PackageVersion: v0.1.12
+PackageSupplier: Organization: github.com/mattn/go-colorable
+PackageDownloadLocation: https://proxy.golang.org/github.com/mattn/go-colorable/@v/v0.1.12.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 8c5f83bba0253c88ecd8189489094a397d2bb774ae8c7c4f9e4b0f2996da038d
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.mattn.go-isatty-v0.0.14
+
+##### Package representing github.com/mattn/go-isatty
+
+PackageName: github.com/mattn/go-isatty
+SPDXID: SPDXRef-Package-github.com.mattn.go-isatty-v0.0.14
+PackageVersion: v0.0.14
+PackageSupplier: Organization: github.com/mattn/go-isatty
+PackageDownloadLocation: https://proxy.golang.org/github.com/mattn/go-isatty/@v/v0.0.14.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: c95b806b2b3a0477f18a38193f3c3edd996ee724202863f6fe17106c76fb4bd6
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.matttproud.golang_protobuf_extensions-v1.0.2-0.20181231171920-c182affec369
+
+##### Package representing github.com/matttproud/golang_protobuf_extensions
+
+PackageName: github.com/matttproud/golang_protobuf_extensions
+SPDXID: SPDXRef-Package-github.com.matttproud.golang_protobuf_extensions-v1.0.2-0.20181231171920-c182affec369
+PackageVersion: v1.0.2-0.20181231171920-c182affec369
+PackageSupplier: Organization: github.com/matttproud/golang_protobuf_extensions
+PackageDownloadLocation: https://proxy.golang.org/github.com/matttproud/golang_protobuf_extensions/@v/v1.0.2-0.20181231171920-c182affec369.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 2345d6f7e7b55d60f175c127895e2b40020e3d4183abaec94828910a018264b2
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.mitchellh.copystructure-v1.2.0
+
+##### Package representing github.com/mitchellh/copystructure
+
+PackageName: github.com/mitchellh/copystructure
+SPDXID: SPDXRef-Package-github.com.mitchellh.copystructure-v1.2.0
+PackageVersion: v1.2.0
+PackageSupplier: Organization: github.com/mitchellh/copystructure
+PackageDownloadLocation: https://proxy.golang.org/github.com/mitchellh/copystructure/@v/v1.2.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: be92974cde1ec1c8b4dd596383fabd42f086503b6d04e18121ad795af789246c
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.mitchellh.go-homedir-v1.1.0
+
+##### Package representing github.com/mitchellh/go-homedir
+
+PackageName: github.com/mitchellh/go-homedir
+SPDXID: SPDXRef-Package-github.com.mitchellh.go-homedir-v1.1.0
+PackageVersion: v1.1.0
+PackageSupplier: Organization: github.com/mitchellh/go-homedir
+PackageDownloadLocation: https://proxy.golang.org/github.com/mitchellh/go-homedir/@v/v1.1.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 96e905f738971710c53e4035becaf9ce97355ee3c39ffc059edab9986fb81346
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.mitchellh.go-testing-interface-v1.14.1
+
+##### Package representing github.com/mitchellh/go-testing-interface
+
+PackageName: github.com/mitchellh/go-testing-interface
+SPDXID: SPDXRef-Package-github.com.mitchellh.go-testing-interface-v1.14.1
+PackageVersion: v1.14.1
+PackageSupplier: Organization: github.com/mitchellh/go-testing-interface
+PackageDownloadLocation: https://proxy.golang.org/github.com/mitchellh/go-testing-interface/@v/v1.14.1.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 8eb82c84e85801454d30026229b12eec4a80c20249d89aa9426a4b24ebb4edc5
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.mitchellh.mapstructure-v1.4.3
+
+##### Package representing github.com/mitchellh/mapstructure
+
+PackageName: github.com/mitchellh/mapstructure
+SPDXID: SPDXRef-Package-github.com.mitchellh.mapstructure-v1.4.3
+PackageVersion: v1.4.3
+PackageSupplier: Organization: github.com/mitchellh/mapstructure
+PackageDownloadLocation: https://proxy.golang.org/github.com/mitchellh/mapstructure/@v/v1.4.3.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 395a300d20a5970fd88dd2e46a6dffb26ef012d3b2e7d77c9dd1a009cca3f1cb
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.mitchellh.reflectwalk-v1.0.2
+
+##### Package representing github.com/mitchellh/reflectwalk
+
+PackageName: github.com/mitchellh/reflectwalk
+SPDXID: SPDXRef-Package-github.com.mitchellh.reflectwalk-v1.0.2
+PackageVersion: v1.0.2
+PackageSupplier: Organization: github.com/mitchellh/reflectwalk
+PackageDownloadLocation: https://proxy.golang.org/github.com/mitchellh/reflectwalk/@v/v1.0.2.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 1b62f358a8b9db83d681dde62c757c63993bb3a5d4bd3d0679feb3c5221e5da4
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.modern-go.concurrent-v0.0.0-20180306012644-bacd9c7ef1dd
+
+##### Package representing github.com/modern-go/concurrent
+
+PackageName: github.com/modern-go/concurrent
+SPDXID: SPDXRef-Package-github.com.modern-go.concurrent-v0.0.0-20180306012644-bacd9c7ef1dd
+PackageVersion: v0.0.0-20180306012644-bacd9c7ef1dd
+PackageSupplier: Organization: github.com/modern-go/concurrent
+PackageDownloadLocation: https://proxy.golang.org/github.com/modern-go/concurrent/@v/v0.0.0-20180306012644-bacd9c7ef1dd.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 4d12da67d703ff0f0f561f779ec3d76b556b43a8e5c0be6837c975e1095c35f8
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.modern-go.reflect2-v1.0.2
+
+##### Package representing github.com/modern-go/reflect2
+
+PackageName: github.com/modern-go/reflect2
+SPDXID: SPDXRef-Package-github.com.modern-go.reflect2-v1.0.2
+PackageVersion: v1.0.2
+PackageSupplier: Organization: github.com/modern-go/reflect2
+PackageDownloadLocation: https://proxy.golang.org/github.com/modern-go/reflect2/@v/v1.0.2.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: c416a0a0bb45b3de02067b7196e29e696813329bcbc42e2eaf79cc682f46cf43
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.mpvl.unique-v0.0.0-20150818121801-cbe035fff7de
+
+##### Package representing github.com/mpvl/unique
+
+PackageName: github.com/mpvl/unique
+SPDXID: SPDXRef-Package-github.com.mpvl.unique-v0.0.0-20150818121801-cbe035fff7de
+PackageVersion: v0.0.0-20150818121801-cbe035fff7de
+PackageSupplier: Organization: github.com/mpvl/unique
+PackageDownloadLocation: https://proxy.golang.org/github.com/mpvl/unique/@v/v0.0.0-20150818121801-cbe035fff7de.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 0f9c77f6f179282c0a41ac3e382f593e22d51d7cf7505c36fa9b045fe81872da
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.oklog.run-v1.1.0
+
+##### Package representing github.com/oklog/run
+
+PackageName: github.com/oklog/run
+SPDXID: SPDXRef-Package-github.com.oklog.run-v1.1.0
+PackageVersion: v1.1.0
+PackageSupplier: Organization: github.com/oklog/run
+PackageDownloadLocation: https://proxy.golang.org/github.com/oklog/run/@v/v1.1.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 1847a767570ad3eab4fb0b097b0f6a520fc3c83f24dc9cd8b19022e60622da60
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.oklog.ulid-v1.3.1
+
+##### Package representing github.com/oklog/ulid
+
+PackageName: github.com/oklog/ulid
+SPDXID: SPDXRef-Package-github.com.oklog.ulid-v1.3.1
+PackageVersion: v1.3.1
+PackageSupplier: Organization: github.com/oklog/ulid
+PackageDownloadLocation: https://proxy.golang.org/github.com/oklog/ulid/@v/v1.3.1.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 1067cd0c4c7a32a1f3f01dee355e900226f5511d8b9bdeec1e2de8700e84489e
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.open-policy-agent.opa-v0.35.0
+
+##### Package representing github.com/open-policy-agent/opa
+
+PackageName: github.com/open-policy-agent/opa
+SPDXID: SPDXRef-Package-github.com.open-policy-agent.opa-v0.35.0
+PackageVersion: v0.35.0
+PackageSupplier: Organization: github.com/open-policy-agent/opa
+PackageDownloadLocation: https://proxy.golang.org/github.com/open-policy-agent/opa/@v/v0.35.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: c2c5e4abfdc926e71150de21e3aa67f59bfa702e9f9c75ab5718e0a3293133ba
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.opencontainers.go-digest-v1.0.0
+
+##### Package representing github.com/opencontainers/go-digest
+
+PackageName: github.com/opencontainers/go-digest
+SPDXID: SPDXRef-Package-github.com.opencontainers.go-digest-v1.0.0
+PackageVersion: v1.0.0
+PackageSupplier: Organization: github.com/opencontainers/go-digest
+PackageDownloadLocation: https://proxy.golang.org/github.com/opencontainers/go-digest/@v/v1.0.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 6a93945ace755b93e586ec86cb3f4509e78120e50303fea75bc3a2ff23a18795
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.opencontainers.image-spec-v1.0.3-0.20220114050600-8b9d41f48198
+
+##### Package representing github.com/opencontainers/image-spec
+
+PackageName: github.com/opencontainers/image-spec
+SPDXID: SPDXRef-Package-github.com.opencontainers.image-spec-v1.0.3-0.20220114050600-8b9d41f48198
+PackageVersion: v1.0.3-0.20220114050600-8b9d41f48198
+PackageSupplier: Organization: github.com/opencontainers/image-spec
+PackageDownloadLocation: https://proxy.golang.org/github.com/opencontainers/image-spec/@v/v1.0.3-0.20220114050600-8b9d41f48198.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: f9ccdcfc9f129613ca2ceb552cc41cfb10c21414fbdd94ad32c4614ac521b128
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.opentracing.opentracing-go-v1.2.0
+
+##### Package representing github.com/opentracing/opentracing-go
+
+PackageName: github.com/opentracing/opentracing-go
+SPDXID: SPDXRef-Package-github.com.opentracing.opentracing-go-v1.2.0
+PackageVersion: v1.2.0
+PackageSupplier: Organization: github.com/opentracing/opentracing-go
+PackageDownloadLocation: https://proxy.golang.org/github.com/opentracing/opentracing-go/@v/v1.2.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: b8424fcbfd5ae5120f009d0ebfe3883bc3b15aeefb8c4bfed41d158632ab654b
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.pelletier.go-toml-v1.9.4
+
+##### Package representing github.com/pelletier/go-toml
+
+PackageName: github.com/pelletier/go-toml
+SPDXID: SPDXRef-Package-github.com.pelletier.go-toml-v1.9.4
+PackageVersion: v1.9.4
+PackageSupplier: Organization: github.com/pelletier/go-toml
+PackageDownloadLocation: https://proxy.golang.org/github.com/pelletier/go-toml/@v/v1.9.4.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: b6310d17a31f64083c7b8666653796696893daf5edb283bafa2b8e8c58440b03
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.pierrec.lz4-v2.6.1+incompatible
+
+##### Package representing github.com/pierrec/lz4
+
+PackageName: github.com/pierrec/lz4
+SPDXID: SPDXRef-Package-github.com.pierrec.lz4-v2.6.1+incompatible
+PackageVersion: v2.6.1+incompatible
+PackageSupplier: Organization: github.com/pierrec/lz4
+PackageDownloadLocation: https://proxy.golang.org/github.com/pierrec/lz4/@v/v2.6.1+incompatible.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: f54637fa20b6df2c45d147c6698ac6a6543eefd460fa1feaf4557d8b1d7d8e33
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.pkg.errors-v0.9.1
+
+##### Package representing github.com/pkg/errors
+
+PackageName: github.com/pkg/errors
+SPDXID: SPDXRef-Package-github.com.pkg.errors-v0.9.1
+PackageVersion: v0.9.1
+PackageSupplier: Organization: github.com/pkg/errors
+PackageDownloadLocation: https://proxy.golang.org/github.com/pkg/errors/@v/v0.9.1.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 14404bc75cd2db5e28c298f2eeab017a2c5b51192e850030acae54c0b193c2de
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.prometheus.client_golang-v1.11.0
+
+##### Package representing github.com/prometheus/client_golang
+
+PackageName: github.com/prometheus/client_golang
+SPDXID: SPDXRef-Package-github.com.prometheus.client_golang-v1.11.0
+PackageVersion: v1.11.0
+PackageSupplier: Organization: github.com/prometheus/client_golang
+PackageDownloadLocation: https://proxy.golang.org/github.com/prometheus/client_golang/@v/v1.11.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 1cd90b3801103080effcafb4e2bba4acbc7a721ee6b124707f7fd20121401ad4
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.prometheus.client_model-v0.2.0
+
+##### Package representing github.com/prometheus/client_model
+
+PackageName: github.com/prometheus/client_model
+SPDXID: SPDXRef-Package-github.com.prometheus.client_model-v0.2.0
+PackageVersion: v0.2.0
+PackageSupplier: Organization: github.com/prometheus/client_model
+PackageDownloadLocation: https://proxy.golang.org/github.com/prometheus/client_model/@v/v0.2.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: baae61d1df86bb18972c92cd001320a76a945833e22ef802cf3d9d511fbf5bf3
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.prometheus.common-v0.32.1
+
+##### Package representing github.com/prometheus/common
+
+PackageName: github.com/prometheus/common
+SPDXID: SPDXRef-Package-github.com.prometheus.common-v0.32.1
+PackageVersion: v0.32.1
+PackageSupplier: Organization: github.com/prometheus/common
+PackageDownloadLocation: https://proxy.golang.org/github.com/prometheus/common/@v/v0.32.1.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 85621d2f73761e8531dc1f23dd837d996a2bd2a858fcd94429911a5f1b88461e
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.prometheus.procfs-v0.7.3
+
+##### Package representing github.com/prometheus/procfs
+
+PackageName: github.com/prometheus/procfs
+SPDXID: SPDXRef-Package-github.com.prometheus.procfs-v0.7.3
+PackageVersion: v0.7.3
+PackageSupplier: Organization: github.com/prometheus/procfs
+PackageDownloadLocation: https://proxy.golang.org/github.com/prometheus/procfs/@v/v0.7.3.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: e23557865900cb33927260a45c14ce2d12d3cfc11e53e7b28ebc01fc43ead155
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.protocolbuffers.txtpbfmt-v0.0.0-20201118171849-f6a6b3f636fc
+
+##### Package representing github.com/protocolbuffers/txtpbfmt
+
+PackageName: github.com/protocolbuffers/txtpbfmt
+SPDXID: SPDXRef-Package-github.com.protocolbuffers.txtpbfmt-v0.0.0-20201118171849-f6a6b3f636fc
+PackageVersion: v0.0.0-20201118171849-f6a6b3f636fc
+PackageSupplier: Organization: github.com/protocolbuffers/txtpbfmt
+PackageDownloadLocation: https://proxy.golang.org/github.com/protocolbuffers/txtpbfmt/@v/v0.0.0-20201118171849-f6a6b3f636fc.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 81254e3418b61d63055c26bd8c5758bd893b2305bf9932f158e17bad74b82ced
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.rcrowley.go-metrics-v0.0.0-20201227073835-cf1acfcdf475
+
+##### Package representing github.com/rcrowley/go-metrics
+
+PackageName: github.com/rcrowley/go-metrics
+SPDXID: SPDXRef-Package-github.com.rcrowley.go-metrics-v0.0.0-20201227073835-cf1acfcdf475
+PackageVersion: v0.0.0-20201227073835-cf1acfcdf475
+PackageSupplier: Organization: github.com/rcrowley/go-metrics
+PackageDownloadLocation: https://proxy.golang.org/github.com/rcrowley/go-metrics/@v/v0.0.0-20201227073835-cf1acfcdf475.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 37f1250bc1f7fb95e92734d24df2ec255fe6c7d43d83b93199c8697d9cb18333
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.ryanuber.go-glob-v1.0.0
+
+##### Package representing github.com/ryanuber/go-glob
+
+PackageName: github.com/ryanuber/go-glob
+SPDXID: SPDXRef-Package-github.com.ryanuber.go-glob-v1.0.0
+PackageVersion: v1.0.0
+PackageSupplier: Organization: github.com/ryanuber/go-glob
+PackageDownloadLocation: https://proxy.golang.org/github.com/ryanuber/go-glob/@v/v1.0.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 890877c5702e99d43ee147dae5bdb9711a42e5360a967a3a86cbfa09bde99019
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.sassoftware.relic-v0.0.0-20210427151427-dfb082b79b74
+
+##### Package representing github.com/sassoftware/relic
+
+PackageName: github.com/sassoftware/relic
+SPDXID: SPDXRef-Package-github.com.sassoftware.relic-v0.0.0-20210427151427-dfb082b79b74
+PackageVersion: v0.0.0-20210427151427-dfb082b79b74
+PackageSupplier: Organization: github.com/sassoftware/relic
+PackageDownloadLocation: https://proxy.golang.org/github.com/sassoftware/relic/@v/v0.0.0-20210427151427-dfb082b79b74.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: b143736a748a03dcff87cc5797e649a3121864bd10c77d3a326c6a46bbd482bd
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.secure-systems-lab.go-securesystemslib-v0.3.1
+
+##### Package representing github.com/secure-systems-lab/go-securesystemslib
+
+PackageName: github.com/secure-systems-lab/go-securesystemslib
+SPDXID: SPDXRef-Package-github.com.secure-systems-lab.go-securesystemslib-v0.3.1
+PackageVersion: v0.3.1
+PackageSupplier: Organization: github.com/secure-systems-lab/go-securesystemslib
+PackageDownloadLocation: https://proxy.golang.org/github.com/secure-systems-lab/go-securesystemslib/@v/v0.3.1.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 2c9bb233389acda770990451bb533b18c528e52d681f5f98c54f458ee48553c9
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.segmentio.ksuid-v1.0.4
+
+##### Package representing github.com/segmentio/ksuid
+
+PackageName: github.com/segmentio/ksuid
+SPDXID: SPDXRef-Package-github.com.segmentio.ksuid-v1.0.4
+PackageVersion: v1.0.4
+PackageSupplier: Organization: github.com/segmentio/ksuid
+PackageDownloadLocation: https://proxy.golang.org/github.com/segmentio/ksuid/@v/v1.0.4.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: b01a3605d4a15e399cba000cc23ba0a0651d515d29731639996e312919f7bf87
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.shibumi.go-pathspec-v1.3.0
+
+##### Package representing github.com/shibumi/go-pathspec
+
+PackageName: github.com/shibumi/go-pathspec
+SPDXID: SPDXRef-Package-github.com.shibumi.go-pathspec-v1.3.0
+PackageVersion: v1.3.0
+PackageSupplier: Organization: github.com/shibumi/go-pathspec
+PackageDownloadLocation: https://proxy.golang.org/github.com/shibumi/go-pathspec/@v/v1.3.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 414c8c661168d0c77907ccd5f31dad7aca216dbe647dba538bdac19ca8797642
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.sigstore.fulcio-v0.1.2-0.20220114150912-86a2036f9bc7
+
+##### Package representing github.com/sigstore/fulcio
+
+PackageName: github.com/sigstore/fulcio
+SPDXID: SPDXRef-Package-github.com.sigstore.fulcio-v0.1.2-0.20220114150912-86a2036f9bc7
+PackageVersion: v0.1.2-0.20220114150912-86a2036f9bc7
+PackageSupplier: Organization: github.com/sigstore/fulcio
+PackageDownloadLocation: https://proxy.golang.org/github.com/sigstore/fulcio/@v/v0.1.2-0.20220114150912-86a2036f9bc7.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 5c4ec0f6527ec188665050566136b0dcf87de37cc707888161de51d125f464e0
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.sigstore.rekor-v0.4.1-0.20220114213500-23f583409af3
+
+##### Package representing github.com/sigstore/rekor
+
+PackageName: github.com/sigstore/rekor
+SPDXID: SPDXRef-Package-github.com.sigstore.rekor-v0.4.1-0.20220114213500-23f583409af3
+PackageVersion: v0.4.1-0.20220114213500-23f583409af3
+PackageSupplier: Organization: github.com/sigstore/rekor
+PackageDownloadLocation: https://proxy.golang.org/github.com/sigstore/rekor/@v/v0.4.1-0.20220114213500-23f583409af3.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 99ba97ae6f1865737f7093067819203e7b30b5facec431357fb419749f8f3901
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.sigstore.sigstore-v1.1.1-0.20220217212907-e48ca03a5ba7
+
+##### Package representing github.com/sigstore/sigstore
+
+PackageName: github.com/sigstore/sigstore
+SPDXID: SPDXRef-Package-github.com.sigstore.sigstore-v1.1.1-0.20220217212907-e48ca03a5ba7
+PackageVersion: v1.1.1-0.20220217212907-e48ca03a5ba7
+PackageSupplier: Organization: github.com/sigstore/sigstore
+PackageDownloadLocation: https://proxy.golang.org/github.com/sigstore/sigstore/@v/v1.1.1-0.20220217212907-e48ca03a5ba7.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 608ca863013d8207c14be2e0af21b164484740b4b6d55efc8f074033a7cb9086
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.sirupsen.logrus-v1.8.1
+
+##### Package representing github.com/sirupsen/logrus
+
+PackageName: github.com/sirupsen/logrus
+SPDXID: SPDXRef-Package-github.com.sirupsen.logrus-v1.8.1
+PackageVersion: v1.8.1
+PackageSupplier: Organization: github.com/sirupsen/logrus
+PackageDownloadLocation: https://proxy.golang.org/github.com/sirupsen/logrus/@v/v1.8.1.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 7492ae1e0aa4d4d35096aa00e814e533559ff43387dcd063432bb487df806591
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.skratchdot.open-golang-v0.0.0-20200116055534-eef842397966
+
+##### Package representing github.com/skratchdot/open-golang
+
+PackageName: github.com/skratchdot/open-golang
+SPDXID: SPDXRef-Package-github.com.skratchdot.open-golang-v0.0.0-20200116055534-eef842397966
+PackageVersion: v0.0.0-20200116055534-eef842397966
+PackageSupplier: Organization: github.com/skratchdot/open-golang
+PackageDownloadLocation: https://proxy.golang.org/github.com/skratchdot/open-golang/@v/v0.0.0-20200116055534-eef842397966.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 24802eab71047fd7206d4e80b463cae024c6dd97fa08a30da9fd0c1d38200140
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.spf13.afero-v1.8.0
+
+##### Package representing github.com/spf13/afero
+
+PackageName: github.com/spf13/afero
+SPDXID: SPDXRef-Package-github.com.spf13.afero-v1.8.0
+PackageVersion: v1.8.0
+PackageSupplier: Organization: github.com/spf13/afero
+PackageDownloadLocation: https://proxy.golang.org/github.com/spf13/afero/@v/v1.8.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: e4c9adba102061e53aaa96bbc3b6cfd1dbfa30162eba9d2f7a4852a52928abad
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.spf13.cast-v1.4.1
+
+##### Package representing github.com/spf13/cast
+
+PackageName: github.com/spf13/cast
+SPDXID: SPDXRef-Package-github.com.spf13.cast-v1.4.1
+PackageVersion: v1.4.1
+PackageSupplier: Organization: github.com/spf13/cast
+PackageDownloadLocation: https://proxy.golang.org/github.com/spf13/cast/@v/v1.4.1.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: b348737be274d7de997c4313b3cd0ded4945b74043b90ed0f890e71e231629d0
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.spf13.cobra-v1.4.0
+
+##### Package representing github.com/spf13/cobra
+
+PackageName: github.com/spf13/cobra
+SPDXID: SPDXRef-Package-github.com.spf13.cobra-v1.4.0
+PackageVersion: v1.4.0
+PackageSupplier: Organization: github.com/spf13/cobra
+PackageDownloadLocation: https://proxy.golang.org/github.com/spf13/cobra/@v/v1.4.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: cbec09a71eb8c5c80ed55f91727c16d0b107c532918b66433d20635a7ae0f3c4
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.spf13.jwalterweatherman-v1.1.0
+
+##### Package representing github.com/spf13/jwalterweatherman
+
+PackageName: github.com/spf13/jwalterweatherman
+SPDXID: SPDXRef-Package-github.com.spf13.jwalterweatherman-v1.1.0
+PackageVersion: v1.1.0
+PackageSupplier: Organization: github.com/spf13/jwalterweatherman
+PackageDownloadLocation: https://proxy.golang.org/github.com/spf13/jwalterweatherman/@v/v1.1.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: b9eeafa02e5b47917c6312394baee3f62e7cd8553842fa366e6aa7a8c6000c59
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.spf13.pflag-v1.0.5
+
+##### Package representing github.com/spf13/pflag
+
+PackageName: github.com/spf13/pflag
+SPDXID: SPDXRef-Package-github.com.spf13.pflag-v1.0.5
+PackageVersion: v1.0.5
+PackageSupplier: Organization: github.com/spf13/pflag
+PackageDownloadLocation: https://proxy.golang.org/github.com/spf13/pflag/@v/v1.0.5.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 8b2f951543823f56bef3216da3f76b836089e6ed3246807b7d9c370cabff2570
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.spf13.viper-v1.10.1
+
+##### Package representing github.com/spf13/viper
+
+PackageName: github.com/spf13/viper
+SPDXID: SPDXRef-Package-github.com.spf13.viper-v1.10.1
+PackageVersion: v1.10.1
+PackageSupplier: Organization: github.com/spf13/viper
+PackageDownloadLocation: https://proxy.golang.org/github.com/spf13/viper/@v/v1.10.1.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 9ee259b98a46ee04e3fd7aa253083c6c0d1ca75f8cda60b727883996e51804a9
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.spiffe.go-spiffe.v2-v2.0.0
+
+##### Package representing github.com/spiffe/go-spiffe/v2
+
+PackageName: github.com/spiffe/go-spiffe/v2
+SPDXID: SPDXRef-Package-github.com.spiffe.go-spiffe.v2-v2.0.0
+PackageVersion: v2.0.0
+PackageSupplier: Organization: github.com/spiffe/go-spiffe/v2
+PackageDownloadLocation: https://proxy.golang.org/github.com/spiffe/go-spiffe/v2/@v/v2.0.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: cba37b05903181a1596042f2ac877148c9b67b6b56a738107b052db3d87585f3
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.subosito.gotenv-v1.2.0
+
+##### Package representing github.com/subosito/gotenv
+
+PackageName: github.com/subosito/gotenv
+SPDXID: SPDXRef-Package-github.com.subosito.gotenv-v1.2.0
+PackageVersion: v1.2.0
+PackageSupplier: Organization: github.com/subosito/gotenv
+PackageDownloadLocation: https://proxy.golang.org/github.com/subosito/gotenv/@v/v1.2.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 4a5af547d1f102510a79f82ae639fd53e0e711394851ae877e01338f483977bb
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.syndtr.goleveldb-v1.0.1-0.20210819022825-2ae1ddf74ef7
+
+##### Package representing github.com/syndtr/goleveldb
+
+PackageName: github.com/syndtr/goleveldb
+SPDXID: SPDXRef-Package-github.com.syndtr.goleveldb-v1.0.1-0.20210819022825-2ae1ddf74ef7
+PackageVersion: v1.0.1-0.20210819022825-2ae1ddf74ef7
+PackageSupplier: Organization: github.com/syndtr/goleveldb
+PackageDownloadLocation: https://proxy.golang.org/github.com/syndtr/goleveldb/@v/v1.0.1-0.20210819022825-2ae1ddf74ef7.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 7a90a1f3894cbc0ef467b0934c2998427d8229b63c8fce8aeff14022bd78d6e6
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.tent.canonical-json-go-v0.0.0-20130607151641-96e4ba3a7613
+
+##### Package representing github.com/tent/canonical-json-go
+
+PackageName: github.com/tent/canonical-json-go
+SPDXID: SPDXRef-Package-github.com.tent.canonical-json-go-v0.0.0-20130607151641-96e4ba3a7613
+PackageVersion: v0.0.0-20130607151641-96e4ba3a7613
+PackageSupplier: Organization: github.com/tent/canonical-json-go
+PackageDownloadLocation: https://proxy.golang.org/github.com/tent/canonical-json-go/@v/v0.0.0-20130607151641-96e4ba3a7613.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 8869c3feaf75eb4356a8a659e6f638a7474c898311927cdcb5f4a4a80e27043c
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.theupdateframework.go-tuf-v0.0.0-20220211205608-f0c3294f63b9
+
+##### Package representing github.com/theupdateframework/go-tuf
+
+PackageName: github.com/theupdateframework/go-tuf
+SPDXID: SPDXRef-Package-github.com.theupdateframework.go-tuf-v0.0.0-20220211205608-f0c3294f63b9
+PackageVersion: v0.0.0-20220211205608-f0c3294f63b9
+PackageSupplier: Organization: github.com/theupdateframework/go-tuf
+PackageDownloadLocation: https://proxy.golang.org/github.com/theupdateframework/go-tuf/@v/v0.0.0-20220211205608-f0c3294f63b9.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 53c6c76399a636e647737f9eee5dbf2c099f4e4ee888c881dd09fc7eca78cf98
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.vbatts.tar-split-v0.11.2
+
+##### Package representing github.com/vbatts/tar-split
+
+PackageName: github.com/vbatts/tar-split
+SPDXID: SPDXRef-Package-github.com.vbatts.tar-split-v0.11.2
+PackageVersion: v0.11.2
+PackageSupplier: Organization: github.com/vbatts/tar-split
+PackageDownloadLocation: https://proxy.golang.org/github.com/vbatts/tar-split/@v/v0.11.2.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 5626ba5ea26bd2171e5b8c1f7f7411cc3e60024fed6ad330ff8640edc4e520c1
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.xanzy.go-gitlab-v0.59.0
+
+##### Package representing github.com/xanzy/go-gitlab
+
+PackageName: github.com/xanzy/go-gitlab
+SPDXID: SPDXRef-Package-github.com.xanzy.go-gitlab-v0.59.0
+PackageVersion: v0.59.0
+PackageSupplier: Organization: github.com/xanzy/go-gitlab
+PackageDownloadLocation: https://proxy.golang.org/github.com/xanzy/go-gitlab/@v/v0.59.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 7c0afaad3fd821d7e605abd8808e36f8ea7bc8001ec76638c4e7ef6e337d8714
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.xeipuuv.gojsonpointer-v0.0.0-20190905194746-02993c407bfb
+
+##### Package representing github.com/xeipuuv/gojsonpointer
+
+PackageName: github.com/xeipuuv/gojsonpointer
+SPDXID: SPDXRef-Package-github.com.xeipuuv.gojsonpointer-v0.0.0-20190905194746-02993c407bfb
+PackageVersion: v0.0.0-20190905194746-02993c407bfb
+PackageSupplier: Organization: github.com/xeipuuv/gojsonpointer
+PackageDownloadLocation: https://proxy.golang.org/github.com/xeipuuv/gojsonpointer/@v/v0.0.0-20190905194746-02993c407bfb.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: cc658502d88c732af2507a148d4257d3f96dd47dbe8b629ada7f83dc322648da
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.xeipuuv.gojsonreference-v0.0.0-20180127040603-bd5ef7bd5415
+
+##### Package representing github.com/xeipuuv/gojsonreference
+
+PackageName: github.com/xeipuuv/gojsonreference
+SPDXID: SPDXRef-Package-github.com.xeipuuv.gojsonreference-v0.0.0-20180127040603-bd5ef7bd5415
+PackageVersion: v0.0.0-20180127040603-bd5ef7bd5415
+PackageSupplier: Organization: github.com/xeipuuv/gojsonreference
+PackageDownloadLocation: https://proxy.golang.org/github.com/xeipuuv/gojsonreference/@v/v0.0.0-20180127040603-bd5ef7bd5415.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 133256807a2fa27b7b36c723a40c57b0303c4bc04c62f7bc639fbb72e444ed1d
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.yashtewari.glob-intersection-v0.0.0-20180916065949-5c77d914dd0b
+
+##### Package representing github.com/yashtewari/glob-intersection
+
+PackageName: github.com/yashtewari/glob-intersection
+SPDXID: SPDXRef-Package-github.com.yashtewari.glob-intersection-v0.0.0-20180916065949-5c77d914dd0b
+PackageVersion: v0.0.0-20180916065949-5c77d914dd0b
+PackageSupplier: Organization: github.com/yashtewari/glob-intersection
+PackageDownloadLocation: https://proxy.golang.org/github.com/yashtewari/glob-intersection/@v/v0.0.0-20180916065949-5c77d914dd0b.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: bd545a8115dfebb112a806fbda11b60bf67023c36d245daed95efa12cb8e1c66
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-github.com.zeebo.errs-v1.2.2
+
+##### Package representing github.com/zeebo/errs
+
+PackageName: github.com/zeebo/errs
+SPDXID: SPDXRef-Package-github.com.zeebo.errs-v1.2.2
+PackageVersion: v1.2.2
+PackageSupplier: Organization: github.com/zeebo/errs
+PackageDownloadLocation: https://proxy.golang.org/github.com/zeebo/errs/@v/v1.2.2.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: e4d172a4c4ee49da324954ea94db35744a14db54156a63102715bf1628b93bb8
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-go.mongodb.org.mongo-driver-v1.8.3
+
+##### Package representing go.mongodb.org/mongo-driver
+
+PackageName: go.mongodb.org/mongo-driver
+SPDXID: SPDXRef-Package-go.mongodb.org.mongo-driver-v1.8.3
+PackageVersion: v1.8.3
+PackageSupplier: Organization: go.mongodb.org/mongo-driver
+PackageDownloadLocation: https://proxy.golang.org/go.mongodb.org/mongo-driver/@v/v1.8.3.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 4c32a54e41832a6f649095543805c32b9fdf92a287255c18412a6845f078dd1e
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-go.opencensus.io-v0.23.0
+
+##### Package representing go.opencensus.io
+
+PackageName: go.opencensus.io
+SPDXID: SPDXRef-Package-go.opencensus.io-v0.23.0
+PackageVersion: v0.23.0
+PackageSupplier: Organization: go.opencensus.io
+PackageDownloadLocation: https://proxy.golang.org/go.opencensus.io/@v/v0.23.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 82a0b0d0b7cbc52733f22ad28bc7b141cedfc90d1f29053faa70bf5fcf95ff53
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-go.uber.org.atomic-v1.9.0
+
+##### Package representing go.uber.org/atomic
+
+PackageName: go.uber.org/atomic
+SPDXID: SPDXRef-Package-go.uber.org.atomic-v1.9.0
+PackageVersion: v1.9.0
+PackageSupplier: Organization: go.uber.org/atomic
+PackageDownloadLocation: https://proxy.golang.org/go.uber.org/atomic/@v/v1.9.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 102984f019ff5854d8c045bf6e9283dccf15b51ff34156dabc0a1a942d4f6321
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-go.uber.org.multierr-v1.7.0
+
+##### Package representing go.uber.org/multierr
+
+PackageName: go.uber.org/multierr
+SPDXID: SPDXRef-Package-go.uber.org.multierr-v1.7.0
+PackageVersion: v1.7.0
+PackageSupplier: Organization: go.uber.org/multierr
+PackageDownloadLocation: https://proxy.golang.org/go.uber.org/multierr/@v/v1.7.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: cda88efeb9a01636e609775260959071dbce0acb6199d6877ebdc69b62b1e047
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-go.uber.org.zap-v1.21.0
+
+##### Package representing go.uber.org/zap
+
+PackageName: go.uber.org/zap
+SPDXID: SPDXRef-Package-go.uber.org.zap-v1.21.0
+PackageVersion: v1.21.0
+PackageSupplier: Organization: go.uber.org/zap
+PackageDownloadLocation: https://proxy.golang.org/go.uber.org/zap/@v/v1.21.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 59e7cc7ae961a2fa19dac617cfbb2de8ad2c2e3edb061a6215ab9de2be33493f
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-golang.org.x.crypto-v0.0.0-20220213190939-1e6e3497d506
+
+##### Package representing golang.org/x/crypto
+
+PackageName: golang.org/x/crypto
+SPDXID: SPDXRef-Package-golang.org.x.crypto-v0.0.0-20220213190939-1e6e3497d506
+PackageVersion: v0.0.0-20220213190939-1e6e3497d506
+PackageSupplier: Organization: golang.org/x/crypto
+PackageDownloadLocation: https://proxy.golang.org/golang.org/x/crypto/@v/v0.0.0-20220213190939-1e6e3497d506.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 12e1932437de83f3c6649a7782ad4afb5e1e48b153b2b8f57a0f0a42e894c8a8
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-golang.org.x.mod-v0.5.1
+
+##### Package representing golang.org/x/mod
+
+PackageName: golang.org/x/mod
+SPDXID: SPDXRef-Package-golang.org.x.mod-v0.5.1
+PackageVersion: v0.5.1
+PackageSupplier: Organization: golang.org/x/mod
+PackageDownloadLocation: https://proxy.golang.org/golang.org/x/mod/@v/v0.5.1.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 389c6843faf29e817475c09d23b70b3e4b70fe147672e7aa61f8e6e37a2a2b7f
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-golang.org.x.net-v0.0.0-20220225172249-27dd8689420f
+
+##### Package representing golang.org/x/net
+
+PackageName: golang.org/x/net
+SPDXID: SPDXRef-Package-golang.org.x.net-v0.0.0-20220225172249-27dd8689420f
+PackageVersion: v0.0.0-20220225172249-27dd8689420f
+PackageSupplier: Organization: golang.org/x/net
+PackageDownloadLocation: https://proxy.golang.org/golang.org/x/net/@v/v0.0.0-20220225172249-27dd8689420f.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: a00e17463d2ab52b7c628d599acd02525b13dca1baf55d9419058f071ba30e67
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-golang.org.x.oauth2-v0.0.0-20220223155221-ee480838109b
+
+##### Package representing golang.org/x/oauth2
+
+PackageName: golang.org/x/oauth2
+SPDXID: SPDXRef-Package-golang.org.x.oauth2-v0.0.0-20220223155221-ee480838109b
+PackageVersion: v0.0.0-20220223155221-ee480838109b
+PackageSupplier: Organization: golang.org/x/oauth2
+PackageDownloadLocation: https://proxy.golang.org/golang.org/x/oauth2/@v/v0.0.0-20220223155221-ee480838109b.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 7253fc78c841df410775cd1b7764f0b6aea4814ef2979b9bd9c40b49daefd438
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-golang.org.x.sync-v0.0.0-20210220032951-036812b2e83c
+
+##### Package representing golang.org/x/sync
+
+PackageName: golang.org/x/sync
+SPDXID: SPDXRef-Package-golang.org.x.sync-v0.0.0-20210220032951-036812b2e83c
+PackageVersion: v0.0.0-20210220032951-036812b2e83c
+PackageSupplier: Organization: golang.org/x/sync
+PackageDownloadLocation: https://proxy.golang.org/golang.org/x/sync/@v/v0.0.0-20210220032951-036812b2e83c.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: e4ab25198c05a6484687e435e9bc0c3f770ea27b47f0539ea7bb4657ce98ed24
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-golang.org.x.sys-v0.0.0-20220227234510-4e6760a101f9
+
+##### Package representing golang.org/x/sys
+
+PackageName: golang.org/x/sys
+SPDXID: SPDXRef-Package-golang.org.x.sys-v0.0.0-20220227234510-4e6760a101f9
+PackageVersion: v0.0.0-20220227234510-4e6760a101f9
+PackageSupplier: Organization: golang.org/x/sys
+PackageDownloadLocation: https://proxy.golang.org/golang.org/x/sys/@v/v0.0.0-20220227234510-4e6760a101f9.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 9e186dd83615fd29f7a8e6b2bbc94cf9c5358a2f6c4cb51e050c1041f507b6bb
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-golang.org.x.term-v0.0.0-20210927222741-03fcf44c2211
+
+##### Package representing golang.org/x/term
+
+PackageName: golang.org/x/term
+SPDXID: SPDXRef-Package-golang.org.x.term-v0.0.0-20210927222741-03fcf44c2211
+PackageVersion: v0.0.0-20210927222741-03fcf44c2211
+PackageSupplier: Organization: golang.org/x/term
+PackageDownloadLocation: https://proxy.golang.org/golang.org/x/term/@v/v0.0.0-20210927222741-03fcf44c2211.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 2468113a02a5f4df03b96db4a054b983173e944ebbfcddc57309813cc7bb02b6
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-golang.org.x.text-v0.3.7
+
+##### Package representing golang.org/x/text
+
+PackageName: golang.org/x/text
+SPDXID: SPDXRef-Package-golang.org.x.text-v0.3.7
+PackageVersion: v0.3.7
+PackageSupplier: Organization: golang.org/x/text
+PackageDownloadLocation: https://proxy.golang.org/golang.org/x/text/@v/v0.3.7.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: a25a70bcfd8a69c5b5656bec47bb90868c9362f280ba97d0ad118114cdf9d869
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-golang.org.x.time-v0.0.0-20211116232009-f0f3c7e86c11
+
+##### Package representing golang.org/x/time
+
+PackageName: golang.org/x/time
+SPDXID: SPDXRef-Package-golang.org.x.time-v0.0.0-20211116232009-f0f3c7e86c11
+PackageVersion: v0.0.0-20211116232009-f0f3c7e86c11
+PackageSupplier: Organization: golang.org/x/time
+PackageDownloadLocation: https://proxy.golang.org/golang.org/x/time/@v/v0.0.0-20211116232009-f0f3c7e86c11.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 199a243487ae5649776991c972146baf5dd60aca25b34d8c2d4733d54f62b3a3
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-golang.org.x.xerrors-v0.0.0-20200804184101-5ec99f83aff1
+
+##### Package representing golang.org/x/xerrors
+
+PackageName: golang.org/x/xerrors
+SPDXID: SPDXRef-Package-golang.org.x.xerrors-v0.0.0-20200804184101-5ec99f83aff1
+PackageVersion: v0.0.0-20200804184101-5ec99f83aff1
+PackageSupplier: Organization: golang.org/x/xerrors
+PackageDownloadLocation: https://proxy.golang.org/golang.org/x/xerrors/@v/v0.0.0-20200804184101-5ec99f83aff1.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 828d5b2bf0ff045655d88f1c21077534a119fb4a304931b57c34dc8b822a15c1
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-google.golang.org.api-v0.71.0
+
+##### Package representing google.golang.org/api
+
+PackageName: google.golang.org/api
+SPDXID: SPDXRef-Package-google.golang.org.api-v0.71.0
+PackageVersion: v0.71.0
+PackageSupplier: Organization: google.golang.org/api
+PackageDownloadLocation: https://proxy.golang.org/google.golang.org/api/@v/v0.71.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 4a05a87f5f0cf15d8dca5b17edb2f87ccdbc8fe9c5751a291d96dd8a969ac36d
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-google.golang.org.genproto-v0.0.0-20220304144024-325a89244dc8
+
+##### Package representing google.golang.org/genproto
+
+PackageName: google.golang.org/genproto
+SPDXID: SPDXRef-Package-google.golang.org.genproto-v0.0.0-20220304144024-325a89244dc8
+PackageVersion: v0.0.0-20220304144024-325a89244dc8
+PackageSupplier: Organization: google.golang.org/genproto
+PackageDownloadLocation: https://proxy.golang.org/google.golang.org/genproto/@v/v0.0.0-20220304144024-325a89244dc8.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 53d579d9feab02020d1fb913fa6bac035a85f245b254ec7317c798b8e56e1704
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-google.golang.org.grpc-v1.45.0
+
+##### Package representing google.golang.org/grpc
+
+PackageName: google.golang.org/grpc
+SPDXID: SPDXRef-Package-google.golang.org.grpc-v1.45.0
+PackageVersion: v1.45.0
+PackageSupplier: Organization: google.golang.org/grpc
+PackageDownloadLocation: https://proxy.golang.org/google.golang.org/grpc/@v/v1.45.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 344a6052a57767e66392a32cc4c835d48683ad7638458e8242e91218ad2e2353
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-google.golang.org.protobuf-v1.27.1
+
+##### Package representing google.golang.org/protobuf
+
+PackageName: google.golang.org/protobuf
+SPDXID: SPDXRef-Package-google.golang.org.protobuf-v1.27.1
+PackageVersion: v1.27.1
+PackageSupplier: Organization: google.golang.org/protobuf
+PackageDownloadLocation: https://proxy.golang.org/google.golang.org/protobuf/@v/v1.27.1.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 4a7a9b9c3c3557b46265c5cfc793047aa3efdacefd2fd8bb0495251bff91bab4
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-gopkg.in.inf.v0-v0.9.1
+
+##### Package representing gopkg.in/inf.v0
+
+PackageName: gopkg.in/inf.v0
+SPDXID: SPDXRef-Package-gopkg.in.inf.v0-v0.9.1
+PackageVersion: v0.9.1
+PackageSupplier: Organization: gopkg.in/inf.v0
+PackageDownloadLocation: https://proxy.golang.org/gopkg.in/inf.v0/@v/v0.9.1.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: ef73390a86728b764b30ec83950874df50b1e8df4d0c9d95bdf97be840c08037
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-gopkg.in.ini.v1-v1.66.2
+
+##### Package representing gopkg.in/ini.v1
+
+PackageName: gopkg.in/ini.v1
+SPDXID: SPDXRef-Package-gopkg.in.ini.v1-v1.66.2
+PackageVersion: v1.66.2
+PackageSupplier: Organization: gopkg.in/ini.v1
+PackageDownloadLocation: https://proxy.golang.org/gopkg.in/ini.v1/@v/v1.66.2.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 5df47574e62e6f2b4acb84a1cdcd8b1ebac6854d250c27c3186d722cf9a982c2
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-gopkg.in.square.go-jose.v2-v2.6.0
+
+##### Package representing gopkg.in/square/go-jose.v2
+
+PackageName: gopkg.in/square/go-jose.v2
+SPDXID: SPDXRef-Package-gopkg.in.square.go-jose.v2-v2.6.0
+PackageVersion: v2.6.0
+PackageSupplier: Organization: gopkg.in/square/go-jose.v2
+PackageDownloadLocation: https://proxy.golang.org/gopkg.in/square/go-jose.v2/@v/v2.6.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 34693be164e73ca04d521373417ecf61c4cb523a2aee6cca93638a6efc24da22
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-gopkg.in.yaml.v2-v2.4.0
+
+##### Package representing gopkg.in/yaml.v2
+
+PackageName: gopkg.in/yaml.v2
+SPDXID: SPDXRef-Package-gopkg.in.yaml.v2-v2.4.0
+PackageVersion: v2.4.0
+PackageSupplier: Organization: gopkg.in/yaml.v2
+PackageDownloadLocation: https://proxy.golang.org/gopkg.in/yaml.v2/@v/v2.4.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 0fcc60c04098ec262fc7e6369f8b01cfddc99fd251bf1762cb2a3c0937ee29a6
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-gopkg.in.yaml.v3-v3.0.0-20210107192922-496545a6307b
+
+##### Package representing gopkg.in/yaml.v3
+
+PackageName: gopkg.in/yaml.v3
+SPDXID: SPDXRef-Package-gopkg.in.yaml.v3-v3.0.0-20210107192922-496545a6307b
+PackageVersion: v3.0.0-20210107192922-496545a6307b
+PackageSupplier: Organization: gopkg.in/yaml.v3
+PackageDownloadLocation: https://proxy.golang.org/gopkg.in/yaml.v3/@v/v3.0.0-20210107192922-496545a6307b.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 87ca83a2d6843ee2404eb3265b4e0d0b083bbf6d9a1c7dbcc30a5ab9484af4ea
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-k8s.io.api-v0.23.3
+
+##### Package representing k8s.io/api
+
+PackageName: k8s.io/api
+SPDXID: SPDXRef-Package-k8s.io.api-v0.23.3
+PackageVersion: v0.23.3
+PackageSupplier: Organization: k8s.io/api
+PackageDownloadLocation: https://proxy.golang.org/k8s.io/api/@v/v0.23.3.zip
+FilesAnalyzed: false
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-k8s.io.apimachinery-v0.23.3
+
+##### Package representing k8s.io/apimachinery
+
+PackageName: k8s.io/apimachinery
+SPDXID: SPDXRef-Package-k8s.io.apimachinery-v0.23.3
+PackageVersion: v0.23.3
+PackageSupplier: Organization: k8s.io/apimachinery
+PackageDownloadLocation: https://proxy.golang.org/k8s.io/apimachinery/@v/v0.23.3.zip
+FilesAnalyzed: false
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-k8s.io.client-go-v0.23.3
+
+##### Package representing k8s.io/client-go
+
+PackageName: k8s.io/client-go
+SPDXID: SPDXRef-Package-k8s.io.client-go-v0.23.3
+PackageVersion: v0.23.3
+PackageSupplier: Organization: k8s.io/client-go
+PackageDownloadLocation: https://proxy.golang.org/k8s.io/client-go/@v/v0.23.3.zip
+FilesAnalyzed: false
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-k8s.io.klog.v2-v2.40.1
+
+##### Package representing k8s.io/klog/v2
+
+PackageName: k8s.io/klog/v2
+SPDXID: SPDXRef-Package-k8s.io.klog.v2-v2.40.1
+PackageVersion: v2.40.1
+PackageSupplier: Organization: k8s.io/klog/v2
+PackageDownloadLocation: https://proxy.golang.org/k8s.io/klog/v2/@v/v2.40.1.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 3f8451b9c5a4fe514e94376402bde673b89616480aad963da9930081e934e92e
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-k8s.io.utils-v0.0.0-20220127004650-9b3446523e65
+
+##### Package representing k8s.io/utils
+
+PackageName: k8s.io/utils
+SPDXID: SPDXRef-Package-k8s.io.utils-v0.0.0-20220127004650-9b3446523e65
+PackageVersion: v0.0.0-20220127004650-9b3446523e65
+PackageSupplier: Organization: k8s.io/utils
+PackageDownloadLocation: https://proxy.golang.org/k8s.io/utils/@v/v0.0.0-20220127004650-9b3446523e65.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 38d592d1681d839c11890200ba2ecbff4db7682f7e231ac8af2758ee5f2596c1
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-knative.dev.pkg-v0.0.0-20220202132633-df430fa0dd96
+
+##### Package representing knative.dev/pkg
+
+PackageName: knative.dev/pkg
+SPDXID: SPDXRef-Package-knative.dev.pkg-v0.0.0-20220202132633-df430fa0dd96
+PackageVersion: v0.0.0-20220202132633-df430fa0dd96
+PackageSupplier: Organization: knative.dev/pkg
+PackageDownloadLocation: https://proxy.golang.org/knative.dev/pkg/@v/v0.0.0-20220202132633-df430fa0dd96.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 254d0315ad3a09a52dc129006346f78f8ee884424b2189693cf80d81b3c7940a
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-sigs.k8s.io.release-utils-v0.4.1-0.20220207182343-6dadf2228617
+
+##### Package representing sigs.k8s.io/release-utils
+
+PackageName: sigs.k8s.io/release-utils
+SPDXID: SPDXRef-Package-sigs.k8s.io.release-utils-v0.4.1-0.20220207182343-6dadf2228617
+PackageVersion: v0.4.1-0.20220207182343-6dadf2228617
+PackageSupplier: Organization: sigs.k8s.io/release-utils
+PackageDownloadLocation: https://proxy.golang.org/sigs.k8s.io/release-utils/@v/v0.4.1-0.20220207182343-6dadf2228617.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: a9b2b33fc7c501d9678f85aa07d2ab02e5b8a65cbe6d4424751955ac7e09bacd
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-sigs.k8s.io.structured-merge-diff.v4-v4.2.1
+
+##### Package representing sigs.k8s.io/structured-merge-diff/v4
+
+PackageName: sigs.k8s.io/structured-merge-diff/v4
+SPDXID: SPDXRef-Package-sigs.k8s.io.structured-merge-diff.v4-v4.2.1
+PackageVersion: v4.2.1
+PackageSupplier: Organization: sigs.k8s.io/structured-merge-diff/v4
+PackageDownloadLocation: https://proxy.golang.org/sigs.k8s.io/structured-merge-diff/v4/@v/v4.2.1.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 6ca0aa13d1af439b625479f9adf9f5afec9aa3768b40468bce49260247fe03a6
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+Relationship: SPDXRef-Package-github.com.sigstore.cosign DEPENDS_ON SPDXRef-Package-sigs.k8s.io.yaml-v1.3.0
+
+##### Package representing sigs.k8s.io/yaml
+
+PackageName: sigs.k8s.io/yaml
+SPDXID: SPDXRef-Package-sigs.k8s.io.yaml-v1.3.0
+PackageVersion: v1.3.0
+PackageSupplier: Organization: sigs.k8s.io/yaml
+PackageDownloadLocation: https://proxy.golang.org/sigs.k8s.io/yaml/@v/v1.3.0.zip
+FilesAnalyzed: false
+PackageChecksum: SHA256: 6b655c94bcce1abc0e1c3895f047c11a1be31ef3f8e82b56e63e8f3af858186a
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageLicenseComments: NOASSERTION
+PackageComment: NOASSERTION
+
+
+

@@ -49,7 +49,7 @@ there is a lot you can do with it! Let's see in practice how it is.
 Start by cloning the [cosign] repository:
 
 ```bash
-git clone git@github.com:sigstore/cosign.git
+git clone https://github.com/sigstore/cosign.git
 cd cosign
 ```
 

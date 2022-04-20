@@ -10,12 +10,12 @@ spire_apply() {
   fi
 
   show=$(kubectl exec -n spire spire-server-0 -c spire-server -- \
-    /opt/spire/bin/spire-server entry show $1 $2)
+    /opt/spire/bin/spire-server entry show "$1" "$2")
   if [ "$show" != "Found 0 entries" ]; then
     # delete to recreate
     entryid=$(echo "$show" | grep "^Entry ID" | cut -f2 -d:)
     kubectl exec -n spire spire-server-0 -c spire-server -- \
-      /opt/spire/bin/spire-server entry delete -entryID $entryid
+      /opt/spire/bin/spire-server entry delete -entryID "$entryid"
   fi
   kubectl exec -n spire spire-server-0 -c spire-server -- \
     /opt/spire/bin/spire-server entry create "$@"

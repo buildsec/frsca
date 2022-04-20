@@ -1,6 +1,0 @@
-injector:
-  enabled: false
-
-server:
-  affinity: ""
-  

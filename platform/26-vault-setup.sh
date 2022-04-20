@@ -7,11 +7,11 @@ vault_name="$(kubectl get pods -l app.kubernetes.io/name=vault -n vault -o name 
 ROOT_TOKEN=""
 
 vault_exec() {
-  envcmd=""
   if [ -n "$ROOT_TOKEN" ]; then
-    envcmd="env VAULT_TOKEN=$ROOT_TOKEN"
+    kubectl exec -i -n vault "$vault_name" -- env "VAULT_TOKEN=$ROOT_TOKEN" vault "$@"
+  else
+    kubectl exec -i -n vault "$vault_name" -- vault "$@"
   fi
-  kubectl exec -i -n vault $vault_name -- $envcmd vault "$@"
 }
 
 # wait for vault to start, the status command may error

@@ -31,7 +31,10 @@ ssf: clusterPolicy: "verify-image": {
 				-----END CERTIFICATE-----
 				"""
 		}]
-		match: resources: namespaces: ["default"]
+		match: resources: namespaces: ["tekton-pipelines",
+			"tekton-chains",
+			"default",
+			"prod"]
 	}]
 	metadata: annotations: {
 		"policies.kyverno.io/title":       "Verify Image"

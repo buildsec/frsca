@@ -308,7 +308,7 @@ separate terminal and run the following command to enable port forwarding:</p>
 <h3 id="step-3-setup-tekton-w-chains">Step 3: setup tekton w/ chains</h3>
 <p>[Tekton Pipelines] and [Tekton Chains] are the foundations of the secure
 software factory. The next command will deploy and configure them:</p>
-<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">make</span><span> setup-tekton-chains tekton-generate-keys setup-kyverno
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">make</span><span> tekton-generate-keys setup-kyverno setup-tekton-chains 
 </span></code></pre>
 <h3 id="step-4-run-a-new-pipeline">Step 4: run a new pipeline</h3>
 <p>Several pipelines are provided as examples, feel free to choose any of them.</p>

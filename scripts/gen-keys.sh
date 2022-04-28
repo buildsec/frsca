@@ -23,7 +23,7 @@ export NAMESPACE=tekton-chains
 export SECRET_NAME=signing-secrets
 : "${COSIGN_PASSWORD:=}"
 
+kubectl create namespace ${NAMESPACE} || true
 kubectl delete secret ${SECRET_NAME} -n ${NAMESPACE} || true
 echo "cosign generate-key-pair k8s://${NAMESPACE}/${SECRET_NAME}"
 cosign generate-key-pair k8s://${NAMESPACE}/${SECRET_NAME}
-kubectl delete po -n ${NAMESPACE} -l app=tekton-chains-controller || true

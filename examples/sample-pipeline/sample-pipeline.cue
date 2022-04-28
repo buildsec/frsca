@@ -231,7 +231,7 @@ ssf: task: "syft-bom-generator": {
 				"$(workspaces.source.path)/$(params.sbom-filepath)",
 				"$(params.image-ref)",
 			]
-			image: "icr.io/gitsecure/syft:v0.27.0@sha256:c03549c863ccc4c60e795d7299624bb7e686248c537adff4246b8031904c7743"
+			image: "anchore/syft:v0.44.1@sha256:d5b44590062d4d9fc192455b5face4ebfd7879ec1540c939aa1766e5dcf4d5fc"
 			name:  "syft-bom-generator"
 			volumeMounts: [{
 				mountPath: "/steps"

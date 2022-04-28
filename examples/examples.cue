@@ -87,7 +87,7 @@ ssf: task: "grype-vulnerability-scan": {
 				"--fail-on",
 				"$(params.fail-on)",
 			]
-			image: "anchore/grype:v0.34.1@sha256:4808f489d418599be4970108535cd1a0638027719b55df653646be0c9613a954"
+			image: "anchore/grype:v0.35.0@sha256:857934a54874b7efe3d6964851ce54abb5a36d6200cdb62383990a5c7c8d748e"
 			name:  "grype-scanner"
 		}]
 	}

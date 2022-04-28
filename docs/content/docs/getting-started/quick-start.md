@@ -48,7 +48,7 @@ make registry-proxy
 software factory. The next command will deploy and configure them:
 
 ```bash
-make setup-tekton-chains tekton-generate-keys setup-kyverno
+make tekton-generate-keys setup-kyverno setup-tekton-chains 
 ```
 
 ### Step 4: run a new pipeline

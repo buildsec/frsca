@@ -39,15 +39,15 @@ jobs:
           make setup-minikube
       - name: Try the cluster !
         run: kubectl get pods -A
-      - name: Deploy SSF to minikube
-        run: |
-          make setup-tekton-chains
       - name: Generate temp keys
         run: |
           make tekton-generate-keys
       - name: Setup Kyverno
         run: |
           make setup-kyverno
+      - name: Setup Tekton Pipeline and Chains
+        run: |
+          make setup-tekton-chains
       - name: Run buildpacks pipeline
         run: |
           make example-buildpacks

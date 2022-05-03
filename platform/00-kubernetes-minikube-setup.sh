@@ -6,10 +6,10 @@ set -euo pipefail
 #       There are multiple ways to validate signatures, checksums, etc.
 
 # PINNED VERSIONS GO HERE
-MINIKUBE_VERSION=v1.24.0
+MINIKUBE_VERSION=v1.25.2
 MINIKUBE_FILE_NAME=minikube-linux-amd64
 MINIKUBE_URL=https://github.com/kubernetes/minikube/releases/download/$MINIKUBE_VERSION/$MINIKUBE_FILE_NAME
-MINIKUBE_SHA256=3bc218476cf205acf11b078d45210a4882e136d24a3cbb7d8d645408e423b8fe
+MINIKUBE_SHA256=ef610fa83571920f1b6c8538bb31a8dc5e10ff7e1fcdca071b2a8544c349c6fd
 
 HELM_VERSION=v3.7.1
 HELM_FILE_NAME=helm-v3.7.1-linux-amd64.tar.gz

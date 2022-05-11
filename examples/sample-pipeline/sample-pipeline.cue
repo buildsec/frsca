@@ -209,9 +209,6 @@ ssf: task: "syft-bom-generator": {
 		results: [{
 			description: "status of syft task, possible value are-success|failure"
 			name:        "status"
-		}, {
-			description: "filepath to store syft bom record"
-			name:        "sbom-store"
 		}]
 		stepTemplate: {
 			name: "PIPELINE_DEBUG"
@@ -238,29 +235,19 @@ ssf: task: "syft-bom-generator": {
 				name:      "steps-volume"
 			}]
 		}, {
-			image: "icr.io/gitsecure/bash:latest@sha256:b69c5fe80a41b5c9053db41c81074dd894bbb47bf292e5763d053440eddaafdc"
-			name:  "print-sbom"
-			script: """
-				set -e
-				cat $(workspaces.source.path)/$(params.sbom-filepath)
-
-				"""
-
-			securityContext: runAsUser: 0
+			image: "gcr.io/projectsigstore/cosign:v1.8.0@sha256:12b4d428529654c95a7550a936cbb5c6fe93a046ea7454676cb6fb0ce566d78c"
+			name:  "attach-sbom"
+			args: [
+				"attach",
+				"sbom",
+				"--sbom", "$(workspaces.source.path)/$(params.sbom-filepath)",
+				"--type", "syft",
+				"$(params.image-ref)"
+			]
 			volumeMounts: [{
 				mountPath: "/steps"
 				name:      "steps-volume"
 			}]
-		}, {
-			image: "icr.io/gitsecure/bash:latest@sha256:b69c5fe80a41b5c9053db41c81074dd894bbb47bf292e5763d053440eddaafdc"
-			name:  "write-url"
-			script: """
-				set -e
-				echo $(params.sbom-filepath) | tee $(results.sbom-store.path)
-
-				"""
-
-			securityContext: runAsUser: 0
 		}]
 		volumes: [{
 			emptyDir: {}

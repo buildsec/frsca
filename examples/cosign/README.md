@@ -126,7 +126,7 @@ jq '.components[].evidence.licenses[]?.license.id' cyclonedx.sbom |sort -u
 ##### Dependency graph
 
 * Not a new feature, it can also be done using the lock files.
-* Not sure how usueful that is.
+* Not sure how useful that is.
 
 ##### Provenance
 

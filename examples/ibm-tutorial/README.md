@@ -7,7 +7,7 @@
 make setup-minikube
 
 # Setup tekton w/ chains
-make tekton-generate-keys setup-kyverno setup-tekton-chains
+make setup-certs setup-tekton-chains setup-spire setup-vault
 
 #### Begin local minikube registry
 ##

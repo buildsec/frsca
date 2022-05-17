@@ -1,9 +1,11 @@
 #!/bin/bash
 set -euo pipefail
 
-USERPUBKEY=$(cosign public-key --key k8s://tekton-chains/signing-secrets)
-# USERPUBKEY=$(kubectl -n vault get configmap ssf-certs -o jsonpath='{.data.ssf\.pem}')
-
+if kubectl -n vault get configmap ssf-certs >/dev/null 2>&1; then
+  USERPUBKEY=$(kubectl -n vault get configmap ssf-certs -o jsonpath='{.data.ssf\.pem}')
+else
+  USERPUBKEY=$(cosign public-key --key k8s://tekton-chains/signing-secrets)
+fi
 REPO="ttl.sh/*"
 
 GIT_ROOT=$(git rev-parse --show-toplevel)

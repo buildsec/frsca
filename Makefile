@@ -22,7 +22,7 @@ help: # Display help
 		}' $(MAKEFILE_LIST) | sort
 
 .PHONY: quickstart
-quickstart: setup-minikube setup-certs tekton-generate-keys setup-spire setup-vault setup-kyverno setup-tekton-chains example-buildpacks ## Spin up the FRSCA project into minikube
+quickstart: setup-minikube setup-certs setup-spire setup-vault setup-kyverno setup-tekton-chains example-buildpacks ## Spin up the FRSCA project into minikube
 
 .PHONY: teardown
 teardown:

@@ -12,7 +12,7 @@ Execute the following commands from the root of this repository:
 make setup-minikube
 
 # Setup tekton w/ chains
-make setup-tekton-chains tekton-generate-keys
+make setup-certs setup-tekton-chains setup-spire setup-vault
 
 # Run a new pipeline.
 make example-cosign

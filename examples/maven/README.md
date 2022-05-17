@@ -11,7 +11,7 @@ This is a sample maven tekton pipeline.
 make setup-minikube
 
 # Setup tekton w/ chains
-make tekton-generate-keys setup-kyverno setup-tekton-chains
+make setup-certs setup-tekton-chains setup-spire setup-vault
 
 # Run a new pipeline.
 make example-maven

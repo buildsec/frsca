@@ -17,8 +17,8 @@ apiVersion: v1
 metadata:
   name: tekton-chains
   labels:
-    app.kubernetes.io/component: chains
-    app.kubernetes.io/part-of: tekton-pipelines
+    app.kubernetes.io/instance: default
+    app.kubernetes.io/part-of: tekton-chains
 ---
 apiVersion: v1
 kind: Secret
@@ -26,11 +26,8 @@ metadata:
   name: signing-secrets
   namespace: tekton-chains
   labels:
-    app.kubernetes.io/component: chains
     app.kubernetes.io/instance: default
-    app.kubernetes.io/part-of: tekton-pipelines
-    pipeline.tekton.dev/release: "devel"
-    version: "v0.8.0"
+    app.kubernetes.io/part-of: tekton-chains
 
 # The data is populated at install time.
 # data:
@@ -41,11 +38,8 @@ metadata:
   name: chains-config
   namespace: tekton-chains
   labels:
-    app.kubernetes.io/component: chains
     app.kubernetes.io/instance: default
-    app.kubernetes.io/part-of: tekton-pipelines
-    pipeline.tekton.dev/release: "devel"
-    version: "v0.8.0"
+    app.kubernetes.io/part-of: tekton-chains
 
 # The data can be tweaked at install time, it is commented out
 # because these are the default settings.
@@ -63,31 +57,38 @@ metadata:
   name: tekton-chains-controller
   namespace: tekton-chains
   labels:
-    app.kubernetes.io/name: tekton-pipelines
-    app.kubernetes.io/component: chains
+    app.kubernetes.io/name: controller
+    app.kubernetes.io/component: controller
+    app.kubernetes.io/instance: default
+    app.kubernetes.io/part-of: tekton-chains
     pipeline.tekton.dev/release: "devel"
-    version: "v0.8.0"
+    version: "v0.9.0"
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: tekton-chains-controller
+      app.kubernetes.io/name: controller
+      app.kubernetes.io/component: controller
+      app.kubernetes.io/instance: default
+      app.kubernetes.io/part-of: tekton-chains
   template:
     metadata:
       annotations:
         cluster-autoscaler.kubernetes.io/safe-to-evict: "false"
       labels:
         app: tekton-chains-controller
-        app.kubernetes.io/name: tekton-pipelines
+        app.kubernetes.io/name: controller
         app.kubernetes.io/component: controller
+        app.kubernetes.io/instance: default
+        app.kubernetes.io/part-of: tekton-chains
         # # tekton.dev/release value replaced with inputs.params.versionTag in pipeline/tekton/publish.yaml
-        # pipeline.tekton.dev/release: "devel"
-        version: "v0.8.0"
+        pipeline.tekton.dev/release: "devel"
+        version: "v0.9.0"
     spec:
       serviceAccountName: tekton-chains-controller
       containers:
         - name: tekton-chains-controller
-          image: gcr.io/tekton-releases/github.com/tektoncd/chains/cmd/controller:v0.8.0@sha256:599b81739a1171874ee506c314686ff854c64b909df80d9ed558ccce115cee95
+          image: gcr.io/tekton-releases/github.com/tektoncd/chains/cmd/controller:v0.9.0@sha256:2bd37672a9e472c79c64f42b95e362db16870e28a90f3b17fee8faf952e79b4b
           volumeMounts:
             - name: signing-secrets
               mountPath: /etc/signing-secrets
@@ -142,9 +143,9 @@ kind: ClusterRoleBinding
 metadata:
   name: tekton-chains-controller-cluster-access
   labels:
-    app.kubernetes.io/component: chains
+    app.kubernetes.io/component: controller
     app.kubernetes.io/instance: default
-    app.kubernetes.io/part-of: tekton-pipelines
+    app.kubernetes.io/part-of: tekton-chains
 subjects:
   - kind: ServiceAccount
     name: tekton-chains-controller
@@ -159,9 +160,9 @@ apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: tekton-chains-controller-cluster-access
   labels:
-    app.kubernetes.io/component: chains
+    app.kubernetes.io/component: controller
     app.kubernetes.io/instance: default
-    app.kubernetes.io/part-of: tekton-pipelines
+    app.kubernetes.io/part-of: tekton-chains
 rules:
   - apiGroups: [""]
     # Controller needs to watch Pods created by TaskRuns to see them progress.
@@ -185,7 +186,7 @@ metadata:
   # This is the access that the controller needs on a per-namespace basis.
   name: tekton-chains-controller-tenant-access
   labels:
-    app.kubernetes.io/component: chains
+    app.kubernetes.io/component: controller
     app.kubernetes.io/instance: default
     app.kubernetes.io/part-of: tekton-chains
 rules:
@@ -211,9 +212,9 @@ kind: ClusterRoleBinding
 metadata:
   name: tekton-chains-controller-tenant-access
   labels:
-    app.kubernetes.io/component: chains
+    app.kubernetes.io/component: controller
     app.kubernetes.io/instance: default
-    app.kubernetes.io/part-of: tekton-pipelines
+    app.kubernetes.io/part-of: tekton-chains
 subjects:
   - kind: ServiceAccount
     name: tekton-chains-controller
@@ -229,8 +230,9 @@ metadata:
   name: tekton-chains-controller
   namespace: tekton-chains
   labels:
-    app.kubernetes.io/component: chains
-    app.kubernetes.io/part-of: tekton-pipelines
+    app.kubernetes.io/component: controller
+    app.kubernetes.io/instance: default
+    app.kubernetes.io/part-of: tekton-chains
 ---
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
@@ -239,7 +241,7 @@ metadata:
   namespace: tekton-chains
   labels:
     app.kubernetes.io/instance: default
-    app.kubernetes.io/part-of: tekton-pipelines
+    app.kubernetes.io/part-of: tekton-chains
 rules:
   # We uses leases for leaderelection
   - apiGroups: ["coordination.k8s.io"]
@@ -254,7 +256,7 @@ metadata:
   labels:
     app.kubernetes.io/component: controller
     app.kubernetes.io/instance: default
-    app.kubernetes.io/part-of: tekton-pipelines
+    app.kubernetes.io/part-of: tekton-chains
 subjects:
   - kind: ServiceAccount
     name: tekton-chains-controller
@@ -270,7 +272,6 @@ metadata:
   name: tekton-chains-info
   namespace: tekton-chains
   labels:
-    app.kubernetes.io/component: chains
     app.kubernetes.io/instance: default
     app.kubernetes.io/part-of: tekton-chains
 rules:
@@ -289,7 +290,6 @@ metadata:
   name: tekton-chains-info
   namespace: tekton-chains
   labels:
-    app.kubernetes.io/component: chains
     app.kubernetes.io/instance: default
     app.kubernetes.io/part-of: tekton-chains
 subjects:
@@ -324,7 +324,6 @@ metadata:
   name: chains-info
   namespace: tekton-chains
   labels:
-    app.kubernetes.io/component: chains
     app.kubernetes.io/instance: default
     app.kubernetes.io/part-of: tekton-chains
 data:
@@ -333,7 +332,7 @@ data:
   # this ConfigMap such that even if we don't have access to
   # other resources in the namespace, we can still access
   # this ConfigMap.
-  version: "v0.8.0"
+  version: "v0.9.0"
 
 ---
 # Copyright 2019 Tekton Authors LLC
@@ -357,7 +356,7 @@ metadata:
   namespace: tekton-chains
   labels:
     app.kubernetes.io/instance: default
-    app.kubernetes.io/part-of: tekton-pipelines
+    app.kubernetes.io/part-of: tekton-chains
 data:
   # Common configuration for all knative codebase
   zap-logger-config: |

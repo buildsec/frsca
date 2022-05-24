@@ -122,11 +122,11 @@ lint: lint-md lint-yaml lint-shell ## Run all linters
 
 .PHONY: lint-md
 lint-md: ## Lint markdown files
-	npx --yes markdownlint-cli2  "**/*.md" "#docs/themes"
+	npx --yes markdownlint-cli2  "**/*.md" "#docs/themes" "#platform/vendor"
 
 .PHONY: lint-shell
 lint-shell: ## Lint shell files
-	shfmt -f ./ | xargs shellcheck
+	shfmt -f ./ | grep -ve "platform/vendor/.*/" | xargs shellcheck
 
 .PHONY: lint-spellcheck
 lint-spellcheck:

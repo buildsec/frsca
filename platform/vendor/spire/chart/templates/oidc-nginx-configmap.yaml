@@ -1,0 +1,30 @@
+{{- if and .Values.oidc.enabled (not .Values.oidc.acme.enabled) -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "spire.fullname" . }}-oidc-nginx
+  labels:
+    {{- include "spire.labels" . | nindent 4 }}
+data:
+  oidc.conf: |
+    upstream {{ .Values.oidc.discoveryDomain }} {
+      server unix:/tmp/spire-server/private/oidc.sock;
+    }
+    server {
+      # ssl config
+      listen              80;
+      server_name         oidc;
+      {{- if ne .Values.oidc.certsSecret "" }}
+      listen              443 ssl;
+      ssl_certificate     /opt/spire/certs/oidc/tls.crt;
+      ssl_certificate_key /opt/spire/certs/oidc/tls.key;
+      ssl_protocols       TLSv1 TLSv1.1 TLSv1.2;
+      ssl_ciphers         HIGH:!aNULL:!MD5;
+      {{- end }}
+      # oidc config to socket
+      location / {
+        proxy_pass http://{{ .Values.oidc.discoveryDomain }};
+      }
+    }
+---
+{{- end }}

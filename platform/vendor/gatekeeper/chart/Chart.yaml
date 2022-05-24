@@ -1,0 +1,10 @@
+apiVersion: v2
+appVersion: v3.6.0
+description: A Helm chart for Gatekeeper
+home: https://github.com/open-policy-agent/gatekeeper
+keywords:
+- open policy agent
+name: gatekeeper
+sources:
+- https://github.com/open-policy-agent/gatekeeper.git
+version: 3.6.0

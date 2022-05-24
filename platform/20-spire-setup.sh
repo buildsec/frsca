@@ -23,9 +23,7 @@ spire_apply() {
 
 kubectl create namespace spire --dry-run=client -o yaml | kubectl apply -f -
 
-helm repo add sudo-bmitch https://sudo-bmitch.github.io/helm-charts
-helm repo update
-helm upgrade --install spire sudo-bmitch/spire \
+helm upgrade --install spire "${GIT_ROOT}/platform/vendor/spire/chart" \
   --values "${GIT_ROOT}/platform/components/spire/values.yaml" \
   --namespace spire --wait
 

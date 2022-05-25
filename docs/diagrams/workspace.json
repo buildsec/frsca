@@ -85,7 +85,7 @@
         "components" : [ {
           "id" : "4",
           "tags" : "Element,Component",
-          "name" : "SSF Defaults",
+          "name" : "FRSCA Defaults",
           "relationships" : [ {
             "id" : "10",
             "tags" : "Relationship",
@@ -428,7 +428,7 @@
       }, {
         "id" : "19",
         "tags" : "Element,Container",
-        "name" : "SSF Structure",
+        "name" : "FRSCA Structure",
         "relationships" : [ {
           "id" : "106",
           "tags" : "Relationship",
@@ -440,7 +440,7 @@
         "components" : [ {
           "id" : "20",
           "tags" : "Element,Component",
-          "name" : "SSF Tooling",
+          "name" : "FRSCA Tooling",
           "relationships" : [ {
             "id" : "99",
             "tags" : "Relationship",
@@ -497,7 +497,7 @@
         }, {
           "id" : "21",
           "tags" : "Element,Component",
-          "name" : "SSF CUE Library",
+          "name" : "FRSCA CUE Library",
           "size" : 0,
           "defaultTags" : [ "Element", "Component" ]
         }, {
@@ -776,7 +776,7 @@
   "views" : {
     "systemLandscapeViews" : [ {
       "description" : "Diagram4",
-      "key" : "ssf",
+      "key" : "frsca",
       "dimensions" : {
         "width" : 2370,
         "height" : 2379

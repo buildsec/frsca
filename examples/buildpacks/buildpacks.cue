@@ -1,10 +1,10 @@
-package ssf
+package frsca
 
 _IMAGE: name: "slsa"
 
 _CACHE_IMAGE: *"\(_APP_IMAGE)-cache" | string @tag(cacheImage)
 
-ssf: pipelineRun: "cache-image-pipelinerun-": spec: {
+frsca: pipelineRun: "cache-image-pipelinerun-": spec: {
 	pipelineRef: name: "buildpacks"
 	params: [{
 		name:  "BUILDER_IMAGE"

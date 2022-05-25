@@ -1,4 +1,4 @@
-module github.com/buildsec/ssf
+module github.com/buildsec/frsca
 
 go 1.17
 

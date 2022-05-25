@@ -1,5 +1,5 @@
 # Project configuration.
-PROJECT_NAME = ssf
+PROJECT_NAME = frsca
 
 # Makefile parameters.
 TAG ?= 10m	# This is the TTL for the ttl.sh registry
@@ -22,7 +22,7 @@ help: # Display help
 		}' $(MAKEFILE_LIST) | sort
 
 .PHONY: quickstart
-quickstart: setup-minikube tekton-generate-keys setup-kyverno setup-tekton-chains example-buildpacks ## Spin up the SSF project into minikube
+quickstart: setup-minikube tekton-generate-keys setup-kyverno setup-tekton-chains example-buildpacks ## Spin up the FRSCA project into minikube
 
 .PHONY: teardown
 teardown:

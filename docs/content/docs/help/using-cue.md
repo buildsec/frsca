@@ -14,7 +14,7 @@ top = false
 
 ## CUE Module Structure
 
-The top level of the Secure Software Factory (SSF) is structured as a
+The top level of the Secure Software Factory (FRSCA) is structured as a
 [CUE module](https://cuelang.org/docs/concepts/packages/) and follows the
 [schema/policy/data](https://cuelang.org/docs/concepts/packages/#file-organization)
 pattern for organizing the files.
@@ -24,7 +24,7 @@ The
 directory is predominantly for CUE package management. All of the files in
 `cue.mod/gen/...` are generated from the `cue get go ...` command importing go
 modules and converting them to CUE. These can then be imported and used to
-verify the structure of things such as `ConfigMap`. `ssf.cue` imports several of
+verify the structure of things such as `ConfigMap`. `frsca.cue` imports several of
 these and creates base structures based on these imported go structs.
 
 For the most part, CUE expects the evaluation to be done relative to the root of
@@ -62,7 +62,7 @@ pipelineRun: [Name=_]: spec: workspaces: [{
 
 ## Using CUE Tool
 
-SSF uses the `cue cmd` support (see `cue cmd --help` and
+FRSCA uses the `cue cmd` support (see `cue cmd --help` and
 [cue tooling layer](https://blog.patapon.info/cue-tool/) for more details) for
 selecting and exporting definitions. This can be seen in `ssf_tool.cue` which
 defines commands for exporting things that can be used in conjunction with

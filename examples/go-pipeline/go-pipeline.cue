@@ -1,8 +1,8 @@
-package ssf
+package frsca
 
-_IMAGE: name: "go-build-test-ssf"
+_IMAGE: name: "go-build-test-frsca"
 
-ssf: pipeline: "pipeline-go-test": spec: {
+frsca: pipeline: "pipeline-go-test": spec: {
 	workspaces: [{
 		name:     "pipeline-pvc"
 		optional: false
@@ -141,7 +141,7 @@ ssf: pipeline: "pipeline-go-test": spec: {
 		}]
 	}]
 }
-ssf: pipelineRun: "pipelinerun-go-test-": {
+frsca: pipelineRun: "pipelinerun-go-test-": {
 	spec: {
 		params: [{
 			name:  "image"

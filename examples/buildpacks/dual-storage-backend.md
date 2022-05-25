@@ -24,7 +24,7 @@ different methods of analysis/usage:
 
 Assuming you don't have a Kubernetes cluster available, start by spinning one
 up. We provide a simple command to provision minikube. Run the following command
-from the root of the SSF project:
+from the root of the FRSCA project:
 
 ```bash
 make setup-minikube

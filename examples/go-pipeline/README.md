@@ -1,4 +1,4 @@
-# SSF Golang Tekton Pipeline
+# FRSCA Golang Tekton Pipeline
 
 This is a sample GOlang tekton pipeline.
 

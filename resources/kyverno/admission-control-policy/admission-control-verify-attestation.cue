@@ -1,6 +1,6 @@
-package ssf
+package frsca
 
-ssf: clusterPolicy: "attest-code-review": {
+frsca: clusterPolicy: "attest-code-review": {
 	spec: rules: [{
 		verifyImages: [{
 			image: #public.repo

@@ -2,9 +2,9 @@ workspace {
 
     model {
         developer = person "Developer"
-        ssf = softwareSystem "Secure Software Factory" {
+        frsca = softwareSystem "Secure Software Factory" {
             config = container "Config" {
-                ssf_defaults = component "SSF Defaults"
+                ssf_defaults = component "FRSCA Defaults"
                 organization = component "Organization Config"
                 team = component "Team Config"
                 project = component "Project Config"
@@ -25,9 +25,9 @@ workspace {
             infrastructure -> team "Enforces Policy"
             infrastructure -> project "Enforces Policy"
             
-            code = container "SSF Structure" {
-                ssf_tooling = component "SSF Tooling"
-                ssf_library = component "SSF CUE Library"
+            code = container "FRSCA Structure" {
+                ssf_tooling = component "FRSCA Tooling"
+                ssf_library = component "FRSCA CUE Library"
                 user_configuration = component "End User Configuration"
                 kubernetes = group "Kubernetes" {
                     tekton_pipelines = component "Tekton Pipelines"
@@ -94,17 +94,17 @@ workspace {
 
 
 
-        developer -> ssf "Gets feedback from"
+        developer -> frsca "Gets feedback from"
         developer -> scr "Pushes code to"
         
-        ssf -> scr "Pulls code from"
-        ssf -> artefact_storage "Pushes artefacts to/Pulls dependencies from"
+        frsca -> scr "Pulls code from"
+        frsca -> artefact_storage "Pushes artefacts to/Pulls dependencies from"
 
         service_identity -> workload_attestor "Provides identities to"
         service_identity -> node_attestor "Provides identities to"
         service_identity -> pipeline_observer "Provides identity to"
 
-        identity_services -> ssf "Provides identities to"
+        identity_services -> frsca "Provides identities to"
         identity_services -> developer "Provides identity to"
 
         pipeline -> build_environment "Manages tasks in"
@@ -154,15 +154,15 @@ workspace {
     }
 
     views {
-        systemLandscape ssf "Diagram4" {
+        systemLandscape frsca "Diagram4" {
             include *
         }
 
-        systemContext ssf "Diagram1" {
+        systemContext frsca "Diagram1" {
             include *
         }
 
-        container ssf "Diagram2" {
+        container frsca "Diagram2" {
             include *
         }
 

@@ -1,4 +1,4 @@
-# SSF Maven Tekton Pipeline
+# FRSCA Maven Tekton Pipeline
 
 This is a sample maven tekton pipeline.
 

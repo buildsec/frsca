@@ -11,7 +11,7 @@ ignorePaths:
   - '/docs/themes'
   - '/go.mod'
   - '/platform/vendor'
-  - 'ssf_tool.cue'
+  - 'frsca_tool.cue'
   - 'go.sum'
   - 'cue.mod'
   - '*.cue'

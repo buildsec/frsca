@@ -16,7 +16,7 @@ theme = "adidoks"
 highlight_code = true
 
 [extra]
-title_addition = "The Secure Software Factory"
+title_addition = "Factory for Repeatable Secure Creation of Artifacts"
 
 # Menu items
 [[extra.menu.main]]

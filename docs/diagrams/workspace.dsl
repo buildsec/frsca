@@ -2,9 +2,9 @@ workspace {
 
     model {
         developer = person "Developer"
-        frsca = softwareSystem "Secure Software Factory" {
+        frsca = softwareSystem "Factory for Repeatable Secure Creation of Artifacts" {
             config = container "Config" {
-                ssf_defaults = component "FRSCA Defaults"
+                frsca_defaults = component "FRSCA Defaults"
                 organization = component "Organization Config"
                 team = component "Team Config"
                 project = component "Project Config"
@@ -13,7 +13,7 @@ workspace {
                 infrastructure = component "Infrastructure Policy Config"
             }
 
-            ssf_defaults -> organization "Constrains"
+            frsca_defaults -> organization "Constrains"
             organization -> team "Constrains"
             team -> project "Constrains"
 
@@ -26,8 +26,8 @@ workspace {
             infrastructure -> project "Enforces Policy"
             
             code = container "FRSCA Structure" {
-                ssf_tooling = component "FRSCA Tooling"
-                ssf_library = component "FRSCA CUE Library"
+                frsca_tooling = component "FRSCA Tooling"
+                frsca_library = component "FRSCA CUE Library"
                 user_configuration = component "End User Configuration"
                 kubernetes = group "Kubernetes" {
                     tekton_pipelines = component "Tekton Pipelines"
@@ -139,12 +139,12 @@ workspace {
         prod_admission_controller -> prod "Enforces signature and attestation policy"
         prod -> artefact_storage "Runs artefacts from"
 
-        ssf_tooling -> user_configuration "Uses"
-        user_configuration -> ssf_library "Inherits"
-        ssf_tooling -> tekton_pipelines "Deploys tasks and pipelines"
-        ssf_tooling -> tekton_chains "Deploys resources and configuration"
-        ssf_tooling -> kyverno "Deploys policies"
-        ssf_tooling -> k8s "Deploys config maps, secrets, etc."
+        frsca_tooling -> user_configuration "Uses"
+        user_configuration -> frsca_library "Inherits"
+        frsca_tooling -> tekton_pipelines "Deploys tasks and pipelines"
+        frsca_tooling -> tekton_chains "Deploys resources and configuration"
+        frsca_tooling -> kyverno "Deploys policies"
+        frsca_tooling -> k8s "Deploys config maps, secrets, etc."
 
         tekton_pipelines -> artefact_storage "Pushes images to"
         tekton_chains -> artefact_storage "Pushes attestations to"

@@ -47,7 +47,7 @@
 	
 
 <title>Using CUE | FRSCA</title>
-<meta name="description" content="Working with CUE in the Secure Software Factory.">
+<meta name="description" content="Working with CUE in Factory for Repeatable Secure Creation of Artifacts.">
 <link rel="canonical" href="https://buildsec.github.io/frsca/docs/help/using-cue/">
 
 
@@ -216,7 +216,7 @@
 							<h3>Getting Started</h3>
 							<ul class="list-unstyled">
 							                           
-									<li><a class="docs-link" href="https://buildsec.github.io/frsca/docs/getting-started/introduction/">The Secure Software Factory</a></li>
+									<li><a class="docs-link" href="https://buildsec.github.io/frsca/docs/getting-started/introduction/">Factory for Repeatable Secure Creation of Artifacts</a></li>
 							                           
 									<li><a class="docs-link" href="https://buildsec.github.io/frsca/docs/getting-started/quick-start/">Quick Start</a></li>
 							
@@ -277,9 +277,10 @@
 
       <main class="docs-content col-lg-11 col-xl-9">
         <h1>Using CUE</h1>
-        <p class="lead">Working with CUE in the Secure Software Factory.</p>
+        <p class="lead">Working with CUE in Factory for Repeatable Secure Creation of Artifacts.</p>
         <h2 id="cue-module-structure">CUE Module Structure</h2>
-<p>The top level of the Secure Software Factory (FRSCA) is structured as a
+<p>The top level of Factory for Repeatable Secure Creation of Artifacts (FRSCA)
+is structured as a
 <a href="https://cuelang.org/docs/concepts/packages/">CUE module</a> and follows the
 <a href="https://cuelang.org/docs/concepts/packages/#file-organization">schema/policy/data</a>
 pattern for organizing the files.</p>
@@ -321,7 +322,7 @@ pipeline run definition by default.</p>
 <h2 id="using-cue-tool">Using CUE Tool</h2>
 <p>FRSCA uses the <code>cue cmd</code> support (see <code>cue cmd --help</code> and
 <a href="https://blog.patapon.info/cue-tool/">cue tooling layer</a> for more details) for
-selecting and exporting definitions. This can be seen in <code>ssf_tool.cue</code> which
+selecting and exporting definitions. This can be seen in <code>frsca_tool.cue</code> which
 defines commands for exporting things that can be used in conjunction with
 <code>kubectl</code>. An example of its usage can be seen in
 <code>examples/buildpacks/buildpacks.sh</code>.</p>

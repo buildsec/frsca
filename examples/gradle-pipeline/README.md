@@ -1,4 +1,4 @@
-# SSF Gradle Tekton Pipeline
+# FRSCA Gradle Tekton Pipeline
 
 This is a sample Gradle tekton pipeline.
 

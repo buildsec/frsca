@@ -1,8 +1,8 @@
-package ssf
+package frsca
 
-_IMAGE: name: "hello-ssf"
+_IMAGE: name: "hello-frsca"
 
-ssf: pipeline: "build-and-deploy-pipeline": {
+frsca: pipeline: "build-and-deploy-pipeline": {
 	spec: {
 		params: [{
 			description: "Git repository url"
@@ -117,7 +117,7 @@ ssf: pipeline: "build-and-deploy-pipeline": {
 	}
 }
 
-ssf: pipelineRun: "ssf-lab-pipelinerun-": spec: {
+frsca: pipelineRun: "frsca-lab-pipelinerun-": spec: {
 	pipelineRef: name: "build-and-deploy-pipeline"
 	params: [{
 		name:  "gitUrl"
@@ -138,7 +138,7 @@ ssf: pipelineRun: "ssf-lab-pipelinerun-": spec: {
 	}]
 }
 
-ssf: task: "deploy-using-kubectl": {
+frsca: task: "deploy-using-kubectl": {
 	spec: {
 		params: [{
 			description: "The path to the yaml file to deploy within the git source"
@@ -189,7 +189,7 @@ ssf: task: "deploy-using-kubectl": {
 	}
 }
 
-ssf: task: "syft-bom-generator": {
+frsca: task: "syft-bom-generator": {
 	spec: {
 		params: [{
 			description: "image reference"
@@ -202,7 +202,7 @@ ssf: task: "syft-bom-generator": {
 			description: "toggles debug mode for the pipeline"
 			name:        "pipeline-debug"
 		}, {
-			default:     "ssf-sbom.json"
+			default:     "frsca-sbom.json"
 			description: "filepath to store the sbom artifacts"
 			name:        "sbom-filepath"
 		}]

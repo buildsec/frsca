@@ -1,6 +1,6 @@
-package ssf
+package frsca
 
-ssf: configMap: "\(#keys.name)": {
+frsca: configMap: "\(#keys.name)": {
 	metadata: namespace: #keys.namespace
 	data: {
 		tektoncd: """

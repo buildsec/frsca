@@ -1,8 +1,8 @@
-package ssf
+package frsca
 
 _IMAGE: name: "picalc"
 
-ssf: pipeline: "build-and-deploy-pipeline": spec: {
+frsca: pipeline: "build-and-deploy-pipeline": spec: {
 	workspaces: [{
 		name:        "git-source"
 		description: "The git repo"
@@ -69,7 +69,7 @@ ssf: pipeline: "build-and-deploy-pipeline": spec: {
 	}]
 }
 
-ssf: pipelineRun: "picalc-pr-": spec: {
+frsca: pipelineRun: "picalc-pr-": spec: {
 	pipelineRef: name: "build-and-deploy-pipeline"
 	params: [{
 		name:  "gitUrl"

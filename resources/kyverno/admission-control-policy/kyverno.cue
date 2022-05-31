@@ -1,4 +1,4 @@
-package ssf
+package frsca
 
 #keys: {
 	name:      "keys"
@@ -10,7 +10,7 @@ package ssf
 	key:  string @tag(key)
 }
 
-ssf: clusterPolicy: [Name=_]: spec: {
+frsca: clusterPolicy: [Name=_]: spec: {
 	validationFailureAction: "enforce"
 	background:              false
 	webhookTimeoutSeconds:   *30 | int

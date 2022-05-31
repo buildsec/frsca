@@ -1,4 +1,4 @@
-# SSF Words
+# FRSCA Words
 adidoks
 apiserver
 bitnami

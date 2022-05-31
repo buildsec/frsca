@@ -7,3 +7,4 @@ kubernetes/scripts/signature
 result
 target/
 *.pub
+.vscode/

@@ -1,9 +1,9 @@
-package ssf
+package frsca
 
 _IMAGE: name: "slsa"
 
 
-ssf: pipelineRun: "ko-pipelinerun-": spec: {
+frsca: pipelineRun: "ko-pipelinerun-": spec: {
 	pipelineRef: name: "ko"
 	params: [ {
 		name:  "APP_IMAGE"

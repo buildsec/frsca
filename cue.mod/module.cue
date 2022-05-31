@@ -1,1 +1,1 @@
-module: "github.com/buildsec/ssf"
+module: "github.com/buildsec/frsca"

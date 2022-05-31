@@ -1,8 +1,8 @@
-package ssf
+package frsca
 
-_IMAGE: name: "gradle-build-test-ssf"
+_IMAGE: name: "gradle-build-test-frsca"
 
-ssf: pipeline: "pipeline-gradle-test": spec: {
+frsca: pipeline: "pipeline-gradle-test": spec: {
 	workspaces: [{
 		name:     "pipeline-pvc"
 		optional: false
@@ -102,7 +102,7 @@ ssf: pipeline: "pipeline-gradle-test": spec: {
 		}]
 	}]
 }
-ssf: pipelineRun: "pipelinerun-gradle-test-": {
+frsca: pipelineRun: "pipelinerun-gradle-test-": {
 	spec: {
 		params: [{
 			name:  "image"

@@ -1,6 +1,6 @@
 +++
 title = "Quick Start"
-description = "One page summary about how to setup a new SSF."
+description = "One page summary about how to setup a new FRSCA."
 date = 2021-11-26T08:20:00+00:00
 updated = 2021-11-26T08:20:00+00:00
 draft = false
@@ -9,7 +9,7 @@ sort_by = "weight"
 template = "docs/page.html"
 
 [extra]
-lead = "One page summary of how to setup a new SSF."
+lead = "One page summary of how to setup a new FRSCA."
 toc = true
 top = false
 +++

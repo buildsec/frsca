@@ -44,7 +44,7 @@ make teardown
 ## Going further
 
 The full documentation is available at
-<https://buildsec.github.io/ssf/>
+<https://buildsec.github.io/frsca/>
 
 ### Built With
 

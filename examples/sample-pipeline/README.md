@@ -1,4 +1,4 @@
-# SSF Sample Tekton Pipeline
+# FRSCA Sample Tekton Pipeline
 
 This is a sample tekton based application build pipeline.
 

@@ -1,13 +1,13 @@
 $schema: https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json
 version: '0.2'
 dictionaryDefinitions:
-  - name: ssf-words
-    path: './ssf-words.txt'
+  - name: frsca-words
+    path: './frsca-words.txt'
     addWords: true
 dictionaries:
-  - ssf-words
+  - frsca-words
 ignorePaths:
-  - '/ssf-words.txt'
+  - '/frsca-words.txt'
   - '/docs/themes'
   - '/go.mod'
   - '/platform/vendor'

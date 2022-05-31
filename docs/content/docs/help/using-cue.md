@@ -1,20 +1,21 @@
 +++
 title = "Using CUE"
-description = "Working with CUE in the Secure Software Factory."
+description = "Working with CUE in Factory for Repeatable Secure Creation of Artifacts."
 sort_by = "weight"
 draft = false
 weight = 30
 template = "docs/page.html"
 
 [extra]
-lead = "Working with CUE in the Secure Software Factory."
+lead = "Working with CUE in Factory for Repeatable Secure Creation of Artifacts."
 toc = true
 top = false
 +++
 
 ## CUE Module Structure
 
-The top level of the Secure Software Factory (FRSCA) is structured as a
+The top level of Factory for Repeatable Secure Creation of Artifacts (FRSCA)
+is structured as a
 [CUE module](https://cuelang.org/docs/concepts/packages/) and follows the
 [schema/policy/data](https://cuelang.org/docs/concepts/packages/#file-organization)
 pattern for organizing the files.
@@ -64,7 +65,7 @@ pipelineRun: [Name=_]: spec: workspaces: [{
 
 FRSCA uses the `cue cmd` support (see `cue cmd --help` and
 [cue tooling layer](https://blog.patapon.info/cue-tool/) for more details) for
-selecting and exporting definitions. This can be seen in `ssf_tool.cue` which
+selecting and exporting definitions. This can be seen in `frsca_tool.cue` which
 defines commands for exporting things that can be used in conjunction with
 `kubectl`. An example of its usage can be seen in
 `examples/buildpacks/buildpacks.sh`.

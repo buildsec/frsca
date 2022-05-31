@@ -1,6 +1,6 @@
 ---
 title: "How to Contribute"
-description: "Contribute to to the Secure Software Factory."
+description: "Contribute to the Factory for Repeatable Secure Creation of Artifacts."
 date: 2021-11-25T18:10:00+00:00
 updated: 2021-11-25T18:10:00+00:00
 draft: false

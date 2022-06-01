@@ -89,6 +89,18 @@ frsca: task: "grype-vulnerability-scan": {
 			]
 			image: "anchore/grype:v0.35.0@sha256:857934a54874b7efe3d6964851ce54abb5a36d6200cdb62383990a5c7c8d748e"
 			name:  "grype-scanner"
+			volumeMounts: [{
+				mountPath: "/etc/ssl/certs/ca-certificates.crt"
+				name: "ca-certs"
+				subPath: "ca-certificates.crt"
+				readOnly: true
+			}]
+		}]
+		volumes: [{
+      configMap: {
+        name: "ca-certs"
+			}
+      name: "ca-certs"
 		}]
 	}
 }

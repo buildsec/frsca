@@ -1,0 +1,55 @@
+{
+  "spec": {
+    "template": {
+      "spec": {
+        "$setElementOrder/containers": [
+          {
+            "name": "tekton-pipelines-controller"
+          }
+        ],
+        "$setElementOrder/volumes": [
+          {
+            "name": "config-logging"
+          },
+          {
+            "name": "config-registry-cert"
+          },
+          {
+            "name": "ca-certs"
+          }
+        ],
+        "containers": [
+          {
+            "$setElementOrder/volumeMounts": [
+              {
+                "mountPath": "/etc/config-logging"
+              },
+              {
+                "mountPath": "/etc/config-registry-cert"
+              },
+              {
+                "mountPath": "/etc/ssl/certs/"
+              }
+            ],
+            "name": "tekton-pipelines-controller",
+            "volumeMounts": [
+              {
+                "mountPath": "/etc/ssl/certs/",
+                "name": "ca-certs",
+                "readOnly": true
+              }
+            ]
+          }
+        ],
+        "volumes": [
+          {
+            "configMap": {
+              "name": "ca-certs"
+            },
+            "name": "ca-certs"
+          }
+        ]
+      }
+    }
+  }
+}

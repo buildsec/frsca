@@ -1,0 +1,250 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "registry"
+  labels:
+    app: "registry"
+data:
+  config.yml: |+
+    version: 0.1
+    log:
+      level: info
+      fields:
+        service: registry
+    storage:
+      filesystem:
+        rootdirectory: /var/lib/registry
+      cache:
+        blobdescriptor: inmemory
+      maintenance:
+        uploadpurging:
+          enabled: true
+          age: 168h
+          interval: 24h
+          dryrun: false
+      delete:
+        enabled: true
+      redirect:
+        disable: false
+    http:
+      addr: :5000
+      relativeurls: false
+    validation:
+      disabled: true
+    compatibility:
+      schema1:
+        enabled: true
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app: registry
+    component: nginx
+  name: nginx-proxy
+data:
+  default.conf: |
+    server {
+      listen 443 ssl;
+      server_name registry;
+
+      ssl_certificate      /var/run/certs/tls.crt;
+      ssl_certificate_key  /var/run/certs/tls.key;
+
+      ssl_session_cache builtin:1000  shared:SSL:10m;
+      ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+      ssl_ciphers HIGH:!aNULL:!eNULL:!EXPORT:!CAMELLIA:!DES:!MD5:!PSK:!RC4;
+      ssl_prefer_server_ciphers on;
+        
+      location / {
+        proxy_set_header   Host $host;
+        proxy_set_header   X-Real-IP $remote_addr;
+        proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header   X-Forwarded-Proto $scheme;    
+        proxy_pass         http://localhost:5000;
+        proxy_read_timeout 300;
+        client_max_body_size 2G;
+      }
+    }
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: registry-data
+  labels:
+    app: registry
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+
+---
+# service can be used for container-to-container requests
+apiVersion: v1
+kind: Service
+metadata:
+  name: registry
+spec:
+  selector:
+    app: registry
+    component: registry
+  ports:
+  - name: http
+    port: 5000
+    targetPort: http
+    protocol: TCP
+  - name: https
+    port: 443
+    targetPort: https
+    protocol: TCP
+  type: ClusterIP
+
+---
+# Single replica stateful set. For HA, this could be updated to use minio for a S3 backend
+# Note, this registry is not hardened. It's assumed an attacker could compromise the registry or MitM the traffic.
+# We depend on image signing and pinning to digests to defend against a compromised registry.
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: registry
+  labels:
+    app: registry
+    component: registry
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "registry"
+      component: registry
+  serviceName: registry
+  template:
+    metadata:
+      labels:
+        app: "registry"
+        component: registry
+    spec:
+      # nginx needs more settings to run as non-root
+      # securityContext:
+      #   runAsUser: 10000
+      #   fsGroup: 10000
+      containers:
+      - name: registry
+        image: registry:2@sha256:dc3cdf6d35677b54288fe9f04c34f59e85463ea7510c2a9703195b63187a7487
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          httpGet:
+            path: /
+            scheme: HTTP
+            port: 5000
+          initialDelaySeconds: 300
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            scheme: HTTP
+            port: 5000
+          initialDelaySeconds: 1
+          periodSeconds: 10
+        args: ["serve", "/etc/registry/config.yml"]
+        env:
+        ports:
+        - name: http
+          containerPort: 5000
+          # hostPort: 5000
+          protocol: TCP
+        volumeMounts:
+        - name: registry-data
+          mountPath: /var/lib/registry
+          subPath:
+        - name: registry-config
+          mountPath: /etc/registry/config.yml
+          subPath: config.yml
+      - name: nginx
+        image: nginx:1.21.4@sha256:9522864dd661dcadfd9958f9e0de192a1fdda2c162a35668ab6ac42b465f0603
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: https
+          containerPort: 443
+          protocol: TCP
+        livenessProbe:
+          failureThreshold: 2
+          httpGet:
+            path: /v2/
+            port: https
+            scheme: HTTPS
+          initialDelaySeconds: 15
+          periodSeconds: 60
+          successThreshold: 1
+          timeoutSeconds: 3
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /v2/
+            port: https
+            scheme: HTTPS
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        volumeMounts:
+        - mountPath: /var/run/certs
+          name: certs
+          readOnly: true
+        - mountPath: /etc/nginx/conf.d/
+          name: proxy-conf
+          readOnly: true
+
+      volumes:
+      - name: registry-config
+        configMap:
+          name: "registry"
+      - name: registry-data
+        persistentVolumeClaim:
+          claimName: registry-data
+      - name: certs
+        secret:
+          defaultMode: 420
+          secretName: registry-certs
+      - name: proxy-conf
+        configMap:
+          defaultMode: 420
+          name: nginx-proxy
+
+---
+# DaemonSet exposes the host port on all nodes to allow "localhost:5000" to work across the cluster
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  labels:
+    app: registry
+    component: proxy
+  name: registry-proxy
+spec:
+  selector:
+    matchLabels:
+      app: registry
+      component: proxy
+  template:
+    metadata:
+      labels:
+        app: registry
+        component: proxy
+    spec:
+      containers:
+      - image: "gcr.io/google_containers/kube-registry-proxy:0.4@sha256:1040f25a5273de0d72c54865a8efd47e3292de9fb8e5353e3fa76736b854f2da"
+        imagePullPolicy: IfNotPresent
+        name: registry-proxy
+        ports:
+        - name: registry
+          containerPort: 80
+          hostPort: 5000
+        env:
+        - name: REGISTRY_HOST
+          value: registry
+        - name: REGISTRY_PORT
+          value: "5000"

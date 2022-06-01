@@ -1,0 +1,21 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: registry-cert
+spec:
+  commonName: registry
+  secretName: registry-certs
+  duration: 336h # 14 days
+  renewBefore: 168h # 7 days
+  dnsNames:
+    - registry.registry.svc.cluster.local
+    - registry.registry
+    - registry
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+  issuerRef:
+    name: internal-ca-issuer
+    kind: ClusterIssuer
+    group: cert-manager.io

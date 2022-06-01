@@ -233,6 +233,11 @@ frsca: task: "syft-bom-generator": {
 			volumeMounts: [{
 				mountPath: "/steps"
 				name:      "steps-volume"
+			}, {
+				mountPath: "/etc/ssl/certs/ca-certificates.crt"
+				name: "ca-certs"
+				subPath: "ca-certificates.crt"
+				readOnly: true
 			}]
 		}, {
 			image: "gcr.io/projectsigstore/cosign:v1.8.0@sha256:12b4d428529654c95a7550a936cbb5c6fe93a046ea7454676cb6fb0ce566d78c"
@@ -247,11 +252,21 @@ frsca: task: "syft-bom-generator": {
 			volumeMounts: [{
 				mountPath: "/steps"
 				name:      "steps-volume"
+			}, {
+				mountPath: "/etc/ssl/certs/ca-certificates.crt"
+				name: "ca-certs"
+				subPath: "ca-certificates.crt"
+				readOnly: true
 			}]
 		}]
 		volumes: [{
 			emptyDir: {}
 			name: "steps-volume"
+		}, {
+      configMap: {
+        name: "ca-certs"
+			}
+      name: "ca-certs"
 		}]
 		workspaces: [{
 			name: "source"

@@ -14,11 +14,11 @@ make setup-frsca
 ## Use this section if you want to use the minikube registry for
 ## publishing OCI artifacts.
 ##
-## In a separate terminal, port forward the registry: defaults to <host-ip>:8888
+## In a separate terminal, port forward the registry: defaults to 0.0.0.0:5000
 #  make registry-proxy
 ##
 ## Set the registry for use in buildpacks.sh
-#  export REGISTRY=<host-ip>:8888
+#  export REGISTRY=registry.registry
 ##
 #### End local minikube registry
 
@@ -37,6 +37,9 @@ tkn tr describe --last -o jsonpath='{.metadata.annotations.chains\.tekton\.dev/s
 # Export the value of IMAGE_URL from the last pipeline run and the associated taskrun name:
 export IMAGE_URL=$(tkn pr describe --last -o jsonpath='{..taskResults}' | jq -r '.[] | select(.name | match("IMAGE_URL$")) | .value')
 export TASK_RUN=$(tkn pr describe --last -o json | jq -r '.status.taskRuns | keys[] as $k | {"k": $k, "v": .[$k]} | select(.v.status.taskResults[]?.name | match("IMAGE_URL$")) | .k')
+
+## If using the registry-proxy
+# export IMAGE_URL="$(echo "${IMAGE_URL}" | sed 's#'${REGISTRY}'#127.0.0.1:5000#')"
 
 # Double check that the attestation and the signature were uploaded to the OCI.
 crane ls "$(echo -n ${IMAGE_URL} | sed 's|:[^/]*$||')"

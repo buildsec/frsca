@@ -1,0 +1,16 @@
+- op: test
+  path: /spec/steps/0/name
+  value: "build-and-push"
+- op: add
+  path: /spec/steps/0/volumeMounts
+  value: 
+    - mountPath: /etc/ssl/certs/ca-certificates.crt
+      name: ca-certs
+      subPath: ca-certificates.crt
+      readOnly: true
+- op: add
+  path: /spec/volumes
+  value:
+    - configMap:
+        name: ca-certs
+      name: ca-certs

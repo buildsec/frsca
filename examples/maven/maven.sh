@@ -10,8 +10,8 @@ C_GREEN='\033[32m'
 C_RESET_ALL='\033[0m'
 
 # Install shared tasks.
-kubectl apply -f "${GIT_ROOT}"/platform/vendor/tekton/catalog/main/task/git-clone/0.6/git-clone.yaml
-kubectl apply -f "${GIT_ROOT}"/platform/vendor/tekton/catalog/main/task/maven/0.2/maven.yaml
+# kubectl apply -f "${GIT_ROOT}"/platform/vendor/tekton/catalog/main/task/git-clone/0.6/git-clone.yaml
+# kubectl apply -f "${GIT_ROOT}"/platform/vendor/tekton/catalog/main/task/maven/0.2/maven.yaml
 
 # Install the maven pipelinerun.
 echo -e "${C_GREEN}Creating a maven pipelinerun${C_RESET_ALL}"

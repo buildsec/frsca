@@ -1,5 +1,14 @@
 package frsca
 
+#Example: {
+	image: name: string | *"example"
+	repository: *"ttl.sh" | string @tag(repository)
+	appImage: *"\(repository)/\(image.name)" | string @tag(appImage)
+	id: string
+	sourceUrl: string
+	frsca?: _
+}
+
 _IMAGE: name: string
 
 _REPOSITORY: *"ttl.sh" | string @tag(repository)
@@ -37,7 +46,7 @@ frsca: clusterRoleBinding: "pipeline-role-binding": {
 }
 
 // generate a PVC for each pipelineRun
-for pr in frsca.pipelineRun {
+if frsca.pipelineRun != _|_ for pr in frsca.pipelineRun {
 	frsca: persistentVolumeClaim: "\(pr.metadata.generateName)source-ws-pvc": {
 		spec: {
 			accessModes: ["ReadWriteOnce"]
@@ -46,7 +55,7 @@ for pr in frsca.pipelineRun {
 	}
 }
 
-frsca: pipelineRun: [Name=_]: spec: workspaces: [{
+frsca: pipelineRun?: [Name=_]: spec: workspaces: [{
 	name: *"\(Name)ws" | string
 	persistentVolumeClaim: claimName: "\(Name)source-ws-pvc"
 }, ...]

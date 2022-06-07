@@ -1,8 +1,8 @@
 #!/bin/bash
 set -euo pipefail
 
-if kubectl -n vault get configmap ssf-certs >/dev/null 2>&1; then
-  USERPUBKEY=$(kubectl -n vault get configmap ssf-certs -o jsonpath='{.data.ssf\.pem}')
+if kubectl -n vault get configmap frsca-certs >/dev/null 2>&1; then
+  USERPUBKEY=$(kubectl -n vault get configmap frsca-certs -o jsonpath='{.data.frsca\.pem}')
 else
   USERPUBKEY=$(cosign public-key --key k8s://tekton-chains/signing-secrets)
 fi

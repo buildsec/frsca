@@ -53,16 +53,16 @@ vault_exec policy write spire-transit - <<EOF
 path "transit/*" {
   capabilities = ["read"]
 }
-path "transit/sign/ssf" {
+path "transit/sign/frsca" {
   capabilities = ["create", "read", "update"]
 }
-path "transit/sign/ssf/*" {
+path "transit/sign/frsca/*" {
   capabilities = ["read", "update"]
 }
-path "transit/verify/ssf" {
+path "transit/verify/frsca" {
   capabilities = ["create", "read", "update"]
 }
-path "transit/verify/ssf/*" {
+path "transit/verify/frsca/*" {
   capabilities = ["read", "update"]
 }
 EOF
@@ -76,14 +76,14 @@ vault_exec write auth/jwt/role/spire-chains-controller \
   token_ttl=15m \
   token_policies=spire-transit
 
-vault_exec read transit/keys/ssf >/dev/null 2>&1 || \
-vault_exec write transit/keys/ssf \
+vault_exec read transit/keys/frsca >/dev/null 2>&1 || \
+vault_exec write transit/keys/frsca \
   type=ecdsa-p521
 
-vault_exec read -format=json transit/keys/ssf \
-  | jq -r .data.keys.\"1\".public_key >"${GIT_ROOT}/platform/certs/ssf.pem"
+vault_exec read -format=json transit/keys/frsca \
+  | jq -r .data.keys.\"1\".public_key >"${GIT_ROOT}/platform/certs/frsca.pem"
 
-kubectl -n vault create configmap ssf-certs --from-file=ssf.pem="${GIT_ROOT}/platform/certs/ssf.pem" --dry-run=client -o=yaml | kubectl apply -f -
+kubectl -n vault create configmap frsca-certs --from-file=frsca.pem="${GIT_ROOT}/platform/certs/frsca.pem" --dry-run=client -o=yaml | kubectl apply -f -
 
 COSIGN_KEY=$(kubectl get secret signing-secrets -n tekton-chains -o jsonpath='{.data.cosign\.key}' 2> /dev/null || true)
 if [ -n "${COSIGN_KEY}" ]; then
@@ -91,7 +91,7 @@ if [ -n "${COSIGN_KEY}" ]; then
   kubectl -n tekton-chains delete secret signing-secrets
 fi
 ( kubectl -n tekton-chains create secret generic signing-secrets \
-    --from-file=cosign.pub="${GIT_ROOT}/platform/certs/ssf.pem" \
+    --from-file=cosign.pub="${GIT_ROOT}/platform/certs/frsca.pem" \
     --dry-run=client -o yaml
   echo "immutable: true"
 ) | kubectl apply -f -

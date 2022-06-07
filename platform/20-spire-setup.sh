@@ -34,13 +34,13 @@ kubectl rollout status -n spire daemonset/spire-agent
 
 # Register Workloads.
 spire_apply \
-  -spiffeID spiffe://example.org/ns/spire/node/ssf \
-  -selector k8s_psat:cluster:ssf \
+  -spiffeID spiffe://example.org/ns/spire/node/frsca \
+  -selector k8s_psat:cluster:frsca \
   -selector k8s_psat:agent_ns:spire \
   -selector k8s_psat:agent_sa:spire-agent \
   -node
 spire_apply \
   -spiffeID spiffe://example.org/ns/tekton-chains/sa/tekton-chains-controller \
-  -parentID spiffe://example.org/ns/spire/node/ssf \
+  -parentID spiffe://example.org/ns/spire/node/frsca \
   -selector k8s:ns:tekton-chains \
   -selector k8s:sa:tekton-chains-controller

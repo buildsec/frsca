@@ -1,6 +1,6 @@
 server:
   trustDomain: "example.org"
-  clusterName: ssf
+  clusterName: frsca
 
 agent:
   kubeletSkipVerification: true

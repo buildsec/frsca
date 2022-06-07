@@ -6,8 +6,8 @@
 # Only if a cluster is needed.
 make setup-minikube
 
-# Setup tekton w/ chains
-make setup-certs setup-tekton-chains setup-spire setup-vault
+# Setup FRSCA environment
+make setup-frsca
 
 #### Begin local minikube registry
 ##

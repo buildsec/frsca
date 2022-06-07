@@ -22,7 +22,7 @@ help: # Display help
 		}' $(MAKEFILE_LIST) | sort
 
 .PHONY: quickstart
-quickstart: setup-minikube setup-certs setup-spire setup-vault setup-kyverno setup-tekton-chains example-buildpacks ## Spin up the FRSCA project into minikube
+quickstart: setup-minikube setup-frsca setup-kyverno example-buildpacks ## Spin up the FRSCA project into minikube
 
 .PHONY: teardown
 teardown:
@@ -31,6 +31,9 @@ teardown:
 .PHONY: setup-minikube
 setup-minikube: ## Setup a Kubernetes cluster using Minikube
 	bash platform/00-kubernetes-minikube-setup.sh
+
+.PHONY: setup-frsca
+setup-frsca: setup-certs setup-tekton-chains setup-spire setup-vault
 
 .PHONY: registry-proxy
 registry-proxy: ## Forward the minikube registry to the host

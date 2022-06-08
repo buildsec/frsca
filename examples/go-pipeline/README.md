@@ -16,8 +16,8 @@ auto determine the architecture.
 # Only if a cluster is needed.
 make setup-minikube
 
-# Setup tekton w/ chains
-make tekton-generate-keys setup-kyverno setup-tekton-chains
+# Setup FRSCA environment
+make setup-frsca
 
 # Run a new pipeline.
 make example-golang-pipeline

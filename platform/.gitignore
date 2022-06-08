@@ -1,0 +1,3 @@
+certs
+components/vault/root-token
+components/vault/unseal-key

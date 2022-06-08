@@ -6,8 +6,8 @@
 # Only if a cluster is needed.
 make setup-minikube
 
-# Setup tekton w/ chains
-make tekton-generate-keys setup-kyverno setup-tekton-chains
+# Setup FRSCA environment
+make setup-frsca
 
 #### Begin local minikube registry
 ##

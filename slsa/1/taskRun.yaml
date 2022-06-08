@@ -1,0 +1,106 @@
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  generateName: slsa-1-
+spec:
+  taskSpec:
+    results:
+      - name: RUBY_IMAGE_DIGEST
+        description: The digest of the built ruby image.
+      - name: RUBY_IMAGE_URL
+        description: The URL of the built ruby image.
+      - name: IMAGE_DIGEST
+        description: The digest of the built image.
+      - name: IMAGE_URL
+        description: The URL of the built image.
+    workspaces:
+      - name: build
+      - name: layers
+        mountPath: /layers
+      - name: platform
+        mountPath: /platform
+    steps:
+      # - name: git-clone
+      #   image: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/git-init:v0.36.0@sha256:46c3f46f68410666b3ca3f13c4fd398a05413239f257fe9842fc3f7c622f74db
+      #   workingDir: $(workspaces.build.path)
+      #   args:
+      #     - -path
+      #     - $(workspaces.build.path)
+      #     - -url
+      #     - https://github.com/buildpacks/samples
+      # - name: list-source
+      #   image: docker.io/library/bash:5.1.8@sha256:bf9d3f4319e06ccce9e8cb18b8f2b1f0180c8fc0c7cf4cf4bcab3f9623f72d5f
+      #   script: |
+      #     ls -la $(workspaces.build.path)
+      # - name: build
+      #   image: docker.io/cnbs/sample-builder:bionic@sha256:6c03dd604503b59820fd15adbc65c0a077a47e31d404a3dcad190f3179e920b5
+      #   workingDir: $(workspaces.build.path)
+      #   command: ["/cnb/lifecycle/creator"]
+      #   args:
+      #     - "-app=$(workspaces.build.path)/apps/ruby-bundler"
+      #     - ttl.sh/bradbeck/slsa1/buildpacks/ruby
+      - name: git-clone
+        image: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/git-init:v0.36.0@sha256:46c3f46f68410666b3ca3f13c4fd398a05413239f257fe9842fc3f7c622f74db
+        workingDir: $(workspaces.build.path)
+        args:
+          - -path
+          - $(workspaces.build.path)
+          - -url
+          - https://github.com/GoogleCloudPlatform/buildpack-samples
+      - name: pre-build
+        image: docker.io/library/bash:5.1.8@sha256:bf9d3f4319e06ccce9e8cb18b8f2b1f0180c8fc0c7cf4cf4bcab3f9623f72d5f
+        workingDir: $(workspaces.build.path)
+        script: |
+          #!/usr/bin/env bash
+          set -e
+
+          for path in "/tekton/home" "/layers" "/platform" "$(workspaces.build.path)/sample-go"; do
+            echo "> Setting permissions on '$path'..."
+            chown -R 1000:1000 "$path"
+          done
+        securityContext:
+          privileged: true
+      - name: build
+        image: gcr.io/buildpacks/builder:v1
+        workingDir: $(workspaces.build.path)
+        command: ["/cnb/lifecycle/creator"]
+        args:
+          - "-app=$(workspaces.build.path)/sample-go"
+          - "-uid=1000"
+          - "-gid=1000"
+          - "-layers=/layers"
+          - "-platform=/platform"
+          - "-report=/layers/report.toml"
+          - ttl.sh/bradbeck/slsa1/buildpacks/go
+        securityContext:
+          runAsUser: 1000
+          runAsGroup: 1000
+      - name: generate-artifact
+        image: docker.io/library/bash:5.1.8@sha256:bf9d3f4319e06ccce9e8cb18b8f2b1f0180c8fc0c7cf4cf4bcab3f9623f72d5f
+        workingDir: $(workspaces.build.path)
+        script: |
+          echo "Hello from Bash!" | tee artifact.txt
+      - name: upload-artifact
+        image: gcr.io/projectsigstore/cosign:v1.8.0@sha256:12b4d428529654c95a7550a936cbb5c6fe93a046ea7454676cb6fb0ce566d78c
+        workingDir: $(workspaces.build.path)
+        args:
+          - upload
+          - blob
+          - -f
+          - artifact.txt
+          - --output-file
+          - out.txt
+          - ttl.sh/bradbeck/slsa1
+      - name: url-digest
+        image: docker.io/library/bash
+        workingDir: $(workspaces.build.path)
+        script: |
+          echo -n "ttl.sh/bradbeck/slsa1" | tr -d '[:space:]' | tee $(results.IMAGE_URL.path)
+          cat out.txt | sed -e 's/.*@//' | tr -d '[:space:]' | tee $(results.IMAGE_DIGEST.path)
+  workspaces:
+    - name: build
+      emptyDir: {}
+    - name: layers
+      emptyDir: {}
+    - name: platform
+      emptyDir: {}

@@ -1,0 +1,24 @@
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  generateName: slsa-1-bp-
+spec:
+  params:
+    - name: APP_IMAGE
+      value: ttl.sh/bradbeck/slsa1/buildpacks/go
+    - name: SOURCE_URL
+      value: https://github.com/GoogleCloudPlatform/buildpack-samples
+    - name: SOURCE_SUBPATH
+      value: sample-go
+    - name: BUILDER_IMAGE
+      value: index.docker.io/paketobuildpacks/builder:base
+      # value: gcr.io/buildpacks/builder:v1
+  taskRef:
+    name: buildpacks
+  workspaces:
+    - name: source
+      emptyDir: {}
+    - name: layers-dir
+      emptyDir: {}
+    - name: platform-dir
+      emptyDir: {}

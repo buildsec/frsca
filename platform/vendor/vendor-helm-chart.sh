@@ -46,6 +46,8 @@ fi
 echo -e "${C_GREEN}Vendoring ${opt_c}...${C_RESET_ALL}"
 
 # helm pull to tmp folder
+basedir="$(dirname "${opt_d}")"
+[ -d "${basedir}" ] || mkdir -p "${basedir}"
 tempdir="$(mktemp -d "${opt_d}-XXX")"
 trap 'rm -r "${tempdir}"; exit 1' 1 2 15
 helm pull ${opt_r:+--repo "${opt_r}"} "${opt_c}" --untar --untardir "${tempdir}" --version "${opt_v}"

@@ -1,0 +1,29 @@
+injector:
+  enabled: false
+
+server:
+  # affinity: ""
+  # extraEnvironmentVars:
+  #   VAULT_CACERT: /vault/userconfig/ca-certs/spire-ca.pem
+
+  # standalone:
+  #   enabled: true
+  #   config: |
+  #     listener "tcp" {
+  #       address = "[::]:8200"
+  #       cluster_address = "[::]:8201"
+  #     }
+  #     storage "file" {
+  #       path = "/vault/data"
+  #     }
+
+  volumes:
+    - name: ca-certs
+      configMap:
+        name: ca-certs
+
+  volumeMounts:
+    - name: ca-certs
+      mountPath: /etc/ssl/certs/ca-certificates.crt
+      subPath: spire-ca.pem
+      readOnly: true

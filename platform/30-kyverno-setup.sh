@@ -1,8 +1,11 @@
 #!/bin/bash
 set -euo pipefail
 
-USERPUBKEY=$(cosign public-key --key k8s://tekton-chains/signing-secrets)
-
+if kubectl -n vault get configmap frsca-certs >/dev/null 2>&1; then
+  USERPUBKEY=$(kubectl -n vault get configmap frsca-certs -o jsonpath='{.data.frsca\.pem}')
+else
+  USERPUBKEY=$(cosign public-key --key k8s://tekton-chains/signing-secrets)
+fi
 REPO="ttl.sh/*"
 
 GIT_ROOT=$(git rev-parse --show-toplevel)

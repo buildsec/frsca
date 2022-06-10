@@ -12,14 +12,16 @@ cd "$GIT_ROOT/platform/vendor"
 # read CLI args
 opt_c=""
 opt_d=""
+opt_f=0
 opt_h=0
 opt_r=""
 opt_v=""
 
-while getopts 'c:d:hr:v:' option; do
+while getopts 'c:d:fhr:v:' option; do
   case $option in
     c) opt_c="$OPTARG";;
     d) opt_d="$OPTARG";;
+    f) opt_f=1;;
     h) opt_h=1;;
     r) opt_r="$OPTARG";;
     v) opt_v="$OPTARG";;
@@ -32,6 +34,7 @@ if [ $# -gt 0 ] || [ "${opt_h}" = "1" ] || [ -z "${opt_c}" ] || [ -z "${opt_d}" 
   echo "Usage: $0 [opts] file"
   echo " -c chart: name of chart to pull (required)"
   echo " -d dir: directory to save chart (required)"
+  echo " -f: force vendor even if pulled chart matches version"
   echo " -h: this help message"
   echo " -r repo: url for chart repository"
   echo " -v ver: version to pull (required)"
@@ -39,7 +42,7 @@ if [ $# -gt 0 ] || [ "${opt_h}" = "1" ] || [ -z "${opt_c}" ] || [ -z "${opt_d}" 
 fi
 
 # check if local chart matches target version, exit 0 if so
-if [ "$(helm show chart "${opt_d}" 2>/dev/null | grep -e '^version: ' | cut -f2 -d' ' || true)" = "${opt_v}" ]; then
+if [ "$opt_f" = "0" ] && [ "$(helm show chart "${opt_d}" 2>/dev/null | grep -e '^version: ' | cut -f2 -d' ' || true)" = "${opt_v}" ]; then
   exit 0
 fi
 

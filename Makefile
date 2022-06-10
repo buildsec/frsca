@@ -139,3 +139,9 @@ lint-yaml: ## Lint yaml files
 .PHONY: fmt-md ## Format markdown files
 fmt-md:
 	npx --yes prettier --write --prose-wrap always **/*.md
+
+.PHONY: vendor ## vendor upstream projects
+vendor:
+	bash platform/vendor/vendor.sh
+	bash platform/vendor/vendor-helm-all.sh -f
+	

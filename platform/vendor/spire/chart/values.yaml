@@ -1,0 +1,122 @@
+# Default values for spire.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+
+replicaCount: 1
+
+image:
+  repository: gcr.io/spiffe-io
+  pullPolicy: IfNotPresent
+  tag: "1.0.2"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+server:
+  trustDomain: example.org
+  clusterName: demo-cluster
+
+agent:
+  # verification should be disabled in some environments, including Minikube
+  kubeletSkipVerification: false
+
+oidc:
+  enabled: false
+  discoveryDomain: "oidc.example.org"
+  acme:
+    enabled: true
+    email: admin@example.org
+  # certsSecret configures nginx with TLS when not using acme
+  certsSecret: ""
+
+client:
+  enabled: false
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  server:
+    type: ClusterIP
+    port: 8081
+  oidc:
+    type: ClusterIP
+    port: 443
+
+ingress:
+  server:
+    enabled: false
+    annotations: {}
+      # kubernetes.io/ingress.class: nginx
+      # kubernetes.io/tls-acme: "true"
+    hosts:
+      - host: spire.example.org
+        paths: []
+    tls: []
+    #  - secretName: chart-example-tls
+    #    hosts:
+    #      - spire.example.org
+  oidc:
+    enabled: false
+    annotations: {}
+      # kubernetes.io/ingress.class: nginx
+      # kubernetes.io/tls-acme: "true"
+    # hosts from oidc.discoveryDomains are included by default
+    hosts: []
+      # - host: oidc.example.org
+      #   paths: []
+    tls: []
+    #  - secretName: chart-example-tls
+    #    hosts:
+    #      - oidc.example.org
+
+resources:
+  agent: {}
+  client: {}
+  server: {}
+  oidc: {}
+  oidcNginx: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

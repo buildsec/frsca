@@ -31,7 +31,9 @@ jobs:
         with:
           go-version: "1.17.6"
       - name: Vendor Dependencies
-        run: ./platform/vendor/vendor.sh
+        run: |
+          ./platform/vendor/vendor.sh
+          ./platform/vendor/vendor-helm-all.sh
       - name: Check commit is clean
         run: test -z "$(git status --porcelain)" || (git status; git diff; false)
       - name: Start minikube

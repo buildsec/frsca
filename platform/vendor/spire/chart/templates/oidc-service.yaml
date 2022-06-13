@@ -1,0 +1,20 @@
+{{- if .Values.oidc.enabled -}}
+# Service definition for the admission webhook
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "spire.fullname" . }}-oidc
+  labels:
+    {{- include "spire.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.oidc.type }}
+  ports:
+    - port: {{ .Values.service.oidc.port }}
+      targetPort: {{ if .Values.oidc.acme.enabled }}oidc{{ else if eq .Values.oidc.certsSecret "" }}nginx-http{{else}}nginx-https{{ end }}
+      protocol: TCP
+      name: oidc
+  selector:
+    app: {{ include "spire.fullname" . }}-server
+    {{- include "spire.selectorLabels" . | nindent 4 }}
+---
+{{- end }}

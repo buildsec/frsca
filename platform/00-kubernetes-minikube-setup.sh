@@ -201,9 +201,3 @@ minikube addons enable ingress
 
 # Setup Minikube's registry.
 minikube addons enable registry
-
-# Add/Update Helm chart repositories.
-echo -e "${C_GREEN}Configuring helm...${C_RESET_ALL}"
-helm repo add stable https://charts.helm.sh/stable
-helm repo add bitnami https://charts.bitnami.com/bitnami
-helm repo update

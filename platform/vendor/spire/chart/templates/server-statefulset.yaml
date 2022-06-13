@@ -1,0 +1,186 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "spire.fullname" . }}-server
+  labels:
+    app: {{ include "spire.fullname" . }}-server
+    {{- include "spire.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ include "spire.fullname" . }}-server
+      {{- include "spire.selectorLabels" . | nindent 6 }}
+  serviceName: {{ include "spire.fullname" . }}-server
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        app: {{ include "spire.fullname" . }}-server
+        {{- include "spire.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "spire.serviceAccountName" . }}-server
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: spire-server
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: {{ .Values.image.repository }}/spire-server:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - -config
+            - /run/spire/config/server.conf
+          ports:
+            - name: grpc
+              containerPort: 8081
+              protocol: TCP
+          volumeMounts:
+            - name: spire-config
+              mountPath: /run/spire/config
+              readOnly: true
+            - name: {{ include "spire.fullname" . }}-data
+              mountPath: /run/spire/data
+              readOnly: false
+            - name: spire-server-socket
+              mountPath: /tmp/spire-server/private
+              readOnly: false
+          livenessProbe:
+            httpGet:
+              path: /live
+              port: 8080
+            failureThreshold: 2
+            initialDelaySeconds: 15
+            periodSeconds: 60
+            timeoutSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          resources:
+            {{- toYaml .Values.resources.server | nindent 12 }}
+        {{- if .Values.oidc.enabled }}
+        - name: spire-oidc
+          image: {{ .Values.image.repository }}/oidc-discovery-provider:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+          - -config
+          - /run/spire/oidc/config/oidc-discovery-provider.conf
+          ports:
+          - name: oidc
+            containerPort: 443
+            protocol: TCP
+          volumeMounts:
+          - name: spire-server-socket
+            mountPath: /tmp/spire-server/private
+            readOnly: false
+          - name: spire-oidc-config
+            mountPath: /run/spire/oidc/config/
+            readOnly: true
+          - name: spire-data
+            mountPath: /run/spire/data
+            readOnly: false
+          readinessProbe:
+            exec:
+              command: ["/bin/ps", "aux", " ||", "grep", "oidc-discovery-provider -config /run/spire/oidc/config/oidc-discovery-provider.conf"]
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          resources:
+            {{- toYaml .Values.resources.oidc | nindent 12 }}
+        {{- if not .Values.oidc.acme.enabled }}
+        - name: spire-oidc-nginx
+          image: nginx:latest
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+          - name: nginx-http
+            containerPort: 80
+            protocol: TCP
+          - name: nginx-https
+            containerPort: 443
+            protocol: TCP
+          volumeMounts:
+          - name: spire-server-socket
+            mountPath: /tmp/spire-server/private
+            readOnly: true
+          - name: spire-oidc-nginx-config
+            mountPath: /etc/nginx/conf.d/
+            readOnly: true
+          - name: spire-oidc-nginx-certs
+            mountPath: /opt/spire/certs/oidc/
+            readOnly: true
+          # livenessProbe:
+          #   httpGet:
+          #     path: /keys
+          #     port: 80
+          #     httpHeaders:
+          #       - name: "Host"
+          #         value: "{{ .Values.oidc.discoveryDomain }}"
+          #   failureThreshold: 2
+          #   initialDelaySeconds: 15
+          #   periodSeconds: 60
+          #   timeoutSeconds: 3
+          # readinessProbe:
+          #   httpGet:
+          #     path: /keys
+          #     port: 80
+          #     httpHeaders:
+          #       - name: "Host"
+          #         value: "{{ .Values.oidc.discoveryDomain }}"
+          #   initialDelaySeconds: 5
+          #   periodSeconds: 5
+          resources:
+            {{- toYaml .Values.resources.oidcNginx | nindent 12 }}
+        {{- end }}
+        {{- end }}
+      volumes:
+        - name: spire-config
+          configMap:
+            name: {{ include "spire.fullname" . }}-server
+        - name: spire-server-socket
+          emptyDir: {}
+        {{- if .Values.oidc.enabled }}
+        - name: spire-oidc-config
+          configMap:
+            name: {{ include "spire.fullname" . }}-oidc-dp
+        {{- if not .Values.oidc.acme.enabled }}
+        - name: spire-oidc-nginx-config
+          configMap:
+            name: {{ include "spire.fullname" . }}-oidc-nginx
+        - name: spire-oidc-nginx-certs
+          secret:
+            secretName: {{ .Values.oidc.certsSecret }}
+        {{- end }}
+        {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+  volumeClaimTemplates:
+    - metadata:
+        name: {{ include "spire.fullname" . }}-data
+        labels:
+          {{- include "spire.labels" . | nindent 10 }}
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi
+---

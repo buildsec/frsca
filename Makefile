@@ -122,11 +122,11 @@ lint: lint-md lint-yaml lint-shell ## Run all linters
 
 .PHONY: lint-md
 lint-md: ## Lint markdown files
-	npx --yes markdownlint-cli2  "**/*.md" "#docs/themes"
+	npx --yes markdownlint-cli2  "**/*.md" "#docs/themes" "#platform/vendor"
 
 .PHONY: lint-shell
 lint-shell: ## Lint shell files
-	shfmt -f ./ | xargs shellcheck
+	shfmt -f ./ | grep -ve "platform/vendor/.*/" | xargs shellcheck
 
 .PHONY: lint-spellcheck
 lint-spellcheck:
@@ -139,3 +139,9 @@ lint-yaml: ## Lint yaml files
 .PHONY: fmt-md ## Format markdown files
 fmt-md:
 	npx --yes prettier --write --prose-wrap always **/*.md
+
+.PHONY: vendor ## vendor upstream projects
+vendor:
+	bash platform/vendor/vendor.sh
+	bash platform/vendor/vendor-helm-all.sh -f
+	

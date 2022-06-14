@@ -5,9 +5,7 @@ GIT_ROOT=$(git rev-parse --show-toplevel)
 
 kubectl create namespace vault --dry-run=client -o yaml | kubectl apply -f -
 
-helm repo add hashicorp https://helm.releases.hashicorp.com
-helm repo update
-helm upgrade --install vault hashicorp/vault \
+helm upgrade --install vault "${GIT_ROOT}/platform/vendor/vault/chart" \
   --values "${GIT_ROOT}/platform/components/vault/values.yaml" \
   --namespace vault --wait
 

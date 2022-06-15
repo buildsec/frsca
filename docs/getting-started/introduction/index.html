@@ -282,14 +282,25 @@
         <h1>Factory for Repeatable Secure Creation of Artifacts</h1>
         
         <h2 id="about-the-project">About The Project</h2>
-<p>Factory for Repeatable Secure Creation of Artifacts (FRSCA) is a prototype
-implementation of the CNCF's
+<p>Factory for Repeatable Secure Creation of Artifacts (FRSCA) is an <a href="https://openssf.org/">OpenSSF</a>
+<a href="https://github.com/ossf/wg-supply-chain-integrity">Supply Chain Integrity Working Group Project</a>.
+The purpose of the project is to provide a set of tools, patterns, and
+policies in order to build artifacts with increased confidence around its
+authenticity and integrity, and with traceable provenance.</p>
+<p>FRSCA is an implementation of the CNCF's
 <a href="https://docs.google.com/document/d/1FwyOIDramwCnivuvUxrMmHmCr02ARoA3jw76o1mGfGQ">Secure Software Factory Reference Architecture</a>
 which is based on the CNCF's
-<a href="https://github.com/cncf/tag-security/blob/main/supply-chain-security/supply-chain-security-paper/CNCF_SSCP_v1.pdf">Software Supply Chain Best Practices White Paper</a></p>
-<p>The purpose of the project is to provide a set of tools, patterns, and polices
-in order to build artifacts with increased confidence around its authenticity
-and integrity, and with traceable provenance.</p>
+<a href="https://github.com/cncf/tag-security/blob/main/supply-chain-security/supply-chain-security-paper/CNCF_SSCP_v1.pdf">Software Supply Chain Best Practices White Paper</a>.
+It is also intended to follow <a href="https://slsa.dev">SLSA</a> requirements closely
+and generate in-toto attesttations for SLSA provenance predicates.</p>
+<p>FRSCA is 3 things:</p>
+<ol>
+<li>A set of interfaces managing CI pipelines while ensuring supply chain
+security and establishing provenance</li>
+<li>A set of CI/Build tools and systems glued together in order to enable
+#1.</li>
+<li>A set of secure defaults in order to enable #1 and #2</li>
+</ol>
 <h2 id="quickstart">Quickstart</h2>
 <p>To quickly provision a Minikube cluster with <a href="https://tekton.dev/">Tekton Pipelines</a>, <a href="https://github.com/tektoncd/chains">Tekton
 Chains</a>, and the <a href="https://buildpacks.io/">buildpacks</a> pipeline, simply run:</p>

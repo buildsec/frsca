@@ -17,15 +17,26 @@ extra:
 
 ## About The Project
 
-Factory for Repeatable Secure Creation of Artifacts (FRSCA) is a prototype
-implementation of the CNCF's
+Factory for Repeatable Secure Creation of Artifacts (FRSCA) is an [OpenSSF](https://openssf.org/)
+[Supply Chain Integrity Working Group Project](https://github.com/ossf/wg-supply-chain-integrity).
+The purpose of the project is to provide a set of tools, patterns, and
+policies in order to build artifacts with increased confidence around its
+authenticity and integrity, and with traceable provenance.
+
+FRSCA is an implementation of the CNCF's
 [Secure Software Factory Reference Architecture](https://docs.google.com/document/d/1FwyOIDramwCnivuvUxrMmHmCr02ARoA3jw76o1mGfGQ)
 which is based on the CNCF's
-[Software Supply Chain Best Practices White Paper](https://github.com/cncf/tag-security/blob/main/supply-chain-security/supply-chain-security-paper/CNCF_SSCP_v1.pdf)
+[Software Supply Chain Best Practices White Paper](https://github.com/cncf/tag-security/blob/main/supply-chain-security/supply-chain-security-paper/CNCF_SSCP_v1.pdf).
+It is also intended to follow [SLSA](https://slsa.dev) requirements closely
+and generate in-toto attesttations for SLSA provenance predicates.
 
-The purpose of the project is to provide a set of tools, patterns, and polices
-in order to build artifacts with increased confidence around its authenticity
-and integrity, and with traceable provenance.
+FRSCA is 3 things:
+
+1. A set of interfaces managing CI pipelines while ensuring supply chain
+   security and establishing provenance
+2. A set of CI/Build tools and systems glued together in order to enable
+   #1.
+3. A set of secure defaults in order to enable #1 and #2
 
 ## Quickstart
 

@@ -6,8 +6,8 @@ metadata:
 spec:
   commonName: oidc
   secretName: oidc-cert
-  duration: 336h # 14 days
-  renewBefore: 168h # 7 days
+  duration: 336h     # 14 days
+  renewBefore: 168h  #  7 days
   dnsNames:
     - spire-oidc.spire.svc.cluster.local
     - oidc.example.org

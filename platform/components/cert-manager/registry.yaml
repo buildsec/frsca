@@ -6,8 +6,8 @@ metadata:
 spec:
   commonName: registry
   secretName: registry-certs
-  duration: 336h # 14 days
-  renewBefore: 168h # 7 days
+  duration: 336h     # 14 days
+  renewBefore: 168h  #  7 days
   dnsNames:
     - registry.registry.svc.cluster.local
     - registry.registry

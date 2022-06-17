@@ -3,7 +3,7 @@
   value: "build-and-push"
 - op: add
   path: /spec/steps/0/volumeMounts
-  value: 
+  value:
     - mountPath: /etc/ssl/certs/ca-certificates.crt
       name: ca-certs
       subPath: ca-certificates.crt

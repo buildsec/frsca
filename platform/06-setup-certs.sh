@@ -3,6 +3,9 @@ set -euo pipefail
 
 GIT_ROOT=$(git rev-parse --show-toplevel)
 
+# Following mainly for MacOS, as supplies LibreSSL by default
+[ $(openssl version|awk '{print$1}') = "LibreSSL" ] && { echo "LibreSSL is not supported, please install Openssl"; exit 1; }
+
 [ -d "${GIT_ROOT}/platform/certs" ] || mkdir -p "${GIT_ROOT}/platform/certs"
 
 ## TODO: if openssl is not installed, consider running command with a temporary container

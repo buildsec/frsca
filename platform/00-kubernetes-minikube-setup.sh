@@ -40,6 +40,7 @@ CUE_URL=https://github.com/cue-lang/cue/releases/download/${CUE_VERSION}
 CUE_CHECKSUMS=checksums.txt
 
 INSTALL_DIR=/usr/local/bin
+CHECKSUM_FILE=download_checksum.txt
 
 # Define variables.
 C_GREEN='\033[32m'
@@ -76,8 +77,8 @@ case "${PLATFORM}" in
         echo "Actual SHA256 for $MINIKUBE_FILE_NAME: $ACTUAL_SHA256"
         exit 1
       )
-      sudo install $MINIKUBE_FILE_NAME $INSTALL_DIR/minikube
-      rm $MINIKUBE_FILE_NAME
+      sudo install ${MINIKUBE_FILE_NAME} ${INSTALL_DIR}/minikube
+      rm ${MINIKUBE_FILE_NAME}
       popd
       rmdir "$TMP"
     )
@@ -86,8 +87,8 @@ case "${PLATFORM}" in
       echo -e "${C_GREEN}helm not found, installing...${C_RESET_ALL}"
       TMP=$(mktemp -d)
       pushd "$TMP"
-      curl -LO $HELM_URL
-      ACTUAL_SHA256=$(sha256sum $HELM_FILE_NAME | awk '{print $1}')
+      curl -LO ${HELM_URL}
+      ACTUAL_SHA256=$(sha256sum ${HELM_FILE_NAME} | awk '{print $1}')
       [[ $ACTUAL_SHA256 == "$HELM_SHA256" ]] || (
         echo "Expected SHA256 for $HELM_FILE_NAME: $HELM_SHA256"
         echo "Actual SHA256 for $HELM_FILE_NAME: $ACTUAL_SHA256"
@@ -122,12 +123,12 @@ case "${PLATFORM}" in
       echo -e "${C_GREEN}kubectl not found, installing...${C_RESET_ALL}"
       TMP=$(mktemp -d)
       pushd "$TMP"
-      curl -LO $KUBECTL_URL
-      curl -LO $KUBECTL_VALIDATE_CHECKSUM_URL
+      curl -LO ${KUBECTL_URL}
+      curl -LO ${KUBECTL_VALIDATE_CHECKSUM_URL}
       echo "$(<kubectl.sha256) kubectl" | sha256sum --check
-      sudo install kubectl $INSTALL_DIR/kubectl
-      rm $KUBECTL_FILE_NAME
-      rm $KUBECTL_FILE_NAME.sha256
+      sudo install kubectl ${INSTALL_DIR}/kubectl
+      rm ${KUBECTL_FILE_NAME}
+      rm ${KUBECTL_FILE_NAME}.sha256
       popd
       rmdir "$TMP"
     )
@@ -135,17 +136,19 @@ case "${PLATFORM}" in
     cosign version || (
       echo -e "${C_GREEN}cosign not found, installing...${C_RESET_ALL}"
       TMP=$(mktemp -d)
-      pushd "$TMP"
+      pushd ${TMP}
       curl -sLO "${COSIGN_RELEASE_URL}/${COSIGN_ASSET}"
       curl -sLO "${COSIGN_RELEASE_URL}/${COSIGN_ASSET}.sig"
       curl -sLO "${COSIGN_RELEASE_URL}/${COSIGN_CHECKSUMS}"
-      sha256sum --ignore-missing -c "${COSIGN_CHECKSUMS}"
-      sudo install "$COSIGN_ASSET" $INSTALL_DIR/cosign
-      rm "$COSIGN_ASSET"
-      rm $COSIGN_CHECKSUMS
-      rm "$COSIGN_ASSET".sig
+      grep ${COSIGN_ASSET} ${COSIGN_CHECKSUMS} |grep -v sbom > ${CHECKSUM_FILE}
+      sha256sum -c ${CHECKSUM_FILE}
+      sudo install ${COSIGN_ASSET} ${INSTALL_DIR}/cosign
+      rm ${COSIGN_ASSET}
+      rm ${COSIGN_CHECKSUMS}
+      rm ${COSIGN_ASSET}.sig
+      rm ${CHECKSUM_FILE}
       popd
-      rmdir "$TMP"
+      rmdir ${TMP}
     )
 
     cue version || (
@@ -154,11 +157,13 @@ case "${PLATFORM}" in
       pushd "$TMP"
       curl -LO "${CUE_URL}/${CUE_FILE_NAME}"
       curl -LO "${CUE_URL}/${CUE_CHECKSUMS}"
-      sha256sum --ignore-missing -c "${CUE_CHECKSUMS}"
+      grep ${CUE_FILE_NAME} ${CUE_CHECKSUMS} |grep -v sbom > ${CHECKSUM_FILE}
+      sha256sum -c "${CUE_CHECKSUMS}"
       tar -xzf $CUE_FILE_NAME
       sudo install cue $INSTALL_DIR/cue
-      rm "${CUE_CHECKSUMS}"
-      rm $CUE_FILE_NAME
+      rm ${CUE_CHECKSUMS}
+      rm ${CUE_FILE_NAME}
+      rm ${CHECKSUM_FILE}
       rm -rf doc LICENSE README.md cue
       popd
       rmdir "$TMP"

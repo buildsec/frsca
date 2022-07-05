@@ -136,19 +136,19 @@ case "${PLATFORM}" in
     cosign version || (
       echo -e "${C_GREEN}cosign not found, installing...${C_RESET_ALL}"
       TMP=$(mktemp -d)
-      pushd $TMP
+      pushd "$TMP"
       curl -sLO "${COSIGN_RELEASE_URL}/${COSIGN_ASSET}"
       curl -sLO "${COSIGN_RELEASE_URL}/${COSIGN_ASSET}.sig"
       curl -sLO "${COSIGN_RELEASE_URL}/${COSIGN_CHECKSUMS}"
-      grep $COSIGN_ASSET $COSIGN_CHECKSUMS |grep -v sbom > $CHECKSUM_FILE
-      sha256sum -c $CHECKSUM_FILE
-      sudo install $COSIGN_ASSET $INSTALL_DIR/cosign
-      rm $COSIGN_ASSET
-      rm $COSIGN_CHECKSUMS
-      rm $COSIGN_ASSET.sig
-      rm $CHECKSUM_FILE
+      grep "$COSIGN_ASSET $COSIGN_CHECKSUMS" |grep -v sbom > "$CHECKSUM_FILE"
+      sha256sum -c "$CHECKSUM_FILE"
+      sudo install "$COSIGN_ASSET" "$INSTALL_DIR"/cosign
+      rm "$COSIGN_ASSET"
+      rm "$COSIGN_CHECKSUMS"
+      rm "$COSIGN_ASSET".sig
+      rm "$CHECKSUM_FILE"
       popd
-      rmdir $TMP
+      rmdir "$TMP"
     )
 
     cue version || (

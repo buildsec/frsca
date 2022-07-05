@@ -33,7 +33,7 @@ setup-minikube: ## Setup a Kubernetes cluster using Minikube
 	bash platform/00-kubernetes-minikube-setup.sh
 
 .PHONY: setup-frsca
-setup-frsca: setup-certs setup-registry setup-tekton-chains setup-spire setup-vault
+setup-frsca: setup-certs setup-registry setup-tetragon setup-tekton-chains setup-spire setup-vault
 
 .PHONY: setup-certs
 setup-certs: ## Setup certificates used by vault and spire
@@ -46,6 +46,10 @@ setup-registry: ## Setup a registry
 .PHONY: registry-proxy
 registry-proxy: ## Forward the registry to the host
 	bash platform/05-registry-proxy.sh
+
+.PHONY: setup-tetragon
+setup-tetragon: ## Setup runtime visbility and enforcement tool - tetragon
+	bash platform/07-tetragon-setup.sh
 
 .PHONY: setup-tekton-chains
 setup-tekton-chains: ## Setup a Tekton CD with Chains.

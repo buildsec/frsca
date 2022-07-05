@@ -44,6 +44,9 @@ jobs:
       - name: Generate certs
         run: |
           make setup-certs
+      - name: Setup Tetragon
+        run: |
+          make setup-tetragon
       - name: Setup Tekton Pipeline and Chains
         run: |
           make setup-tekton-chains

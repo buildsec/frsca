@@ -78,7 +78,7 @@ case "${PLATFORM}" in
         exit 1
       )
       sudo install ${MINIKUBE_FILE_NAME} ${INSTALL_DIR}/minikube
-      rm ${MINIKUBE_FILE_NAME}
+      rm $MINIKUBE_FILE_NAME
       popd
       rmdir "$TMP"
     )
@@ -87,7 +87,7 @@ case "${PLATFORM}" in
       echo -e "${C_GREEN}helm not found, installing...${C_RESET_ALL}"
       TMP=$(mktemp -d)
       pushd "$TMP"
-      curl -LO ${HELM_URL}
+      curl -LO $HELM_URL
       ACTUAL_SHA256=$(sha256sum ${HELM_FILE_NAME} | awk '{print $1}')
       [[ $ACTUAL_SHA256 == "$HELM_SHA256" ]] || (
         echo "Expected SHA256 for $HELM_FILE_NAME: $HELM_SHA256"
@@ -123,12 +123,12 @@ case "${PLATFORM}" in
       echo -e "${C_GREEN}kubectl not found, installing...${C_RESET_ALL}"
       TMP=$(mktemp -d)
       pushd "$TMP"
-      curl -LO ${KUBECTL_URL}
-      curl -LO ${KUBECTL_VALIDATE_CHECKSUM_URL}
+      curl -LO $KUBECTL_URL
+      curl -LO $KUBECTL_VALIDATE_CHECKSUM_URL
       echo "$(<kubectl.sha256) kubectl" | sha256sum --check
       sudo install kubectl ${INSTALL_DIR}/kubectl
-      rm ${KUBECTL_FILE_NAME}
-      rm ${KUBECTL_FILE_NAME}.sha256
+      rm $KUBECTL_FILE_NAME
+      rm $KUBECTL_FILE_NAME.sha256
       popd
       rmdir "$TMP"
     )
@@ -136,19 +136,19 @@ case "${PLATFORM}" in
     cosign version || (
       echo -e "${C_GREEN}cosign not found, installing...${C_RESET_ALL}"
       TMP=$(mktemp -d)
-      pushd ${TMP}
+      pushd $TMP
       curl -sLO "${COSIGN_RELEASE_URL}/${COSIGN_ASSET}"
       curl -sLO "${COSIGN_RELEASE_URL}/${COSIGN_ASSET}.sig"
       curl -sLO "${COSIGN_RELEASE_URL}/${COSIGN_CHECKSUMS}"
-      grep ${COSIGN_ASSET} ${COSIGN_CHECKSUMS} |grep -v sbom > ${CHECKSUM_FILE}
-      sha256sum -c ${CHECKSUM_FILE}
-      sudo install ${COSIGN_ASSET} ${INSTALL_DIR}/cosign
-      rm ${COSIGN_ASSET}
-      rm ${COSIGN_CHECKSUMS}
-      rm ${COSIGN_ASSET}.sig
-      rm ${CHECKSUM_FILE}
+      grep $COSIGN_ASSET $COSIGN_CHECKSUMS |grep -v sbom > $CHECKSUM_FILE
+      sha256sum -c $CHECKSUM_FILE
+      sudo install $COSIGN_ASSET $INSTALL_DIR/cosign
+      rm $COSIGN_ASSET
+      rm $COSIGN_CHECKSUMS
+      rm $COSIGN_ASSET.sig
+      rm $CHECKSUM_FILE
       popd
-      rmdir ${TMP}
+      rmdir $TMP
     )
 
     cue version || (

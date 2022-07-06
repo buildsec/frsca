@@ -24,7 +24,6 @@ kubectl -n tekton-pipelines delete pod -l app=tekton-pipelines-controller
 
 kubectl rollout status -n tekton-pipelines deployment/tekton-pipelines-controller
 
-
 # Setup the Dashboard.
 #   Use `kubectl proxy --port=8080` and then
 #   http://localhost:8080/api/v1/namespaces/tekton-pipelines/services/tekton-dashboard:http/proxy/

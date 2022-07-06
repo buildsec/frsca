@@ -1,9 +1,9 @@
 files:
-  - release_file: "https://storage.googleapis.com/tekton-releases/pipeline/previous/v0.35.1/release.yaml"
-    rekor_uuid: "de02942bd2a6ebca8c094b7e69d31ccbc38d528d37f1b18d2f008e3710779f10"
+  - release_file: "https://storage.googleapis.com/tekton-releases/pipeline/previous/v0.36.0/release.yaml"
+    rekor_uuid: "0c2001385a53e34162b7370fbe72fc99f464a8de78fb1d134e93e9bb99d076c2"
     validation_type: "rekor"
     destination_dir: "tekton/pipeline"
-    version: "v0.35.1"
+    version: "v0.36.0"
   - release_file: "https://storage.googleapis.com/tekton-releases/chains/previous/v0.9.0/release.yaml"
     rekor_uuid: "b634b3a883c0cb37805651f342b1778108fbed4cd7b02260180de83cb7994f89"
     validation_type: "rekor"

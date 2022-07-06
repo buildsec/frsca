@@ -1,4 +1,4 @@
 [
   {"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "--imagePullSecrets=regcred"},
-  {"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "--webhooktimeout=15"}
+  {"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "--webhookTimeout=15"}
 ]

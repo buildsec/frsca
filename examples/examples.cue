@@ -72,6 +72,9 @@ frsca: task: "grype-vulnerability-scan": {
 			description: "ignore matches for vulnerabilities that are not fixed (blank to disable)"
 			default: "--only-fixed"
 		}]
+		workspaces: [{
+			name: "config"
+		}]
 		stepTemplate: {
 			name: "PIPELINE_DEBUG"
 			env: [{
@@ -80,12 +83,24 @@ frsca: task: "grype-vulnerability-scan": {
 			}]
 		}
 		steps: [{
+			name: "grype-config"
+			image: "docker.io/library/bash"
+			script: """
+				cat <<EOF >$(workspaces.config.path)/.grype.yaml
+				ignore:
+				  - vulnerability: GHSA-x7f3-62pm-9p38
+				EOF
+
+				"""
+		}, {
 			args: [
 				"$(params.image-ref)@$(params.image-digest)",
 				"-v",
 				"$(params.only-fixed)",
 				"--fail-on",
 				"$(params.fail-on)",
+				"--config",
+				"$(workspaces.config.path)/.grype.yaml",
 			]
 			image: "anchore/grype:v0.35.0@sha256:857934a54874b7efe3d6964851ce54abb5a36d6200cdb62383990a5c7c8d748e"
 			name:  "grype-scanner"

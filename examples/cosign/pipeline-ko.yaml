@@ -74,3 +74,6 @@ spec:
           value: "$(tasks.build-with-ko.results.IMAGE_DIGEST)"
         - name: fail-on
           value: high
+      workspaces:
+        - name: config
+          workspace: source-ws

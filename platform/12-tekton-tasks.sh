@@ -5,7 +5,7 @@ GIT_ROOT=$(git rev-parse --show-toplevel)
 
 # Setup tekton tasks
 kubectl apply -f "${GIT_ROOT}"/platform/vendor/buildpacks/tekton-integration/main/task/buildpacks/0.4/buildpacks.yaml
-kubectl apply -f "${GIT_ROOT}"/platform/vendor/buildpacks/tekton-integration/main/task/buildpacks-phases/0.2/buildpacks-phases.yaml
+kubectl apply -f "${GIT_ROOT}"/platform/vendor/tekton/catalog/main/task/buildpacks-phases/0.2/buildpacks-phases.yaml
 kubectl apply -f "${GIT_ROOT}"/platform/vendor/tekton/catalog/main/task/git-clone/0.6/git-clone.yaml
 kubectl apply -f "${GIT_ROOT}"/platform/vendor/tekton/catalog/main/task/golang-build/0.3/golang-build.yaml
 kubectl apply -f "${GIT_ROOT}"/platform/vendor/tekton/catalog/main/task/golang-test/0.2/golang-test.yaml
@@ -15,7 +15,7 @@ kubectl apply -f "${GIT_ROOT}"/platform/vendor/tekton/catalog/main/task/maven/0.
 kubectl apply -f "${GIT_ROOT}"/platform/vendor/tekton/catalog/main/task/trivy-scanner/0.1/trivy-scanner.yaml
 
 # Setup tekton pipelines
-kubectl apply -f "${GIT_ROOT}"/platform/vendor/buildpacks/tekton-integration/main/pipeline/buildpacks/0.1/buildpacks.yaml
+kubectl apply -f "${GIT_ROOT}"/platform/vendor/tekton/catalog/main/pipeline/buildpacks/0.2/buildpacks.yaml
 
 # Patch tasks for built in CA
 kubectl patch Task buildpacks --patch-file "${GIT_ROOT}"/platform/components/tekton/tasks/patch_buildpacks.yml --type=json

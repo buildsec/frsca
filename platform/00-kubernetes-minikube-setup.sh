@@ -140,7 +140,7 @@ case "${PLATFORM}" in
       curl -sLO "${COSIGN_RELEASE_URL}/${COSIGN_ASSET}"
       curl -sLO "${COSIGN_RELEASE_URL}/${COSIGN_ASSET}.sig"
       curl -sLO "${COSIGN_RELEASE_URL}/${COSIGN_CHECKSUMS}"
-      grep "$COSIGN_ASSET $COSIGN_CHECKSUMS" |grep -v sbom > "$CHECKSUM_FILE"
+      grep "$COSIGN_ASSET" "$COSIGN_CHECKSUMS" |grep -v sbom > "$CHECKSUM_FILE"
       sha256sum -c "$CHECKSUM_FILE"
       sudo install "$COSIGN_ASSET" "$INSTALL_DIR"/cosign
       rm "$COSIGN_ASSET"
@@ -157,8 +157,8 @@ case "${PLATFORM}" in
       pushd "$TMP"
       curl -LO "${CUE_URL}/${CUE_FILE_NAME}"
       curl -LO "${CUE_URL}/${CUE_CHECKSUMS}"
-      grep ${CUE_FILE_NAME} ${CUE_CHECKSUMS} |grep -v sbom > ${CHECKSUM_FILE}
-      sha256sum -c "${CUE_CHECKSUMS}"
+      grep "$CUE_FILE_NAME" "$CUE_CHECKSUMS" |grep -v sbom > "$CHECKSUM_FILE"
+      sha256sum -c "$CUE_CHECKSUMS"
       tar -xzf $CUE_FILE_NAME
       sudo install cue $INSTALL_DIR/cue
       rm ${CUE_CHECKSUMS}

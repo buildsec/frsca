@@ -85,13 +85,13 @@ vault_exec read -format=json transit/keys/frsca \
 
 kubectl -n vault create configmap frsca-certs --from-file=frsca.pem="${GIT_ROOT}/platform/certs/frsca.pem" --dry-run=client -o=yaml | kubectl apply -f -
 
-COSIGN_KEY=$(kubectl get secret signing-secrets -n tekton-chains -o jsonpath='{.data.cosign\.key}' 2> /dev/null || true)
-if [ -n "${COSIGN_KEY}" ]; then
-  # remove signing-secrets if created by cosign
-  kubectl -n tekton-chains delete secret signing-secrets
+COSIGN_PUB=$(kubectl get secret signing-secrets -n tekton-chains -o jsonpath='{.data.cosign\.pub}' 2> /dev/null || true)
+if [ "${COSIGN_PUB}" != "$(cat "${GIT_ROOT}/platform/certs/frsca.pem")" ]; then
+  # remove existing secret in case it is immutable
+  kubectl -n tekton-chains delete secret signing-secrets || true
+  ( kubectl -n tekton-chains create secret generic signing-secrets \
+      --from-file=cosign.pub="${GIT_ROOT}/platform/certs/frsca.pem" \
+      --dry-run=client -o yaml
+    echo "immutable: true"
+  ) | kubectl apply -f -
 fi
-( kubectl -n tekton-chains create secret generic signing-secrets \
-    --from-file=cosign.pub="${GIT_ROOT}/platform/certs/frsca.pem" \
-    --dry-run=client -o yaml
-  echo "immutable: true"
-) | kubectl apply -f -

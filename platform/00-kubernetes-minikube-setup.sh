@@ -198,6 +198,3 @@ minikube docker-env
 
 # Manage default Ingress Controller.
 minikube addons enable ingress
-
-# Setup Minikube's registry.
-minikube addons enable registry

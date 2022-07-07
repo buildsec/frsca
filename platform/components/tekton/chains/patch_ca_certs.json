@@ -1,0 +1,55 @@
+{
+  "spec": {
+    "template": {
+      "spec": {
+        "$setElementOrder/containers": [
+          {
+            "name": "tekton-chains-controller"
+          }
+        ],
+        "$setElementOrder/volumes": [
+          {
+            "name": "signing-secrets"
+          },
+          {
+            "name": "oidc-info"
+          },
+          {
+            "name": "ca-certs"
+          }
+        ],
+        "containers": [
+          {
+            "$setElementOrder/volumeMounts": [
+              {
+                "mountPath": "/etc/signing-secrets"
+              },
+              {
+                "mountPath": "/var/run/sigstore/cosign"
+              },
+              {
+                "mountPath": "/etc/ssl/certs/"
+              }
+            ],
+            "name": "tekton-chains-controller",
+            "volumeMounts": [
+              {
+                "mountPath": "/etc/ssl/certs/",
+                "name": "ca-certs",
+                "readOnly": true
+              }
+            ]
+          }
+        ],
+        "volumes": [
+          {
+            "configMap": {
+              "name": "ca-certs"
+            },
+            "name": "ca-certs"
+          }
+        ]
+      }
+    }
+  }
+}

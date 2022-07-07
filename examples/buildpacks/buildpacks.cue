@@ -30,9 +30,6 @@ frsca: pipelineRun: "cache-image-pipelinerun-": spec: {
 	}, {
 		name:  "CACHE_IMAGE"
 		value: _CACHE_IMAGE
-	}, {
-		name: "ENV_VARS"
-		value: [""]
 	}]
 	workspaces: [{
 		name:    "source-ws"

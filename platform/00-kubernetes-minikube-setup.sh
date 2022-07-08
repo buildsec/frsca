@@ -158,7 +158,7 @@ case "${PLATFORM}" in
       curl -LO "${CUE_URL}/${CUE_FILE_NAME}"
       curl -LO "${CUE_URL}/${CUE_CHECKSUMS}"
       grep "$CUE_FILE_NAME" "$CUE_CHECKSUMS" |grep -v sbom > "$CHECKSUM_FILE"
-      sha256sum -c "$CUE_CHECKSUMS"
+      sha256sum -c "$CHECKSUM_FILE"
       tar -xzf $CUE_FILE_NAME
       sudo install cue $INSTALL_DIR/cue
       rm ${CUE_CHECKSUMS}

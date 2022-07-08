@@ -1,7 +1,7 @@
 apiVersion: cilium.io/v1alpha1
 kind: TracingPolicy
 metadata:
-  name: "sys-read-follow-prefix"
+  name: "disallow-trufflehog"
 spec:
   kprobes:
   - call: "fd_install"
@@ -13,21 +13,13 @@ spec:
     - index: 1
       type: "file"
     selectors:
-    - matchPIDs:
-      - operator: NotIn
-        followForks: true
-        isNamespacePID: true 
-        values:
-        - 1
-      matchArgs:
+    - matchArgs:
       - index: 1
         operator: "Prefix"
         values:
-        - "/etc/"
+        - "/usr/bin/trufflehog"
       matchActions:
-      - action: FollowFD
-        argFd: 0
-        argName: 1
+      - action: Sigkill
   - call: "__x64_sys_close"
     syscall: true
     args:
@@ -48,6 +40,9 @@ spec:
       returnCopy: true
     - index: 2
       type: "size_t"
+    selectors:
+    - matchActions:
+      - action: Sigkill
   - call: "__x64_sys_write"
     syscall: true
     args:

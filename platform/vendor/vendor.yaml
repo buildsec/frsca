@@ -63,11 +63,4 @@ files:
     destination_dir: "cert-manager/release"
     sha256: "517b57b60e37288ced462bb541f3f5dabb53f59f40c262387403862985b01ae8"
     validation_type: "sha256"
-  - release_file: "https://raw.githubusercontent.com/cilium/tetragon/v0.8.0/crds/examples/sys_write_follow_fd_prefix.yaml"
-    destination_dir: "tetragon/tracingpolicy/v0.8.0"
-    sha256: "21d1f7578e53c7aecee2ace07058ea099cc30def344fa0b3d0306f4a4aba5e02"
-    validation_type: "sha256"
-  - release_file: "https://raw.githubusercontent.com/cilium/tetragon/v0.8.0/crds/examples/tcp-connect.yaml"
-    destination_dir: "tetragon/tracingpolicy/v0.8.0"
-    sha256: "850a0354972aafc103cef43043a4088a1367c69fe05c4101c5c3e72b61dc4a45"
-    validation_type: "sha256"
+    

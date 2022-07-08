@@ -73,6 +73,14 @@ jobs:
           tkn tr describe --last -o json | jq -r '.metadata.annotations["chains.tekton.dev/signed"]'
           cosign verify --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
           cosign verify-attestation --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
+      - name: Run trufflehog pipeline
+        run: |
+          make example-trufflehog
+          tkn pr logs --last -f
+          if [ "$(tkn pr describe --last -o jsonpath='{.status.conditions[?(@.type == "Succeeded")].status}')" != "True" ]; then
+            tkn pr describe --last
+            exit 1
+          fi
       - name: Run sample pipeline to test kyverno
         run: |
           make example-sample-pipeline

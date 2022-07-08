@@ -114,6 +114,10 @@ example-sample-pipeline: ## Run the sample-pipeline example
 example-ibm-tutorial: ## Run the IBM pipeline example
 	bash examples/ibm-tutorial/ibm-tutorial.sh
 
+.PHONY: example-trufflehog
+example-trufflehog: ## Run the bad-truffelhog pipeline example
+	bash examples/trufflehog/bad-trufflehog.sh
+
 .PHONY: docs-setup
 docs-setup: ## Install the tool to build the documentation
 	bash docs/bootstrap.sh

@@ -63,4 +63,3 @@ files:
     destination_dir: "cert-manager/release"
     sha256: "517b57b60e37288ced462bb541f3f5dabb53f59f40c262387403862985b01ae8"
     validation_type: "sha256"
-    

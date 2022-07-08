@@ -1,0 +1,33 @@
+apiVersion: cilium.io/v1alpha1
+kind: TracingPolicy
+metadata:
+  name: "disallow-shell"
+spec:
+  kprobes:
+  - call: "proc_exec_connector"
+    syscall: false
+    args:
+      - index: 0
+        type: "nop"
+    selectors:
+    - matchPIDs:
+      # match only pod pids (AND)
+      - operator: NotIn
+        isNamespacePID: true
+        values:
+        - 0
+        - 1
+      matchBinaries:
+      - operator: "In"
+        values:
+        - "/bin/bash"
+        - "/bin/sh"
+        #- "/bin/ash"
+        #- "/bin/csh"
+        #- "/bin/ksh"
+        #- "/bin/tcsh"
+        #- "/bin/zsh"
+        #- "/bin/dash"
+      matchActions:
+      - action: Sigkill
+        argError: -1

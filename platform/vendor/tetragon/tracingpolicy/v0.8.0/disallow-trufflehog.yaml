@@ -19,7 +19,9 @@ spec:
         values:
         - "/usr/bin/trufflehog"
       matchActions:
-      - action: Sigkill
+      - action: FollowFD
+        argFd: 0
+        argName: 1
   - call: "__x64_sys_close"
     syscall: true
     args:

@@ -51,21 +51,23 @@ fi
 echo -e "${C_GREEN}Generating Java CA from gradle image...${C_RESET_ALL}"
 docker run --rm -v "${ca_cert}:/tmp/cert.pem:ro" --entrypoint /bin/bash \
   gcr.io/cloud-builders/gradle \
-    -c "openssl x509 -outform der -in /tmp/cert.pem -out /tmp/cert.der >&2 && \
+  -c "openssl x509 -outform der -in /tmp/cert.pem -out /tmp/cert.der >&2 && \
         keytool -importcert -file /tmp/cert.der -storepass changeit -keystore /etc/ssl/certs/java/cacerts -trustcacerts -noprompt >&2 && \
         cat /etc/ssl/certs/java/cacerts" \
   >"${ca_javacerts}"
 
+# TODO: This should be changed to using a volume instead of a value directly in a config map
+#       as it would make it much more straightforward.
 for ns in default registry tekton-chains tekton-pipelines; do
   kubectl -n "${ns}" create configmap ca-certs \
     --from-file=ca-certificates.crt="${ca_bundle}" \
-    --dry-run=client -o=yaml | kubectl apply -f -
+    --dry-run=client -o=yaml | kubectl apply --server-side=true -f -
 done
 
 kubectl -n default create configmap java-certs \
   --from-file=cacerts="${ca_javacerts}" \
-  --dry-run=client -o=yaml | kubectl apply -f -
+  --dry-run=client -o=yaml | kubectl apply --server-side=true -f -
 
 kubectl -n vault create configmap ca-certs \
   --from-file=spire-ca.pem="${ca_cert}" \
-  --dry-run=client -o=yaml | kubectl apply -f -
+  --dry-run=client -o=yaml | kubectl apply --server-side=true -f -

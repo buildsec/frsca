@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -exuo pipefail
 
 GIT_ROOT=$(git rev-parse --show-toplevel)

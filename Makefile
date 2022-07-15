@@ -5,7 +5,7 @@ PROJECT_NAME = frsca
 TAG ?= 10m	# This is the TTL for the ttl.sh registry
 
 # General.
-SHELL = /bin/bash
+SHELL = /usr/bin/env bash
 TOPDIR = $(shell git rev-parse --show-toplevel)
 
 # Docker.

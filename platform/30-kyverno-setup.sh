@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -euo pipefail
 
 if kubectl -n vault get configmap frsca-certs >/dev/null 2>&1; then

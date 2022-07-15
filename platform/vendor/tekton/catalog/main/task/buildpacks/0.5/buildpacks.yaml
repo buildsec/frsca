@@ -4,7 +4,7 @@ kind: Task
 metadata:
   name: buildpacks
   labels:
-    app.kubernetes.io/version: "0.4"
+    app.kubernetes.io/version: "0.5"
   annotations:
     tekton.dev/categories: Image Build
     tekton.dev/pipelines.minVersion: "0.17.0"
@@ -21,6 +21,12 @@ spec:
       description: Directory where application source is located.
     - name: cache
       description: Directory where cache is stored (when no cache image is provided).
+      optional: true
+    - name: dockerconfig
+      description: >-
+        An optional workspace that allows providing a .docker/config.json file
+        for Buildpacks lifecycle binary to access the container registry.
+        The file should be placed at the root of the Workspace with name config.json.
       optional: true
 
   params:
@@ -86,6 +92,10 @@ spec:
         for path in "/tekton/home" "/layers" "$(workspaces.source.path)"; do
           echo "> Setting permissions on '$path'..."
           chown -R "$(params.USER_ID):$(params.GROUP_ID)" "$path"
+
+          if [[ "$path" == "$(workspaces.source.path)" ]]; then
+              chmod 775 "$(workspaces.source.path)"
+          fi
         done
 
         echo "> Parsing additional configuration..."
@@ -119,13 +129,14 @@ spec:
           mountPath: /layers
         - name: $(params.PLATFORM_DIR)
           mountPath: /platform
-      securityContext:
-        privileged: true
 
     - name: create
       image: $(params.BUILDER_IMAGE)
       imagePullPolicy: Always
       command: ["/cnb/lifecycle/creator"]
+      env:
+        - name: DOCKER_CONFIG
+          value: $(workspaces.dockerconfig.path)
       args:
         - "-app=$(workspaces.source.path)/$(params.SOURCE_SUBPATH)"
         - "-cache-dir=$(workspaces.cache.path)"
@@ -155,10 +166,7 @@ spec:
         #!/usr/bin/env bash
         set -e
         grep "digest" /layers/report.toml | cut -d'"' -f2 | cut -d'"' -f2 | tr -d '\n' | tee "$(results.APP_IMAGE_DIGEST.path)"
-
-        # Disable shellcheck here since $() is use for variable substitution and not command execution.
-        # shellcheck disable=SC2005
-        echo "$(params.APP_IMAGE)" | tee "$(results.APP_IMAGE_URL.path)"
+        echo -n "$(params.APP_IMAGE)" | tee "$(results.APP_IMAGE_URL.path)"
       volumeMounts:
         - name: layers-dir
           mountPath: /layers

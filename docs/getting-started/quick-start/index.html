@@ -269,9 +269,9 @@
   											
   											<li><a href="https://buildsec.github.io/frsca/docs/getting-started/quick-start/#step-1-start-your-cluster-optional">Step 1: start your cluster (optional)</a></li>
   											
-  											<li><a href="https://buildsec.github.io/frsca/docs/getting-started/quick-start/#step-2-prepare-minikube-registry-optional">Step 2: prepare minikube registry (optional)</a></li>
+  											<li><a href="https://buildsec.github.io/frsca/docs/getting-started/quick-start/#step-2-setup-frsca">Step 2: setup frsca</a></li>
   											
-  											<li><a href="https://buildsec.github.io/frsca/docs/getting-started/quick-start/#step-3-setup-tekton-w-chains">Step 3: setup tekton w&#x2F; chains</a></li>
+  											<li><a href="https://buildsec.github.io/frsca/docs/getting-started/quick-start/#step-3-prepare-minikube-registry-optional">Step 3: prepare minikube registry (optional)</a></li>
   											
   											<li><a href="https://buildsec.github.io/frsca/docs/getting-started/quick-start/#step-4-run-a-new-pipeline">Step 4: run a new pipeline</a></li>
   											
@@ -298,17 +298,18 @@ detected, but for information they are listed on the introduction page.</p>
 provision and configure <code>minikube</code>:</p>
 <pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">make</span><span> setup-minikube
 </span></code></pre>
-<h3 id="step-2-prepare-minikube-registry-optional">Step 2: prepare minikube registry (optional)</h3>
+<h3 id="step-2-setup-frsca">Step 2: setup frsca</h3>
+<p>[Tekton Pipelines] and [Tekton Chains] are the foundations of the secure
+software factory. This example sets up local certificates and local registry.</p>
+<p>The next command will deploy and configure them:</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">make</span><span> setup-frsca
+</span></code></pre>
+<h3 id="step-3-prepare-minikube-registry-optional">Step 3: prepare minikube registry (optional)</h3>
 <p>The examples use the <a href="https://ttl.sh">ttl.sh</a> registry to upload images by
 default. It is possible to change it to any registry of your choice.</p>
 <p>You may also use the registry addon coming with <code>minikube</code>. To do so, open a
 separate terminal and run the following command to enable port forwarding:</p>
 <pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">make</span><span> registry-proxy
-</span></code></pre>
-<h3 id="step-3-setup-tekton-w-chains">Step 3: setup tekton w/ chains</h3>
-<p>[Tekton Pipelines] and [Tekton Chains] are the foundations of the secure
-software factory. The next command will deploy and configure them:</p>
-<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">make</span><span> setup-certs setup-tekton-chains setup-spire setup-vault
 </span></code></pre>
 <h3 id="step-4-run-a-new-pipeline">Step 4: run a new pipeline</h3>
 <p>Several pipelines are provided as examples, feel free to choose any of them.</p>

@@ -168,6 +168,15 @@ case "${PLATFORM}" in
       popd
       rmdir "$TMP"
     )
+    
+    jq --version ||(
+      echo -e "${C_GREEN}jq not found, installing...${C_RESET_ALL}" 
+      TMP=$(mktemp -d)
+      pushd "$TMP"
+      sudo apt install -y jq 
+      popd
+      rmdir "$TMP"
+    )
     ;;
 
   *)

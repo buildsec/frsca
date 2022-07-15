@@ -30,7 +30,18 @@ provision and configure `minikube`:
 make setup-minikube
 ```
 
-### Step 2: prepare minikube registry (optional)
+### Step 2: setup frsca
+
+[Tekton Pipelines] and [Tekton Chains] are the foundations of the secure
+software factory. This example sets up local certificates and local registry.
+
+The next command will deploy and configure them:
+
+```bash
+make setup-frsca
+```
+
+### Step 3: prepare minikube registry (optional)
 
 The examples use the [ttl.sh](https://ttl.sh) registry to upload images by
 default. It is possible to change it to any registry of your choice.
@@ -40,15 +51,6 @@ separate terminal and run the following command to enable port forwarding:
 
 ```bash
 make registry-proxy
-```
-
-### Step 3: setup tekton w/ chains
-
-[Tekton Pipelines] and [Tekton Chains] are the foundations of the secure
-software factory. The next command will deploy and configure them:
-
-```bash
-make setup-certs setup-tekton-chains setup-spire setup-vault
 ```
 
 ### Step 4: run a new pipeline

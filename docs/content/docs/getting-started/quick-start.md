@@ -29,6 +29,7 @@ provision and configure `minikube`:
 ```bash
 make setup-minikube
 ```
+
 ### Step 2: setup frsca
 
 [Tekton Pipelines] and [Tekton Chains] are the foundations of the secure

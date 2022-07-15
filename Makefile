@@ -110,13 +110,9 @@ example-sample-pipeline: ## Run the sample-pipeline example
 example-ibm-tutorial: ## Run the IBM pipeline example
 	bash examples/ibm-tutorial/ibm-tutorial.sh
 
-.PHONY: docs-setup
-docs-setup: ## Install the tool to build the documentation
-	bash docs/bootstrap.sh
-
 .PHONY: docs-serve
 docs-serve: ## Serve the site locally with hot-reloading
-	cd docs && zola serve
+	bash docs/serve.sh
 
 .PHONY: docs-build
 docs-build: ## Build the documentation site

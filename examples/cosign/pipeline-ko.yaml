@@ -17,6 +17,7 @@ spec:
   workspaces:
     - name: source-ws
       description: Location where source is stored.
+    - name: grype-config
 
   params:
     - name: APP_IMAGE
@@ -74,3 +75,6 @@ spec:
           value: "$(tasks.build-with-ko.results.IMAGE_DIGEST)"
         - name: fail-on
           value: high
+      workspaces:
+        - name: grype-config
+          workspace: grype-config

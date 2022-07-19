@@ -116,7 +116,7 @@ docs-setup: ## Install the tool to build the documentation
 
 .PHONY: docs-serve
 docs-serve: ## Serve the site locally with hot-reloading
-	cd docs && zola serve
+	bash docs/serve.sh
 
 .PHONY: docs-build
 docs-build: ## Build the documentation site

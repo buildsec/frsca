@@ -173,7 +173,17 @@ case "${PLATFORM}" in
       echo -e "${C_GREEN}jq not found, installing...${C_RESET_ALL}" 
       TMP=$(mktemp -d)
       pushd "$TMP"
-      sudo apt install -y jq 
+      
+      cat=$(cat /etc/*release |grep -iE ^name)
+      if [[ $cat = 'NAME="CentOS Linux"' ]]
+      then
+      sudo yum install jq -y
+      elif [[ $cat = 'NAME="Ubuntu"' ]]
+      then
+      sudo apt-get install jq -y
+      else
+      sudo dnf install jq -y
+      fi
       popd
       rmdir "$TMP"
     )

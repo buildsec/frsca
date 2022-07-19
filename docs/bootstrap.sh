@@ -17,9 +17,12 @@ case "${PLATFORM}" in
     zola --version || brew install zola
   ;;
 
+  Linux|Windows*)
+    echo -e "${C_GREEN}Skipping zola install: the ${PLATFORM} platform will run zola using docker.${C_RESET_ALL}"
+    ;;
+
   *)
     echo -e "${C_RED}The ${PLATFORM} platform is unimplemented or unsupported.${C_RESET_ALL}"
     exit 1
     ;;
-
 esac

@@ -22,6 +22,11 @@ frsca: pipelineRun: "ko-pipelinerun-": spec: {
 		name:    "source-ws"
 		subPath: "source"
 	}, {
+		name: "grype-config",
+		configMap: {
+			name: "grype-config-map"
+		}
+	}, {
 		// NOTE: Pipeline hangs if optional cache workspace is missing so we provide an empty directory
 		name: "cache-ws"
 		emptyDir: {}

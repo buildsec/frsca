@@ -41,13 +41,21 @@ The next command will deploy and configure them:
 make setup-frsca
 ```
 
-### Step 3: prepare minikube registry (optional)
+### Step 3: use local registry (optional)
 
 The examples use the [ttl.sh](https://ttl.sh) registry to upload images by
-default. It is possible to change it to any registry of your choice.
+default. It is possible to change it to another registry of your choice by
+exporting the `$REGISTRY` variable.
 
-You may also use the registry addon coming with `minikube`. To do so, open a
-separate terminal and run the following command to enable port forwarding:
+You may also use the local registry deployed inside the cluster. This requires
+setting the variable to `registry.registry`:
+
+```bash
+export REGISTRY=registry.registry
+```
+
+Then to access the registry outside of minikube, open a separate terminal and
+run the following command to enable port forwarding:
 
 ```bash
 make registry-proxy
@@ -79,10 +87,6 @@ tkn pr logs --last -f
 
 ### Step 5: validations
 
-> **_NOTE:_** The following assumes you are running a local registry proxy (i.e.
-> `make registry-proxy`). It also assumes you have run the IBM tutorial example
-> (i.e. `make example-ibm-tutorial`).
-
 #### First some convenience exports
 
 We start by defining some variables to simplify the validation commands:
@@ -90,6 +94,13 @@ We start by defining some variables to simplify the validation commands:
 ```bash
 export IMAGE_URL=$(tkn pr describe --last -o jsonpath='{..taskResults}' | jq -r '.[] | select(.name | match("IMAGE_URL$")) | .value')
 export TASK_RUN=$(tkn pr describe --last -o json | jq -r '.status.taskRuns | keys[] as $k | {"k": $k, "v": .[$k]} | select(.v.status.taskResults[]?.name | match("IMAGE_URL$")) | .k')
+```
+
+If you are using the local registry, you will also need to change the registry
+name to the port exposed by the registry proxy:
+
+```bash
+export IMAGE_URL="$(echo "${IMAGE_URL}" | sed 's#'${REGISTRY}'#127.0.0.1:5000#')"
 ```
 
 #### Ensure the task has been signed

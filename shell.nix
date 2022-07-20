@@ -2,6 +2,9 @@
 with pkgs;
 mkShell {
   buildInputs = [
+    bash
+    git
+    curl
     gnumake
     minikube
     kubectl

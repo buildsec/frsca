@@ -304,7 +304,7 @@ been done in the <code>examples/...</code> directories. In the case of <code>exa
 examples. Of particular note is a comprehension that creates a persistent volume
 claim (PVC) for each pipeline run. A reference to the PVC is added to the
 pipeline run definition by default.</p>
-<pre data-lang="text" style="background-color:#2b303b;color:#c0c5ce;" class="language-text "><code class="language-text" data-lang="text"><span>// generate a PVC for each pipelineRun
+<pre data-lang="txt" style="background-color:#2b303b;color:#c0c5ce;" class="language-txt "><code class="language-txt" data-lang="txt"><span>// generate a PVC for each pipelineRun
 </span><span>persistentVolumeClaim: {
 </span><span> for pr in pipelineRun {
 </span><span>  &quot;\(pr.metadata.generateName)source-ws-pvc&quot;: spec: {

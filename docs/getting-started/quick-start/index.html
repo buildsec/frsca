@@ -271,7 +271,7 @@
   											
   											<li><a href="https://buildsec.github.io/frsca/docs/getting-started/quick-start/#step-2-setup-frsca">Step 2: setup frsca</a></li>
   											
-  											<li><a href="https://buildsec.github.io/frsca/docs/getting-started/quick-start/#step-3-prepare-minikube-registry-optional">Step 3: prepare minikube registry (optional)</a></li>
+  											<li><a href="https://buildsec.github.io/frsca/docs/getting-started/quick-start/#step-3-use-local-registry-optional">Step 3: use local registry (optional)</a></li>
   											
   											<li><a href="https://buildsec.github.io/frsca/docs/getting-started/quick-start/#step-4-run-a-new-pipeline">Step 4: run a new pipeline</a></li>
   											
@@ -304,11 +304,16 @@ software factory. This example sets up local certificates and local registry.</p
 <p>The next command will deploy and configure them:</p>
 <pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">make</span><span> setup-frsca
 </span></code></pre>
-<h3 id="step-3-prepare-minikube-registry-optional">Step 3: prepare minikube registry (optional)</h3>
+<h3 id="step-3-use-local-registry-optional">Step 3: use local registry (optional)</h3>
 <p>The examples use the <a href="https://ttl.sh">ttl.sh</a> registry to upload images by
-default. It is possible to change it to any registry of your choice.</p>
-<p>You may also use the registry addon coming with <code>minikube</code>. To do so, open a
-separate terminal and run the following command to enable port forwarding:</p>
+default. It is possible to change it to another registry of your choice by
+exporting the <code>$REGISTRY</code> variable.</p>
+<p>You may also use the local registry deployed inside the cluster. This requires
+setting the variable to <code>registry.registry</code>:</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#b48ead;">export </span><span style="color:#bf616a;">REGISTRY</span><span>=</span><span style="color:#a3be8c;">registry.registry
+</span></code></pre>
+<p>Then to access the registry outside of minikube, open a separate terminal and
+run the following command to enable port forwarding:</p>
 <pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">make</span><span> registry-proxy
 </span></code></pre>
 <h3 id="step-4-run-a-new-pipeline">Step 4: run a new pipeline</h3>
@@ -325,15 +330,14 @@ next steps. The logs can be displayed with:</p>
 <pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">tkn</span><span> pr logs</span><span style="color:#bf616a;"> --last -f
 </span></code></pre>
 <h3 id="step-5-validations">Step 5: validations</h3>
-<blockquote>
-<p><strong><em>NOTE:</em></strong> The following assumes you are running a local registry proxy (i.e.
-<code>make registry-proxy</code>). It also assumes you have run the IBM tutorial example
-(i.e. <code>make example-ibm-tutorial</code>).</p>
-</blockquote>
 <h4 id="first-some-convenience-exports">First some convenience exports</h4>
 <p>We start by defining some variables to simplify the validation commands:</p>
 <pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#b48ead;">export </span><span style="color:#bf616a;">IMAGE_URL</span><span>=$</span><span style="color:#a3be8c;">(</span><span style="color:#bf616a;">tkn</span><span style="color:#a3be8c;"> pr describe</span><span style="color:#bf616a;"> --last -o</span><span style="color:#a3be8c;"> jsonpath=</span><span>&#39;</span><span style="color:#a3be8c;">{..taskResults}</span><span>&#39; | </span><span style="color:#bf616a;">jq -r </span><span>&#39;</span><span style="color:#a3be8c;">.[] | select(.name | match(&quot;IMAGE_URL$&quot;)) | .value</span><span>&#39;</span><span style="color:#a3be8c;">)
 </span><span style="color:#b48ead;">export </span><span style="color:#bf616a;">TASK_RUN</span><span>=$</span><span style="color:#a3be8c;">(</span><span style="color:#bf616a;">tkn</span><span style="color:#a3be8c;"> pr describe</span><span style="color:#bf616a;"> --last -o</span><span style="color:#a3be8c;"> json </span><span>| </span><span style="color:#bf616a;">jq -r </span><span>&#39;</span><span style="color:#a3be8c;">.status.taskRuns | keys[] as $k | {&quot;k&quot;: $k, &quot;v&quot;: .[$k]} | select(.v.status.taskResults[]?.name | match(&quot;IMAGE_URL$&quot;)) | .k</span><span>&#39;</span><span style="color:#a3be8c;">)
+</span></code></pre>
+<p>If you are using the local registry, you will also need to change the registry
+name to the port exposed by the registry proxy:</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#b48ead;">export </span><span style="color:#bf616a;">IMAGE_URL</span><span>=&quot;$</span><span style="color:#a3be8c;">(</span><span style="color:#96b5b4;">echo </span><span>&quot;$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">IMAGE_URL</span><span style="color:#a3be8c;">}</span><span>&quot; | </span><span style="color:#bf616a;">sed </span><span>&#39;</span><span style="color:#a3be8c;">s#</span><span>&#39;$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">REGISTRY</span><span style="color:#a3be8c;">}</span><span>&#39;</span><span style="color:#a3be8c;">#127.0.0.1:5000#</span><span>&#39;</span><span style="color:#a3be8c;">)</span><span>&quot;
 </span></code></pre>
 <h4 id="ensure-the-task-has-been-signed">Ensure the task has been signed</h4>
 <pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">tkn</span><span> tr describe</span><span style="color:#bf616a;"> --last -o</span><span> jsonpath=&#39;</span><span style="color:#a3be8c;">{.metadata.annotations.chains\.tekton\.dev/signed}</span><span>&#39;

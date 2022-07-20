@@ -44,7 +44,7 @@ examples. Of particular note is a comprehension that creates a persistent volume
 claim (PVC) for each pipeline run. A reference to the PVC is added to the
 pipeline run definition by default.
 
-```text
+```txt
 // generate a PVC for each pipelineRun
 persistentVolumeClaim: {
  for pr in pipelineRun {

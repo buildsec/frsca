@@ -178,16 +178,16 @@ case "${PLATFORM}" in
         sudo yum install jq -y
       elif [[ $cat = 'NAME="Ubuntu"' ]]
       then
-        sudo apt-get install jq -
-      elif [[ $cat = 'NAME="RHEL7"' ]]
+        sudo apt-get install jq -y
+      elif [[ $cat =~ .*?Red.Hat.*?$ ]]
       then
         sudo yum install jq -y
       else
-        sudo dnf install jq -y
+        sudo dnf install jq -y ||  { echo "jq not installed and cannot be automatically install, please action manually"; exit 1; }
       fi
     )
     ;;
-
+     
   *)
     echo -e "${C_RED}The ${PLATFORM} platform is unimplemented or unsupported.${C_RESET_ALL}"
     exit 1

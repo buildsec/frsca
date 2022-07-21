@@ -1,0 +1,55 @@
+apiVersion: cilium.io/v1alpha1
+kind: TracingPolicy
+metadata:
+  name: "disallow-trufflehog"
+spec:
+  kprobes:
+  - call: "fd_install"
+    syscall: false
+    return: false
+    args:
+    - index: 0
+      type: int
+    - index: 1
+      type: "file"
+    selectors:
+    - matchArgs:
+      - index: 1
+        operator: "Prefix"
+        values:
+        - "/usr/bin/trufflehog"
+      matchActions:
+      - action: Sigkill
+  - call: "__x64_sys_close"
+    syscall: true
+    args:
+    - index: 0
+      type: "int"
+    selectors:
+    - matchActions:
+      - action: UnfollowFD
+        argFd: 0
+        argName: 0
+  - call: "__x64_sys_read"
+    syscall: true
+    args:
+    - index: 0
+      type: "fd"
+    - index: 1
+      type: "char_buf"
+      returnCopy: true
+    - index: 2
+      type: "size_t"
+    selectors:
+    - matchActions:
+      - action: Sigkill
+  - call: "__x64_sys_write"
+    syscall: true
+    args:
+    - index: 0
+      type: "fd"
+    - index: 1
+      type: "char_buf"
+      sizeArgIndex: 3
+    - index: 2
+      type: "size_t"

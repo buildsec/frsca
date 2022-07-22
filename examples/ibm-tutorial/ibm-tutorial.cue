@@ -73,7 +73,7 @@ frsca: pipelineRun: "picalc-pr-": spec: {
 	pipelineRef: name: "build-and-deploy-pipeline"
 	params: [{
 		name:  "gitUrl"
-		value: "https://github.com/IBM/tekton-tutorial"
+		value: "https://github.com/buildsec/example-ibm-tutorial"
 	}, {
 		name:  "gitRevision"
 		value: "beta-update"

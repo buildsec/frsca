@@ -21,7 +21,7 @@ frsca: pipeline: "pipeline-go-test": spec: {
 	}, {
 		name:    "package"
 		type:    "string"
-		default: "https://github.com/chmouel/go-rest-api-test"
+		default: "https://github.com/buildsec/example-golang"
 	}]
 	results: [{
 		name:        "commit-sha"

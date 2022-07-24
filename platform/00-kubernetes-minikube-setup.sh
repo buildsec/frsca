@@ -172,18 +172,15 @@ case "${PLATFORM}" in
     jq --version ||(
       echo -e "${C_GREEN}jq not found, installing...${C_RESET_ALL}" 
       
-      cat=$(cat /etc/*release |grep -iE ^name)
-      if [[ $cat = 'NAME="CentOS Linux"' ]]
-      then
-        sudo yum install jq -y
-      elif [[ $cat = 'NAME="Ubuntu"' ]]
-      then
-        sudo apt-get install jq -y
-      elif [[ $cat =~ .*?Red.Hat.*?$ ]]
-      then
-        sudo yum install jq -y
-      else
-        sudo dnf install jq -y ||  { echo "jq not installed and cannot be automatically install, please action manually"; exit 1; }
+      if [ -x "$(command -v dnf)" ]; then
+        sudo dnf install -y jq
+      elif [ -x "$(command -v yum)" ]; then
+        sudo yum install -y jq
+      elif [ -x "$(command -v apt-get)" ]; then
+        sudo apt-get install -y jq
+      else 
+        echo -e "${C_RED}jq cannot be automatically installed, please install it manually${C_RESET_ALL}"
+        exit 1
       fi
     )
     ;;

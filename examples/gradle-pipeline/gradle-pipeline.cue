@@ -21,7 +21,7 @@ frsca: pipeline: "pipeline-gradle-test": spec: {
 	}, {
 		name:    "package"
 		type:    "string"
-		default: "https://github.com/che-samples/console-java-simple"
+		default: "https://github.com/buildsec/example-gradle"
 	}]
 	results: [{
 		name:        "commit-sha"

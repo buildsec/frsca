@@ -1,9 +1,125 @@
 ---
 apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: cosign-upload-blob
+spec:
+  workspaces:
+    - name: cosign-ws
+      description: workspace
+  params:
+    - name: image
+      description: The image URI where the artifact will be uploaded
+    - name: artifact
+      description: Relative path in the workspace of the artifact to be uploaded
+  results:
+    - name: IMAGE_URL
+      description: image url
+    - name: IMAGE_DIGEST
+      description: image digest
+  steps:
+    - name: upload
+      image: gcr.io/projectsigstore/cosign:v1.8.0@sha256:12b4d428529654c95a7550a936cbb5c6fe93a046ea7454676cb6fb0ce566d78c
+      workingDir: $(workspaces.cosign-ws.path)
+      args:
+        - upload
+        - blob
+        - -f
+        - $(params.artifact)
+        - --output-file
+        - out.txt
+        - $(params.image)
+      volumeMounts:
+        - mountPath: /etc/ssl/certs/ca-certificates.crt
+          name: ca-certs
+          subPath: ca-certificates.crt
+          readOnly: true
+    - name: url-digest
+      image: docker.io/library/bash
+      workingDir: $(workspaces.cosign-ws.path)
+      script: |
+        echo -n "$(params.image)" | tr -d '[:space:]' | tee $(results.IMAGE_URL.path)
+        echo -n '@'
+        cat out.txt | sed -e 's/.*@//' | tr -d '[:space:]' | tee $(results.IMAGE_DIGEST.path)
+  volumes:
+    - configMap:
+        name: ca-certs
+      name: ca-certs
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: cosign-attach-sbom
+spec:
+  workspaces:
+    - name: cosign-ws
+      description: workspace
+  params:
+    - name: image
+      description: The image URI to which the SBOM will be attached
+    - name: sbom
+      description: Relative path in the workspace of the SBOM to be attached
+    - name: type
+      description: The type of SBOM (spdx|cyclonedx|syft)
+      default: spdx
+  results:
+    - name: IMAGE_URL
+      description: image url
+    - name: IMAGE_DIGEST
+      description: image digest
+  steps:
+    - name: attach
+      image: gcr.io/projectsigstore/cosign:v1.8.0@sha256:12b4d428529654c95a7550a936cbb5c6fe93a046ea7454676cb6fb0ce566d78c
+      workingDir: $(workspaces.cosign-ws.path)
+      args:
+        - attach
+        - sbom
+        - --sbom
+        - $(params.sbom)
+        - --type
+        - $(params.type)
+        - $(params.image)
+      volumeMounts:
+        - mountPath: /etc/ssl/certs/ca-certificates.crt
+          name: ca-certs
+          subPath: ca-certificates.crt
+          readOnly: true
+    - name: results
+      image: regclient/regctl:alpine
+      workingDir: $(workspaces.cosign-ws.path)
+      script: |
+        imageBase=`echo -n "$(params.image)" | sed 's|:[^/]*$||')`
+        imageDigest=`regctl image digest "$(params.image)" | tr ':' '-'`
+        sbomImage="${imageBase}:${imageDigest}.sbom"
+        sbomDigest=`regctl image digest "${sbomImage}"`
+        echo -n "${sbomImage}" | tr -d '[:space:]' | tee $(results.IMAGE_URL.path)
+        echo -n '@'
+        echo -n "${sbomDigest}" | tr -d '[:space:]' | tee $(results.IMAGE_DIGEST.path)
+      volumeMounts:
+        - mountPath: /etc/ssl/certs/ca-certificates.crt
+          name: ca-certs
+          subPath: ca-certificates.crt
+          readOnly: true
+  volumes:
+    - configMap:
+        name: ca-certs
+      name: ca-certs
+---
+apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
   name: maven-test-pipeline
 spec:
+  params:
+    - name: APP_IMAGE
+      description: The name of where to store the app image.
+      default: ""
+    - name: SOURCE_URL
+      description: A git repo url where the source code resides.
+    - name: MODULE
+      description: The maven module containing the artifact to upload.
+    - name: ARTIFACT
+      description: The artifact to upload as the app image.
   workspaces:
     - name: maven-test-pipeline-run-ws
     - name: maven-settings
@@ -16,7 +132,7 @@ spec:
           workspace: maven-test-pipeline-run-ws
       params:
         - name: url
-          value: https://github.com/buildsec/example-maven
+          value: "$(params.SOURCE_URL)"
         - name: subdirectory
           value: ""
         - name: deleteExisting
@@ -31,12 +147,60 @@ spec:
           value:
             - --no-transfer-progress
             - -DskipTests
+            - -pl
+            - "$(params.MODULE)"
             - clean
             - package
       workspaces:
         - name: maven-settings
           workspace: maven-settings
         - name: source
+          workspace: maven-test-pipeline-run-ws
+    - name: generate-sbom
+      taskRef:
+        name: maven
+      runAfter:
+        - maven-run
+      params:
+        - name: GOALS
+          value:
+            - --no-transfer-progress
+            - -pl
+            - "$(params.MODULE)"
+            - org.cyclonedx:cyclonedx-maven-plugin:makeAggregateBom
+      workspaces:
+        - name: maven-settings
+          workspace: maven-settings
+        - name: source
+          workspace: maven-test-pipeline-run-ws
+    - name: upload-artifact
+      runAfter:
+        - maven-run
+      taskRef:
+        name: cosign-upload-blob
+      params:
+        - name: image
+          value: "$(params.APP_IMAGE)"
+        - name: artifact
+          value: "$(params.MODULE)/target/$(params.ARTIFACT)"
+      workspaces:
+        - name: cosign-ws
+          workspace: maven-test-pipeline-run-ws
+    - name: attach-sbom
+      runAfter:
+        - generate-sbom
+        - upload-artifact
+      taskRef:
+        name: cosign-attach-sbom
+      params:
+        - name: image
+          value: "$(params.APP_IMAGE)"
+        - name: sbom
+          value: "$(params.MODULE)/target/bom.xml"
+        - name: type
+          value: cyclonedx
+      workspaces:
+        - name: cosign-ws
           workspace: maven-test-pipeline-run-ws
 ---
 apiVersion: v1

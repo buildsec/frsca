@@ -23,7 +23,7 @@ frsca: pipelineRun: "cache-image-pipelinerun-": spec: {
 		value: "latest"
 	}, {
 		name:  "SOURCE_URL"
-		value: "https://github.com/buildpacks/samples"
+		value: "https://github.com/buildsec/example-buildpacks"
 	}, {
 		name:  "SOURCE_SUBPATH"
 		value: "apps/ruby-bundler"

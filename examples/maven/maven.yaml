@@ -16,7 +16,7 @@ spec:
           workspace: maven-test-pipeline-run-ws
       params:
         - name: url
-          value: https://github.com/redhat-scholars/tekton-tutorial-greeter
+          value: https://github.com/buildsec/example-maven
         - name: subdirectory
           value: ""
         - name: deleteExisting

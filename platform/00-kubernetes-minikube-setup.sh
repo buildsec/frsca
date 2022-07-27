@@ -168,7 +168,6 @@ case "${PLATFORM}" in
       popd
       rmdir "$TMP"
     )
-    
     jq --version ||(
       echo -e "${C_GREEN}jq not found, installing...${C_RESET_ALL}" 
       

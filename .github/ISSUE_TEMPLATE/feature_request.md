@@ -3,6 +3,7 @@ name: Feature request
 about: Suggest an idea for this project
 labels: enhancement
 ---
+# Feature Request
 
 <!-- Provide a general summary of the issue in the title above. -->
 

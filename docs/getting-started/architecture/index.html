@@ -46,9 +46,9 @@
 
 	
 
-<title>Using CUE | FRSCA</title>
-<meta name="description" content="Working with CUE in Factory for Repeatable Secure Creation of Artifacts.">
-<link rel="canonical" href="https://buildsec.github.io/frsca/docs/help/using-cue/">
+<title>Architecture | FRSCA</title>
+<meta name="description" content="Architecture summary of FRSCA.">
+<link rel="canonical" href="https://buildsec.github.io/frsca/docs/getting-started/architecture/">
 
 
 
@@ -98,19 +98,19 @@
         
         
         
+        
+        
+        
           
           
           {
             "@type": "ListItem",
             "position":  3 ,
-            "name": "Help",
-            "item": "https://buildsec.github.io/frsca/docs/help/"
+            "name": "Getting Started",
+            "item": "https://buildsec.github.io/frsca/docs/getting-started/"
           },
         
       
-        
-        
-        
         
         
         
@@ -124,8 +124,8 @@
           {
             "@type": "ListItem",
             "position":  4 ,
-            "name": "Using Cue",
-            "item": "https://buildsec.github.io/frsca/docs/help/using-cue/"
+            "name": "Architecture",
+            "item": "https://buildsec.github.io/frsca/docs/getting-started/architecture/"
           },
         
       
@@ -220,7 +220,7 @@
 							                           
 									<li><a class="docs-link" href="https://buildsec.github.io/frsca/docs/getting-started/quick-start/">Quick Start</a></li>
 							                           
-									<li><a class="docs-link" href="https://buildsec.github.io/frsca/docs/getting-started/architecture/">Architecture</a></li>
+									<li><a class="docs-link active" href="https://buildsec.github.io/frsca/docs/getting-started/architecture/">Architecture</a></li>
 							
 					</ul>
 					
@@ -242,7 +242,7 @@
 							                           
 									<li><a class="docs-link" href="https://buildsec.github.io/frsca/docs/help/faq/">FAQ</a></li>
 							                           
-									<li><a class="docs-link active" href="https://buildsec.github.io/frsca/docs/help/using-cue/">Using CUE</a></li>
+									<li><a class="docs-link" href="https://buildsec.github.io/frsca/docs/help/using-cue/">Using CUE</a></li>
 							
 					</ul>
 					
@@ -259,16 +259,16 @@
   			<nav id="TableOfContents">
   					<ul>
   							
-  							<li><a href="https://buildsec.github.io/frsca/docs/help/using-cue/#cue-module-structure">CUE Module Structure</a></li>
+  							<li><a href="https://buildsec.github.io/frsca/docs/getting-started/architecture/#diagram-of-key-components">Diagram of Key Components</a></li>
   							
   							
-  							<li><a href="https://buildsec.github.io/frsca/docs/help/using-cue/#adding-or-modifying">Adding or Modifying</a></li>
+  							<li><a href="https://buildsec.github.io/frsca/docs/getting-started/architecture/#provisioning">Provisioning</a></li>
   							
   							
-  							<li><a href="https://buildsec.github.io/frsca/docs/help/using-cue/#using-cue-tool">Using CUE Tool</a></li>
+  							<li><a href="https://buildsec.github.io/frsca/docs/getting-started/architecture/#pipeline">Pipeline</a></li>
   							
   							
-  							<li><a href="https://buildsec.github.io/frsca/docs/help/using-cue/#references">References</a></li>
+  							<li><a href="https://buildsec.github.io/frsca/docs/getting-started/architecture/#production-recommendations">Production Recommendations</a></li>
   							
   							
   					</ul>
@@ -278,73 +278,61 @@
   
 
       <main class="docs-content col-lg-11 col-xl-9">
-        <h1>Using CUE</h1>
-        <p class="lead">Working with CUE in Factory for Repeatable Secure Creation of Artifacts.</p>
-        <h2 id="cue-module-structure">CUE Module Structure</h2>
-<p>The top level of Factory for Repeatable Secure Creation of Artifacts (FRSCA)
-is structured as a
-<a href="https://cuelang.org/docs/concepts/packages/">CUE module</a> and follows the
-<a href="https://cuelang.org/docs/concepts/packages/#file-organization">schema/policy/data</a>
-pattern for organizing the files.</p>
-<p>The
-<a href="https://cuelang.org/docs/concepts/packages/#the-cuemod-directory"><code>cue.mod</code></a>
-directory is predominantly for CUE package management. All of the files in
-<code>cue.mod/gen/...</code> are generated from the <code>cue get go ...</code> command importing go
-modules and converting them to CUE. These can then be imported and used to
-verify the structure of things such as <code>ConfigMap</code>. <code>frsca.cue</code> imports several of
-these and creates base structures based on these imported go structs.</p>
-<p>For the most part, CUE expects the evaluation to be done relative to the root of
-the CUE module. Evaluation can be narrowed by providing a path to a subdirectory
-(e.g. <code>cue eval ./examples/buildpacks</code>). CUE will then only evaluate things in
-that subdirectory (<code>./examples/buildpacks</code>) or its parent directories (<code>.</code> and
-<code>./examples</code>), but will not evaluate things in adjacent or sibling directories
-(e.g. <code>./resources/...</code> or <code>./examples/sample-pipeline</code>).</p>
-<h2 id="adding-or-modifying">Adding or Modifying</h2>
-<p>Typically new <code>.cue</code> files will be added in a subdirectory similar to what has
-been done in the <code>examples/...</code> directories. In the case of <code>examples</code> there is
-<code>examples.cue</code> which holds some definitions that are shared across all of the
-examples. Of particular note is a comprehension that creates a persistent volume
-claim (PVC) for each pipeline run. A reference to the PVC is added to the
-pipeline run definition by default.</p>
-<pre data-lang="txt" style="background-color:#2b303b;color:#c0c5ce;" class="language-txt "><code class="language-txt" data-lang="txt"><span>// generate a PVC for each pipelineRun
-</span><span>persistentVolumeClaim: {
-</span><span> for pr in pipelineRun {
-</span><span>  &quot;\(pr.metadata.generateName)source-ws-pvc&quot;: spec: {
-</span><span>   accessModes: [&quot;ReadWriteOnce&quot;]
-</span><span>   resources: requests: storage: &quot;500Mi&quot;
-</span><span>  }
-</span><span> }
-</span><span>}
-</span><span>
-</span><span>pipelineRun: [Name=_]: spec: workspaces: [{
-</span><span> name: *&quot;\(Name)ws&quot; | string
-</span><span> persistentVolumeClaim: claimName: &quot;\(Name)source-ws-pvc&quot;
-</span><span>}, ...]
-</span></code></pre>
-<h2 id="using-cue-tool">Using CUE Tool</h2>
-<p>FRSCA uses the <code>cue cmd</code> support (see <code>cue cmd --help</code> and
-<a href="https://blog.patapon.info/cue-tool/">cue tooling layer</a> for more details) for
-selecting and exporting definitions. This can be seen in <code>frsca_tool.cue</code> which
-defines commands for exporting things that can be used in conjunction with
-<code>kubectl</code>. An example of its usage can be seen in
-<code>examples/buildpacks/buildpacks.sh</code>.</p>
-<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">pushd</span><span> examples/buildpacks
-</span><span style="color:#bf616a;">cue</span><span> cmd</span><span style="color:#bf616a;"> -t </span><span>&quot;</span><span style="color:#a3be8c;">repository=</span><span>$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">REPOSITORY</span><span style="color:#a3be8c;">}</span><span>&quot; apply | </span><span style="color:#bf616a;">kubectl</span><span> apply</span><span style="color:#bf616a;"> -f</span><span> -
-</span><span style="color:#bf616a;">cue</span><span> cmd</span><span style="color:#bf616a;"> -t </span><span>&quot;</span><span style="color:#a3be8c;">repository=</span><span>$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">REPOSITORY</span><span style="color:#a3be8c;">}</span><span>&quot; create | </span><span style="color:#bf616a;">kubectl</span><span> create</span><span style="color:#bf616a;"> -f</span><span> -
-</span><span style="color:#bf616a;">popd
-</span></code></pre>
-<p>Here we are using the <code>cue apply ...</code> command to export definitions from
-<code>./examples/buildpacks</code> that can be used with <code>kubectl apply ...</code>. And similarly
-<code>cue create ...</code> exports definitions from <code>./examples/buildpacks</code> that can be
-used with <code>kubectl create ...</code>.</p>
-<p>The above example also shows the usage of a tag (<code>cue -t ...</code>) for passing
-values (<code>repository</code> in this case) into the CUE definitions.</p>
-<h2 id="references">References</h2>
-<ul>
-<li><a href="https://cuelang.org/docs/">https://cuelang.org/docs/</a></li>
-<li><a href="https://cuelang.org/docs/concepts/packages/">https://cuelang.org/docs/concepts/packages/</a></li>
-<li><a href="https://blog.patapon.info/cue-tool/">https://blog.patapon.info/cue-tool/</a></li>
-</ul>
+        <h1>Architecture</h1>
+        <p class="lead">Architecture summary of FRSCA.</p>
+        <h2 id="diagram-of-key-components">Diagram of Key Components</h2>
+<p><img src="/img/frsca.png" alt="frsca-architecture" /></p>
+<h2 id="provisioning">Provisioning</h2>
+<p>The environment is provisioned using <code>make setup-frsca</code> which deploys a variety
+of Cue definitions and Helm charts. The resulting environment contains Tekton,
+Chains, Spire, Vault, the various Tasks, and Pipeline definitions.</p>
+<p>When the infrastructure starts, several components will be defined or running:</p>
+<ol>
+<li>Pipelines, Tasks, and Triggers will be defined according to the definition of
+the environment.</li>
+<li>Cert-manager is deployed in the FRSCA setup to allow the various components
+running inside the cluster to use TLS. In many environments, components like
+Vault, Spire, and the OCI Registry would be external to the cluster and have
+a certificate signed by a public authority or the company's internal CA.</li>
+<li>Vault is deployed with development settings inside the cluster. In many
+environments, this would be managed outside of the cluster.</li>
+<li>Spire is deployed inside the cluster. This is also typically deployed and
+managed external to the cluster.</li>
+<li>Vault is configured with the transit plugin and a long term signing key to
+sign images. Authorization is configured to require a valid OIDC credential
+from Spire. The public signing key is exported from the transit plugin and
+loaded into tooling that needs to verify image signatures.</li>
+<li>Chains is configured to perform signing with Vault and request a Spire
+credential from the Spire Node.</li>
+<li>The Spire Node provides credentials to Chains after verifying the Kubernetes
+service account and namespace of Chains.</li>
+<li>An admission controller is configured to require all containers deployed in
+the FRSCA cluster have been signed by the team that provisions the cluster.</li>
+</ol>
+<h2 id="pipeline">Pipeline</h2>
+<p>The following actions occur in a typical pipeline:</p>
+<ol>
+<li>A developer commits their code to a Git server. That server will typically
+require multiple reviewers to permit a merge into the main branch.</li>
+<li>A Tekton trigger detects the change and creates a PipelineRun.</li>
+<li>The PipelineRun runs one or more TaskRun steps, each of which are monitored
+by Chains.</li>
+<li>TaskRun steps will include SBOM generation and vulnerability scanning.</li>
+<li>A TaskRun step pushes the image and associated SBOM to an OCI repository.</li>
+<li>Chains creates an attestation of the steps performed in the task run.</li>
+<li>Chains signs the image and attestation using credentials from Spire and Vault
+for the signing.</li>
+<li>Chains pushes attestations and signatures to the OCI repository.</li>
+</ol>
+<h2 id="production-recommendations">Production Recommendations</h2>
+<ol>
+<li>Production should be hardened per recommendations from CIS and similar
+organizations.</li>
+<li>The admission controller in production should prevent containers from being
+deployed with privileged access to the host for all user workloads.</li>
+<li>The admission controller should also be configured with the public signing
+key exported from Vault, and require images to be signed with that key.</li>
+</ol>
 
         
         
@@ -354,10 +342,10 @@ values (<code>repository</code> in this case) into the CUE definitions.</p>
   
   
   
-  <a href="https:&#x2F;&#x2F;buildsec.github.io&#x2F;frsca&#x2F;docs&#x2F;help&#x2F;faq&#x2F;">
+  <a href="https:&#x2F;&#x2F;buildsec.github.io&#x2F;frsca&#x2F;docs&#x2F;getting-started&#x2F;quick-start&#x2F;">
     <div class="card my-1">
       <div class="card-body py-2">
-        &larr; FAQ
+        &larr; Quick Start
       </div>
     </div>
   </a>
@@ -378,6 +366,19 @@ values (<code>repository</code> in this case) into the CUE definitions.</p>
     
       
       
+        
+          
+          
+          <a class="ms-auto" href="https:&#x2F;&#x2F;buildsec.github.io&#x2F;frsca&#x2F;docs&#x2F;contributing&#x2F;how-to-contribute&#x2F;">
+            <div class="card my-1">
+              <div class="card-body py-2">
+                How to Contribute &rarr;
+              </div>
+            </div>
+          </a>
+          
+          
+          
         
       
     

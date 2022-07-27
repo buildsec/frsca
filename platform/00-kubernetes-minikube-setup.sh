@@ -183,7 +183,6 @@ case "${PLATFORM}" in
       fi
     )
     ;;
-     
   *)
     echo -e "${C_RED}The ${PLATFORM} platform is unimplemented or unsupported.${C_RESET_ALL}"
     exit 1

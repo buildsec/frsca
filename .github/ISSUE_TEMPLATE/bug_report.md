@@ -3,6 +3,7 @@ name: Bug report
 about: Create a report to help us improve
 labels: bug
 ---
+# Bug Report
 
 <!-- Provide a general summary of the issue in the title above. -->
 
@@ -72,7 +73,7 @@ echo "$OUTPUT" | tee >(pbcopy)
 
 -->
 
-```
+```txt
 (replace the example below with the script output)
 Last commit:
   d6d7647 Alternate approach for internal minikube OCI registry  (HEAD -> github-templates, upstream/main, upstream/HEAD, main)

@@ -51,6 +51,16 @@ frsca: pipelineRun: [Name=_]: spec: workspaces: [{
 	persistentVolumeClaim: claimName: "\(Name)source-ws-pvc"
 }, ...]
 
+frsca: configMap: "grype-config-map": {
+	data: ".grype.yaml": """
+		ignore:
+		#  - vulnerability: CVE-2022-30065
+		#    package:
+		#      type: apk
+
+		"""
+}
+
 frsca: task: "grype-vulnerability-scan": {
 	spec: {
 		params: [{
@@ -86,6 +96,8 @@ frsca: task: "grype-vulnerability-scan": {
 				"$(params.only-fixed)",
 				"--fail-on",
 				"$(params.fail-on)",
+				"--config",
+				"/var/grype-config/.grype.yaml"
 			]
 			image: "anchore/grype:v0.35.0@sha256:857934a54874b7efe3d6964851ce54abb5a36d6200cdb62383990a5c7c8d748e"
 			name:  "grype-scanner"
@@ -95,6 +107,10 @@ frsca: task: "grype-vulnerability-scan": {
 				subPath: "ca-certificates.crt"
 				readOnly: true
 			}]
+		}]
+		workspaces: [{
+			name: "grype-config"
+			mountPath: "/var/grype-config"
 		}]
 		volumes: [{
       configMap: {

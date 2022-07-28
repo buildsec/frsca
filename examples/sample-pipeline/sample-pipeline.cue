@@ -86,6 +86,10 @@ frsca: pipeline: "build-and-deploy-pipeline": {
 				"build-and-push-image",
 			]
 			taskRef: name: "grype-vulnerability-scan"
+			workspaces: [{
+				name:      "grype-config"
+				workspace: "grype-config"
+			}]
 		}, {
 			name: "deploy-to-cluster"
 			params: [{
@@ -113,6 +117,8 @@ frsca: pipeline: "build-and-deploy-pipeline": {
 		workspaces: [{
 			description: "The git repo"
 			name:        "git-source"
+		}, {
+			name: "grype-config"
 		}]
 	}
 }
@@ -121,7 +127,7 @@ frsca: pipelineRun: "frsca-lab-pipelinerun-": spec: {
 	pipelineRef: name: "build-and-deploy-pipeline"
 	params: [{
 		name:  "gitUrl"
-		value: "https://github.com/IBM/tekton-tutorial-openshift"
+		value: "https://github.com/buildsec/example-sample-pipeline"
 	}, {
 		name:  "pathToYamlFile"
 		value: "kubernetes/picalc.yaml"
@@ -135,6 +141,11 @@ frsca: pipelineRun: "frsca-lab-pipelinerun-": spec: {
 	serviceAccountName: "pipeline-account"
 	workspaces: [{
 		name: "git-source"
+	}, {
+		name: "grype-config"
+		configMap: {
+			name: "grype-config-map"
+		}
 	}]
 }
 

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -euo pipefail
 
 # TODO: Pin Brew versions for Mac
@@ -168,8 +168,21 @@ case "${PLATFORM}" in
       popd
       rmdir "$TMP"
     )
+    jq --version || (
+      echo -e "${C_GREEN}jq not found, installing...${C_RESET_ALL}" 
+      
+      if [ -x "$(command -v dnf)" ]; then
+        sudo dnf install -y jq
+      elif [ -x "$(command -v yum)" ]; then
+        sudo yum install -y jq
+      elif [ -x "$(command -v apt-get)" ]; then
+        sudo apt-get install -y jq
+      else 
+        echo -e "${C_RED}jq cannot be automatically installed, please install it manually${C_RESET_ALL}"
+        exit 1
+      fi
+    )
     ;;
-
   *)
     echo -e "${C_RED}The ${PLATFORM} platform is unimplemented or unsupported.${C_RESET_ALL}"
     exit 1

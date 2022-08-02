@@ -14,6 +14,7 @@ mkShell {
     cue
     jq
     kubernetes-helm
+    zola
   ];
 }
 

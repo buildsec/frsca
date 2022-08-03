@@ -61,6 +61,14 @@ import corev1 "k8s.io/api/core/v1"
 	// Secret represents a secret that should populate this workspace.
 	// +optional
 	secret?: null | corev1.#SecretVolumeSource @go(Secret,*corev1.SecretVolumeSource)
+
+	// Projected represents a projected volume that should populate this workspace.
+	// +optional
+	projected?: null | corev1.#ProjectedVolumeSource @go(Projected,*corev1.ProjectedVolumeSource)
+
+	// CSI (Container Storage Interface) represents ephemeral storage that is handled by certain external CSI drivers.
+	// +optional
+	csi?: null | corev1.#CSIVolumeSource @go(CSI,*corev1.CSIVolumeSource)
 }
 
 // WorkspacePipelineDeclaration creates a named slot in a Pipeline that a PipelineRun
@@ -92,7 +100,8 @@ import corev1 "k8s.io/api/core/v1"
 	name: string @go(Name)
 
 	// Workspace is the name of the workspace declared by the pipeline
-	workspace: string @go(Workspace)
+	// +optional
+	workspace?: string @go(Workspace)
 
 	// SubPath is optionally a directory on the volume which should be used
 	// for this binding (i.e. the volume will be mounted at this sub directory).

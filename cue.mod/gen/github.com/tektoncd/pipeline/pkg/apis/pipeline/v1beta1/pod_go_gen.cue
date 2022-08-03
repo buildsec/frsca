@@ -8,3 +8,6 @@ import "github.com/tektoncd/pipeline/pkg/apis/pipeline/pod"
 
 // PodTemplate holds pod specific configuration
 #PodTemplate: pod.#Template
+
+// AAPodTemplate holds pod specific configuration for the affinity-assistant
+#AAPodTemplate: pod.#AffinityAssistantTemplate

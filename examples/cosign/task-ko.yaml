@@ -54,12 +54,3 @@ spec:
           "$(params.SOURCE_SUBPATH)")
         echo -n "${KO_IMAGE}" | cut -d'@' -f1 | tr -d '[:space:]' | tee "$(results.IMAGE_URL.path)"
         echo -n "${KO_IMAGE}" | cut -d'@' -f2 | tr -d '[:space:]' | tee "$(results.IMAGE_DIGEST.path)"
-      volumeMounts:
-        - mountPath: /etc/ssl/certs/ca-certificates.crt
-          name: ca-certs
-          subPath: ca-certificates.crt
-          readOnly: true
-  volumes:
-    - configMap:
-        name: ca-certs
-      name: ca-certs

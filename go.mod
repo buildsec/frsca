@@ -1,6 +1,6 @@
 module github.com/buildsec/frsca
 
-go 1.17
+go 1.19
 
 require (
 	contrib.go.opencensus.io/exporter/ocagent v0.7.1-0.20200907061046-05415f1de66d // indirect

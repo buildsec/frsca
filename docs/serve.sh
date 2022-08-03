@@ -25,7 +25,7 @@ case "${PLATFORM}" in
       --rm -u "$(id -u):$(id -g)" \
       -v "${GIT_ROOT}:/app" --workdir /app/docs \
       -p "${ZOLA_PORT}:${ZOLA_PORT}" \
-      ghcr.io/getzola/zola:v0.15.1 \
+      ghcr.io/getzola/zola:v0.16.0 \
         serve --interface 0.0.0.0 --port "${ZOLA_PORT}" --base-url localhost
         ;;
 

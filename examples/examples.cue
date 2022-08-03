@@ -70,6 +70,26 @@ frsca: configMap: "grype-config-map": {
 		"""
 }
 
+frsca: task: [_]: {
+	spec: {
+		volumes: [{
+			configMap: { name: "ca-certs" }
+			name: "ca-certs"
+		}]
+	}
+}
+
+frsca: task: [_]: {
+	spec: steps: [...{
+		volumeMounts: [{
+			mountPath: "/etc/ssl/certs/ca-certificates.crt"
+			name: "ca-certs"
+			subPath: "ca-certificates.crt"
+			readOnly: true
+		}]
+	}]
+}
+
 frsca: task: "grype-vulnerability-scan": {
 	spec: {
 		params: [{
@@ -110,22 +130,10 @@ frsca: task: "grype-vulnerability-scan": {
 			]
 			image: "anchore/grype:v0.35.0@sha256:857934a54874b7efe3d6964851ce54abb5a36d6200cdb62383990a5c7c8d748e"
 			name:  "grype-scanner"
-			volumeMounts: [{
-				mountPath: "/etc/ssl/certs/ca-certificates.crt"
-				name: "ca-certs"
-				subPath: "ca-certificates.crt"
-				readOnly: true
-			}]
 		}]
 		workspaces: [{
 			name: "grype-config"
 			mountPath: "/var/grype-config"
-		}]
-		volumes: [{
-      configMap: {
-        name: "ca-certs"
-			}
-      name: "ca-certs"
 		}]
 	}
 }

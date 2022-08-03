@@ -226,9 +226,6 @@ frsca: task: "syft-bom-generator": {
 			env: [{
 				name:  "PIPELINE_DEBUG"
 				value: "$(params.pipeline-debug)"
-			}, {
-				name:  "DOCKER_CONFIG"
-				value: "/steps"
 			}]
 		}
 		steps: [{
@@ -241,15 +238,6 @@ frsca: task: "syft-bom-generator": {
 			]
 			image: "anchore/syft:v0.44.1@sha256:d5b44590062d4d9fc192455b5face4ebfd7879ec1540c939aa1766e5dcf4d5fc"
 			name:  "syft-bom-generator"
-			volumeMounts: [{
-				mountPath: "/steps"
-				name:      "steps-volume"
-			}, {
-				mountPath: "/etc/ssl/certs/ca-certificates.crt"
-				name: "ca-certs"
-				subPath: "ca-certificates.crt"
-				readOnly: true
-			}]
 		}, {
 			image: "gcr.io/projectsigstore/cosign:v1.8.0@sha256:12b4d428529654c95a7550a936cbb5c6fe93a046ea7454676cb6fb0ce566d78c"
 			name:  "attach-sbom"
@@ -260,24 +248,6 @@ frsca: task: "syft-bom-generator": {
 				"--type", "syft",
 				"$(params.image-ref)"
 			]
-			volumeMounts: [{
-				mountPath: "/steps"
-				name:      "steps-volume"
-			}, {
-				mountPath: "/etc/ssl/certs/ca-certificates.crt"
-				name: "ca-certs"
-				subPath: "ca-certificates.crt"
-				readOnly: true
-			}]
-		}]
-		volumes: [{
-			emptyDir: {}
-			name: "steps-volume"
-		}, {
-      configMap: {
-        name: "ca-certs"
-			}
-      name: "ca-certs"
 		}]
 		workspaces: [{
 			name: "source"

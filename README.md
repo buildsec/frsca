@@ -1,36 +1,66 @@
-# Factory for Repeatable Secure Creation of Artifacts (FRSCA)
+# FRSCA
 
 ## About The Project
 
-Factory for Repeatable Secure Creation of Artifacts (FRSCA) is an [OpenSSF](https://openssf.org/)
-[Supply Chain Integrity Working Group Project](https://github.com/ossf/wg-supply-chain-integrity).
-The purpose of the project is to provide a set of tools, patterns, and
-policies in order to build artifacts with increased confidence around its
-authenticity and integrity, and with traceable provenance.
+Factory for Repeatable Secure Creation of Artifacts (aka FRSCA pronounced Fresca)
+aims to help secure the supply chain by securing build pipelines.
 
-FRSCA is an implementation of the CNCF's
+It achieves its goals by being 2 things:
+
+1. A suite of build, pipeline, signing, visibility, identity, and policy tools
+   configured to operate securely.
+2. A set of build pipeline abstractions and definitions with security guardrails
+   ensuring all builds follow supply chain security best practices.
+
+At its core FRSCA uses these projects to achieve its goals:
+
+- [Kubernetes] - For control plane
+- [Tekton Pipelines] - For build pipelines
+- [Tekton Chains] - For pipeline task observation
+- [Sigstore] - For signing software, attestations, SBOMs and other metadata
+- [SPIFFE/Spire] - For build workload identities
+- [Vault] - For secrets management
+- [Helm] and [CUE] - For provisioning kubernetes resources
+- [CUE] - For secure pipeline abstractions and definitions
+
+See: [Architecture Docs](https://buildsec.github.io/frsca/docs/getting-started/architecture/)
+for more info
+
+FRSCA is also an implementation of the CNCF's
 [Secure Software Factory Reference Architecture](https://github.com/cncf/tag-security/blob/main/supply-chain-security/secure-software-factory/Secure_Software_Factory_Whitepaper.pdf)
 which is based on the CNCF's
 [Software Supply Chain Best Practices White Paper](https://github.com/cncf/tag-security/blob/main/supply-chain-security/supply-chain-security-paper/CNCF_SSCP_v1.pdf).
 It is also intended to follow [SLSA](https://slsa.dev) requirements closely
 and generate in-toto attesttations for SLSA provenance predicates.
 
-FRSCA is 3 things:
-
-1. A set of interfaces managing CI pipelines while ensuring supply chain
-   security and establishing provenance
-2. A set of CI/Build tools and systems glued together in order to enable
-   #1.
-3. A set of secure defaults in order to enable #1 and #2
+_NOTE_: FRSCA is under very active development. A lot will change, it isn't
+production ready yet.
 
 ## Quickstart
 
-To quickly provision a Minikube cluster with [Tekton Pipelines], [Tekton
-Chains], and the [buildpacks] pipeline, simply run:
+To quickly provision a Minikube cluster with FRSCA deployed and run an example
+pipeline run:
 
 ```bash
-make quickstart
+# Install and setup minikube (run only if need a local k8s)
+make setup-minikube
+make setup-frsca
 ```
+
+This will perform the following actions:
+
+1. Install and setup minikube, and supporting cli tools, like `cosign` and `jq`
+   if they are not already installed.
+2. Install and setup FRSCA's components which include:
+   1. [Cert-manager]
+   2. [registry],
+   3. [Tekton Pipelines]
+   4. [Tekton Chains]
+   5. [SPIFFE/Spire]
+   6. [Vault]
+   7. [Kyverno]
+
+Once FRSCA has been installed you can follow the various examples under `/examples`.
 
 Tearing down the Minikube cluster generated in the quickstart, simply run:
 
@@ -43,24 +73,49 @@ make teardown
 The full documentation is available at
 <https://buildsec.github.io/frsca/>
 
+## Community
+
+It is a project under the [OpenSSF](https://openssf.org/)
+[Supply Chain Integrity Working Group](https://github.com/ossf/wg-supply-chain-integrity).
+
+Community meetings every other Wednesday at 10AM Eastern - See OpenSSF
+[community calendar](https://calendar.google.com/calendar/u/0?cid=czYzdm9lZmhwNWk5cGZsdGI1cTY3bmdwZXNAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ)
+for more info.
+
+Slack channel: #frsca on [OpenSSF slack](https://slack.openssf.org/)
+
 ### Built With
 
 Platform:
 
-- [Kyverno](https://kyverno.io/)
-- [Kubernetes](http://k8s.io/)
+- [Kyverno]
+- [Kubernetes]
 - [Tekton Pipelines]
 - [Tekton Chains]
-- [Spire](https://spiffe.io/)
+- [SPIFFE/Spire]
+- [Vault]
 
 Tooling:
 
-- [Cosign/Sget](https://github.com/sigstore/cosign)
-- [Crane](https://github.com/google/go-containerregistry)
-- [Cue](https://cuelang.org/)
-- [Make](https://www.gnu.org/software/make/)
-- [Rekor CLI](https://github.com/sigstore/rekor)
+- [Cosign/Sget]
+- [Crane]
+- [Cue]
+- [Make]
+- [Rekor CLI]
+- [Helm]
 
-[buildpacks]: https://buildpacks.io/
 [tekton chains]: https://github.com/tektoncd/chains
 [tekton pipelines]: https://tekton.dev/
+[kyverno]: https://kyverno.io/
+[kubernetes]: https://k8s.io/
+[spiffe/spire]: https://spiffe.io/
+[cosign/sget]: https://github.com/sigstore/cosign
+[crane]: https://github.com/google/go-containerregistry
+[cue]: https://cuelang.org/
+[make]: https://www.gnu.org/software/make/
+[rekor cli]: https://github.com/sigstore/rekor
+[vault]: https://www.vaultproject.io/
+[helm]: https://helm.sh/
+[sigstore]: https://www.sigstore.dev/
+[cert-manager]: https://cert-manager.io/
+[registry]: https://hub.docker.com/_/registry

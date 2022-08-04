@@ -16,7 +16,7 @@ top = false
 
 ## Diagram of Key Components
 
-![frsca-architecture](/img/frsca.png)
+![frsca-architecture](../../../img/frsca.png)
 
 ## Provisioning
 

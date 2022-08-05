@@ -67,17 +67,17 @@ import apiextv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	// Defaults to true.
 	// +kubebuilder:default=true
 	// +kubebuilder:validation:Optional
-	mutateDigest?: bool @go(MutateDigest)
+	mutateDigest: bool @go(MutateDigest)
 
 	// VerifyDigest validates that images have a digest.
 	// +kubebuilder:default=true
 	// +kubebuilder:validation:Optional
-	verifyDigest?: bool @go(VerifyDigest)
+	verifyDigest: bool @go(VerifyDigest)
 
 	// Required validates that images are verified i.e. have matched passed a signature or attestation check.
 	// +kubebuilder:default=true
 	// +kubebuilder:validation:Optional
-	required?: bool @go(Required)
+	required: bool @go(Required)
 }
 
 #AttestorSet: {

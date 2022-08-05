@@ -113,7 +113,7 @@ case "${PLATFORM}" in
         echo "Actual SHA256 for $TKN_FILE_NAME: $ACTUAL_SHA256"
         exit 1
       )
-      sudo tar xvzf $TKN_FILE_NAME -C $INSTALL_DIR tkn
+      sudo tar xvzf $TKN_FILE_NAME -C "$INSTALL_DIR" tkn
       rm $TKN_FILE_NAME
       popd
       rmdir "$TMP"

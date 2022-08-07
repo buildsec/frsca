@@ -22,7 +22,7 @@ help: # Display help
 		}' $(MAKEFILE_LIST) | sort
 
 .PHONY: quickstart
-quickstart: setup-minikube setup-frsca install-kyverno setup-kyverno example-buildpacks ## Spin up the FRSCA project into minikube
+quickstart: setup-minikube setup-frsca example-buildpacks ## Spin up the FRSCA project into minikube
 
 .PHONY: teardown
 teardown:
@@ -33,7 +33,15 @@ setup-minikube: ## Setup a Kubernetes cluster using Minikube
 	bash platform/00-kubernetes-minikube-setup.sh
 
 .PHONY: setup-frsca
-setup-frsca: setup-certs setup-registry install-tekton-pipelines setup-tekton-pipelines install-tekton-chains setup-tekton-chains install-spire setup-spire install-vault setup-vault
+setup-frsca: setup-certs install-components setup-components setup-kyverno
+
+.PHONY: install-components
+install-components: 
+	make -j install-tekton-pipelines install-tekton-chains install-spire install-vault install-kyverno
+
+.PHONY: setup-components
+setup-components: 
+	make -j setup-tekton-pipelines setup-tekton-chains setup-spire setup-vault setup-registry
 
 .PHONY: setup-certs
 setup-certs: ## Setup certificates used by vault and spire
@@ -50,11 +58,11 @@ registry-proxy: ## Forward the registry to the host
 .PHONY: install-tekton-pipelines
 install-tekton-pipelines: ## Install a Tekton CD
 	bash platform/10-tekton-pipelines-install.sh
-	bash platform/14-tekton-tasks.sh
 
 .PHONY: setup-tekton-pipelines
 setup-tekton-pipelines: ## Setup a Tekton CD
 	bash platform/11-tekton-pipeline-setup.sh
+	bash platform/14-tekton-tasks.sh
 
 .PHONY: install-tekton-chains
 install-tekton-chains: ## Install a Tekton Chains

@@ -46,15 +46,21 @@ jobs:
           make setup-certs
       - name: Setup Tekton Pipeline and Chains
         run: |
+          make install-tekton-pipelines
+          make setup-tekton-pipelines
+          make install-tekton-chains
           make setup-tekton-chains
       - name: Setup Spire
         run: |
+          make install-spire
           make setup-spire
       - name: Setup Vault
         run: |
+          make install-vault
           make setup-vault
       - name: Setup Kyverno
         run: |
+          make install-kyverno
           make setup-kyverno
       - name: Run buildpacks pipeline
         run: |

@@ -22,7 +22,7 @@ help: # Display help
 		}' $(MAKEFILE_LIST) | sort
 
 .PHONY: quickstart
-quickstart: setup-minikube setup-frsca setup-kyverno example-buildpacks ## Spin up the FRSCA project into minikube
+quickstart: setup-minikube setup-frsca install-kyverno setup-kyverno example-buildpacks ## Spin up the FRSCA project into minikube
 
 .PHONY: teardown
 teardown:
@@ -33,7 +33,7 @@ setup-minikube: ## Setup a Kubernetes cluster using Minikube
 	bash platform/00-kubernetes-minikube-setup.sh
 
 .PHONY: setup-frsca
-setup-frsca: setup-certs setup-registry setup-tekton-chains setup-spire setup-vault
+setup-frsca: setup-certs setup-registry install-tekton-pipelines setup-tekton-pipelines install-tekton-chains setup-tekton-chains install-spire setup-spire install-vault setup-vault
 
 .PHONY: setup-certs
 setup-certs: ## Setup certificates used by vault and spire
@@ -47,36 +47,58 @@ setup-registry: ## Setup a registry
 registry-proxy: ## Forward the registry to the host
 	bash platform/05-registry-proxy.sh
 
+.PHONY: install-tekton-pipelines
+install-tekton-pipelines: ## Install a Tekton CD
+	bash platform/10-tekton-pipelines-install.sh
+	bash platform/14-tekton-tasks.sh
+
+.PHONY: setup-tekton-pipelines
+setup-tekton-pipelines: ## Setup a Tekton CD
+	bash platform/11-tekton-pipeline-setup.sh
+
+.PHONY: install-tekton-chains
+install-tekton-chains: ## Install a Tekton Chains
+	bash platform/12-tekton-chains-install.sh
+
 .PHONY: setup-tekton-chains
-setup-tekton-chains: ## Setup a Tekton CD with Chains.
-	bash platform/10-tekton-setup.sh
-	bash platform/11-tekton-chains.sh
-	bash platform/12-tekton-tasks.sh
+setup-tekton-chains: ## Setup a Tekton Chains
+	bash platform/13-tekton-chains-setup.sh
 
 .PHONY: tekton-generate-keys
-tekton-generate-keys: ## Generate key pair for Tekton.
+tekton-generate-keys: ## Generate key pair for Tekton
 	bash scripts/gen-keys.sh
 
 .PHONY: tekton-verify-taskrun
 tekton-verify-taskrun: ## Verify taskrun payload against signature
 	bash scripts/provenance.sh
 
+.PHONY: install-spire
+install-spire: ## install spire
+	bash platform/20-spire-install.sh
+
 .PHONY: setup-spire
 setup-spire: ## Setup spire
-	bash platform/20-spire-setup.sh
+	bash platform/21-spire-setup.sh
+
+.PHONY: install-vault
+install-vault: ## Install vault
+	bash platform/25-vault-install.sh
 
 .PHONY: setup-vault
 setup-vault: ## Setup vault
-	bash platform/25-vault-install.sh
 	bash platform/26-vault-setup.sh
 
+.PHONY: install-kyverno
+install-kyverno: ## Install Kyverno
+	bash platform/30-kyverno-install.sh
+
 .PHONY: setup-kyverno
-setup-kyverno: ## Setup Kyverno.
-	bash platform/30-kyverno-setup.sh
+setup-kyverno: ## Setup Kyverno
+	bash platform/31-kyverno-setup.sh
 
 .PHONY: setup-opa-gatekeeper
 setup-opa-gatekeeper: ##  Setup opa gatekeeper
-	bash platform/31-opa-gatekeeper-setup.sh
+	bash platform/35-opa-gatekeeper-setup.sh
 
 .PHONY: setup-efk-stack
 setup-efk-stack: ## Setup up EFK stack

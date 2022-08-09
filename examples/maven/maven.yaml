@@ -29,11 +29,6 @@ spec:
         - --output-file
         - out.txt
         - $(params.image)
-      volumeMounts:
-        - mountPath: /etc/ssl/certs/ca-certificates.crt
-          name: ca-certs
-          subPath: ca-certificates.crt
-          readOnly: true
     - name: url-digest
       image: docker.io/library/bash
       workingDir: $(workspaces.cosign-ws.path)
@@ -41,10 +36,6 @@ spec:
         echo -n "$(params.image)" | tr -d '[:space:]' | tee $(results.IMAGE_URL.path)
         echo -n '@'
         cat out.txt | sed -e 's/.*@//' | tr -d '[:space:]' | tee $(results.IMAGE_DIGEST.path)
-  volumes:
-    - configMap:
-        name: ca-certs
-      name: ca-certs
 ---
 apiVersion: tekton.dev/v1beta1
 kind: Task
@@ -79,11 +70,6 @@ spec:
         - --type
         - $(params.type)
         - $(params.image)
-      volumeMounts:
-        - mountPath: /etc/ssl/certs/ca-certificates.crt
-          name: ca-certs
-          subPath: ca-certificates.crt
-          readOnly: true
     - name: results
       image: regclient/regctl:alpine
       workingDir: $(workspaces.cosign-ws.path)
@@ -95,15 +81,6 @@ spec:
         echo -n "${sbomImage}" | tr -d '[:space:]' | tee $(results.IMAGE_URL.path)
         echo -n '@'
         echo -n "${sbomDigest}" | tr -d '[:space:]' | tee $(results.IMAGE_DIGEST.path)
-      volumeMounts:
-        - mountPath: /etc/ssl/certs/ca-certificates.crt
-          name: ca-certs
-          subPath: ca-certificates.crt
-          readOnly: true
-  volumes:
-    - configMap:
-        name: ca-certs
-      name: ca-certs
 ---
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline

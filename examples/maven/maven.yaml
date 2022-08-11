@@ -16,7 +16,7 @@ spec:
           workspace: maven-test-pipeline-run-ws
       params:
         - name: url
-          value: https://github.com/buildsec/example-maven
+          value: https://gitea-http.gitea:3000/frsca/example-maven
         - name: subdirectory
           value: ""
         - name: deleteExisting

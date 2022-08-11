@@ -127,7 +127,7 @@ frsca: pipelineRun: "frsca-lab-pipelinerun-": spec: {
 	pipelineRef: name: "build-and-deploy-pipeline"
 	params: [{
 		name:  "gitUrl"
-		value: "https://github.com/buildsec/example-sample-pipeline"
+		value: "\(_GIT_ORG)/example-sample-pipeline"
 	}, {
 		name:  "pathToYamlFile"
 		value: "kubernetes/picalc.yaml"

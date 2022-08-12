@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
 set -exuo pipefail
 
-GIT_ROOT=$(git rev-parse --show-toplevel)
+# Define variables.
+C_GREEN='\033[32m'
+C_RESET_ALL='\033[0m'
+
+# Setup spire
+echo -e "${C_GREEN}Setting up spire...${C_RESET_ALL}"
 
 spire_apply() {
   if [ $# -lt 2 ] || [ "$1" != "-spiffeID" ]; then
@@ -20,15 +25,6 @@ spire_apply() {
   kubectl exec -n spire spire-server-0 -c spire-server -- \
     /opt/spire/bin/spire-server entry create "$@"
 }
-
-kubectl create namespace spire --dry-run=client -o yaml | kubectl apply -f -
-
-helm upgrade --install spire "${GIT_ROOT}/platform/vendor/spire/chart" \
-  --values "${GIT_ROOT}/platform/components/spire/values.yaml" \
-  --namespace spire --wait
-
-kubectl rollout status -n spire statefulset/spire-server
-kubectl rollout status -n spire daemonset/spire-agent
 
 # Register Workloads.
 spire_apply \

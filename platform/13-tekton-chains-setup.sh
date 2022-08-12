@@ -3,11 +3,12 @@ set -euo pipefail
 
 GIT_ROOT=$(git rev-parse --show-toplevel)
 
-# Setup tekton Chains
+# Define variables.
+C_GREEN='\033[32m'
+C_RESET_ALL='\033[0m'
 
-# Install Chains.
-kubectl apply --filename "$GIT_ROOT"/platform/vendor/tekton/chains/release.yaml || true
-kubectl rollout status -n tekton-chains deployment/tekton-chains-controller
+# Setup tekton Chains
+echo -e "${C_GREEN}Setting up Tekton Chains...${C_RESET_ALL}"
 
 # Patch chains to generate in-toto provenance and store output in OCI
 kubectl patch \

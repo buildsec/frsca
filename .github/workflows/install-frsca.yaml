@@ -41,21 +41,9 @@ jobs:
           make setup-minikube
       - name: Try the cluster !
         run: kubectl get pods -A
-      - name: Generate certs
+      - name: Initialize FRSCA
         run: |
-          make setup-certs
-      - name: Setup Tekton Pipeline and Chains
-        run: |
-          make setup-tekton-chains
-      - name: Setup Spire
-        run: |
-          make setup-spire
-      - name: Setup Vault
-        run: |
-          make setup-vault
-      - name: Setup Kyverno
-        run: |
-          make setup-kyverno
+          make setup-frsca
       - name: Run buildpacks pipeline
         run: |
           make example-buildpacks

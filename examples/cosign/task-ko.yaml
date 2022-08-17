@@ -20,7 +20,7 @@ spec:
       default: ""
     - name: KO_IMAGE
       description: The name of the Ko image
-      default: "ghcr.io/google/ko:3cf55a10c9f6b4b2f0804c859a2ee01ec7d62d23"
+      default: "ghcr.io/google/ko:14b4fe1c7c6c3246120f271e163ca00367108c04"
     - name: SOURCE_SUBPATH
       description: >-
         A subpath within checked out source where the source to build is

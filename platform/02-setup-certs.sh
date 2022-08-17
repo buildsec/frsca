@@ -49,7 +49,7 @@ fi
 
 # convert CA bundle for Java
 echo -e "${C_GREEN}Generating Java CA from gradle image...${C_RESET_ALL}"
-docker run --rm -v "${ca_cert}:/tmp/cert.pem:ro" --entrypoint /bin/bash \
+docker run --rm -v "${ca_cert}:/tmp/cert.pem:ro,z" --entrypoint /bin/bash \
   gcr.io/cloud-builders/gradle \
   -c "openssl x509 -outform der -in /tmp/cert.pem -out /tmp/cert.der >&2 && \
         keytool -importcert -file /tmp/cert.der -storepass changeit -keystore /etc/ssl/certs/java/cacerts -trustcacerts -noprompt >&2 && \

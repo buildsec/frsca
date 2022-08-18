@@ -18,7 +18,7 @@ C_RESET_ALL='\033[0m'
 # Update below if you have a different config.json you want to use.
 DOCKER_CONFIG_JSON=$HOME/.docker/config.json
 
-grep -q auths ${DOCKER_CONFIG_JSON} || { echo -e "${C_RED}No secret available in ${DOCKER_CONFIG_JSON}...exiting Kyverno setup${C_RESET_ALL}"; exit; }
+grep -q auths "${DOCKER_CONFIG_JSON}" || { echo -e "${C_RED}No secret available in ${DOCKER_CONFIG_JSON}...exiting Kyverno setup${C_RESET_ALL}"; exit; }
 
 # Kyverno setup from the getting started tutorial:
 #   https://nirmata.com/2021/08/12/kubernetes-supply-chain-policy-management-with-cosign-and-kyverno/

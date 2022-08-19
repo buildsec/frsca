@@ -1,15 +1,29 @@
 package frsca
 
-_IMAGE: name: "go-build-test-frsca"
+_IMAGE: name: "example-golang"
 
-frsca: pipeline: "pipeline-go-test": spec: {
+frsca: pipeline: "example-golang": spec: {
 	workspaces: [{
 		name:     "pipeline-pvc"
 		optional: false
 	}]
 	params: [{
 		name:        "image"
+		type:        "string"
 		description: "reference of the image to build"
+	}, {
+		name:        "SOURCE_URL"
+		type:        "string"
+		description: "git repo"
+	}, {
+		name:        "SOURCE_SUBPATH"
+		type:        "string"
+		default:     "."
+		description: "path within git repo"
+	}, {
+		name:        "SOURCE_REFERENCE"
+		type:        "string"
+		description: "git commit branch, or tag"
 	}, {
 		name:        "ARGS"
 		type:        "array"
@@ -19,16 +33,17 @@ frsca: pipeline: "pipeline-go-test": spec: {
 		type:        "array"
 		description: "The Arguments to be passed to Trivy command for image scan"
 	}, {
-		name:    "package"
-		type:    "string"
-		default: "\(_GIT_ORG)/example-golang"
+		name:        "package"
+		type:        "string"
+		default:     "."
+		description: "Go package to build and test"
 	}]
 	results: [{
 		name:        "commit-sha"
 		description: "the sha of the commit that was used"
 		value:       "$(tasks.clone.results.commit)"
 	}]
-	description: "Test Pipeline for Trivy"
+	description: "Example Pipeline for Golang"
 	tasks: [{
 		name: "clone"
 		taskRef: name: "git-clone"
@@ -38,10 +53,13 @@ frsca: pipeline: "pipeline-go-test": spec: {
 		}]
 		params: [{
 			name:  "url"
-			value: "$(params.package)"
+			value: "$(params.SOURCE_URL)"
+		}, {
+			name:  "revision"
+			value: "$(params.SOURCE_REFERENCE)"
 		}, {
 			name:  "subdirectory"
-			value: ""
+			value: "$(params.SOURCE_SUBPATH)"
 		}, {
 			name:  "deleteExisting"
 			value: "true"
@@ -141,11 +159,21 @@ frsca: pipeline: "pipeline-go-test": spec: {
 		}]
 	}]
 }
-frsca: pipelineRun: "pipelinerun-go-test-": {
-	spec: {
+
+frsca: trigger: "example-golang": {
+	pipelineRun: spec: {
 		params: [{
 			name:  "image"
-			value: _APP_IMAGE
+			value: "\(_APP_IMAGE):$(tt.params.gitrevision)"
+		}, {
+			name:  "SOURCE_URL"
+			value: "\(_GIT_ORG)/example-golang"
+		}, {
+			name:  "SOURCE_SUBPATH"
+			value: "."
+		}, {
+      name: "SOURCE_REFERENCE"
+      value: "$(tt.params.gitrevision)"
 		}, {
 			name: "ARGS"
 			value: [
@@ -161,7 +189,7 @@ frsca: pipelineRun: "pipelinerun-go-test-": {
 				"0",
 			]
 		}]
-		pipelineRef: name: "pipeline-go-test"
+		pipelineRef: name: "example-golang"
 		timeout: "1h0m0s"
 		workspaces: [{
 			name: "pipeline-pvc"

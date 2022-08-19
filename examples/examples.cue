@@ -52,6 +52,22 @@ frsca: pipelineRun: [Name=_]: spec: workspaces: [{
 	persistentVolumeClaim: claimName: "\(Name)source-ws-pvc"
 }, ...]
 
+// same PVC settings for pipelineRuns within a triggerTemplate
+for name, tt in frsca.triggerTemplate {
+	frsca: persistentVolumeClaim: "\(name)-source-ws-pvc": {
+		spec: {
+			accessModes: ["ReadWriteOnce"]
+			resources: requests: storage: "500Mi"
+		}
+	}
+}
+frsca: triggerTemplate: [Name=_]: spec: resourcetemplates: [{
+	spec: workspaces: [{
+		name: *"\(Name)-ws" | string
+		persistentVolumeClaim: claimName: "\(Name)-source-ws-pvc"
+	}, ...]
+}]
+
 frsca: configMap: "grype-config-map": {
 	data: ".grype.yaml": """
 		ignore:

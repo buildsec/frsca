@@ -1,152 +1,175 @@
 package frsca
 
-_IMAGE: name: "hello-frsca"
+_IMAGE: name: "example-sample"
 
-frsca: pipeline: "build-and-deploy-pipeline": {
-	spec: {
-		params: [{
-			description: "Git repository url"
-			name:        "gitUrl"
-		}, {
-			default:     "src"
-			description: "The path to the build context, used by Kaniko - within the workspace"
-			name:        "pathToContext"
-		}, {
-			description: "The path to the yaml file to deploy within the git source"
-			name:        "pathToYamlFile"
-		}, {
-			description: "Image name including repository"
-			name:        "imageUrl"
-		}, {
-			default:     "latest"
-			description: "Image tag"
-			name:        "imageTag"
-		}]
-		tasks: [{
-			name: "clone-repo"
-			params: [{
-				name:  "url"
-				value: "$(params.gitUrl)"
-			}, {
-				name:  "subdirectory"
-				value: "."
-			}, {
-				name:  "deleteExisting"
-				value: "true"
-			}]
-			taskRef: name: "git-clone"
-			workspaces: [{
-				name:      "output"
-				workspace: "git-source"
-			}]
-		}, {
-			name: "build-and-push-image"
-			params: [{
-				name:  "CONTEXT"
-				value: "$(params.pathToContext)"
-			}, {
-				name:  "IMAGE"
-				value: "$(params.imageUrl):$(params.imageTag)"
-			}]
-			runAfter: [
-				"clone-repo",
-			]
-			taskRef: name: "kaniko"
-			workspaces: [{
-				name:      "source"
-				workspace: "git-source"
-			}]
-		}, {
-			name: "generate-bom"
-			params: [{
-				name:  "image-ref"
-				value: "$(params.imageUrl):$(params.imageTag)"
-			}, {
-				name:  "image-digest"
-				value: "$(tasks.build-and-push-image.results.IMAGE_DIGEST)"
-			}]
-			runAfter: [
-				"build-and-push-image",
-			]
-			taskRef: name: "syft-bom-generator"
-			workspaces: [{
-				name:      "source"
-				workspace: "git-source"
-			}]
-		}, {
-			name: "vulnerability-scan"
-			params: [{
-				name:  "image-ref"
-				value: "$(params.imageUrl):$(params.imageTag)"
-			}, {
-				name:  "image-digest"
-				value: "$(tasks.build-and-push-image.results.IMAGE_DIGEST)"
-			}]
-			runAfter: [
-				"build-and-push-image",
-			]
-			taskRef: name: "grype-vulnerability-scan"
-			workspaces: [{
-				name:      "grype-config"
-				workspace: "grype-config"
-			}]
-		}, {
-			name: "deploy-to-cluster"
-			params: [{
-				name:  "pathToYamlFile"
-				value: "$(params.pathToYamlFile)"
-			}, {
-				name:  "imageUrl"
-				value: "$(params.imageUrl)"
-			}, {
-				name:  "imageTag"
-				value: "$(params.imageTag)"
-			}, {
-				name:  "imageDigest"
-				value: "$(tasks.build-and-push-image.results.IMAGE_DIGEST)"
-			}]
-			runAfter: [
-				"vulnerability-scan",
-			]
-			taskRef: name: "deploy-using-kubectl"
-			workspaces: [{
-				name:      "git-source"
-				workspace: "git-source"
-			}]
-		}]
-		workspaces: [{
-			description: "The git repo"
-			name:        "git-source"
-		}, {
-			name: "grype-config"
-		}]
-	}
-}
-
-frsca: pipelineRun: "frsca-lab-pipelinerun-": spec: {
-	pipelineRef: name: "build-and-deploy-pipeline"
+frsca: pipeline: "example-sample-pipeline": spec: {
 	params: [{
-		name:  "gitUrl"
-		value: "\(_GIT_ORG)/example-sample-pipeline"
+		name:        "image"
+		description: "reference of the image to build"
 	}, {
-		name:  "pathToYamlFile"
-		value: "kubernetes/picalc.yaml"
+		name:        "imageRepo"
+		description: "reference of the image repository"
 	}, {
-		name:  "imageUrl"
-		value: _APP_IMAGE
+		name:        "imageTag"
+		description: "image tag"
 	}, {
-		name:  "imageTag"
-		value: "1h"
+		name:        "SOURCE_URL"
+		type:        "string"
+		description: "git repo"
+	}, {
+		name:        "SOURCE_SUBPATH"
+		type:        "string"
+		default:     "."
+		description: "path within git repo"
+	}, {
+		name:        "SOURCE_REFERENCE"
+		type:        "string"
+		description: "git commit branch, or tag"
+	}, {
+		name:        "pathToContext"
+		description: "The path to the build context, used by Kaniko - within the workspace"
+	}, {
+		description: "The path to the yaml file to deploy within the git source"
+		name:        "pathToYamlFile"
 	}]
-	serviceAccountName: "pipeline-account"
+	tasks: [{
+		name: "clone-repo"
+		params: [{
+			name:  "url"
+			value: "$(params.SOURCE_URL)"
+		}, {
+			name:  "revision"
+			value: "$(params.SOURCE_REFERENCE)"
+		}, {
+			name:  "subdirectory"
+			value: "$(params.SOURCE_SUBPATH)"
+		}, {
+			name:  "deleteExisting"
+			value: "true"
+		}]
+		taskRef: name: "git-clone"
+		workspaces: [{
+			name:      "output"
+			workspace: "git-source"
+		}]
+	}, {
+		name: "build-and-push-image"
+		params: [{
+			name:  "CONTEXT"
+			value: "$(params.pathToContext)"
+		}, {
+			name:  "IMAGE"
+			value: "$(params.image)"
+		}]
+		runAfter: [
+			"clone-repo",
+		]
+		taskRef: name: "kaniko"
+		workspaces: [{
+			name:      "source"
+			workspace: "git-source"
+		}]
+	}, {
+		name: "generate-bom"
+		params: [{
+			name:  "image-ref"
+			value: "$(params.image)"
+		}, {
+			name:  "image-digest"
+			value: "$(tasks.build-and-push-image.results.IMAGE_DIGEST)"
+		}]
+		runAfter: [
+			"build-and-push-image",
+		]
+		taskRef: name: "syft-bom-generator"
+		workspaces: [{
+			name:      "source"
+			workspace: "git-source"
+		}]
+	}, {
+		name: "vulnerability-scan"
+		params: [{
+			name:  "image-ref"
+			value: "$(params.image)"
+		}, {
+			name:  "image-digest"
+			value: "$(tasks.build-and-push-image.results.IMAGE_DIGEST)"
+		}]
+		runAfter: [
+			"build-and-push-image",
+		]
+		taskRef: name: "grype-vulnerability-scan"
+		workspaces: [{
+			name:      "grype-config"
+			workspace: "grype-config"
+		}]
+	}, {
+		name: "deploy-to-cluster"
+		params: [{
+			name:  "pathToYamlFile"
+			value: "$(params.pathToYamlFile)"
+		}, {
+			name:  "image"
+			value: "$(params.image)"
+		}, {
+			name:  "imageDigest"
+			value: "$(tasks.build-and-push-image.results.IMAGE_DIGEST)"
+		}]
+		runAfter: [
+			"vulnerability-scan",
+		]
+		taskRef: name: "deploy-using-kubectl"
+		workspaces: [{
+			name:      "git-source"
+			workspace: "git-source"
+		}]
+	}]
 	workspaces: [{
-		name: "git-source"
+		description: "The git repo"
+		name:        "git-source"
 	}, {
 		name: "grype-config"
-		configMap: {
-			name: "grype-config-map"
-		}
 	}]
+}
+
+frsca: trigger: "example-sample-pipeline": {
+	pipelineRun: spec: {
+		pipelineRef: name: "example-sample-pipeline"
+		params: [{
+			name:  "image"
+			value: "\(_APP_IMAGE):$(tt.params.gitrevision)"
+		}, {
+			name:  "imageRepo"
+			value: _APP_IMAGE
+		}, {
+			name:  "imageTag"
+			value: "$(tt.params.gitrevision)"
+		}, {
+			name:  "SOURCE_URL"
+			value: "\(_GIT_ORG)/example-sample-pipeline"
+		}, {
+			name:  "SOURCE_SUBPATH"
+			value: "."
+		}, {
+      name: "SOURCE_REFERENCE"
+      value: "$(tt.params.gitrevision)"
+		}, {
+			name:  "pathToContext"
+			value: "src"
+		}, {
+			name:  "pathToYamlFile"
+			value: "kubernetes/picalc.yaml"
+		}]
+		serviceAccountName: "pipeline-account"
+		workspaces: [{
+			name: "git-source"
+		}, {
+			name: "grype-config"
+			configMap: {
+				name: "grype-config-map"
+			}
+		}]
+	}
 }
 
 frsca: task: "deploy-using-kubectl": {
@@ -155,12 +178,8 @@ frsca: task: "deploy-using-kubectl": {
 			description: "The path to the yaml file to deploy within the git source"
 			name:        "pathToYamlFile"
 		}, {
-			description: "Image name including repository"
-			name:        "imageUrl"
-		}, {
-			default:     "latest"
-			description: "Image tag"
-			name:        "imageTag"
+			description: "Image name including repository and tag"
+			name:        "image"
 		}, {
 			description: "Digest of the image to be used."
 			name:        "imageDigest"
@@ -169,7 +188,7 @@ frsca: task: "deploy-using-kubectl": {
 			args: [
 				"-i",
 				"-e",
-				"s;__IMAGE__;$(params.imageUrl):$(params.imageTag);g",
+				"s;__IMAGE__;$(params.image);g",
 				"-e",
 				"s;__DIGEST__;$(params.imageDigest);g",
 				"$(workspaces.git-source.path)/$(params.pathToYamlFile)",

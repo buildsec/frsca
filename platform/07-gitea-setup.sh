@@ -33,10 +33,19 @@ gitea_exec <<EOF
   cd "\${tmpdir}"
   git clone "${1}" --mirror .
   git remote add gitea "https://frsca:demo1234@gitea-http:3000/frsca/${2}.git"
-  git push gitea "${3:-main}:${3:-main}"
-  git push gitea --mirror
+  git push gitea "${3:-main}:${3:-main}" --force
+  git push gitea --mirror --force
   cd -
   rm -r "\${tmpdir}"
+  # create hook to trigger the tekton event listener, the id is not predictable, so patching is not possible
+  cur_hooks="\$(curl -sSL "https://gitea-http:3000/api/v1/repos/frsca/${2}/hooks/" -H 'accept: application/json' -u gitea_admin:FRSCAgiteaAdmin)"
+  if [ "\$cur_hooks" = "[]" ]; then
+    curl -u gitea_admin:FRSCAgiteaAdmin \
+      -H 'accept: application/json' \
+      -H 'content-type: application/json' \
+      -d '{"active":true,"type":"gitea","config":{"content_type":"json","url":"http://el-${2}-listener.default.svc.cluster.local:8080"},"events":["push"]}' \
+      https://gitea-http:3000/api/v1/repos/frsca/${2}/hooks
+  fi
 EOF
 }
 

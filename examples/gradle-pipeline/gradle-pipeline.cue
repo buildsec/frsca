@@ -1,8 +1,8 @@
 package frsca
 
-_IMAGE: name: "gradle-build-test-frsca"
+_IMAGE: name: "example-gradle"
 
-frsca: pipeline: "pipeline-gradle-test": spec: {
+frsca: pipeline: "example-gradle": spec: {
 	workspaces: [{
 		name:     "pipeline-pvc"
 		optional: false
@@ -10,6 +10,19 @@ frsca: pipeline: "pipeline-gradle-test": spec: {
 	params: [{
 		name:        "image"
 		description: "reference of the image to build"
+	}, {
+		name:        "SOURCE_URL"
+		type:        "string"
+		description: "git repo"
+	}, {
+		name:        "SOURCE_SUBPATH"
+		type:        "string"
+		default:     "."
+		description: "path within git repo"
+	}, {
+		name:        "SOURCE_REFERENCE"
+		type:        "string"
+		description: "git commit branch, or tag"
 	}, {
 		name:        "ARGS"
 		type:        "array"
@@ -38,10 +51,13 @@ frsca: pipeline: "pipeline-gradle-test": spec: {
 		}]
 		params: [{
 			name:  "url"
-			value: "$(params.package)"
+			value: "$(params.SOURCE_URL)"
+		}, {
+			name:  "revision"
+			value: "$(params.SOURCE_REFERENCE)"
 		}, {
 			name:  "subdirectory"
-			value: ""
+			value: "$(params.SOURCE_SUBPATH)"
 		}, {
 			name:  "deleteExisting"
 			value: "true"
@@ -102,11 +118,21 @@ frsca: pipeline: "pipeline-gradle-test": spec: {
 		}]
 	}]
 }
-frsca: pipelineRun: "pipelinerun-gradle-test-": {
-	spec: {
+
+frsca: trigger: "example-gradle": {
+	pipelineRun: spec: {
 		params: [{
 			name:  "image"
-			value: _APP_IMAGE
+			value: "\(_APP_IMAGE):$(tt.params.gitrevision)"
+		}, {
+			name:  "SOURCE_URL"
+			value: "https://gitea-http.gitea:3000/frsca/example-gradle"
+		}, {
+			name:  "SOURCE_SUBPATH"
+			value: "."
+		}, {
+      name: "SOURCE_REFERENCE"
+      value: "$(tt.params.gitrevision)"
 		}, {
 			name: "ARGS"
 			value: [
@@ -122,7 +148,7 @@ frsca: pipelineRun: "pipelinerun-gradle-test-": {
 				"0",
 			]
 		}]
-		pipelineRef: name: "pipeline-gradle-test"
+		pipelineRef: name: "example-gradle"
 		timeout: "1h0m0s"
 		workspaces: [{
 			name: "pipeline-pvc"

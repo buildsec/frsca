@@ -5,6 +5,7 @@ import (
 	k8sRbacV1 "k8s.io/api/rbac/v1"
 	kyvernoV1 "github.com/kyverno/kyverno/api/kyverno/v1"
 	pipelineV1Beta1 "github.com/tektoncd/pipeline/pkg/apis/pipeline/v1beta1"
+	triggersV1Beta1 "github.com/tektoncd/triggers/pkg/apis/triggers/v1beta1"
 )
 
 frsca: configMap?: [Name=_]: k8sCoreV1.#ConfigMap & {
@@ -76,6 +77,27 @@ frsca: pipelineRun?: [GeneratedName=_]: pipelineV1Beta1.#PipelineRun & {
 	}
 }
 
+frsca: triggerTemplate?: [Name=_]: triggersV1Beta1.#TriggerTemplate & {
+	apiVersion: "triggers.tekton.dev/v1beta1"
+	kind: "TriggerTemplate"
+	metadata: name: *Name | string
+}
+
+frsca: triggerBinding?: [Name=_]: triggersV1Beta1.#TriggerBinding & {
+	apiVersion: "triggers.tekton.dev/v1beta1"
+	kind: "TriggerBinding"
+	metadata: name: *Name | string
+}
+
+frsca: eventListener?: [Name=_]: triggersV1Beta1.#EventListener & {
+	apiVersion: "triggers.tekton.dev/v1beta1"
+	kind: "EventListener"
+	metadata: name: *Name | string
+	spec: {
+		serviceAccountName: *"tekton-triggers-sa" | string
+	}
+}
+
 frsca: persistentVolumeClaim?: [Name=_]: k8sCoreV1.#PersistentVolumeClaim & {
 	apiVersion: "v1"
 	kind:       "PersistentVolumeClaim"
@@ -97,4 +119,60 @@ frsca: clusterPolicy?: [_]: {
             required: *true | bool
         }]
     }]
+}
+
+// watch is used to add a tekton trigger to run a pipeline
+frsca: trigger?: [Name=_]: {
+	pipelineRun: pipelineV1Beta1.#PipelineRun & {
+		apiVersion: "tekton.dev/v1beta1"
+		kind:       "PipelineRun"
+		metadata: {
+			generateName: *"\(Name)-" | string
+			labels: "app.kubernetes.io/description": "PipelineRun"
+		}
+	}
+	let pr=pipelineRun
+	triggerTemplate: triggersV1Beta1.#TriggerTemplate & {
+		apiVersion: "triggers.tekton.dev/v1beta1"
+		kind: "TriggerTemplate"
+		metadata:	name: "\(Name)-triggertemplate"
+		spec: {
+			params: [{
+				name: "gitrevision"
+				description: *"The git revision" | string
+				default: *"master" | string
+			},...]
+			resourcetemplates: [ pipelineV1Beta1.#PipelineRun & pr ]
+		}
+	}
+	triggerBinding: triggersV1Beta1.#TriggerBinding & {
+		apiVersion: "triggers.tekton.dev/v1beta1"
+		kind: "TriggerBinding"
+		metadata: name: "\(Name)-pipelinebinding"
+		spec: params: [{
+			name: "gitrevision"
+			value: "$(body.head_commit.id)"
+		}]
+	}
+	eventListener: triggersV1Beta1.#EventListener & {
+		apiVersion: "triggers.tekton.dev/v1beta1"
+		kind: "EventListener"
+		metadata:	name: "\(Name)-listener"
+		spec: {
+			serviceAccountName: *"tekton-triggers-sa" | string
+			triggers: [{
+				bindings: [{ ref: "\(Name)-pipelinebinding" }]
+				template:	ref: "\(Name)-triggertemplate"
+			}]
+		}
+	}
+}
+
+// assemble the trigger into a trigger template, binding, and event listener
+frsca: {
+	if frsca.trigger != _|_ for name, w in frsca.trigger {
+		triggerTemplate: "\(name)": w.triggerTemplate
+		triggerBinding: "\(name)": w.triggerBinding
+		eventListener: "\(name)": w.eventListener
+	}
 }

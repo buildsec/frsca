@@ -3,6 +3,9 @@ set -euo pipefail
 GIT_ROOT=$(git rev-parse --show-toplevel)
 # Update below if you have a different config.json you want to use.
 DOCKER_CONFIG_JSON=$HOME/.docker/config.json
+if [ ! -f "${DOCKER_CONFIG_JSON}" ]; then
+  DOCKER_CONFIG_JSON="${GIT_ROOT}/resources/docker-config-empty.json"
+fi
 
 # Helm setup from the getting install docs:
 #   https://open-policy-agent.github.io/gatekeeper/website/docs/install/

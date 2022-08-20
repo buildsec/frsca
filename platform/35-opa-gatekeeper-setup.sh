@@ -5,6 +5,9 @@ C_RED='\033[31m'
 C_RESET_ALL='\033[0m'
 # Update below if you have a different config.json you want to use.
 DOCKER_CONFIG_JSON=$HOME/.docker/config.json
+if [ ! -f "${DOCKER_CONFIG_JSON}" ]; then
+  DOCKER_CONFIG_JSON="${GIT_ROOT}/resources/docker-config-empty.json"
+fi
 
 grep -q auths "${DOCKER_CONFIG_JSON}" || { echo -e "${C_RED}No secret available in ${DOCKER_CONFIG_JSON}...exiting Kyverno setup${C_RESET_ALL}"; exit; }
 

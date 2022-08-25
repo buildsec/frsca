@@ -23,6 +23,14 @@ package runtime
 // Encoder writes objects to a serialized form
 #Encoder: _
 
+// MemoryAllocator is responsible for allocating memory.
+// By encapsulating memory allocation into its own interface, we can reuse the memory
+// across many operations in places we know it can significantly improve the performance.
+#MemoryAllocator: _
+
+// EncoderWithAllocator  serializes objects in a way that allows callers to manage any additional memory allocations.
+#EncoderWithAllocator: _
+
 // Decoder attempts to load an object from data.
 #Decoder: _
 
@@ -106,6 +114,12 @@ package runtime
 
 // NestedObjectDecoder is an optional interface that objects may implement to be given
 // an opportunity to decode any nested Objects / RawExtensions during serialization.
+// It is possible for DecodeNestedObjects to return a non-nil error but for the decoding
+// to have succeeded in the case of strict decoding errors (e.g. unknown/duplicate fields).
+// As such it is important for callers of DecodeNestedObjects to check to confirm whether
+// an error is a runtime.StrictDecodingError before short circuiting.
+// Similarly, implementations of DecodeNestedObjects should ensure that a runtime.StrictDecodingError
+// is only returned when the rest of decoding has succeeded.
 #NestedObjectDecoder: _
 
 #ObjectDefaulter: _
@@ -133,8 +147,8 @@ package runtime
 // the resource version from an API object.
 #ResourceVersioner: _
 
-// SelfLinker provides methods for setting and retrieving the SelfLink field of an API object.
-#SelfLinker: _
+// Namer provides methods for retrieving name and namespace of an API object.
+#Namer: _
 
 // Object interface must be supported by all API types registered with Scheme. Since objects in a scheme are
 // expected to be serialized to the wire, the interface an Object must provide to the Scheme allows

@@ -22,7 +22,7 @@ import (
 
 // Volume represents a named volume in a pod that may be accessed by any container in the pod.
 #Volume: {
-	// Volume's name.
+	// name of the volume.
 	// Must be a DNS_LABEL and unique within the pod.
 	// More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
 	name: string @go(Name) @protobuf(1,bytes,opt)
@@ -33,7 +33,7 @@ import (
 // Represents the source of a volume to mount.
 // Only one of its members may be specified.
 #VolumeSource: {
-	// HostPath represents a pre-existing file or directory on the host
+	// hostPath represents a pre-existing file or directory on the host
 	// machine that is directly exposed to the container. This is generally
 	// used for system agents or other privileged things that are allowed
 	// to see the host machine. Most containers will NOT need this.
@@ -44,131 +44,131 @@ import (
 	// +optional
 	hostPath?: null | #HostPathVolumeSource @go(HostPath,*HostPathVolumeSource) @protobuf(1,bytes,opt)
 
-	// EmptyDir represents a temporary directory that shares a pod's lifetime.
+	// emptyDir represents a temporary directory that shares a pod's lifetime.
 	// More info: https://kubernetes.io/docs/concepts/storage/volumes#emptydir
 	// +optional
 	emptyDir?: null | #EmptyDirVolumeSource @go(EmptyDir,*EmptyDirVolumeSource) @protobuf(2,bytes,opt)
 
-	// GCEPersistentDisk represents a GCE Disk resource that is attached to a
+	// gcePersistentDisk represents a GCE Disk resource that is attached to a
 	// kubelet's host machine and then exposed to the pod.
 	// More info: https://kubernetes.io/docs/concepts/storage/volumes#gcepersistentdisk
 	// +optional
 	gcePersistentDisk?: null | #GCEPersistentDiskVolumeSource @go(GCEPersistentDisk,*GCEPersistentDiskVolumeSource) @protobuf(3,bytes,opt)
 
-	// AWSElasticBlockStore represents an AWS Disk resource that is attached to a
+	// awsElasticBlockStore represents an AWS Disk resource that is attached to a
 	// kubelet's host machine and then exposed to the pod.
 	// More info: https://kubernetes.io/docs/concepts/storage/volumes#awselasticblockstore
 	// +optional
 	awsElasticBlockStore?: null | #AWSElasticBlockStoreVolumeSource @go(AWSElasticBlockStore,*AWSElasticBlockStoreVolumeSource) @protobuf(4,bytes,opt)
 
-	// GitRepo represents a git repository at a particular revision.
+	// gitRepo represents a git repository at a particular revision.
 	// DEPRECATED: GitRepo is deprecated. To provision a container with a git repo, mount an
 	// EmptyDir into an InitContainer that clones the repo using git, then mount the EmptyDir
 	// into the Pod's container.
 	// +optional
 	gitRepo?: null | #GitRepoVolumeSource @go(GitRepo,*GitRepoVolumeSource) @protobuf(5,bytes,opt)
 
-	// Secret represents a secret that should populate this volume.
+	// secret represents a secret that should populate this volume.
 	// More info: https://kubernetes.io/docs/concepts/storage/volumes#secret
 	// +optional
 	secret?: null | #SecretVolumeSource @go(Secret,*SecretVolumeSource) @protobuf(6,bytes,opt)
 
-	// NFS represents an NFS mount on the host that shares a pod's lifetime
+	// nfs represents an NFS mount on the host that shares a pod's lifetime
 	// More info: https://kubernetes.io/docs/concepts/storage/volumes#nfs
 	// +optional
 	nfs?: null | #NFSVolumeSource @go(NFS,*NFSVolumeSource) @protobuf(7,bytes,opt)
 
-	// ISCSI represents an ISCSI Disk resource that is attached to a
+	// iscsi represents an ISCSI Disk resource that is attached to a
 	// kubelet's host machine and then exposed to the pod.
 	// More info: https://examples.k8s.io/volumes/iscsi/README.md
 	// +optional
 	iscsi?: null | #ISCSIVolumeSource @go(ISCSI,*ISCSIVolumeSource) @protobuf(8,bytes,opt)
 
-	// Glusterfs represents a Glusterfs mount on the host that shares a pod's lifetime.
+	// glusterfs represents a Glusterfs mount on the host that shares a pod's lifetime.
 	// More info: https://examples.k8s.io/volumes/glusterfs/README.md
 	// +optional
 	glusterfs?: null | #GlusterfsVolumeSource @go(Glusterfs,*GlusterfsVolumeSource) @protobuf(9,bytes,opt)
 
-	// PersistentVolumeClaimVolumeSource represents a reference to a
+	// persistentVolumeClaimVolumeSource represents a reference to a
 	// PersistentVolumeClaim in the same namespace.
 	// More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#persistentvolumeclaims
 	// +optional
 	persistentVolumeClaim?: null | #PersistentVolumeClaimVolumeSource @go(PersistentVolumeClaim,*PersistentVolumeClaimVolumeSource) @protobuf(10,bytes,opt)
 
-	// RBD represents a Rados Block Device mount on the host that shares a pod's lifetime.
+	// rbd represents a Rados Block Device mount on the host that shares a pod's lifetime.
 	// More info: https://examples.k8s.io/volumes/rbd/README.md
 	// +optional
 	rbd?: null | #RBDVolumeSource @go(RBD,*RBDVolumeSource) @protobuf(11,bytes,opt)
 
-	// FlexVolume represents a generic volume resource that is
+	// flexVolume represents a generic volume resource that is
 	// provisioned/attached using an exec based plugin.
 	// +optional
 	flexVolume?: null | #FlexVolumeSource @go(FlexVolume,*FlexVolumeSource) @protobuf(12,bytes,opt)
 
-	// Cinder represents a cinder volume attached and mounted on kubelets host machine.
+	// cinder represents a cinder volume attached and mounted on kubelets host machine.
 	// More info: https://examples.k8s.io/mysql-cinder-pd/README.md
 	// +optional
 	cinder?: null | #CinderVolumeSource @go(Cinder,*CinderVolumeSource) @protobuf(13,bytes,opt)
 
-	// CephFS represents a Ceph FS mount on the host that shares a pod's lifetime
+	// cephFS represents a Ceph FS mount on the host that shares a pod's lifetime
 	// +optional
 	cephfs?: null | #CephFSVolumeSource @go(CephFS,*CephFSVolumeSource) @protobuf(14,bytes,opt)
 
-	// Flocker represents a Flocker volume attached to a kubelet's host machine. This depends on the Flocker control service being running
+	// flocker represents a Flocker volume attached to a kubelet's host machine. This depends on the Flocker control service being running
 	// +optional
 	flocker?: null | #FlockerVolumeSource @go(Flocker,*FlockerVolumeSource) @protobuf(15,bytes,opt)
 
-	// DownwardAPI represents downward API about the pod that should populate this volume
+	// downwardAPI represents downward API about the pod that should populate this volume
 	// +optional
 	downwardAPI?: null | #DownwardAPIVolumeSource @go(DownwardAPI,*DownwardAPIVolumeSource) @protobuf(16,bytes,opt)
 
-	// FC represents a Fibre Channel resource that is attached to a kubelet's host machine and then exposed to the pod.
+	// fc represents a Fibre Channel resource that is attached to a kubelet's host machine and then exposed to the pod.
 	// +optional
 	fc?: null | #FCVolumeSource @go(FC,*FCVolumeSource) @protobuf(17,bytes,opt)
 
-	// AzureFile represents an Azure File Service mount on the host and bind mount to the pod.
+	// azureFile represents an Azure File Service mount on the host and bind mount to the pod.
 	// +optional
 	azureFile?: null | #AzureFileVolumeSource @go(AzureFile,*AzureFileVolumeSource) @protobuf(18,bytes,opt)
 
-	// ConfigMap represents a configMap that should populate this volume
+	// configMap represents a configMap that should populate this volume
 	// +optional
 	configMap?: null | #ConfigMapVolumeSource @go(ConfigMap,*ConfigMapVolumeSource) @protobuf(19,bytes,opt)
 
-	// VsphereVolume represents a vSphere volume attached and mounted on kubelets host machine
+	// vsphereVolume represents a vSphere volume attached and mounted on kubelets host machine
 	// +optional
 	vsphereVolume?: null | #VsphereVirtualDiskVolumeSource @go(VsphereVolume,*VsphereVirtualDiskVolumeSource) @protobuf(20,bytes,opt)
 
-	// Quobyte represents a Quobyte mount on the host that shares a pod's lifetime
+	// quobyte represents a Quobyte mount on the host that shares a pod's lifetime
 	// +optional
 	quobyte?: null | #QuobyteVolumeSource @go(Quobyte,*QuobyteVolumeSource) @protobuf(21,bytes,opt)
 
-	// AzureDisk represents an Azure Data Disk mount on the host and bind mount to the pod.
+	// azureDisk represents an Azure Data Disk mount on the host and bind mount to the pod.
 	// +optional
 	azureDisk?: null | #AzureDiskVolumeSource @go(AzureDisk,*AzureDiskVolumeSource) @protobuf(22,bytes,opt)
 
-	// PhotonPersistentDisk represents a PhotonController persistent disk attached and mounted on kubelets host machine
+	// photonPersistentDisk represents a PhotonController persistent disk attached and mounted on kubelets host machine
 	photonPersistentDisk?: null | #PhotonPersistentDiskVolumeSource @go(PhotonPersistentDisk,*PhotonPersistentDiskVolumeSource) @protobuf(23,bytes,opt)
 
-	// Items for all in one resources secrets, configmaps, and downward API
+	// projected items for all in one resources secrets, configmaps, and downward API
 	projected?: null | #ProjectedVolumeSource @go(Projected,*ProjectedVolumeSource) @protobuf(26,bytes,opt)
 
-	// PortworxVolume represents a portworx volume attached and mounted on kubelets host machine
+	// portworxVolume represents a portworx volume attached and mounted on kubelets host machine
 	// +optional
 	portworxVolume?: null | #PortworxVolumeSource @go(PortworxVolume,*PortworxVolumeSource) @protobuf(24,bytes,opt)
 
-	// ScaleIO represents a ScaleIO persistent volume attached and mounted on Kubernetes nodes.
+	// scaleIO represents a ScaleIO persistent volume attached and mounted on Kubernetes nodes.
 	// +optional
 	scaleIO?: null | #ScaleIOVolumeSource @go(ScaleIO,*ScaleIOVolumeSource) @protobuf(25,bytes,opt)
 
-	// StorageOS represents a StorageOS volume attached and mounted on Kubernetes nodes.
+	// storageOS represents a StorageOS volume attached and mounted on Kubernetes nodes.
 	// +optional
 	storageos?: null | #StorageOSVolumeSource @go(StorageOS,*StorageOSVolumeSource) @protobuf(27,bytes,opt)
 
-	// CSI (Container Storage Interface) represents ephemeral storage that is handled by certain external CSI drivers (Beta feature).
+	// csi (Container Storage Interface) represents ephemeral storage that is handled by certain external CSI drivers (Beta feature).
 	// +optional
 	csi?: null | #CSIVolumeSource @go(CSI,*CSIVolumeSource) @protobuf(28,bytes,opt)
 
-	// Ephemeral represents a volume that is handled by a cluster storage driver.
+	// ephemeral represents a volume that is handled by a cluster storage driver.
 	// The volume's lifecycle is tied to the pod that defines it - it will be created before the pod starts,
 	// and deleted when the pod is removed.
 	//
@@ -193,9 +193,6 @@ import (
 	// A pod can use both types of ephemeral volumes and
 	// persistent volumes at the same time.
 	//
-	// This is a beta feature and only available when the GenericEphemeralVolume
-	// feature gate is enabled.
-	//
 	// +optional
 	ephemeral?: null | #EphemeralVolumeSource @go(Ephemeral,*EphemeralVolumeSource) @protobuf(29,bytes,opt)
 }
@@ -205,11 +202,11 @@ import (
 // PersistentVolumeClaimVolumeSource is, essentially, a wrapper around another
 // type of volume that is owned by someone else (the system).
 #PersistentVolumeClaimVolumeSource: {
-	// ClaimName is the name of a PersistentVolumeClaim in the same namespace as the pod using this volume.
+	// claimName is the name of a PersistentVolumeClaim in the same namespace as the pod using this volume.
 	// More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#persistentvolumeclaims
 	claimName: string @go(ClaimName) @protobuf(1,bytes,opt)
 
-	// Will force the ReadOnly setting in VolumeMounts.
+	// readOnly Will force the ReadOnly setting in VolumeMounts.
 	// Default false.
 	// +optional
 	readOnly?: bool @go(ReadOnly) @protobuf(2,varint,opt)
@@ -218,19 +215,19 @@ import (
 // PersistentVolumeSource is similar to VolumeSource but meant for the
 // administrator who creates PVs. Exactly one of its members must be set.
 #PersistentVolumeSource: {
-	// GCEPersistentDisk represents a GCE Disk resource that is attached to a
+	// gcePersistentDisk represents a GCE Disk resource that is attached to a
 	// kubelet's host machine and then exposed to the pod. Provisioned by an admin.
 	// More info: https://kubernetes.io/docs/concepts/storage/volumes#gcepersistentdisk
 	// +optional
 	gcePersistentDisk?: null | #GCEPersistentDiskVolumeSource @go(GCEPersistentDisk,*GCEPersistentDiskVolumeSource) @protobuf(1,bytes,opt)
 
-	// AWSElasticBlockStore represents an AWS Disk resource that is attached to a
+	// awsElasticBlockStore represents an AWS Disk resource that is attached to a
 	// kubelet's host machine and then exposed to the pod.
 	// More info: https://kubernetes.io/docs/concepts/storage/volumes#awselasticblockstore
 	// +optional
 	awsElasticBlockStore?: null | #AWSElasticBlockStoreVolumeSource @go(AWSElasticBlockStore,*AWSElasticBlockStoreVolumeSource) @protobuf(2,bytes,opt)
 
-	// HostPath represents a directory on the host.
+	// hostPath represents a directory on the host.
 	// Provisioned by a developer or tester.
 	// This is useful for single-node development and testing only!
 	// On-host storage is not supported in any way and WILL NOT WORK in a multi-node cluster.
@@ -238,86 +235,86 @@ import (
 	// +optional
 	hostPath?: null | #HostPathVolumeSource @go(HostPath,*HostPathVolumeSource) @protobuf(3,bytes,opt)
 
-	// Glusterfs represents a Glusterfs volume that is attached to a host and
+	// glusterfs represents a Glusterfs volume that is attached to a host and
 	// exposed to the pod. Provisioned by an admin.
 	// More info: https://examples.k8s.io/volumes/glusterfs/README.md
 	// +optional
 	glusterfs?: null | #GlusterfsPersistentVolumeSource @go(Glusterfs,*GlusterfsPersistentVolumeSource) @protobuf(4,bytes,opt)
 
-	// NFS represents an NFS mount on the host. Provisioned by an admin.
+	// nfs represents an NFS mount on the host. Provisioned by an admin.
 	// More info: https://kubernetes.io/docs/concepts/storage/volumes#nfs
 	// +optional
 	nfs?: null | #NFSVolumeSource @go(NFS,*NFSVolumeSource) @protobuf(5,bytes,opt)
 
-	// RBD represents a Rados Block Device mount on the host that shares a pod's lifetime.
+	// rbd represents a Rados Block Device mount on the host that shares a pod's lifetime.
 	// More info: https://examples.k8s.io/volumes/rbd/README.md
 	// +optional
 	rbd?: null | #RBDPersistentVolumeSource @go(RBD,*RBDPersistentVolumeSource) @protobuf(6,bytes,opt)
 
-	// ISCSI represents an ISCSI Disk resource that is attached to a
+	// iscsi represents an ISCSI Disk resource that is attached to a
 	// kubelet's host machine and then exposed to the pod. Provisioned by an admin.
 	// +optional
 	iscsi?: null | #ISCSIPersistentVolumeSource @go(ISCSI,*ISCSIPersistentVolumeSource) @protobuf(7,bytes,opt)
 
-	// Cinder represents a cinder volume attached and mounted on kubelets host machine.
+	// cinder represents a cinder volume attached and mounted on kubelets host machine.
 	// More info: https://examples.k8s.io/mysql-cinder-pd/README.md
 	// +optional
 	cinder?: null | #CinderPersistentVolumeSource @go(Cinder,*CinderPersistentVolumeSource) @protobuf(8,bytes,opt)
 
-	// CephFS represents a Ceph FS mount on the host that shares a pod's lifetime
+	// cephFS represents a Ceph FS mount on the host that shares a pod's lifetime
 	// +optional
 	cephfs?: null | #CephFSPersistentVolumeSource @go(CephFS,*CephFSPersistentVolumeSource) @protobuf(9,bytes,opt)
 
-	// FC represents a Fibre Channel resource that is attached to a kubelet's host machine and then exposed to the pod.
+	// fc represents a Fibre Channel resource that is attached to a kubelet's host machine and then exposed to the pod.
 	// +optional
 	fc?: null | #FCVolumeSource @go(FC,*FCVolumeSource) @protobuf(10,bytes,opt)
 
-	// Flocker represents a Flocker volume attached to a kubelet's host machine and exposed to the pod for its usage. This depends on the Flocker control service being running
+	// flocker represents a Flocker volume attached to a kubelet's host machine and exposed to the pod for its usage. This depends on the Flocker control service being running
 	// +optional
 	flocker?: null | #FlockerVolumeSource @go(Flocker,*FlockerVolumeSource) @protobuf(11,bytes,opt)
 
-	// FlexVolume represents a generic volume resource that is
+	// flexVolume represents a generic volume resource that is
 	// provisioned/attached using an exec based plugin.
 	// +optional
 	flexVolume?: null | #FlexPersistentVolumeSource @go(FlexVolume,*FlexPersistentVolumeSource) @protobuf(12,bytes,opt)
 
-	// AzureFile represents an Azure File Service mount on the host and bind mount to the pod.
+	// azureFile represents an Azure File Service mount on the host and bind mount to the pod.
 	// +optional
 	azureFile?: null | #AzureFilePersistentVolumeSource @go(AzureFile,*AzureFilePersistentVolumeSource) @protobuf(13,bytes,opt)
 
-	// VsphereVolume represents a vSphere volume attached and mounted on kubelets host machine
+	// vsphereVolume represents a vSphere volume attached and mounted on kubelets host machine
 	// +optional
 	vsphereVolume?: null | #VsphereVirtualDiskVolumeSource @go(VsphereVolume,*VsphereVirtualDiskVolumeSource) @protobuf(14,bytes,opt)
 
-	// Quobyte represents a Quobyte mount on the host that shares a pod's lifetime
+	// quobyte represents a Quobyte mount on the host that shares a pod's lifetime
 	// +optional
 	quobyte?: null | #QuobyteVolumeSource @go(Quobyte,*QuobyteVolumeSource) @protobuf(15,bytes,opt)
 
-	// AzureDisk represents an Azure Data Disk mount on the host and bind mount to the pod.
+	// azureDisk represents an Azure Data Disk mount on the host and bind mount to the pod.
 	// +optional
 	azureDisk?: null | #AzureDiskVolumeSource @go(AzureDisk,*AzureDiskVolumeSource) @protobuf(16,bytes,opt)
 
-	// PhotonPersistentDisk represents a PhotonController persistent disk attached and mounted on kubelets host machine
+	// photonPersistentDisk represents a PhotonController persistent disk attached and mounted on kubelets host machine
 	photonPersistentDisk?: null | #PhotonPersistentDiskVolumeSource @go(PhotonPersistentDisk,*PhotonPersistentDiskVolumeSource) @protobuf(17,bytes,opt)
 
-	// PortworxVolume represents a portworx volume attached and mounted on kubelets host machine
+	// portworxVolume represents a portworx volume attached and mounted on kubelets host machine
 	// +optional
 	portworxVolume?: null | #PortworxVolumeSource @go(PortworxVolume,*PortworxVolumeSource) @protobuf(18,bytes,opt)
 
-	// ScaleIO represents a ScaleIO persistent volume attached and mounted on Kubernetes nodes.
+	// scaleIO represents a ScaleIO persistent volume attached and mounted on Kubernetes nodes.
 	// +optional
 	scaleIO?: null | #ScaleIOPersistentVolumeSource @go(ScaleIO,*ScaleIOPersistentVolumeSource) @protobuf(19,bytes,opt)
 
-	// Local represents directly-attached storage with node affinity
+	// local represents directly-attached storage with node affinity
 	// +optional
 	local?: null | #LocalVolumeSource @go(Local,*LocalVolumeSource) @protobuf(20,bytes,opt)
 
-	// StorageOS represents a StorageOS volume that is attached to the kubelet's host machine and mounted into the pod
+	// storageOS represents a StorageOS volume that is attached to the kubelet's host machine and mounted into the pod
 	// More info: https://examples.k8s.io/volumes/storageos/README.md
 	// +optional
 	storageos?: null | #StorageOSPersistentVolumeSource @go(StorageOS,*StorageOSPersistentVolumeSource) @protobuf(21,bytes,opt)
 
-	// CSI represents storage that is handled by an external CSI driver (Beta feature).
+	// csi represents storage that is handled by an external CSI driver (Beta feature).
 	// +optional
 	csi?: null | #CSIPersistentVolumeSource @go(CSI,*CSIPersistentVolumeSource) @protobuf(22,bytes,opt)
 }
@@ -340,13 +337,13 @@ import (
 	// +optional
 	metadata?: metav1.#ObjectMeta @go(ObjectMeta) @protobuf(1,bytes,opt)
 
-	// Spec defines a specification of a persistent volume owned by the cluster.
+	// spec defines a specification of a persistent volume owned by the cluster.
 	// Provisioned by an administrator.
 	// More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#persistent-volumes
 	// +optional
 	spec?: #PersistentVolumeSpec @go(Spec) @protobuf(2,bytes,opt)
 
-	// Status represents the current information/status for the persistent volume.
+	// status represents the current information/status for the persistent volume.
 	// Populated by the system.
 	// Read-only.
 	// More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#persistent-volumes
@@ -356,26 +353,26 @@ import (
 
 // PersistentVolumeSpec is the specification of a persistent volume.
 #PersistentVolumeSpec: {
-	// A description of the persistent volume's resources and capacity.
+	// capacity is the description of the persistent volume's resources and capacity.
 	// More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#capacity
 	// +optional
 	capacity?: #ResourceList @go(Capacity) @protobuf(1,bytes,rep,casttype=ResourceList,castkey=ResourceName)
 
 	#PersistentVolumeSource
 
-	// AccessModes contains all ways the volume can be mounted.
+	// accessModes contains all ways the volume can be mounted.
 	// More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#access-modes
 	// +optional
 	accessModes?: [...#PersistentVolumeAccessMode] @go(AccessModes,[]PersistentVolumeAccessMode) @protobuf(3,bytes,rep,casttype=PersistentVolumeAccessMode)
 
-	// ClaimRef is part of a bi-directional binding between PersistentVolume and PersistentVolumeClaim.
+	// claimRef is part of a bi-directional binding between PersistentVolume and PersistentVolumeClaim.
 	// Expected to be non-nil when bound.
 	// claim.VolumeName is the authoritative bind between PV and PVC.
 	// More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#binding
 	// +optional
 	claimRef?: null | #ObjectReference @go(ClaimRef,*ObjectReference) @protobuf(4,bytes,opt)
 
-	// What happens to a persistent volume when released from its claim.
+	// persistentVolumeReclaimPolicy defines what happens to a persistent volume when released from its claim.
 	// Valid options are Retain (default for manually created PersistentVolumes), Delete (default
 	// for dynamically provisioned PersistentVolumes), and Recycle (deprecated).
 	// Recycle must be supported by the volume plugin underlying this PersistentVolume.
@@ -383,12 +380,12 @@ import (
 	// +optional
 	persistentVolumeReclaimPolicy?: #PersistentVolumeReclaimPolicy @go(PersistentVolumeReclaimPolicy) @protobuf(5,bytes,opt,casttype=PersistentVolumeReclaimPolicy)
 
-	// Name of StorageClass to which this persistent volume belongs. Empty value
+	// storageClassName is the name of StorageClass to which this persistent volume belongs. Empty value
 	// means that this volume does not belong to any StorageClass.
 	// +optional
 	storageClassName?: string @go(StorageClassName) @protobuf(6,bytes,opt)
 
-	// A list of mount options, e.g. ["ro", "soft"]. Not validated - mount will
+	// mountOptions is the list of mount options, e.g. ["ro", "soft"]. Not validated - mount will
 	// simply fail if one is invalid.
 	// More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes/#mount-options
 	// +optional
@@ -399,7 +396,7 @@ import (
 	// +optional
 	volumeMode?: null | #PersistentVolumeMode @go(VolumeMode,*PersistentVolumeMode) @protobuf(8,bytes,opt,casttype=PersistentVolumeMode)
 
-	// NodeAffinity defines constraints that limit what nodes this volume can be accessed from.
+	// nodeAffinity defines constraints that limit what nodes this volume can be accessed from.
 	// This field influences the scheduling of pods that use this volume.
 	// +optional
 	nodeAffinity?: null | #VolumeNodeAffinity @go(NodeAffinity,*VolumeNodeAffinity) @protobuf(9,bytes,opt)
@@ -407,11 +404,12 @@ import (
 
 // VolumeNodeAffinity defines constraints that limit what nodes this volume can be accessed from.
 #VolumeNodeAffinity: {
-	// Required specifies hard node constraints that must be met.
+	// required specifies hard node constraints that must be met.
 	required?: null | #NodeSelector @go(Required,*NodeSelector) @protobuf(1,bytes,opt)
 }
 
 // PersistentVolumeReclaimPolicy describes a policy for end-of-life maintenance of persistent volumes.
+// +enum
 #PersistentVolumeReclaimPolicy: string // #enumPersistentVolumeReclaimPolicy
 
 #enumPersistentVolumeReclaimPolicy:
@@ -432,6 +430,7 @@ import (
 #PersistentVolumeReclaimRetain: #PersistentVolumeReclaimPolicy & "Retain"
 
 // PersistentVolumeMode describes how a volume is intended to be consumed, either Block or Filesystem.
+// +enum
 #PersistentVolumeMode: string // #enumPersistentVolumeMode
 
 #enumPersistentVolumeMode:
@@ -446,16 +445,16 @@ import (
 
 // PersistentVolumeStatus is the current status of a persistent volume.
 #PersistentVolumeStatus: {
-	// Phase indicates if a volume is available, bound to a claim, or released by a claim.
+	// phase indicates if a volume is available, bound to a claim, or released by a claim.
 	// More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#phase
 	// +optional
 	phase?: #PersistentVolumePhase @go(Phase) @protobuf(1,bytes,opt,casttype=PersistentVolumePhase)
 
-	// A human-readable message indicating details about why the volume is in this state.
+	// message is a human-readable message indicating details about why the volume is in this state.
 	// +optional
 	message?: string @go(Message) @protobuf(2,bytes,opt)
 
-	// Reason is a brief CamelCase string that describes any failure and is meant
+	// reason is a brief CamelCase string that describes any failure and is meant
 	// for machine parsing and tidy display in the CLI.
 	// +optional
 	reason?: string @go(Reason) @protobuf(3,bytes,opt)
@@ -470,7 +469,7 @@ import (
 	// +optional
 	metadata?: metav1.#ListMeta @go(ListMeta) @protobuf(1,bytes,opt)
 
-	// List of persistent volumes.
+	// items is a list of persistent volumes.
 	// More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes
 	items: [...#PersistentVolume] @go(Items,[]PersistentVolume) @protobuf(2,bytes,rep)
 }
@@ -484,12 +483,12 @@ import (
 	// +optional
 	metadata?: metav1.#ObjectMeta @go(ObjectMeta) @protobuf(1,bytes,opt)
 
-	// Spec defines the desired characteristics of a volume requested by a pod author.
+	// spec defines the desired characteristics of a volume requested by a pod author.
 	// More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#persistentvolumeclaims
 	// +optional
 	spec?: #PersistentVolumeClaimSpec @go(Spec) @protobuf(2,bytes,opt)
 
-	// Status represents the current information/status of a persistent volume claim.
+	// status represents the current information/status of a persistent volume claim.
 	// Read-only.
 	// More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#persistentvolumeclaims
 	// +optional
@@ -505,7 +504,7 @@ import (
 	// +optional
 	metadata?: metav1.#ListMeta @go(ListMeta) @protobuf(1,bytes,opt)
 
-	// A list of persistent volume claims.
+	// items is a list of persistent volume claims.
 	// More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#persistentvolumeclaims
 	items: [...#PersistentVolumeClaim] @go(Items,[]PersistentVolumeClaim) @protobuf(2,bytes,rep)
 }
@@ -513,25 +512,28 @@ import (
 // PersistentVolumeClaimSpec describes the common attributes of storage devices
 // and allows a Source for provider-specific attributes
 #PersistentVolumeClaimSpec: {
-	// AccessModes contains the desired access modes the volume should have.
+	// accessModes contains the desired access modes the volume should have.
 	// More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#access-modes-1
 	// +optional
 	accessModes?: [...#PersistentVolumeAccessMode] @go(AccessModes,[]PersistentVolumeAccessMode) @protobuf(1,bytes,rep,casttype=PersistentVolumeAccessMode)
 
-	// A label query over volumes to consider for binding.
+	// selector is a label query over volumes to consider for binding.
 	// +optional
 	selector?: null | metav1.#LabelSelector @go(Selector,*metav1.LabelSelector) @protobuf(4,bytes,opt)
 
-	// Resources represents the minimum resources the volume should have.
+	// resources represents the minimum resources the volume should have.
+	// If RecoverVolumeExpansionFailure feature is enabled users are allowed to specify resource requirements
+	// that are lower than previous value but must still be higher than capacity recorded in the
+	// status field of the claim.
 	// More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#resources
 	// +optional
 	resources?: #ResourceRequirements @go(Resources) @protobuf(2,bytes,opt)
 
-	// VolumeName is the binding reference to the PersistentVolume backing this claim.
+	// volumeName is the binding reference to the PersistentVolume backing this claim.
 	// +optional
 	volumeName?: string @go(VolumeName) @protobuf(3,bytes,opt)
 
-	// Name of the StorageClass required by the claim.
+	// storageClassName is the name of the StorageClass required by the claim.
 	// More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#class-1
 	// +optional
 	storageClassName?: null | string @go(StorageClassName,*string) @protobuf(5,bytes,opt)
@@ -541,7 +543,7 @@ import (
 	// +optional
 	volumeMode?: null | #PersistentVolumeMode @go(VolumeMode,*PersistentVolumeMode) @protobuf(6,bytes,opt,casttype=PersistentVolumeMode)
 
-	// This field can be used to specify either:
+	// dataSource field can be used to specify either:
 	// * An existing VolumeSnapshot object (snapshot.storage.k8s.io/VolumeSnapshot)
 	// * An existing PVC (PersistentVolumeClaim)
 	// If the provisioner or an external controller can support the specified data source,
@@ -551,7 +553,7 @@ import (
 	// +optional
 	dataSource?: null | #TypedLocalObjectReference @go(DataSource,*TypedLocalObjectReference) @protobuf(7,bytes,opt)
 
-	// Specifies the object from which to populate the volume with data, if a non-empty
+	// dataSourceRef specifies the object from which to populate the volume with data, if a non-empty
 	// volume is desired. This may be any local object from a non-empty API group (non
 	// core object) or a PersistentVolumeClaim object.
 	// When this field is specified, volume binding will only succeed if the type of
@@ -567,7 +569,7 @@ import (
 	// * While DataSource ignores disallowed values (dropping them), DataSourceRef
 	//   preserves all values, and generates an error if a disallowed value is
 	//   specified.
-	// (Alpha) Using this field requires the AnyVolumeDataSource feature gate to be enabled.
+	// (Beta) Using this field requires the AnyVolumeDataSource feature gate to be enabled.
 	// +optional
 	dataSourceRef?: null | #TypedLocalObjectReference @go(DataSourceRef,*TypedLocalObjectReference) @protobuf(8,bytes,opt)
 }
@@ -585,53 +587,105 @@ import (
 // PersistentVolumeClaimFileSystemResizePending - controller resize is finished and a file system resize is pending on node
 #PersistentVolumeClaimFileSystemResizePending: #PersistentVolumeClaimConditionType & "FileSystemResizePending"
 
+// +enum
+#PersistentVolumeClaimResizeStatus: string // #enumPersistentVolumeClaimResizeStatus
+
+#enumPersistentVolumeClaimResizeStatus:
+	#PersistentVolumeClaimNoExpansionInProgress |
+	#PersistentVolumeClaimControllerExpansionInProgress |
+	#PersistentVolumeClaimControllerExpansionFailed |
+	#PersistentVolumeClaimNodeExpansionPending |
+	#PersistentVolumeClaimNodeExpansionInProgress |
+	#PersistentVolumeClaimNodeExpansionFailed
+
+// When expansion is complete, the empty string is set by resize controller or kubelet.
+#PersistentVolumeClaimNoExpansionInProgress: #PersistentVolumeClaimResizeStatus & ""
+
+// State set when resize controller starts expanding the volume in control-plane
+#PersistentVolumeClaimControllerExpansionInProgress: #PersistentVolumeClaimResizeStatus & "ControllerExpansionInProgress"
+
+// State set when expansion has failed in resize controller with a terminal error.
+// Transient errors such as timeout should not set this status and should leave ResizeStatus
+// unmodified, so as resize controller can resume the volume expansion.
+#PersistentVolumeClaimControllerExpansionFailed: #PersistentVolumeClaimResizeStatus & "ControllerExpansionFailed"
+
+// State set when resize controller has finished expanding the volume but further expansion is needed on the node.
+#PersistentVolumeClaimNodeExpansionPending: #PersistentVolumeClaimResizeStatus & "NodeExpansionPending"
+
+// State set when kubelet starts expanding the volume.
+#PersistentVolumeClaimNodeExpansionInProgress: #PersistentVolumeClaimResizeStatus & "NodeExpansionInProgress"
+
+// State set when expansion has failed in kubelet with a terminal error. Transient errors don't set NodeExpansionFailed.
+#PersistentVolumeClaimNodeExpansionFailed: #PersistentVolumeClaimResizeStatus & "NodeExpansionFailed"
+
 // PersistentVolumeClaimCondition contails details about state of pvc
 #PersistentVolumeClaimCondition: {
 	type:   #PersistentVolumeClaimConditionType @go(Type) @protobuf(1,bytes,opt,casttype=PersistentVolumeClaimConditionType)
 	status: #ConditionStatus                    @go(Status) @protobuf(2,bytes,opt,casttype=ConditionStatus)
 
-	// Last time we probed the condition.
+	// lastProbeTime is the time we probed the condition.
 	// +optional
 	lastProbeTime?: metav1.#Time @go(LastProbeTime) @protobuf(3,bytes,opt)
 
-	// Last time the condition transitioned from one status to another.
+	// lastTransitionTime is the time the condition transitioned from one status to another.
 	// +optional
 	lastTransitionTime?: metav1.#Time @go(LastTransitionTime) @protobuf(4,bytes,opt)
 
-	// Unique, this should be a short, machine understandable string that gives the reason
+	// reason is a unique, this should be a short, machine understandable string that gives the reason
 	// for condition's last transition. If it reports "ResizeStarted" that means the underlying
 	// persistent volume is being resized.
 	// +optional
 	reason?: string @go(Reason) @protobuf(5,bytes,opt)
 
-	// Human-readable message indicating details about last transition.
+	// message is the human-readable message indicating details about last transition.
 	// +optional
 	message?: string @go(Message) @protobuf(6,bytes,opt)
 }
 
 // PersistentVolumeClaimStatus is the current status of a persistent volume claim.
 #PersistentVolumeClaimStatus: {
-	// Phase represents the current phase of PersistentVolumeClaim.
+	// phase represents the current phase of PersistentVolumeClaim.
 	// +optional
 	phase?: #PersistentVolumeClaimPhase @go(Phase) @protobuf(1,bytes,opt,casttype=PersistentVolumeClaimPhase)
 
-	// AccessModes contains the actual access modes the volume backing the PVC has.
+	// accessModes contains the actual access modes the volume backing the PVC has.
 	// More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#access-modes-1
 	// +optional
 	accessModes?: [...#PersistentVolumeAccessMode] @go(AccessModes,[]PersistentVolumeAccessMode) @protobuf(2,bytes,rep,casttype=PersistentVolumeAccessMode)
 
-	// Represents the actual resources of the underlying volume.
+	// capacity represents the actual resources of the underlying volume.
 	// +optional
 	capacity?: #ResourceList @go(Capacity) @protobuf(3,bytes,rep,casttype=ResourceList,castkey=ResourceName)
 
-	// Current Condition of persistent volume claim. If underlying persistent volume is being
+	// conditions is the current Condition of persistent volume claim. If underlying persistent volume is being
 	// resized then the Condition will be set to 'ResizeStarted'.
 	// +optional
 	// +patchMergeKey=type
 	// +patchStrategy=merge
 	conditions?: [...#PersistentVolumeClaimCondition] @go(Conditions,[]PersistentVolumeClaimCondition) @protobuf(4,bytes,rep)
+
+	// allocatedResources is the storage resource within AllocatedResources tracks the capacity allocated to a PVC. It may
+	// be larger than the actual capacity when a volume expansion operation is requested.
+	// For storage quota, the larger value from allocatedResources and PVC.spec.resources is used.
+	// If allocatedResources is not set, PVC.spec.resources alone is used for quota calculation.
+	// If a volume expansion capacity request is lowered, allocatedResources is only
+	// lowered if there are no expansion operations in progress and if the actual volume capacity
+	// is equal or lower than the requested capacity.
+	// This is an alpha field and requires enabling RecoverVolumeExpansionFailure feature.
+	// +featureGate=RecoverVolumeExpansionFailure
+	// +optional
+	allocatedResources?: #ResourceList @go(AllocatedResources) @protobuf(5,bytes,rep,casttype=ResourceList,castkey=ResourceName)
+
+	// resizeStatus stores status of resize operation.
+	// ResizeStatus is not set by default but when expansion is complete resizeStatus is set to empty
+	// string by resize controller or kubelet.
+	// This is an alpha field and requires enabling RecoverVolumeExpansionFailure feature.
+	// +featureGate=RecoverVolumeExpansionFailure
+	// +optional
+	resizeStatus?: null | #PersistentVolumeClaimResizeStatus @go(ResizeStatus,*PersistentVolumeClaimResizeStatus) @protobuf(6,bytes,opt,casttype=PersistentVolumeClaimResizeStatus)
 }
 
+// +enum
 #PersistentVolumeAccessMode: string // #enumPersistentVolumeAccessMode
 
 #enumPersistentVolumeAccessMode:
@@ -653,6 +707,7 @@ import (
 // cannot be used in combination with other access modes
 #ReadWriteOncePod: #PersistentVolumeAccessMode & "ReadWriteOncePod"
 
+// +enum
 #PersistentVolumePhase: string // #enumPersistentVolumePhase
 
 #enumPersistentVolumePhase:
@@ -680,6 +735,7 @@ import (
 // used for PersistentVolumes that failed to be correctly recycled or deleted after being released from a claim
 #VolumeFailed: #PersistentVolumePhase & "Failed"
 
+// +enum
 #PersistentVolumeClaimPhase: string // #enumPersistentVolumeClaimPhase
 
 #enumPersistentVolumeClaimPhase:
@@ -698,6 +754,7 @@ import (
 // volume does not exist any longer and all data on it was lost.
 #ClaimLost: #PersistentVolumeClaimPhase & "Lost"
 
+// +enum
 #HostPathType: string // #enumHostPathType
 
 #enumHostPathType:
@@ -739,12 +796,12 @@ import (
 // Represents a host path mapped into a pod.
 // Host path volumes do not support ownership management or SELinux relabeling.
 #HostPathVolumeSource: {
-	// Path of the directory on the host.
+	// path of the directory on the host.
 	// If the path is a symlink, it will follow the link to the real path.
 	// More info: https://kubernetes.io/docs/concepts/storage/volumes#hostpath
 	path: string @go(Path) @protobuf(1,bytes,opt)
 
-	// Type for HostPath Volume
+	// type for HostPath Volume
 	// Defaults to ""
 	// More info: https://kubernetes.io/docs/concepts/storage/volumes#hostpath
 	// +optional
@@ -754,14 +811,14 @@ import (
 // Represents an empty directory for a pod.
 // Empty directory volumes support ownership management and SELinux relabeling.
 #EmptyDirVolumeSource: {
-	// What type of storage medium should back this directory.
+	// medium represents what type of storage medium should back this directory.
 	// The default is "" which means to use the node's default medium.
 	// Must be an empty string (default) or Memory.
 	// More info: https://kubernetes.io/docs/concepts/storage/volumes#emptydir
 	// +optional
 	medium?: #StorageMedium @go(Medium) @protobuf(1,bytes,opt,casttype=StorageMedium)
 
-	// Total amount of local storage required for this EmptyDir volume.
+	// sizeLimit is the total amount of local storage required for this EmptyDir volume.
 	// The size limit is also applicable for memory medium.
 	// The maximum usage on memory medium EmptyDir would be the minimum value between
 	// the SizeLimit specified here and the sum of memory limits of all containers in a pod.
@@ -774,15 +831,15 @@ import (
 // Represents a Glusterfs mount that lasts the lifetime of a pod.
 // Glusterfs volumes do not support ownership management or SELinux relabeling.
 #GlusterfsVolumeSource: {
-	// EndpointsName is the endpoint name that details Glusterfs topology.
+	// endpoints is the endpoint name that details Glusterfs topology.
 	// More info: https://examples.k8s.io/volumes/glusterfs/README.md#create-a-pod
 	endpoints: string @go(EndpointsName) @protobuf(1,bytes,opt)
 
-	// Path is the Glusterfs volume path.
+	// path is the Glusterfs volume path.
 	// More info: https://examples.k8s.io/volumes/glusterfs/README.md#create-a-pod
 	path: string @go(Path) @protobuf(2,bytes,opt)
 
-	// ReadOnly here will force the Glusterfs volume to be mounted with read-only permissions.
+	// readOnly here will force the Glusterfs volume to be mounted with read-only permissions.
 	// Defaults to false.
 	// More info: https://examples.k8s.io/volumes/glusterfs/README.md#create-a-pod
 	// +optional
@@ -792,21 +849,21 @@ import (
 // Represents a Glusterfs mount that lasts the lifetime of a pod.
 // Glusterfs volumes do not support ownership management or SELinux relabeling.
 #GlusterfsPersistentVolumeSource: {
-	// EndpointsName is the endpoint name that details Glusterfs topology.
+	// endpoints is the endpoint name that details Glusterfs topology.
 	// More info: https://examples.k8s.io/volumes/glusterfs/README.md#create-a-pod
 	endpoints: string @go(EndpointsName) @protobuf(1,bytes,opt)
 
-	// Path is the Glusterfs volume path.
+	// path is the Glusterfs volume path.
 	// More info: https://examples.k8s.io/volumes/glusterfs/README.md#create-a-pod
 	path: string @go(Path) @protobuf(2,bytes,opt)
 
-	// ReadOnly here will force the Glusterfs volume to be mounted with read-only permissions.
+	// readOnly here will force the Glusterfs volume to be mounted with read-only permissions.
 	// Defaults to false.
 	// More info: https://examples.k8s.io/volumes/glusterfs/README.md#create-a-pod
 	// +optional
 	readOnly?: bool @go(ReadOnly) @protobuf(3,varint,opt)
 
-	// EndpointsNamespace is the namespace that contains Glusterfs endpoint.
+	// endpointsNamespace is the namespace that contains Glusterfs endpoint.
 	// If this field is empty, the EndpointNamespace defaults to the same namespace as the bound PVC.
 	// More info: https://examples.k8s.io/volumes/glusterfs/README.md#create-a-pod
 	// +optional
@@ -816,15 +873,15 @@ import (
 // Represents a Rados Block Device mount that lasts the lifetime of a pod.
 // RBD volumes support ownership management and SELinux relabeling.
 #RBDVolumeSource: {
-	// A collection of Ceph monitors.
+	// monitors is a collection of Ceph monitors.
 	// More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
 	monitors: [...string] @go(CephMonitors,[]string) @protobuf(1,bytes,rep)
 
-	// The rados image name.
+	// image is the rados image name.
 	// More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
 	image: string @go(RBDImage) @protobuf(2,bytes,opt)
 
-	// Filesystem type of the volume that you want to mount.
+	// fsType is the filesystem type of the volume that you want to mount.
 	// Tip: Ensure that the filesystem type is supported by the host operating system.
 	// Examples: "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified.
 	// More info: https://kubernetes.io/docs/concepts/storage/volumes#rbd
@@ -832,32 +889,32 @@ import (
 	// +optional
 	fsType?: string @go(FSType) @protobuf(3,bytes,opt)
 
-	// The rados pool name.
+	// pool is the rados pool name.
 	// Default is rbd.
 	// More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
 	// +optional
 	pool?: string @go(RBDPool) @protobuf(4,bytes,opt)
 
-	// The rados user name.
+	// user is the rados user name.
 	// Default is admin.
 	// More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
 	// +optional
 	user?: string @go(RadosUser) @protobuf(5,bytes,opt)
 
-	// Keyring is the path to key ring for RBDUser.
+	// keyring is the path to key ring for RBDUser.
 	// Default is /etc/ceph/keyring.
 	// More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
 	// +optional
 	keyring?: string @go(Keyring) @protobuf(6,bytes,opt)
 
-	// SecretRef is name of the authentication secret for RBDUser. If provided
+	// secretRef is name of the authentication secret for RBDUser. If provided
 	// overrides keyring.
 	// Default is nil.
 	// More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
 	// +optional
 	secretRef?: null | #LocalObjectReference @go(SecretRef,*LocalObjectReference) @protobuf(7,bytes,opt)
 
-	// ReadOnly here will force the ReadOnly setting in VolumeMounts.
+	// readOnly here will force the ReadOnly setting in VolumeMounts.
 	// Defaults to false.
 	// More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
 	// +optional
@@ -867,15 +924,15 @@ import (
 // Represents a Rados Block Device mount that lasts the lifetime of a pod.
 // RBD volumes support ownership management and SELinux relabeling.
 #RBDPersistentVolumeSource: {
-	// A collection of Ceph monitors.
+	// monitors is a collection of Ceph monitors.
 	// More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
 	monitors: [...string] @go(CephMonitors,[]string) @protobuf(1,bytes,rep)
 
-	// The rados image name.
+	// image is the rados image name.
 	// More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
 	image: string @go(RBDImage) @protobuf(2,bytes,opt)
 
-	// Filesystem type of the volume that you want to mount.
+	// fsType is the filesystem type of the volume that you want to mount.
 	// Tip: Ensure that the filesystem type is supported by the host operating system.
 	// Examples: "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified.
 	// More info: https://kubernetes.io/docs/concepts/storage/volumes#rbd
@@ -883,32 +940,32 @@ import (
 	// +optional
 	fsType?: string @go(FSType) @protobuf(3,bytes,opt)
 
-	// The rados pool name.
+	// pool is the rados pool name.
 	// Default is rbd.
 	// More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
 	// +optional
 	pool?: string @go(RBDPool) @protobuf(4,bytes,opt)
 
-	// The rados user name.
+	// user is the rados user name.
 	// Default is admin.
 	// More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
 	// +optional
 	user?: string @go(RadosUser) @protobuf(5,bytes,opt)
 
-	// Keyring is the path to key ring for RBDUser.
+	// keyring is the path to key ring for RBDUser.
 	// Default is /etc/ceph/keyring.
 	// More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
 	// +optional
 	keyring?: string @go(Keyring) @protobuf(6,bytes,opt)
 
-	// SecretRef is name of the authentication secret for RBDUser. If provided
+	// secretRef is name of the authentication secret for RBDUser. If provided
 	// overrides keyring.
 	// Default is nil.
 	// More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
 	// +optional
 	secretRef?: null | #SecretReference @go(SecretRef,*SecretReference) @protobuf(7,bytes,opt)
 
-	// ReadOnly here will force the ReadOnly setting in VolumeMounts.
+	// readOnly here will force the ReadOnly setting in VolumeMounts.
 	// Defaults to false.
 	// More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
 	// +optional
@@ -920,24 +977,24 @@ import (
 // The volume must also be in the same region as the kubelet.
 // Cinder volumes support ownership management and SELinux relabeling.
 #CinderVolumeSource: {
-	// volume id used to identify the volume in cinder.
+	// volumeID used to identify the volume in cinder.
 	// More info: https://examples.k8s.io/mysql-cinder-pd/README.md
 	volumeID: string @go(VolumeID) @protobuf(1,bytes,opt)
 
-	// Filesystem type to mount.
+	// fsType is the filesystem type to mount.
 	// Must be a filesystem type supported by the host operating system.
 	// Examples: "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified.
 	// More info: https://examples.k8s.io/mysql-cinder-pd/README.md
 	// +optional
 	fsType?: string @go(FSType) @protobuf(2,bytes,opt)
 
-	// Optional: Defaults to false (read/write). ReadOnly here will force
+	// readOnly defaults to false (read/write). ReadOnly here will force
 	// the ReadOnly setting in VolumeMounts.
 	// More info: https://examples.k8s.io/mysql-cinder-pd/README.md
 	// +optional
 	readOnly?: bool @go(ReadOnly) @protobuf(3,varint,opt)
 
-	// Optional: points to a secret object containing parameters used to connect
+	// secretRef is optional: points to a secret object containing parameters used to connect
 	// to OpenStack.
 	// +optional
 	secretRef?: null | #LocalObjectReference @go(SecretRef,*LocalObjectReference) @protobuf(4,bytes,opt)
@@ -948,24 +1005,24 @@ import (
 // The volume must also be in the same region as the kubelet.
 // Cinder volumes support ownership management and SELinux relabeling.
 #CinderPersistentVolumeSource: {
-	// volume id used to identify the volume in cinder.
+	// volumeID used to identify the volume in cinder.
 	// More info: https://examples.k8s.io/mysql-cinder-pd/README.md
 	volumeID: string @go(VolumeID) @protobuf(1,bytes,opt)
 
-	// Filesystem type to mount.
+	// fsType Filesystem type to mount.
 	// Must be a filesystem type supported by the host operating system.
 	// Examples: "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified.
 	// More info: https://examples.k8s.io/mysql-cinder-pd/README.md
 	// +optional
 	fsType?: string @go(FSType) @protobuf(2,bytes,opt)
 
-	// Optional: Defaults to false (read/write). ReadOnly here will force
+	// readOnly is Optional: Defaults to false (read/write). ReadOnly here will force
 	// the ReadOnly setting in VolumeMounts.
 	// More info: https://examples.k8s.io/mysql-cinder-pd/README.md
 	// +optional
 	readOnly?: bool @go(ReadOnly) @protobuf(3,varint,opt)
 
-	// Optional: points to a secret object containing parameters used to connect
+	// secretRef is Optional: points to a secret object containing parameters used to connect
 	// to OpenStack.
 	// +optional
 	secretRef?: null | #SecretReference @go(SecretRef,*SecretReference) @protobuf(4,bytes,opt)
@@ -974,30 +1031,30 @@ import (
 // Represents a Ceph Filesystem mount that lasts the lifetime of a pod
 // Cephfs volumes do not support ownership management or SELinux relabeling.
 #CephFSVolumeSource: {
-	// Required: Monitors is a collection of Ceph monitors
+	// monitors is Required: Monitors is a collection of Ceph monitors
 	// More info: https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-it
 	monitors: [...string] @go(Monitors,[]string) @protobuf(1,bytes,rep)
 
-	// Optional: Used as the mounted root, rather than the full Ceph tree, default is /
+	// path is Optional: Used as the mounted root, rather than the full Ceph tree, default is /
 	// +optional
 	path?: string @go(Path) @protobuf(2,bytes,opt)
 
-	// Optional: User is the rados user name, default is admin
+	// user is optional: User is the rados user name, default is admin
 	// More info: https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-it
 	// +optional
 	user?: string @go(User) @protobuf(3,bytes,opt)
 
-	// Optional: SecretFile is the path to key ring for User, default is /etc/ceph/user.secret
+	// secretFile is Optional: SecretFile is the path to key ring for User, default is /etc/ceph/user.secret
 	// More info: https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-it
 	// +optional
 	secretFile?: string @go(SecretFile) @protobuf(4,bytes,opt)
 
-	// Optional: SecretRef is reference to the authentication secret for User, default is empty.
+	// secretRef is Optional: SecretRef is reference to the authentication secret for User, default is empty.
 	// More info: https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-it
 	// +optional
 	secretRef?: null | #LocalObjectReference @go(SecretRef,*LocalObjectReference) @protobuf(5,bytes,opt)
 
-	// Optional: Defaults to false (read/write). ReadOnly here will force
+	// readOnly is Optional: Defaults to false (read/write). ReadOnly here will force
 	// the ReadOnly setting in VolumeMounts.
 	// More info: https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-it
 	// +optional
@@ -1008,11 +1065,11 @@ import (
 // in any namespace
 // +structType=atomic
 #SecretReference: {
-	// Name is unique within a namespace to reference a secret resource.
+	// name is unique within a namespace to reference a secret resource.
 	// +optional
 	name?: string @go(Name) @protobuf(1,bytes,opt)
 
-	// Namespace defines the space within which the secret name must be unique.
+	// namespace defines the space within which the secret name must be unique.
 	// +optional
 	namespace?: string @go(Namespace) @protobuf(2,bytes,opt)
 }
@@ -1020,30 +1077,30 @@ import (
 // Represents a Ceph Filesystem mount that lasts the lifetime of a pod
 // Cephfs volumes do not support ownership management or SELinux relabeling.
 #CephFSPersistentVolumeSource: {
-	// Required: Monitors is a collection of Ceph monitors
+	// monitors is Required: Monitors is a collection of Ceph monitors
 	// More info: https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-it
 	monitors: [...string] @go(Monitors,[]string) @protobuf(1,bytes,rep)
 
-	// Optional: Used as the mounted root, rather than the full Ceph tree, default is /
+	// path is Optional: Used as the mounted root, rather than the full Ceph tree, default is /
 	// +optional
 	path?: string @go(Path) @protobuf(2,bytes,opt)
 
-	// Optional: User is the rados user name, default is admin
+	// user is Optional: User is the rados user name, default is admin
 	// More info: https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-it
 	// +optional
 	user?: string @go(User) @protobuf(3,bytes,opt)
 
-	// Optional: SecretFile is the path to key ring for User, default is /etc/ceph/user.secret
+	// secretFile is Optional: SecretFile is the path to key ring for User, default is /etc/ceph/user.secret
 	// More info: https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-it
 	// +optional
 	secretFile?: string @go(SecretFile) @protobuf(4,bytes,opt)
 
-	// Optional: SecretRef is reference to the authentication secret for User, default is empty.
+	// secretRef is Optional: SecretRef is reference to the authentication secret for User, default is empty.
 	// More info: https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-it
 	// +optional
 	secretRef?: null | #SecretReference @go(SecretRef,*SecretReference) @protobuf(5,bytes,opt)
 
-	// Optional: Defaults to false (read/write). ReadOnly here will force
+	// readOnly is Optional: Defaults to false (read/write). ReadOnly here will force
 	// the ReadOnly setting in VolumeMounts.
 	// More info: https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-it
 	// +optional
@@ -1054,12 +1111,12 @@ import (
 // One and only one of datasetName and datasetUUID should be set.
 // Flocker volumes do not support ownership management or SELinux relabeling.
 #FlockerVolumeSource: {
-	// Name of the dataset stored as metadata -> name on the dataset for Flocker
+	// datasetName is Name of the dataset stored as metadata -> name on the dataset for Flocker
 	// should be considered as deprecated
 	// +optional
 	datasetName?: string @go(DatasetName) @protobuf(1,bytes,opt)
 
-	// UUID of the dataset. This is unique identifier of a Flocker dataset
+	// datasetUUID is the UUID of the dataset. This is unique identifier of a Flocker dataset
 	// +optional
 	datasetUUID?: string @go(DatasetUUID) @protobuf(2,bytes,opt)
 }
@@ -1079,6 +1136,7 @@ import (
 #StorageMediumHugePagesPrefix: #StorageMedium & "HugePages-"
 
 // Protocol defines network protocols supported for things like container ports.
+// +enum
 #Protocol: string // #enumProtocol
 
 #enumProtocol:
@@ -1102,11 +1160,11 @@ import (
 // can only be mounted as read/write once or read-only many times. GCE
 // PDs support ownership management and SELinux relabeling.
 #GCEPersistentDiskVolumeSource: {
-	// Unique name of the PD resource in GCE. Used to identify the disk in GCE.
+	// pdName is unique name of the PD resource in GCE. Used to identify the disk in GCE.
 	// More info: https://kubernetes.io/docs/concepts/storage/volumes#gcepersistentdisk
 	pdName: string @go(PDName) @protobuf(1,bytes,opt)
 
-	// Filesystem type of the volume that you want to mount.
+	// fsType is filesystem type of the volume that you want to mount.
 	// Tip: Ensure that the filesystem type is supported by the host operating system.
 	// Examples: "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified.
 	// More info: https://kubernetes.io/docs/concepts/storage/volumes#gcepersistentdisk
@@ -1114,7 +1172,7 @@ import (
 	// +optional
 	fsType?: string @go(FSType) @protobuf(2,bytes,opt)
 
-	// The partition in the volume that you want to mount.
+	// partition is the partition in the volume that you want to mount.
 	// If omitted, the default is to mount by volume name.
 	// Examples: For volume /dev/sda1, you specify the partition as "1".
 	// Similarly, the volume partition for /dev/sda is "0" (or you can leave the property empty).
@@ -1122,7 +1180,7 @@ import (
 	// +optional
 	partition?: int32 @go(Partition) @protobuf(3,varint,opt)
 
-	// ReadOnly here will force the ReadOnly setting in VolumeMounts.
+	// readOnly here will force the ReadOnly setting in VolumeMounts.
 	// Defaults to false.
 	// More info: https://kubernetes.io/docs/concepts/storage/volumes#gcepersistentdisk
 	// +optional
@@ -1132,30 +1190,30 @@ import (
 // Represents a Quobyte mount that lasts the lifetime of a pod.
 // Quobyte volumes do not support ownership management or SELinux relabeling.
 #QuobyteVolumeSource: {
-	// Registry represents a single or multiple Quobyte Registry services
+	// registry represents a single or multiple Quobyte Registry services
 	// specified as a string as host:port pair (multiple entries are separated with commas)
 	// which acts as the central registry for volumes
 	registry: string @go(Registry) @protobuf(1,bytes,opt)
 
-	// Volume is a string that references an already created Quobyte volume by name.
+	// volume is a string that references an already created Quobyte volume by name.
 	volume: string @go(Volume) @protobuf(2,bytes,opt)
 
-	// ReadOnly here will force the Quobyte volume to be mounted with read-only permissions.
+	// readOnly here will force the Quobyte volume to be mounted with read-only permissions.
 	// Defaults to false.
 	// +optional
 	readOnly?: bool @go(ReadOnly) @protobuf(3,varint,opt)
 
-	// User to map volume access to
+	// user to map volume access to
 	// Defaults to serivceaccount user
 	// +optional
 	user?: string @go(User) @protobuf(4,bytes,opt)
 
-	// Group to map volume access to
+	// group to map volume access to
 	// Default is no group
 	// +optional
 	group?: string @go(Group) @protobuf(5,bytes,opt)
 
-	// Tenant owning the given Quobyte volume in the Backend
+	// tenant owning the given Quobyte volume in the Backend
 	// Used with dynamically provisioned Quobyte volumes, value is set by the plugin
 	// +optional
 	tenant?: string @go(Tenant) @protobuf(6,bytes,opt)
@@ -1164,16 +1222,16 @@ import (
 // FlexPersistentVolumeSource represents a generic persistent volume resource that is
 // provisioned/attached using an exec based plugin.
 #FlexPersistentVolumeSource: {
-	// Driver is the name of the driver to use for this volume.
+	// driver is the name of the driver to use for this volume.
 	driver: string @go(Driver) @protobuf(1,bytes,opt)
 
-	// Filesystem type to mount.
+	// fsType is the Filesystem type to mount.
 	// Must be a filesystem type supported by the host operating system.
 	// Ex. "ext4", "xfs", "ntfs". The default filesystem depends on FlexVolume script.
 	// +optional
 	fsType?: string @go(FSType) @protobuf(2,bytes,opt)
 
-	// Optional: SecretRef is reference to the secret object containing
+	// secretRef is Optional: SecretRef is reference to the secret object containing
 	// sensitive information to pass to the plugin scripts. This may be
 	// empty if no secret object is specified. If the secret object
 	// contains more than one secret, all secrets are passed to the plugin
@@ -1181,12 +1239,12 @@ import (
 	// +optional
 	secretRef?: null | #SecretReference @go(SecretRef,*SecretReference) @protobuf(3,bytes,opt)
 
-	// Optional: Defaults to false (read/write). ReadOnly here will force
+	// readOnly is Optional: defaults to false (read/write). ReadOnly here will force
 	// the ReadOnly setting in VolumeMounts.
 	// +optional
 	readOnly?: bool @go(ReadOnly) @protobuf(4,varint,opt)
 
-	// Optional: Extra command options if any.
+	// options is Optional: this field holds extra command options if any.
 	// +optional
 	options?: {[string]: string} @go(Options,map[string]string) @protobuf(5,bytes,rep)
 }
@@ -1194,16 +1252,16 @@ import (
 // FlexVolume represents a generic volume resource that is
 // provisioned/attached using an exec based plugin.
 #FlexVolumeSource: {
-	// Driver is the name of the driver to use for this volume.
+	// driver is the name of the driver to use for this volume.
 	driver: string @go(Driver) @protobuf(1,bytes,opt)
 
-	// Filesystem type to mount.
+	// fsType is the filesystem type to mount.
 	// Must be a filesystem type supported by the host operating system.
 	// Ex. "ext4", "xfs", "ntfs". The default filesystem depends on FlexVolume script.
 	// +optional
 	fsType?: string @go(FSType) @protobuf(2,bytes,opt)
 
-	// Optional: SecretRef is reference to the secret object containing
+	// secretRef is Optional: secretRef is reference to the secret object containing
 	// sensitive information to pass to the plugin scripts. This may be
 	// empty if no secret object is specified. If the secret object
 	// contains more than one secret, all secrets are passed to the plugin
@@ -1211,12 +1269,12 @@ import (
 	// +optional
 	secretRef?: null | #LocalObjectReference @go(SecretRef,*LocalObjectReference) @protobuf(3,bytes,opt)
 
-	// Optional: Defaults to false (read/write). ReadOnly here will force
+	// readOnly is Optional: defaults to false (read/write). ReadOnly here will force
 	// the ReadOnly setting in VolumeMounts.
 	// +optional
 	readOnly?: bool @go(ReadOnly) @protobuf(4,varint,opt)
 
-	// Optional: Extra command options if any.
+	// options is Optional: this field holds extra command options if any.
 	// +optional
 	options?: {[string]: string} @go(Options,map[string]string) @protobuf(5,bytes,rep)
 }
@@ -1228,11 +1286,11 @@ import (
 // can only be mounted as read/write once. AWS EBS volumes support
 // ownership management and SELinux relabeling.
 #AWSElasticBlockStoreVolumeSource: {
-	// Unique ID of the persistent disk resource in AWS (Amazon EBS volume).
+	// volumeID is unique ID of the persistent disk resource in AWS (Amazon EBS volume).
 	// More info: https://kubernetes.io/docs/concepts/storage/volumes#awselasticblockstore
 	volumeID: string @go(VolumeID) @protobuf(1,bytes,opt)
 
-	// Filesystem type of the volume that you want to mount.
+	// fsType is the filesystem type of the volume that you want to mount.
 	// Tip: Ensure that the filesystem type is supported by the host operating system.
 	// Examples: "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified.
 	// More info: https://kubernetes.io/docs/concepts/storage/volumes#awselasticblockstore
@@ -1240,15 +1298,14 @@ import (
 	// +optional
 	fsType?: string @go(FSType) @protobuf(2,bytes,opt)
 
-	// The partition in the volume that you want to mount.
+	// partition is the partition in the volume that you want to mount.
 	// If omitted, the default is to mount by volume name.
 	// Examples: For volume /dev/sda1, you specify the partition as "1".
 	// Similarly, the volume partition for /dev/sda is "0" (or you can leave the property empty).
 	// +optional
 	partition?: int32 @go(Partition) @protobuf(3,varint,opt)
 
-	// Specify "true" to force and set the ReadOnly property in VolumeMounts to "true".
-	// If omitted, the default is "false".
+	// readOnly value true will force the readOnly setting in VolumeMounts.
 	// More info: https://kubernetes.io/docs/concepts/storage/volumes#awselasticblockstore
 	// +optional
 	readOnly?: bool @go(ReadOnly) @protobuf(4,varint,opt)
@@ -1262,14 +1319,14 @@ import (
 // EmptyDir into an InitContainer that clones the repo using git, then mount the EmptyDir
 // into the Pod's container.
 #GitRepoVolumeSource: {
-	// Repository URL
+	// repository is the URL
 	repository: string @go(Repository) @protobuf(1,bytes,opt)
 
-	// Commit hash for the specified revision.
+	// revision is the commit hash for the specified revision.
 	// +optional
 	revision?: string @go(Revision) @protobuf(2,bytes,opt)
 
-	// Target directory name.
+	// directory is the target directory name.
 	// Must not contain or start with '..'.  If '.' is supplied, the volume directory will be the
 	// git repository.  Otherwise, if specified, the volume will contain the git repository in
 	// the subdirectory with the given name.
@@ -1283,12 +1340,12 @@ import (
 // as files using the keys in the Data field as the file names.
 // Secret volumes support ownership management and SELinux relabeling.
 #SecretVolumeSource: {
-	// Name of the secret in the pod's namespace to use.
+	// secretName is the name of the secret in the pod's namespace to use.
 	// More info: https://kubernetes.io/docs/concepts/storage/volumes#secret
 	// +optional
 	secretName?: string @go(SecretName) @protobuf(1,bytes,opt)
 
-	// If unspecified, each key-value pair in the Data field of the referenced
+	// items If unspecified, each key-value pair in the Data field of the referenced
 	// Secret will be projected into the volume as a file whose name is the
 	// key and content is the value. If specified, the listed keys will be
 	// projected into the specified paths, and unlisted keys will not be
@@ -1298,7 +1355,7 @@ import (
 	// +optional
 	items?: [...#KeyToPath] @go(Items,[]KeyToPath) @protobuf(2,bytes,rep)
 
-	// Optional: mode bits used to set permissions on created files by default.
+	// defaultMode is Optional: mode bits used to set permissions on created files by default.
 	// Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511.
 	// YAML accepts both octal and decimal values, JSON requires decimal values
 	// for mode bits. Defaults to 0644.
@@ -1308,7 +1365,7 @@ import (
 	// +optional
 	defaultMode?: null | int32 @go(DefaultMode,*int32) @protobuf(3,bytes,opt)
 
-	// Specify whether the Secret or its keys must be defined
+	// optional field specify whether the Secret or its keys must be defined
 	// +optional
 	optional?: null | bool @go(Optional,*bool) @protobuf(4,varint,opt)
 }
@@ -1324,7 +1381,7 @@ import (
 #SecretProjection: {
 	#LocalObjectReference
 
-	// If unspecified, each key-value pair in the Data field of the referenced
+	// items if unspecified, each key-value pair in the Data field of the referenced
 	// Secret will be projected into the volume as a file whose name is the
 	// key and content is the value. If specified, the listed keys will be
 	// projected into the specified paths, and unlisted keys will not be
@@ -1334,7 +1391,7 @@ import (
 	// +optional
 	items?: [...#KeyToPath] @go(Items,[]KeyToPath) @protobuf(2,bytes,rep)
 
-	// Specify whether the Secret or its key must be defined
+	// optional field specify whether the Secret or its key must be defined
 	// +optional
 	optional?: null | bool @go(Optional,*bool) @protobuf(4,varint,opt)
 }
@@ -1342,16 +1399,15 @@ import (
 // Represents an NFS mount that lasts the lifetime of a pod.
 // NFS volumes do not support ownership management or SELinux relabeling.
 #NFSVolumeSource: {
-	// Server is the hostname or IP address of the NFS server.
+	// server is the hostname or IP address of the NFS server.
 	// More info: https://kubernetes.io/docs/concepts/storage/volumes#nfs
 	server: string @go(Server) @protobuf(1,bytes,opt)
 
-	// Path that is exported by the NFS server.
+	// path that is exported by the NFS server.
 	// More info: https://kubernetes.io/docs/concepts/storage/volumes#nfs
 	path: string @go(Path) @protobuf(2,bytes,opt)
 
-	// ReadOnly here will force
-	// the NFS export to be mounted with read-only permissions.
+	// readOnly here will force the NFS export to be mounted with read-only permissions.
 	// Defaults to false.
 	// More info: https://kubernetes.io/docs/concepts/storage/volumes#nfs
 	// +optional
@@ -1362,22 +1418,22 @@ import (
 // ISCSI volumes can only be mounted as read/write once.
 // ISCSI volumes support ownership management and SELinux relabeling.
 #ISCSIVolumeSource: {
-	// iSCSI Target Portal. The Portal is either an IP or ip_addr:port if the port
+	// targetPortal is iSCSI Target Portal. The Portal is either an IP or ip_addr:port if the port
 	// is other than default (typically TCP ports 860 and 3260).
 	targetPortal: string @go(TargetPortal) @protobuf(1,bytes,opt)
 
-	// Target iSCSI Qualified Name.
+	// iqn is the target iSCSI Qualified Name.
 	iqn: string @go(IQN) @protobuf(2,bytes,opt)
 
-	// iSCSI Target Lun number.
+	// lun represents iSCSI Target Lun number.
 	lun: int32 @go(Lun) @protobuf(3,varint,opt)
 
-	// iSCSI Interface Name that uses an iSCSI transport.
+	// iscsiInterface is the interface Name that uses an iSCSI transport.
 	// Defaults to 'default' (tcp).
 	// +optional
 	iscsiInterface?: string @go(ISCSIInterface) @protobuf(4,bytes,opt)
 
-	// Filesystem type of the volume that you want to mount.
+	// fsType is the filesystem type of the volume that you want to mount.
 	// Tip: Ensure that the filesystem type is supported by the host operating system.
 	// Examples: "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified.
 	// More info: https://kubernetes.io/docs/concepts/storage/volumes#iscsi
@@ -1385,29 +1441,29 @@ import (
 	// +optional
 	fsType?: string @go(FSType) @protobuf(5,bytes,opt)
 
-	// ReadOnly here will force the ReadOnly setting in VolumeMounts.
+	// readOnly here will force the ReadOnly setting in VolumeMounts.
 	// Defaults to false.
 	// +optional
 	readOnly?: bool @go(ReadOnly) @protobuf(6,varint,opt)
 
-	// iSCSI Target Portal List. The portal is either an IP or ip_addr:port if the port
+	// portals is the iSCSI Target Portal List. The portal is either an IP or ip_addr:port if the port
 	// is other than default (typically TCP ports 860 and 3260).
 	// +optional
 	portals?: [...string] @go(Portals,[]string) @protobuf(7,bytes,opt)
 
-	// whether support iSCSI Discovery CHAP authentication
+	// chapAuthDiscovery defines whether support iSCSI Discovery CHAP authentication
 	// +optional
 	chapAuthDiscovery?: bool @go(DiscoveryCHAPAuth) @protobuf(8,varint,opt)
 
-	// whether support iSCSI Session CHAP authentication
+	// chapAuthSession defines whether support iSCSI Session CHAP authentication
 	// +optional
 	chapAuthSession?: bool @go(SessionCHAPAuth) @protobuf(11,varint,opt)
 
-	// CHAP Secret for iSCSI target and initiator authentication
+	// secretRef is the CHAP Secret for iSCSI target and initiator authentication
 	// +optional
 	secretRef?: null | #LocalObjectReference @go(SecretRef,*LocalObjectReference) @protobuf(10,bytes,opt)
 
-	// Custom iSCSI Initiator Name.
+	// initiatorName is the custom iSCSI Initiator Name.
 	// If initiatorName is specified with iscsiInterface simultaneously, new iSCSI interface
 	// <target portal>:<volume name> will be created for the connection.
 	// +optional
@@ -1418,22 +1474,22 @@ import (
 // ISCSI volumes can only be mounted as read/write once.
 // ISCSI volumes support ownership management and SELinux relabeling.
 #ISCSIPersistentVolumeSource: {
-	// iSCSI Target Portal. The Portal is either an IP or ip_addr:port if the port
+	// targetPortal is iSCSI Target Portal. The Portal is either an IP or ip_addr:port if the port
 	// is other than default (typically TCP ports 860 and 3260).
 	targetPortal: string @go(TargetPortal) @protobuf(1,bytes,opt)
 
-	// Target iSCSI Qualified Name.
+	// iqn is Target iSCSI Qualified Name.
 	iqn: string @go(IQN) @protobuf(2,bytes,opt)
 
-	// iSCSI Target Lun number.
+	// lun is iSCSI Target Lun number.
 	lun: int32 @go(Lun) @protobuf(3,varint,opt)
 
-	// iSCSI Interface Name that uses an iSCSI transport.
+	// iscsiInterface is the interface Name that uses an iSCSI transport.
 	// Defaults to 'default' (tcp).
 	// +optional
 	iscsiInterface?: string @go(ISCSIInterface) @protobuf(4,bytes,opt)
 
-	// Filesystem type of the volume that you want to mount.
+	// fsType is the filesystem type of the volume that you want to mount.
 	// Tip: Ensure that the filesystem type is supported by the host operating system.
 	// Examples: "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified.
 	// More info: https://kubernetes.io/docs/concepts/storage/volumes#iscsi
@@ -1441,29 +1497,29 @@ import (
 	// +optional
 	fsType?: string @go(FSType) @protobuf(5,bytes,opt)
 
-	// ReadOnly here will force the ReadOnly setting in VolumeMounts.
+	// readOnly here will force the ReadOnly setting in VolumeMounts.
 	// Defaults to false.
 	// +optional
 	readOnly?: bool @go(ReadOnly) @protobuf(6,varint,opt)
 
-	// iSCSI Target Portal List. The Portal is either an IP or ip_addr:port if the port
+	// portals is the iSCSI Target Portal List. The Portal is either an IP or ip_addr:port if the port
 	// is other than default (typically TCP ports 860 and 3260).
 	// +optional
 	portals?: [...string] @go(Portals,[]string) @protobuf(7,bytes,opt)
 
-	// whether support iSCSI Discovery CHAP authentication
+	// chapAuthDiscovery defines whether support iSCSI Discovery CHAP authentication
 	// +optional
 	chapAuthDiscovery?: bool @go(DiscoveryCHAPAuth) @protobuf(8,varint,opt)
 
-	// whether support iSCSI Session CHAP authentication
+	// chapAuthSession defines whether support iSCSI Session CHAP authentication
 	// +optional
 	chapAuthSession?: bool @go(SessionCHAPAuth) @protobuf(11,varint,opt)
 
-	// CHAP Secret for iSCSI target and initiator authentication
+	// secretRef is the CHAP Secret for iSCSI target and initiator authentication
 	// +optional
 	secretRef?: null | #SecretReference @go(SecretRef,*SecretReference) @protobuf(10,bytes,opt)
 
-	// Custom iSCSI Initiator Name.
+	// initiatorName is the custom iSCSI Initiator Name.
 	// If initiatorName is specified with iscsiInterface simultaneously, new iSCSI interface
 	// <target portal>:<volume name> will be created for the connection.
 	// +optional
@@ -1474,27 +1530,27 @@ import (
 // Fibre Channel volumes can only be mounted as read/write once.
 // Fibre Channel volumes support ownership management and SELinux relabeling.
 #FCVolumeSource: {
-	// Optional: FC target worldwide names (WWNs)
+	// targetWWNs is Optional: FC target worldwide names (WWNs)
 	// +optional
 	targetWWNs?: [...string] @go(TargetWWNs,[]string) @protobuf(1,bytes,rep)
 
-	// Optional: FC target lun number
+	// lun is Optional: FC target lun number
 	// +optional
 	lun?: null | int32 @go(Lun,*int32) @protobuf(2,varint,opt)
 
-	// Filesystem type to mount.
+	// fsType is the filesystem type to mount.
 	// Must be a filesystem type supported by the host operating system.
 	// Ex. "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified.
 	// TODO: how do we prevent errors in the filesystem from compromising the machine
 	// +optional
 	fsType?: string @go(FSType) @protobuf(3,bytes,opt)
 
-	// Optional: Defaults to false (read/write). ReadOnly here will force
+	// readOnly is Optional: Defaults to false (read/write). ReadOnly here will force
 	// the ReadOnly setting in VolumeMounts.
 	// +optional
 	readOnly?: bool @go(ReadOnly) @protobuf(4,varint,opt)
 
-	// Optional: FC volume world wide identifiers (wwids)
+	// wwids Optional: FC volume world wide identifiers (wwids)
 	// Either wwids or combination of targetWWNs and lun must be set, but not both simultaneously.
 	// +optional
 	wwids?: [...string] @go(WWIDs,[]string) @protobuf(5,bytes,rep)
@@ -1502,13 +1558,13 @@ import (
 
 // AzureFile represents an Azure File Service mount on the host and bind mount to the pod.
 #AzureFileVolumeSource: {
-	// the name of secret that contains Azure Storage Account Name and Key
+	// secretName is the  name of secret that contains Azure Storage Account Name and Key
 	secretName: string @go(SecretName) @protobuf(1,bytes,opt)
 
-	// Share Name
+	// shareName is the azure share Name
 	shareName: string @go(ShareName) @protobuf(2,bytes,opt)
 
-	// Defaults to false (read/write). ReadOnly here will force
+	// readOnly defaults to false (read/write). ReadOnly here will force
 	// the ReadOnly setting in VolumeMounts.
 	// +optional
 	readOnly?: bool @go(ReadOnly) @protobuf(3,varint,opt)
@@ -1516,18 +1572,18 @@ import (
 
 // AzureFile represents an Azure File Service mount on the host and bind mount to the pod.
 #AzureFilePersistentVolumeSource: {
-	// the name of secret that contains Azure Storage Account Name and Key
+	// secretName is the name of secret that contains Azure Storage Account Name and Key
 	secretName: string @go(SecretName) @protobuf(1,bytes,opt)
 
-	// Share Name
+	// shareName is the azure Share Name
 	shareName: string @go(ShareName) @protobuf(2,bytes,opt)
 
-	// Defaults to false (read/write). ReadOnly here will force
+	// readOnly defaults to false (read/write). ReadOnly here will force
 	// the ReadOnly setting in VolumeMounts.
 	// +optional
 	readOnly?: bool @go(ReadOnly) @protobuf(3,varint,opt)
 
-	// the namespace of the secret that contains Azure Storage Account Name and Key
+	// secretNamespace is the namespace of the secret that contains Azure Storage Account Name and Key
 	// default is the same as the Pod
 	// +optional
 	secretNamespace?: null | string @go(SecretNamespace,*string) @protobuf(4,bytes,opt)
@@ -1535,35 +1591,36 @@ import (
 
 // Represents a vSphere volume resource.
 #VsphereVirtualDiskVolumeSource: {
-	// Path that identifies vSphere volume vmdk
+	// volumePath is the path that identifies vSphere volume vmdk
 	volumePath: string @go(VolumePath) @protobuf(1,bytes,opt)
 
-	// Filesystem type to mount.
+	// fsType is filesystem type to mount.
 	// Must be a filesystem type supported by the host operating system.
 	// Ex. "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified.
 	// +optional
 	fsType?: string @go(FSType) @protobuf(2,bytes,opt)
 
-	// Storage Policy Based Management (SPBM) profile name.
+	// storagePolicyName is the storage Policy Based Management (SPBM) profile name.
 	// +optional
 	storagePolicyName?: string @go(StoragePolicyName) @protobuf(3,bytes,opt)
 
-	// Storage Policy Based Management (SPBM) profile ID associated with the StoragePolicyName.
+	// storagePolicyID is the storage Policy Based Management (SPBM) profile ID associated with the StoragePolicyName.
 	// +optional
 	storagePolicyID?: string @go(StoragePolicyID) @protobuf(4,bytes,opt)
 }
 
 // Represents a Photon Controller persistent disk resource.
 #PhotonPersistentDiskVolumeSource: {
-	// ID that identifies Photon Controller persistent disk
+	// pdID is the ID that identifies Photon Controller persistent disk
 	pdID: string @go(PdID) @protobuf(1,bytes,opt)
 
-	// Filesystem type to mount.
+	// fsType is the filesystem type to mount.
 	// Must be a filesystem type supported by the host operating system.
 	// Ex. "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified.
 	fsType?: string @go(FSType) @protobuf(2,bytes,opt)
 }
 
+// +enum
 #AzureDataDiskCachingMode: string // #enumAzureDataDiskCachingMode
 
 #enumAzureDataDiskCachingMode:
@@ -1571,6 +1628,7 @@ import (
 	#AzureDataDiskCachingReadOnly |
 	#AzureDataDiskCachingReadWrite
 
+// +enum
 #AzureDataDiskKind: string // #enumAzureDataDiskKind
 
 #enumAzureDataDiskKind:
@@ -1587,42 +1645,42 @@ import (
 
 // AzureDisk represents an Azure Data Disk mount on the host and bind mount to the pod.
 #AzureDiskVolumeSource: {
-	// The Name of the data disk in the blob storage
+	// diskName is the Name of the data disk in the blob storage
 	diskName: string @go(DiskName) @protobuf(1,bytes,opt)
 
-	// The URI the data disk in the blob storage
+	// diskURI is the URI of data disk in the blob storage
 	diskURI: string @go(DataDiskURI) @protobuf(2,bytes,opt)
 
-	// Host Caching mode: None, Read Only, Read Write.
+	// cachingMode is the Host Caching mode: None, Read Only, Read Write.
 	// +optional
 	cachingMode?: null | #AzureDataDiskCachingMode @go(CachingMode,*AzureDataDiskCachingMode) @protobuf(3,bytes,opt,casttype=AzureDataDiskCachingMode)
 
-	// Filesystem type to mount.
+	// fsType is Filesystem type to mount.
 	// Must be a filesystem type supported by the host operating system.
 	// Ex. "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified.
 	// +optional
 	fsType?: null | string @go(FSType,*string) @protobuf(4,bytes,opt)
 
-	// Defaults to false (read/write). ReadOnly here will force
+	// readOnly Defaults to false (read/write). ReadOnly here will force
 	// the ReadOnly setting in VolumeMounts.
 	// +optional
 	readOnly?: null | bool @go(ReadOnly,*bool) @protobuf(5,varint,opt)
 
-	// Expected values Shared: multiple blob disks per storage account  Dedicated: single blob disk per storage account  Managed: azure managed data disk (only in managed availability set). defaults to shared
+	// kind expected values are Shared: multiple blob disks per storage account  Dedicated: single blob disk per storage account  Managed: azure managed data disk (only in managed availability set). defaults to shared
 	kind?: null | #AzureDataDiskKind @go(Kind,*AzureDataDiskKind) @protobuf(6,bytes,opt,casttype=AzureDataDiskKind)
 }
 
 // PortworxVolumeSource represents a Portworx volume resource.
 #PortworxVolumeSource: {
-	// VolumeID uniquely identifies a Portworx volume
+	// volumeID uniquely identifies a Portworx volume
 	volumeID: string @go(VolumeID) @protobuf(1,bytes,opt)
 
-	// FSType represents the filesystem type to mount
+	// fSType represents the filesystem type to mount
 	// Must be a filesystem type supported by the host operating system.
 	// Ex. "ext4", "xfs". Implicitly inferred to be "ext4" if unspecified.
 	fsType?: string @go(FSType) @protobuf(2,bytes,opt)
 
-	// Defaults to false (read/write). ReadOnly here will force
+	// readOnly defaults to false (read/write). ReadOnly here will force
 	// the ReadOnly setting in VolumeMounts.
 	// +optional
 	readOnly?: bool @go(ReadOnly) @protobuf(3,varint,opt)
@@ -1630,45 +1688,45 @@ import (
 
 // ScaleIOVolumeSource represents a persistent ScaleIO volume
 #ScaleIOVolumeSource: {
-	// The host address of the ScaleIO API Gateway.
+	// gateway is the host address of the ScaleIO API Gateway.
 	gateway: string @go(Gateway) @protobuf(1,bytes,opt)
 
-	// The name of the storage system as configured in ScaleIO.
+	// system is the name of the storage system as configured in ScaleIO.
 	system: string @go(System) @protobuf(2,bytes,opt)
 
-	// SecretRef references to the secret for ScaleIO user and other
+	// secretRef references to the secret for ScaleIO user and other
 	// sensitive information. If this is not provided, Login operation will fail.
 	secretRef?: null | #LocalObjectReference @go(SecretRef,*LocalObjectReference) @protobuf(3,bytes,opt)
 
-	// Flag to enable/disable SSL communication with Gateway, default false
+	// sslEnabled Flag enable/disable SSL communication with Gateway, default false
 	// +optional
 	sslEnabled?: bool @go(SSLEnabled) @protobuf(4,varint,opt)
 
-	// The name of the ScaleIO Protection Domain for the configured storage.
+	// protectionDomain is the name of the ScaleIO Protection Domain for the configured storage.
 	// +optional
 	protectionDomain?: string @go(ProtectionDomain) @protobuf(5,bytes,opt)
 
-	// The ScaleIO Storage Pool associated with the protection domain.
+	// storagePool is the ScaleIO Storage Pool associated with the protection domain.
 	// +optional
 	storagePool?: string @go(StoragePool) @protobuf(6,bytes,opt)
 
-	// Indicates whether the storage for a volume should be ThickProvisioned or ThinProvisioned.
+	// storageMode indicates whether the storage for a volume should be ThickProvisioned or ThinProvisioned.
 	// Default is ThinProvisioned.
 	// +optional
 	storageMode?: string @go(StorageMode) @protobuf(7,bytes,opt)
 
-	// The name of a volume already created in the ScaleIO system
+	// volumeName is the name of a volume already created in the ScaleIO system
 	// that is associated with this volume source.
 	volumeName?: string @go(VolumeName) @protobuf(8,bytes,opt)
 
-	// Filesystem type to mount.
+	// fsType is the filesystem type to mount.
 	// Must be a filesystem type supported by the host operating system.
 	// Ex. "ext4", "xfs", "ntfs".
 	// Default is "xfs".
 	// +optional
 	fsType?: string @go(FSType) @protobuf(9,bytes,opt)
 
-	// Defaults to false (read/write). ReadOnly here will force
+	// readOnly Defaults to false (read/write). ReadOnly here will force
 	// the ReadOnly setting in VolumeMounts.
 	// +optional
 	readOnly?: bool @go(ReadOnly) @protobuf(10,varint,opt)
@@ -1676,45 +1734,45 @@ import (
 
 // ScaleIOPersistentVolumeSource represents a persistent ScaleIO volume
 #ScaleIOPersistentVolumeSource: {
-	// The host address of the ScaleIO API Gateway.
+	// gateway is the host address of the ScaleIO API Gateway.
 	gateway: string @go(Gateway) @protobuf(1,bytes,opt)
 
-	// The name of the storage system as configured in ScaleIO.
+	// system is the name of the storage system as configured in ScaleIO.
 	system: string @go(System) @protobuf(2,bytes,opt)
 
-	// SecretRef references to the secret for ScaleIO user and other
+	// secretRef references to the secret for ScaleIO user and other
 	// sensitive information. If this is not provided, Login operation will fail.
 	secretRef?: null | #SecretReference @go(SecretRef,*SecretReference) @protobuf(3,bytes,opt)
 
-	// Flag to enable/disable SSL communication with Gateway, default false
+	// sslEnabled is the flag to enable/disable SSL communication with Gateway, default false
 	// +optional
 	sslEnabled?: bool @go(SSLEnabled) @protobuf(4,varint,opt)
 
-	// The name of the ScaleIO Protection Domain for the configured storage.
+	// protectionDomain is the name of the ScaleIO Protection Domain for the configured storage.
 	// +optional
 	protectionDomain?: string @go(ProtectionDomain) @protobuf(5,bytes,opt)
 
-	// The ScaleIO Storage Pool associated with the protection domain.
+	// storagePool is the ScaleIO Storage Pool associated with the protection domain.
 	// +optional
 	storagePool?: string @go(StoragePool) @protobuf(6,bytes,opt)
 
-	// Indicates whether the storage for a volume should be ThickProvisioned or ThinProvisioned.
+	// storageMode indicates whether the storage for a volume should be ThickProvisioned or ThinProvisioned.
 	// Default is ThinProvisioned.
 	// +optional
 	storageMode?: string @go(StorageMode) @protobuf(7,bytes,opt)
 
-	// The name of a volume already created in the ScaleIO system
+	// volumeName is the name of a volume already created in the ScaleIO system
 	// that is associated with this volume source.
 	volumeName?: string @go(VolumeName) @protobuf(8,bytes,opt)
 
-	// Filesystem type to mount.
+	// fsType is the filesystem type to mount.
 	// Must be a filesystem type supported by the host operating system.
 	// Ex. "ext4", "xfs", "ntfs".
 	// Default is "xfs"
 	// +optional
 	fsType?: string @go(FSType) @protobuf(9,bytes,opt)
 
-	// Defaults to false (read/write). ReadOnly here will force
+	// readOnly defaults to false (read/write). ReadOnly here will force
 	// the ReadOnly setting in VolumeMounts.
 	// +optional
 	readOnly?: bool @go(ReadOnly) @protobuf(10,varint,opt)
@@ -1722,11 +1780,11 @@ import (
 
 // Represents a StorageOS persistent volume resource.
 #StorageOSVolumeSource: {
-	// VolumeName is the human-readable name of the StorageOS volume.  Volume
+	// volumeName is the human-readable name of the StorageOS volume.  Volume
 	// names are only unique within a namespace.
 	volumeName?: string @go(VolumeName) @protobuf(1,bytes,opt)
 
-	// VolumeNamespace specifies the scope of the volume within StorageOS.  If no
+	// volumeNamespace specifies the scope of the volume within StorageOS.  If no
 	// namespace is specified then the Pod's namespace will be used.  This allows the
 	// Kubernetes name scoping to be mirrored within StorageOS for tighter integration.
 	// Set VolumeName to any name to override the default behaviour.
@@ -1735,18 +1793,18 @@ import (
 	// +optional
 	volumeNamespace?: string @go(VolumeNamespace) @protobuf(2,bytes,opt)
 
-	// Filesystem type to mount.
+	// fsType is the filesystem type to mount.
 	// Must be a filesystem type supported by the host operating system.
 	// Ex. "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified.
 	// +optional
 	fsType?: string @go(FSType) @protobuf(3,bytes,opt)
 
-	// Defaults to false (read/write). ReadOnly here will force
+	// readOnly defaults to false (read/write). ReadOnly here will force
 	// the ReadOnly setting in VolumeMounts.
 	// +optional
 	readOnly?: bool @go(ReadOnly) @protobuf(4,varint,opt)
 
-	// SecretRef specifies the secret to use for obtaining the StorageOS API
+	// secretRef specifies the secret to use for obtaining the StorageOS API
 	// credentials.  If not specified, default values will be attempted.
 	// +optional
 	secretRef?: null | #LocalObjectReference @go(SecretRef,*LocalObjectReference) @protobuf(5,bytes,opt)
@@ -1754,11 +1812,11 @@ import (
 
 // Represents a StorageOS persistent volume resource.
 #StorageOSPersistentVolumeSource: {
-	// VolumeName is the human-readable name of the StorageOS volume.  Volume
+	// volumeName is the human-readable name of the StorageOS volume.  Volume
 	// names are only unique within a namespace.
 	volumeName?: string @go(VolumeName) @protobuf(1,bytes,opt)
 
-	// VolumeNamespace specifies the scope of the volume within StorageOS.  If no
+	// volumeNamespace specifies the scope of the volume within StorageOS.  If no
 	// namespace is specified then the Pod's namespace will be used.  This allows the
 	// Kubernetes name scoping to be mirrored within StorageOS for tighter integration.
 	// Set VolumeName to any name to override the default behaviour.
@@ -1767,18 +1825,18 @@ import (
 	// +optional
 	volumeNamespace?: string @go(VolumeNamespace) @protobuf(2,bytes,opt)
 
-	// Filesystem type to mount.
+	// fsType is the filesystem type to mount.
 	// Must be a filesystem type supported by the host operating system.
 	// Ex. "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified.
 	// +optional
 	fsType?: string @go(FSType) @protobuf(3,bytes,opt)
 
-	// Defaults to false (read/write). ReadOnly here will force
+	// readOnly defaults to false (read/write). ReadOnly here will force
 	// the ReadOnly setting in VolumeMounts.
 	// +optional
 	readOnly?: bool @go(ReadOnly) @protobuf(4,varint,opt)
 
-	// SecretRef specifies the secret to use for obtaining the StorageOS API
+	// secretRef specifies the secret to use for obtaining the StorageOS API
 	// credentials.  If not specified, default values will be attempted.
 	// +optional
 	secretRef?: null | #ObjectReference @go(SecretRef,*ObjectReference) @protobuf(5,bytes,opt)
@@ -1793,7 +1851,7 @@ import (
 #ConfigMapVolumeSource: {
 	#LocalObjectReference
 
-	// If unspecified, each key-value pair in the Data field of the referenced
+	// items if unspecified, each key-value pair in the Data field of the referenced
 	// ConfigMap will be projected into the volume as a file whose name is the
 	// key and content is the value. If specified, the listed keys will be
 	// projected into the specified paths, and unlisted keys will not be
@@ -1803,7 +1861,7 @@ import (
 	// +optional
 	items?: [...#KeyToPath] @go(Items,[]KeyToPath) @protobuf(2,bytes,rep)
 
-	// Optional: mode bits used to set permissions on created files by default.
+	// defaultMode is optional: mode bits used to set permissions on created files by default.
 	// Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511.
 	// YAML accepts both octal and decimal values, JSON requires decimal values for mode bits.
 	// Defaults to 0644.
@@ -1813,7 +1871,7 @@ import (
 	// +optional
 	defaultMode?: null | int32 @go(DefaultMode,*int32) @protobuf(3,varint,opt)
 
-	// Specify whether the ConfigMap or its keys must be defined
+	// optional specify whether the ConfigMap or its keys must be defined
 	// +optional
 	optional?: null | bool @go(Optional,*bool) @protobuf(4,varint,opt)
 }
@@ -1830,7 +1888,7 @@ import (
 #ConfigMapProjection: {
 	#LocalObjectReference
 
-	// If unspecified, each key-value pair in the Data field of the referenced
+	// items if unspecified, each key-value pair in the Data field of the referenced
 	// ConfigMap will be projected into the volume as a file whose name is the
 	// key and content is the value. If specified, the listed keys will be
 	// projected into the specified paths, and unlisted keys will not be
@@ -1840,7 +1898,7 @@ import (
 	// +optional
 	items?: [...#KeyToPath] @go(Items,[]KeyToPath) @protobuf(2,bytes,rep)
 
-	// Specify whether the ConfigMap or its keys must be defined
+	// optional specify whether the ConfigMap or its keys must be defined
 	// +optional
 	optional?: null | bool @go(Optional,*bool) @protobuf(4,varint,opt)
 }
@@ -1850,14 +1908,14 @@ import (
 // the pods runtime filesystem for use against APIs (Kubernetes API Server or
 // otherwise).
 #ServiceAccountTokenProjection: {
-	// Audience is the intended audience of the token. A recipient of a token
+	// audience is the intended audience of the token. A recipient of a token
 	// must identify itself with an identifier specified in the audience of the
 	// token, and otherwise should reject the token. The audience defaults to the
 	// identifier of the apiserver.
 	//+optional
 	audience?: string @go(Audience) @protobuf(1,bytes,rep)
 
-	// ExpirationSeconds is the requested duration of validity of the service
+	// expirationSeconds is the requested duration of validity of the service
 	// account token. As the token approaches expiration, the kubelet volume
 	// plugin will proactively rotate the service account token. The kubelet will
 	// start trying to rotate the token if the token is older than 80 percent of
@@ -1866,18 +1924,18 @@ import (
 	//+optional
 	expirationSeconds?: null | int64 @go(ExpirationSeconds,*int64) @protobuf(2,varint,opt)
 
-	// Path is the path relative to the mount point of the file to project the
+	// path is the path relative to the mount point of the file to project the
 	// token into.
 	path: string @go(Path) @protobuf(3,bytes,opt)
 }
 
 // Represents a projected volume source
 #ProjectedVolumeSource: {
-	// list of volume projections
+	// sources is the list of volume projections
 	// +optional
 	sources: [...#VolumeProjection] @go(Sources,[]VolumeProjection) @protobuf(1,bytes,rep)
 
-	// Mode bits used to set permissions on created files by default.
+	// defaultMode are the mode bits used to set permissions on created files by default.
 	// Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511.
 	// YAML accepts both octal and decimal values, JSON requires decimal values for mode bits.
 	// Directories within the path are not affected by this setting.
@@ -1889,19 +1947,19 @@ import (
 
 // Projection that may be projected along with other supported volume types
 #VolumeProjection: {
-	// information about the secret data to project
+	// secret information about the secret data to project
 	// +optional
 	secret?: null | #SecretProjection @go(Secret,*SecretProjection) @protobuf(1,bytes,opt)
 
-	// information about the downwardAPI data to project
+	// downwardAPI information about the downwardAPI data to project
 	// +optional
 	downwardAPI?: null | #DownwardAPIProjection @go(DownwardAPI,*DownwardAPIProjection) @protobuf(2,bytes,opt)
 
-	// information about the configMap data to project
+	// configMap information about the configMap data to project
 	// +optional
 	configMap?: null | #ConfigMapProjection @go(ConfigMap,*ConfigMapProjection) @protobuf(3,bytes,opt)
 
-	// information about the serviceAccountToken data to project
+	// serviceAccountToken is information about the serviceAccountToken data to project
 	// +optional
 	serviceAccountToken?: null | #ServiceAccountTokenProjection @go(ServiceAccountToken,*ServiceAccountTokenProjection) @protobuf(4,bytes,opt)
 }
@@ -1910,16 +1968,16 @@ import (
 
 // Maps a string key to a path within a volume.
 #KeyToPath: {
-	// The key to project.
+	// key is the key to project.
 	key: string @go(Key) @protobuf(1,bytes,opt)
 
-	// The relative path of the file to map the key to.
+	// path is the relative path of the file to map the key to.
 	// May not be an absolute path.
 	// May not contain the path element '..'.
 	// May not start with the string '..'.
 	path: string @go(Path) @protobuf(2,bytes,opt)
 
-	// Optional: mode bits used to set permissions on this file.
+	// mode is Optional: mode bits used to set permissions on this file.
 	// Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511.
 	// YAML accepts both octal and decimal values, JSON requires decimal values for mode bits.
 	// If not specified, the volume defaultMode will be used.
@@ -1931,45 +1989,44 @@ import (
 
 // Local represents directly-attached storage with node affinity (Beta feature)
 #LocalVolumeSource: {
-	// The full path to the volume on the node.
+	// path of the full path to the volume on the node.
 	// It can be either a directory or block device (disk, partition, ...).
 	path: string @go(Path) @protobuf(1,bytes,opt)
 
-	// Filesystem type to mount.
+	// fsType is the filesystem type to mount.
 	// It applies only when the Path is a block device.
 	// Must be a filesystem type supported by the host operating system.
-	// Ex. "ext4", "xfs", "ntfs". The default value is to auto-select a fileystem if unspecified.
+	// Ex. "ext4", "xfs", "ntfs". The default value is to auto-select a filesystem if unspecified.
 	// +optional
 	fsType?: null | string @go(FSType,*string) @protobuf(2,bytes,opt)
 }
 
 // Represents storage that is managed by an external CSI volume driver (Beta feature)
 #CSIPersistentVolumeSource: {
-	// Driver is the name of the driver to use for this volume.
+	// driver is the name of the driver to use for this volume.
 	// Required.
 	driver: string @go(Driver) @protobuf(1,bytes,opt)
 
-	// VolumeHandle is the unique volume name returned by the CSI volume
+	// volumeHandle is the unique volume name returned by the CSI volume
 	// plugin’s CreateVolume to refer to the volume on all subsequent calls.
 	// Required.
 	volumeHandle: string @go(VolumeHandle) @protobuf(2,bytes,opt)
 
-	// Optional: The value to pass to ControllerPublishVolumeRequest.
+	// readOnly value to pass to ControllerPublishVolumeRequest.
 	// Defaults to false (read/write).
 	// +optional
 	readOnly?: bool @go(ReadOnly) @protobuf(3,varint,opt)
 
-	// Filesystem type to mount.
-	// Must be a filesystem type supported by the host operating system.
+	// fsType to mount. Must be a filesystem type supported by the host operating system.
 	// Ex. "ext4", "xfs", "ntfs".
 	// +optional
 	fsType?: string @go(FSType) @protobuf(4,bytes,opt)
 
-	// Attributes of the volume to publish.
+	// volumeAttributes of the volume to publish.
 	// +optional
 	volumeAttributes?: {[string]: string} @go(VolumeAttributes,map[string]string) @protobuf(5,bytes,rep)
 
-	// ControllerPublishSecretRef is a reference to the secret object containing
+	// controllerPublishSecretRef is a reference to the secret object containing
 	// sensitive information to pass to the CSI driver to complete the CSI
 	// ControllerPublishVolume and ControllerUnpublishVolume calls.
 	// This field is optional, and may be empty if no secret is required. If the
@@ -1977,7 +2034,7 @@ import (
 	// +optional
 	controllerPublishSecretRef?: null | #SecretReference @go(ControllerPublishSecretRef,*SecretReference) @protobuf(6,bytes,opt)
 
-	// NodeStageSecretRef is a reference to the secret object containing sensitive
+	// nodeStageSecretRef is a reference to the secret object containing sensitive
 	// information to pass to the CSI driver to complete the CSI NodeStageVolume
 	// and NodeStageVolume and NodeUnstageVolume calls.
 	// This field is optional, and may be empty if no secret is required. If the
@@ -1985,7 +2042,7 @@ import (
 	// +optional
 	nodeStageSecretRef?: null | #SecretReference @go(NodeStageSecretRef,*SecretReference) @protobuf(7,bytes,opt)
 
-	// NodePublishSecretRef is a reference to the secret object containing
+	// nodePublishSecretRef is a reference to the secret object containing
 	// sensitive information to pass to the CSI driver to complete the CSI
 	// NodePublishVolume and NodeUnpublishVolume calls.
 	// This field is optional, and may be empty if no secret is required. If the
@@ -1993,7 +2050,7 @@ import (
 	// +optional
 	nodePublishSecretRef?: null | #SecretReference @go(NodePublishSecretRef,*SecretReference) @protobuf(8,bytes,opt)
 
-	// ControllerExpandSecretRef is a reference to the secret object containing
+	// controllerExpandSecretRef is a reference to the secret object containing
 	// sensitive information to pass to the CSI driver to complete the CSI
 	// ControllerExpandVolume call.
 	// This is an alpha field and requires enabling ExpandCSIVolumes feature gate.
@@ -2005,27 +2062,27 @@ import (
 
 // Represents a source location of a volume to mount, managed by an external CSI driver
 #CSIVolumeSource: {
-	// Driver is the name of the CSI driver that handles this volume.
+	// driver is the name of the CSI driver that handles this volume.
 	// Consult with your admin for the correct name as registered in the cluster.
 	driver: string @go(Driver) @protobuf(1,bytes,opt)
 
-	// Specifies a read-only configuration for the volume.
+	// readOnly specifies a read-only configuration for the volume.
 	// Defaults to false (read/write).
 	// +optional
 	readOnly?: null | bool @go(ReadOnly,*bool) @protobuf(2,varint,opt)
 
-	// Filesystem type to mount. Ex. "ext4", "xfs", "ntfs".
+	// fsType to mount. Ex. "ext4", "xfs", "ntfs".
 	// If not provided, the empty value is passed to the associated CSI driver
 	// which will determine the default filesystem to apply.
 	// +optional
 	fsType?: null | string @go(FSType,*string) @protobuf(3,bytes,opt)
 
-	// VolumeAttributes stores driver-specific properties that are passed to the CSI
+	// volumeAttributes stores driver-specific properties that are passed to the CSI
 	// driver. Consult your driver's documentation for supported values.
 	// +optional
 	volumeAttributes?: {[string]: string} @go(VolumeAttributes,map[string]string) @protobuf(4,bytes,rep)
 
-	// NodePublishSecretRef is a reference to the secret object containing
+	// nodePublishSecretRef is a reference to the secret object containing
 	// sensitive information to pass to the CSI driver to complete the CSI
 	// NodePublishVolume and NodeUnpublishVolume calls.
 	// This field is optional, and  may be empty if no secret is required. If the
@@ -2142,6 +2199,7 @@ import (
 }
 
 // MountPropagationMode describes mount propagation.
+// +enum
 #MountPropagationMode: string // #enumMountPropagationMode
 
 #enumMountPropagationMode:
@@ -2352,6 +2410,7 @@ import (
 }
 
 // URIScheme identifies the scheme used for connection to a host for Get actions
+// +enum
 #URIScheme: string // #enumURIScheme
 
 #enumURIScheme:
@@ -2376,6 +2435,19 @@ import (
 	host?: string @go(Host) @protobuf(2,bytes,opt)
 }
 
+#GRPCAction: {
+	// Port number of the gRPC service. Number must be in the range 1 to 65535.
+	port: int32 @go(Port) @protobuf(1,bytes,opt)
+
+	// Service is the name of the service to place in the gRPC HealthCheckRequest
+	// (see https://github.com/grpc/grpc/blob/master/doc/health-checking.md).
+	//
+	// If this is not specified, the default behavior is defined by gRPC.
+	// +optional
+	// +default=""
+	service?: null | string @go(Service,*string) @protobuf(2,bytes,opt)
+}
+
 // ExecAction describes a "run in container" action.
 #ExecAction: {
 	// Command is the command line to execute inside the container, the working directory for the
@@ -2390,7 +2462,7 @@ import (
 // Probe describes a health check to be performed against a container to determine whether it is
 // alive or ready to receive traffic.
 #Probe: {
-	#Handler
+	#ProbeHandler
 
 	// Number of seconds after the container has started before liveness probes are initiated.
 	// More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
@@ -2433,6 +2505,7 @@ import (
 }
 
 // PullPolicy describes a policy for if/when to pull a container image
+// +enum
 #PullPolicy: string // #enumPullPolicy
 
 #enumPullPolicy:
@@ -2450,6 +2523,7 @@ import (
 #PullIfNotPresent: #PullPolicy & "IfNotPresent"
 
 // PreemptionPolicy describes a policy for if/when to preempt a pod.
+// +enum
 #PreemptionPolicy: string // #enumPreemptionPolicy
 
 #enumPreemptionPolicy:
@@ -2463,6 +2537,7 @@ import (
 #PreemptNever: #PreemptionPolicy & "Never"
 
 // TerminationMessagePolicy describes how termination messages are retrieved from a container.
+// +enum
 #TerminationMessagePolicy: string // #enumTerminationMessagePolicy
 
 #enumTerminationMessagePolicy:
@@ -2517,7 +2592,7 @@ import (
 	// Cannot be updated.
 	name: string @go(Name) @protobuf(1,bytes,opt)
 
-	// Docker image name.
+	// Container image name.
 	// More info: https://kubernetes.io/docs/concepts/containers/images
 	// This field is optional to allow higher level config management to default or override
 	// container images in workload controllers like Deployments and StatefulSets.
@@ -2525,7 +2600,7 @@ import (
 	image?: string @go(Image) @protobuf(2,bytes,opt)
 
 	// Entrypoint array. Not executed within a shell.
-	// The docker image's ENTRYPOINT is used if this is not provided.
+	// The container image's ENTRYPOINT is used if this is not provided.
 	// Variable references $(VAR_NAME) are expanded using the container's environment. If a variable
 	// cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced
 	// to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. "$$(VAR_NAME)" will
@@ -2536,7 +2611,7 @@ import (
 	command?: [...string] @go(Command,[]string) @protobuf(3,bytes,rep)
 
 	// Arguments to the entrypoint.
-	// The docker image's CMD is used if this is not provided.
+	// The container image's CMD is used if this is not provided.
 	// Variable references $(VAR_NAME) are expanded using the container's environment. If a variable
 	// cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced
 	// to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. "$$(VAR_NAME)" will
@@ -2688,10 +2763,9 @@ import (
 	tty?: bool @go(TTY) @protobuf(18,varint,opt)
 }
 
-// Handler defines a specific action that should be taken
-// TODO: pass structured data to these actions, and document that data here.
-#Handler: {
-	// One and only one of the following should be specified.
+// ProbeHandler defines a specific action that should be taken in a probe.
+// One and only one of the fields must be specified.
+#ProbeHandler: {
 	// Exec specifies the action to take.
 	// +optional
 	exec?: null | #ExecAction @go(Exec,*ExecAction) @protobuf(1,bytes,opt)
@@ -2701,8 +2775,30 @@ import (
 	httpGet?: null | #HTTPGetAction @go(HTTPGet,*HTTPGetAction) @protobuf(2,bytes,opt)
 
 	// TCPSocket specifies an action involving a TCP port.
-	// TCP hooks not yet supported
-	// TODO: implement a realistic TCP lifecycle hook
+	// +optional
+	tcpSocket?: null | #TCPSocketAction @go(TCPSocket,*TCPSocketAction) @protobuf(3,bytes,opt)
+
+	// GRPC specifies an action involving a GRPC port.
+	// This is a beta field and requires enabling GRPCContainerProbe feature gate.
+	// +featureGate=GRPCContainerProbe
+	// +optional
+	grpc?: null | #GRPCAction @go(GRPC,*GRPCAction) @protobuf(4,bytes,opt)
+}
+
+// LifecycleHandler defines a specific action that should be taken in a lifecycle
+// hook. One and only one of the fields, except TCPSocket must be specified.
+#LifecycleHandler: {
+	// Exec specifies the action to take.
+	// +optional
+	exec?: null | #ExecAction @go(Exec,*ExecAction) @protobuf(1,bytes,opt)
+
+	// HTTPGet specifies the http request to perform.
+	// +optional
+	httpGet?: null | #HTTPGetAction @go(HTTPGet,*HTTPGetAction) @protobuf(2,bytes,opt)
+
+	// Deprecated. TCPSocket is NOT supported as a LifecycleHandler and kept
+	// for the backward compatibility. There are no validation of this field and
+	// lifecycle hooks will fail in runtime when tcp handler is specified.
 	// +optional
 	tcpSocket?: null | #TCPSocketAction @go(TCPSocket,*TCPSocketAction) @protobuf(3,bytes,opt)
 }
@@ -2716,20 +2812,19 @@ import (
 	// Other management of the container blocks until the hook completes.
 	// More info: https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/#container-hooks
 	// +optional
-	postStart?: null | #Handler @go(PostStart,*Handler) @protobuf(1,bytes,opt)
+	postStart?: null | #LifecycleHandler @go(PostStart,*LifecycleHandler) @protobuf(1,bytes,opt)
 
 	// PreStop is called immediately before a container is terminated due to an
 	// API request or management event such as liveness/startup probe failure,
 	// preemption, resource contention, etc. The handler is not called if the
-	// container crashes or exits. The reason for termination is passed to the
-	// handler. The Pod's termination grace period countdown begins before the
-	// PreStop hooked is executed. Regardless of the outcome of the handler, the
+	// container crashes or exits. The Pod's termination grace period countdown begins before the
+	// PreStop hook is executed. Regardless of the outcome of the handler, the
 	// container will eventually terminate within the Pod's termination grace
-	// period. Other management of the container blocks until the hook completes
+	// period (unless delayed by finalizers). Other management of the container blocks until the hook completes
 	// or until the termination grace period is reached.
 	// More info: https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/#container-hooks
 	// +optional
-	preStop?: null | #Handler @go(PreStop,*Handler) @protobuf(2,bytes,opt)
+	preStop?: null | #LifecycleHandler @go(PreStop,*LifecycleHandler) @protobuf(2,bytes,opt)
 }
 
 #ConditionStatus: string // #enumConditionStatus
@@ -2786,7 +2881,7 @@ import (
 	// +optional
 	finishedAt?: metav1.#Time @go(FinishedAt) @protobuf(6,bytes,opt)
 
-	// Container's ID in the format 'docker://<container_id>'
+	// Container's ID in the format '<type>://<container_id>'
 	// +optional
 	containerID?: string @go(ContainerID) @protobuf(7,bytes,opt)
 }
@@ -2825,21 +2920,17 @@ import (
 	// Specifies whether the container has passed its readiness probe.
 	ready: bool @go(Ready) @protobuf(4,varint,opt)
 
-	// The number of times the container has been restarted, currently based on
-	// the number of dead containers that have not yet been removed.
-	// Note that this is calculated from dead containers. But those containers are subject to
-	// garbage collection. This value will get capped at 5 by GC.
+	// The number of times the container has been restarted.
 	restartCount: int32 @go(RestartCount) @protobuf(5,varint,opt)
 
 	// The image the container is running.
-	// More info: https://kubernetes.io/docs/concepts/containers/images
-	// TODO(dchen1107): Which image the container is running with?
+	// More info: https://kubernetes.io/docs/concepts/containers/images.
 	image: string @go(Image) @protobuf(6,bytes,opt)
 
 	// ImageID of the container's image.
 	imageID: string @go(ImageID) @protobuf(7,bytes,opt)
 
-	// Container's ID in the format 'docker://<container_id>'.
+	// Container's ID in the format '<type>://<container_id>'.
 	// +optional
 	containerID?: string @go(ContainerID) @protobuf(8,bytes,opt)
 
@@ -2852,6 +2943,7 @@ import (
 }
 
 // PodPhase is a label for the condition of a pod at the current time.
+// +enum
 #PodPhase: string // #enumPodPhase
 
 #enumPodPhase:
@@ -2941,6 +3033,7 @@ import (
 // Only one of the following restart policies may be specified.
 // If none of the following policies is specified, the default one
 // is RestartPolicyAlways.
+// +enum
 #RestartPolicy: string // #enumRestartPolicy
 
 #enumRestartPolicy:
@@ -2953,6 +3046,7 @@ import (
 #RestartPolicyNever:     #RestartPolicy & "Never"
 
 // DNSPolicy defines how a pod's DNS will be configured.
+// +enum
 #DNSPolicy: string // #enumDNSPolicy
 
 #enumDNSPolicy:
@@ -3028,6 +3122,7 @@ import (
 
 // A node selector operator is the set of operators that can be used in
 // a node selector requirement.
+// +enum
 #NodeSelectorOperator: string // #enumNodeSelectorOperator
 
 #enumNodeSelectorOperator:
@@ -3157,7 +3252,7 @@ import (
 	// namespaces specifies a static list of namespace names that the term applies to.
 	// The term is applied to the union of the namespaces listed in this field
 	// and the ones selected by namespaceSelector.
-	// null or empty namespaces list and null namespaceSelector means "this pod's namespace"
+	// null or empty namespaces list and null namespaceSelector means "this pod's namespace".
 	// +optional
 	namespaces?: [...string] @go(Namespaces,[]string) @protobuf(2,bytes,rep)
 
@@ -3173,7 +3268,6 @@ import (
 	// and the ones listed in the namespaces field.
 	// null selector and null or empty namespaces list means "this pod's namespace".
 	// An empty selector ({}) matches all namespaces.
-	// This field is beta-level and is only honored when PodAffinityNamespaceSelector feature is enabled.
 	// +optional
 	namespaceSelector?: null | metav1.#LabelSelector @go(NamespaceSelector,*metav1.LabelSelector) @protobuf(4,bytes,opt)
 }
@@ -3232,6 +3326,7 @@ import (
 	timeAdded?: null | metav1.#Time @go(TimeAdded,*metav1.Time) @protobuf(4,bytes,opt)
 }
 
+// +enum
 #TaintEffect: string // #enumTaintEffect
 
 #enumTaintEffect:
@@ -3288,6 +3383,7 @@ import (
 }
 
 // A toleration operator is the set of operators that can be used in a toleration.
+// +enum
 #TolerationOperator: string // #enumTolerationOperator
 
 #enumTolerationOperator:
@@ -3341,7 +3437,7 @@ import (
 	// pod to perform user-initiated actions such as debugging. This list cannot be specified when
 	// creating a pod, and it cannot be modified by updating the pod spec. In order to add an
 	// ephemeral container to an existing pod, use the pod's ephemeralcontainers subresource.
-	// This field is alpha-level and is only honored by servers that enable the EphemeralContainers feature.
+	// This field is beta-level and available on clusters that haven't disabled the EphemeralContainers feature gate.
 	// +optional
 	// +patchMergeKey=name
 	// +patchStrategy=merge
@@ -3442,8 +3538,7 @@ import (
 	securityContext?: null | #PodSecurityContext @go(SecurityContext,*PodSecurityContext) @protobuf(14,bytes,opt)
 
 	// ImagePullSecrets is an optional list of references to secrets in the same namespace to use for pulling any of the images used by this PodSpec.
-	// If specified, these secrets will be passed to individual puller implementations for them to use. For example,
-	// in the case of docker, only DockerConfig type secrets are honored.
+	// If specified, these secrets will be passed to individual puller implementations for them to use.
 	// More info: https://kubernetes.io/docs/concepts/containers/images#specifying-imagepullsecrets-on-a-pod
 	// +optional
 	// +patchMergeKey=name
@@ -3515,7 +3610,6 @@ import (
 	// If unset or empty, the "legacy" RuntimeClass will be used, which is an implicit class with an
 	// empty definition that uses the default runtime handler.
 	// More info: https://git.k8s.io/enhancements/keps/sig-node/585-runtime-class
-	// This is a beta feature as of Kubernetes v1.14.
 	// +optional
 	runtimeClassName?: null | string @go(RuntimeClassName,*string) @protobuf(29,bytes,opt)
 
@@ -3528,7 +3622,6 @@ import (
 	// PreemptionPolicy is the Policy for preempting pods with lower priority.
 	// One of Never, PreemptLowerPriority.
 	// Defaults to PreemptLowerPriority if unset.
-	// This field is beta-level, gated by the NonPreemptingPriority feature-gate.
 	// +optional
 	preemptionPolicy?: null | #PreemptionPolicy @go(PreemptionPolicy,*PreemptionPolicy) @protobuf(31,bytes,opt)
 
@@ -3539,7 +3632,6 @@ import (
 	// set. If RuntimeClass is configured and selected in the PodSpec, Overhead will be set to the value
 	// defined in the corresponding RuntimeClass, otherwise it will remain unset and treated as zero.
 	// More info: https://git.k8s.io/enhancements/keps/sig-node/688-pod-overhead/README.md
-	// This field is beta-level as of Kubernetes v1.18, and is only honored by servers that enable the PodOverhead feature.
 	// +optional
 	overhead?: #ResourceList @go(Overhead) @protobuf(32,bytes,opt)
 
@@ -3561,8 +3653,59 @@ import (
 	// Default to false.
 	// +optional
 	setHostnameAsFQDN?: null | bool @go(SetHostnameAsFQDN,*bool) @protobuf(35,varint,opt)
+
+	// Specifies the OS of the containers in the pod.
+	// Some pod and container fields are restricted if this is set.
+	//
+	// If the OS field is set to linux, the following fields must be unset:
+	// -securityContext.windowsOptions
+	//
+	// If the OS field is set to windows, following fields must be unset:
+	// - spec.hostPID
+	// - spec.hostIPC
+	// - spec.securityContext.seLinuxOptions
+	// - spec.securityContext.seccompProfile
+	// - spec.securityContext.fsGroup
+	// - spec.securityContext.fsGroupChangePolicy
+	// - spec.securityContext.sysctls
+	// - spec.shareProcessNamespace
+	// - spec.securityContext.runAsUser
+	// - spec.securityContext.runAsGroup
+	// - spec.securityContext.supplementalGroups
+	// - spec.containers[*].securityContext.seLinuxOptions
+	// - spec.containers[*].securityContext.seccompProfile
+	// - spec.containers[*].securityContext.capabilities
+	// - spec.containers[*].securityContext.readOnlyRootFilesystem
+	// - spec.containers[*].securityContext.privileged
+	// - spec.containers[*].securityContext.allowPrivilegeEscalation
+	// - spec.containers[*].securityContext.procMount
+	// - spec.containers[*].securityContext.runAsUser
+	// - spec.containers[*].securityContext.runAsGroup
+	// +optional
+	// This is a beta field and requires the IdentifyPodOS feature
+	os?: null | #PodOS @go(OS,*PodOS) @protobuf(36,bytes,opt)
 }
 
+// OSName is the set of OS'es that can be used in OS.
+#OSName: string // #enumOSName
+
+#enumOSName:
+	#Linux |
+	#Windows
+
+#Linux:   #OSName & "linux"
+#Windows: #OSName & "windows"
+
+// PodOS defines the OS parameters of a pod.
+#PodOS: {
+	// Name is the name of the operating system. The currently supported values are linux and windows.
+	// Additional value may be defined in future and can be one of:
+	// https://github.com/opencontainers/runtime-spec/blob/master/config.md#platform-specific-configuration
+	// Clients should expect to handle additional values and treat unrecognized values in this field as os: null
+	name: #OSName @go(Name) @protobuf(1,bytes,opt)
+}
+
+// +enum
 #UnsatisfiableConstraintAction: string // #enumUnsatisfiableConstraintAction
 
 #enumUnsatisfiableConstraintAction:
@@ -3582,15 +3725,18 @@ import (
 	// MaxSkew describes the degree to which pods may be unevenly distributed.
 	// When `whenUnsatisfiable=DoNotSchedule`, it is the maximum permitted difference
 	// between the number of matching pods in the target topology and the global minimum.
+	// The global minimum is the minimum number of matching pods in an eligible domain
+	// or zero if the number of eligible domains is less than MinDomains.
 	// For example, in a 3-zone cluster, MaxSkew is set to 1, and pods with the same
-	// labelSelector spread as 1/1/0:
+	// labelSelector spread as 2/2/1:
+	// In this case, the global minimum is 1.
 	// +-------+-------+-------+
 	// | zone1 | zone2 | zone3 |
 	// +-------+-------+-------+
-	// |   P   |   P   |       |
+	// |  P P  |  P P  |   P   |
 	// +-------+-------+-------+
-	// - if MaxSkew is 1, incoming pod can only be scheduled to zone3 to become 1/1/1;
-	// scheduling it onto zone1(zone2) would make the ActualSkew(2-0) on zone1(zone2)
+	// - if MaxSkew is 1, incoming pod can only be scheduled to zone3 to become 2/2/2;
+	// scheduling it onto zone1(zone2) would make the ActualSkew(3-1) on zone1(zone2)
 	// violate MaxSkew(1).
 	// - if MaxSkew is 2, incoming pod can be scheduled onto any zone.
 	// When `whenUnsatisfiable=ScheduleAnyway`, it is used to give higher precedence
@@ -3602,6 +3748,10 @@ import (
 	// and identical values are considered to be in the same topology.
 	// We consider each <key, value> as a "bucket", and try to put balanced number
 	// of pods into each bucket.
+	// We define a domain as a particular instance of a topology.
+	// Also, we define an eligible domain as a domain whose nodes match the node selector.
+	// e.g. If TopologyKey is "kubernetes.io/hostname", each Node is a domain of that topology.
+	// And, if TopologyKey is "topology.kubernetes.io/zone", each zone is a domain of that topology.
 	// It's a required field.
 	topologyKey: string @go(TopologyKey) @protobuf(2,bytes,opt)
 
@@ -3612,7 +3762,7 @@ import (
 	//   but giving higher precedence to topologies that would help reduce the
 	//   skew.
 	// A constraint is considered "Unsatisfiable" for an incoming pod
-	// if and only if every possible node assigment for that pod would violate
+	// if and only if every possible node assignment for that pod would violate
 	// "MaxSkew" on some topology.
 	// For example, in a 3-zone cluster, MaxSkew is set to 1, and pods with the same
 	// labelSelector spread as 3/1/1:
@@ -3633,6 +3783,33 @@ import (
 	// in their corresponding topology domain.
 	// +optional
 	labelSelector?: null | metav1.#LabelSelector @go(LabelSelector,*metav1.LabelSelector) @protobuf(4,bytes,opt)
+
+	// MinDomains indicates a minimum number of eligible domains.
+	// When the number of eligible domains with matching topology keys is less than minDomains,
+	// Pod Topology Spread treats "global minimum" as 0, and then the calculation of Skew is performed.
+	// And when the number of eligible domains with matching topology keys equals or greater than minDomains,
+	// this value has no effect on scheduling.
+	// As a result, when the number of eligible domains is less than minDomains,
+	// scheduler won't schedule more than maxSkew Pods to those domains.
+	// If value is nil, the constraint behaves as if MinDomains is equal to 1.
+	// Valid values are integers greater than 0.
+	// When value is not nil, WhenUnsatisfiable must be DoNotSchedule.
+	//
+	// For example, in a 3-zone cluster, MaxSkew is set to 2, MinDomains is set to 5 and pods with the same
+	// labelSelector spread as 2/2/2:
+	// +-------+-------+-------+
+	// | zone1 | zone2 | zone3 |
+	// +-------+-------+-------+
+	// |  P P  |  P P  |  P P  |
+	// +-------+-------+-------+
+	// The number of domains is less than 5(MinDomains), so "global minimum" is treated as 0.
+	// In this situation, new pod with the same labelSelector cannot be scheduled,
+	// because computed skew will be 3(3 - 0) if new Pod is scheduled to any of the three zones,
+	// it will violate MaxSkew.
+	//
+	// This is an alpha field and requires enabling MinDomainsInPodTopologySpread feature gate.
+	// +optional
+	minDomains?: null | int32 @go(MinDomains,*int32) @protobuf(5,varint,opt)
 }
 
 // The default value for enableServiceLinks attribute.
@@ -3650,6 +3827,7 @@ import (
 
 // PodFSGroupChangePolicy holds policies that will be used for applying fsGroup to a volume
 // when volume is mounted.
+// +enum
 #PodFSGroupChangePolicy: string // #enumPodFSGroupChangePolicy
 
 #enumPodFSGroupChangePolicy:
@@ -3676,12 +3854,14 @@ import (
 	// container.  May also be set in SecurityContext.  If set in
 	// both SecurityContext and PodSecurityContext, the value specified in SecurityContext
 	// takes precedence for that container.
+	// Note that this field cannot be set when spec.os.name is windows.
 	// +optional
 	seLinuxOptions?: null | #SELinuxOptions @go(SELinuxOptions,*SELinuxOptions) @protobuf(1,bytes,opt)
 
 	// The Windows specific settings applied to all containers.
 	// If unspecified, the options within a container's SecurityContext will be used.
 	// If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence.
+	// Note that this field cannot be set when spec.os.name is linux.
 	// +optional
 	windowsOptions?: null | #WindowsSecurityContextOptions @go(WindowsOptions,*WindowsSecurityContextOptions) @protobuf(8,bytes,opt)
 
@@ -3690,6 +3870,7 @@ import (
 	// May also be set in SecurityContext.  If set in both SecurityContext and
 	// PodSecurityContext, the value specified in SecurityContext takes precedence
 	// for that container.
+	// Note that this field cannot be set when spec.os.name is windows.
 	// +optional
 	runAsUser?: null | int64 @go(RunAsUser,*int64) @protobuf(2,varint,opt)
 
@@ -3698,6 +3879,7 @@ import (
 	// May also be set in SecurityContext.  If set in both SecurityContext and
 	// PodSecurityContext, the value specified in SecurityContext takes precedence
 	// for that container.
+	// Note that this field cannot be set when spec.os.name is windows.
 	// +optional
 	runAsGroup?: null | int64 @go(RunAsGroup,*int64) @protobuf(6,varint,opt)
 
@@ -3713,6 +3895,7 @@ import (
 	// A list of groups applied to the first process run in each container, in addition
 	// to the container's primary GID.  If unspecified, no groups will be added to
 	// any container.
+	// Note that this field cannot be set when spec.os.name is windows.
 	// +optional
 	supplementalGroups?: [...int64] @go(SupplementalGroups,[]int64) @protobuf(4,varint,rep)
 
@@ -3725,11 +3908,13 @@ import (
 	// 3. The permission bits are OR'd with rw-rw----
 	//
 	// If unset, the Kubelet will not modify the ownership and permissions of any volume.
+	// Note that this field cannot be set when spec.os.name is windows.
 	// +optional
 	fsGroup?: null | int64 @go(FSGroup,*int64) @protobuf(5,varint,opt)
 
 	// Sysctls hold a list of namespaced sysctls used for the pod. Pods with unsupported
 	// sysctls (by the container runtime) might fail to launch.
+	// Note that this field cannot be set when spec.os.name is windows.
 	// +optional
 	sysctls?: [...#Sysctl] @go(Sysctls,[]Sysctl) @protobuf(7,bytes,rep)
 
@@ -3739,10 +3924,12 @@ import (
 	// It will have no effect on ephemeral volume types such as: secret, configmaps
 	// and emptydir.
 	// Valid values are "OnRootMismatch" and "Always". If not specified, "Always" is used.
+	// Note that this field cannot be set when spec.os.name is windows.
 	// +optional
 	fsGroupChangePolicy?: null | #PodFSGroupChangePolicy @go(FSGroupChangePolicy,*PodFSGroupChangePolicy) @protobuf(9,bytes,opt)
 
 	// The seccomp options to use by the containers in this pod.
+	// Note that this field cannot be set when spec.os.name is windows.
 	// +optional
 	seccompProfile?: null | #SeccompProfile @go(SeccompProfile,*SeccompProfile) @protobuf(10,bytes,opt)
 }
@@ -3769,6 +3956,7 @@ import (
 }
 
 // SeccompProfileType defines the supported seccomp profile types.
+// +enum
 #SeccompProfileType: string // #enumSeccompProfileType
 
 #enumSeccompProfileType:
@@ -3783,11 +3971,11 @@ import (
 #SeccompProfileTypeRuntimeDefault: #SeccompProfileType & "RuntimeDefault"
 
 // SeccompProfileTypeLocalhost indicates a profile defined in a file on the node should be used.
-// The file's location is based off the kubelet's deprecated flag --seccomp-profile-root.
-// Once the flag support is removed the location will be <kubelet-root-dir>/seccomp.
+// The file's location relative to <kubelet-root-dir>/seccomp.
 #SeccompProfileTypeLocalhost: #SeccompProfileType & "Localhost"
 
 // PodQOSClass defines the supported qos classes of Pods.
+// +enum
 #PodQOSClass: string // #enumPodQOSClass
 
 #enumPodQOSClass:
@@ -3853,12 +4041,12 @@ import (
 	// This name must be unique among all containers, init containers and ephemeral containers.
 	name: string @go(Name) @protobuf(1,bytes,opt)
 
-	// Docker image name.
+	// Container image name.
 	// More info: https://kubernetes.io/docs/concepts/containers/images
 	image?: string @go(Image) @protobuf(2,bytes,opt)
 
 	// Entrypoint array. Not executed within a shell.
-	// The docker image's ENTRYPOINT is used if this is not provided.
+	// The image's ENTRYPOINT is used if this is not provided.
 	// Variable references $(VAR_NAME) are expanded using the container's environment. If a variable
 	// cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced
 	// to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. "$$(VAR_NAME)" will
@@ -3869,7 +4057,7 @@ import (
 	command?: [...string] @go(Command,[]string) @protobuf(3,bytes,rep)
 
 	// Arguments to the entrypoint.
-	// The docker image's CMD is used if this is not provided.
+	// The image's CMD is used if this is not provided.
 	// Variable references $(VAR_NAME) are expanded using the container's environment. If a variable
 	// cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced
 	// to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. "$$(VAR_NAME)" will
@@ -3887,6 +4075,12 @@ import (
 	workingDir?: string @go(WorkingDir) @protobuf(5,bytes,opt)
 
 	// Ports are not allowed for ephemeral containers.
+	// +optional
+	// +patchMergeKey=containerPort
+	// +patchStrategy=merge
+	// +listType=map
+	// +listMapKey=containerPort
+	// +listMapKey=protocol
 	ports?: [...#ContainerPort] @go(Ports,[]ContainerPort) @protobuf(6,bytes,rep)
 
 	// List of sources to populate environment variables in the container.
@@ -3910,7 +4104,7 @@ import (
 	// +optional
 	resources?: #ResourceRequirements @go(Resources) @protobuf(8,bytes,opt)
 
-	// Pod volumes to mount into the container's filesystem.
+	// Pod volumes to mount into the container's filesystem. Subpath mounts are not allowed for ephemeral containers.
 	// Cannot be updated.
 	// +optional
 	// +patchMergeKey=mountPath
@@ -3994,22 +4188,25 @@ import (
 	tty?: bool @go(TTY) @protobuf(18,varint,opt)
 }
 
-// An EphemeralContainer is a container that may be added temporarily to an existing pod for
+// An EphemeralContainer is a temporary container that you may add to an existing Pod for
 // user-initiated activities such as debugging. Ephemeral containers have no resource or
-// scheduling guarantees, and they will not be restarted when they exit or when a pod is
-// removed or restarted. If an ephemeral container causes a pod to exceed its resource
-// allocation, the pod may be evicted.
-// Ephemeral containers may not be added by directly updating the pod spec. They must be added
-// via the pod's ephemeralcontainers subresource, and they will appear in the pod spec
-// once added.
-// This is an alpha feature enabled by the EphemeralContainers feature flag.
+// scheduling guarantees, and they will not be restarted when they exit or when a Pod is
+// removed or restarted. The kubelet may evict a Pod if an ephemeral container causes the
+// Pod to exceed its resource allocation.
+//
+// To add an ephemeral container, use the ephemeralcontainers subresource of an existing
+// Pod. Ephemeral containers may not be removed or restarted.
+//
+// This is a beta feature available on clusters that haven't disabled the EphemeralContainers feature gate.
 #EphemeralContainer: {
 	#EphemeralContainerCommon
 
 	// If set, the name of the container from PodSpec that this ephemeral container targets.
 	// The ephemeral container will be run in the namespaces (IPC, PID, etc) of this container.
-	// If not set then the ephemeral container is run in whatever namespaces are shared
-	// for the pod. Note that the container runtime must support this feature.
+	// If not set then the ephemeral container uses the namespaces configured in the Pod spec.
+	//
+	// The container runtime must implement support for this feature. If the runtime does not
+	// support namespace targeting then the result of setting this field is undefined.
 	// +optional
 	targetContainerName?: string @go(TargetContainerName) @protobuf(2,bytes,opt)
 }
@@ -4093,8 +4290,7 @@ import (
 	// More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#pod-and-container-status
 	initContainerStatuses?: [...#ContainerStatus] @go(InitContainerStatuses,[]ContainerStatus) @protobuf(10,bytes,rep)
 
-	// The list has one entry per container in the manifest. Each entry is currently the output
-	// of `docker inspect`.
+	// The list has one entry per container in the manifest.
 	// More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#pod-and-container-status
 	// +optional
 	containerStatuses?: [...#ContainerStatus] @go(ContainerStatuses,[]ContainerStatus) @protobuf(8,bytes,rep)
@@ -4106,7 +4302,7 @@ import (
 	qosClass?: #PodQOSClass @go(QOSClass) @protobuf(9,bytes,rep)
 
 	// Status for any ephemeral containers that have run in this pod.
-	// This field is alpha-level and is only populated by servers that enable the EphemeralContainers feature.
+	// This field is beta-level and available on clusters that haven't disabled the EphemeralContainers feature gate.
 	// +optional
 	ephemeralContainerStatuses?: [...#ContainerStatus] @go(EphemeralContainerStatuses,[]ContainerStatus) @protobuf(13,bytes,rep)
 }
@@ -4339,6 +4535,7 @@ import (
 }
 
 // Session Affinity Type string
+// +enum
 #ServiceAffinity: string // #enumServiceAffinity
 
 #enumServiceAffinity:
@@ -4370,6 +4567,7 @@ import (
 }
 
 // Service Type string describes ingress methods for a service
+// +enum
 #ServiceType: string // #enumServiceType
 
 #enumServiceType:
@@ -4398,6 +4596,7 @@ import (
 
 // ServiceInternalTrafficPolicyType describes the type of traffic routing for
 // internal traffic
+// +enum
 #ServiceInternalTrafficPolicyType: string // #enumServiceInternalTrafficPolicyType
 
 #enumServiceInternalTrafficPolicyType:
@@ -4412,6 +4611,7 @@ import (
 #ServiceInternalTrafficPolicyLocal: #ServiceInternalTrafficPolicyType & "Local"
 
 // Service External Traffic Policy Type string
+// +enum
 #ServiceExternalTrafficPolicyType: string // #enumServiceExternalTrafficPolicyType
 
 #enumServiceExternalTrafficPolicyType:
@@ -4474,6 +4674,7 @@ import (
 
 // IPFamily represents the IP Family (IPv4 or IPv6). This type is used
 // to express the family of an IP expressed by a type (e.g. service.spec.ipFamilies).
+// +enum
 #IPFamily: string // #enumIPFamily
 
 #enumIPFamily:
@@ -4487,6 +4688,7 @@ import (
 #IPv6Protocol: #IPFamily & "IPv6"
 
 // IPFamilyPolicyType represents the dual-stack-ness requested or required by a Service
+// +enum
 #IPFamilyPolicyType: string // #enumIPFamilyPolicyType
 
 #enumIPFamilyPolicyType:
@@ -4572,12 +4774,9 @@ import (
 	// clients must ensure that clusterIPs[0] and clusterIP have the same
 	// value.
 	//
-	// Unless the "IPv6DualStack" feature gate is enabled, this field is
-	// limited to one value, which must be the same as the clusterIP field.  If
-	// the feature gate is enabled, this field may hold a maximum of two
-	// entries (dual-stack IPs, in either order).  These IPs must correspond to
-	// the values of the ipFamilies field. Both clusterIPs and ipFamilies are
-	// governed by the ipFamilyPolicy field.
+	// This field may hold a maximum of two entries (dual-stack IPs, in either order).
+	// These IPs must correspond to the values of the ipFamilies field. Both
+	// clusterIPs and ipFamilies are governed by the ipFamilyPolicy field.
 	// More info: https://kubernetes.io/docs/concepts/services-networking/service/#virtual-ips-and-service-proxies
 	// +listType=atomic
 	// +optional
@@ -4618,11 +4817,14 @@ import (
 	// +optional
 	sessionAffinity?: #ServiceAffinity @go(SessionAffinity) @protobuf(7,bytes,opt,casttype=ServiceAffinity)
 
-	// Only applies to Service Type: LoadBalancer
-	// LoadBalancer will get created with the IP specified in this field.
+	// Only applies to Service Type: LoadBalancer.
 	// This feature depends on whether the underlying cloud-provider supports specifying
 	// the loadBalancerIP when a load balancer is created.
 	// This field will be ignored if the cloud-provider does not support the feature.
+	// Deprecated: This field was under-specified and its meaning varies across implementations,
+	// and it cannot support dual-stack.
+	// As of Kubernetes v1.24, users are encouraged to use implementation-specific annotations when available.
+	// This field may be removed in a future API version.
 	// +optional
 	loadBalancerIP?: string @go(LoadBalancerIP) @protobuf(8,bytes,opt)
 
@@ -4677,17 +4879,16 @@ import (
 	sessionAffinityConfig?: null | #SessionAffinityConfig @go(SessionAffinityConfig,*SessionAffinityConfig) @protobuf(14,bytes,opt)
 
 	// IPFamilies is a list of IP families (e.g. IPv4, IPv6) assigned to this
-	// service, and is gated by the "IPv6DualStack" feature gate.  This field
-	// is usually assigned automatically based on cluster configuration and the
-	// ipFamilyPolicy field. If this field is specified manually, the requested
-	// family is available in the cluster, and ipFamilyPolicy allows it, it
-	// will be used; otherwise creation of the service will fail.  This field
-	// is conditionally mutable: it allows for adding or removing a secondary
-	// IP family, but it does not allow changing the primary IP family of the
-	// Service.  Valid values are "IPv4" and "IPv6".  This field only applies
-	// to Services of types ClusterIP, NodePort, and LoadBalancer, and does
-	// apply to "headless" services.  This field will be wiped when updating a
-	// Service to type ExternalName.
+	// service. This field is usually assigned automatically based on cluster
+	// configuration and the ipFamilyPolicy field. If this field is specified
+	// manually, the requested family is available in the cluster,
+	// and ipFamilyPolicy allows it, it will be used; otherwise creation of
+	// the service will fail. This field is conditionally mutable: it allows
+	// for adding or removing a secondary IP family, but it does not allow
+	// changing the primary IP family of the Service. Valid values are "IPv4"
+	// and "IPv6".  This field only applies to Services of types ClusterIP,
+	// NodePort, and LoadBalancer, and does apply to "headless" services.
+	// This field will be wiped when updating a Service to type ExternalName.
 	//
 	// This field may hold a maximum of two entries (dual-stack families, in
 	// either order).  These families must correspond to the values of the
@@ -4698,14 +4899,13 @@ import (
 	ipFamilies?: [...#IPFamily] @go(IPFamilies,[]IPFamily) @protobuf(19,bytes,opt,casttype=IPFamily)
 
 	// IPFamilyPolicy represents the dual-stack-ness requested or required by
-	// this Service, and is gated by the "IPv6DualStack" feature gate.  If
-	// there is no value provided, then this field will be set to SingleStack.
-	// Services can be "SingleStack" (a single IP family), "PreferDualStack"
-	// (two IP families on dual-stack configured clusters or a single IP family
-	// on single-stack clusters), or "RequireDualStack" (two IP families on
-	// dual-stack configured clusters, otherwise fail). The ipFamilies and
-	// clusterIPs fields depend on the value of this field.  This field will be
-	// wiped when updating a service to type ExternalName.
+	// this Service. If there is no value provided, then this field will be set
+	// to SingleStack. Services can be "SingleStack" (a single IP family),
+	// "PreferDualStack" (two IP families on dual-stack configured clusters or
+	// a single IP family on single-stack clusters), or "RequireDualStack"
+	// (two IP families on dual-stack configured clusters, otherwise fail). The
+	// ipFamilies and clusterIPs fields depend on the value of this field. This
+	// field will be wiped when updating a service to type ExternalName.
 	// +optional
 	ipFamilyPolicy?: null | #IPFamilyPolicyType @go(IPFamilyPolicy,*IPFamilyPolicyType) @protobuf(17,bytes,opt,casttype=IPFamilyPolicyType)
 
@@ -4716,8 +4916,6 @@ import (
 	// value), those requests will be respected, regardless of this field.
 	// This field may only be set for services with type LoadBalancer and will
 	// be cleared if the type is changed to any other type.
-	// This field is beta-level and is only honored by servers that enable the ServiceLBNodePortControl feature.
-	// +featureGate=ServiceLBNodePortControl
 	// +optional
 	allocateLoadBalancerNodePorts?: null | bool @go(AllocateLoadBalancerNodePorts,*bool) @protobuf(20,bytes,opt)
 
@@ -4765,7 +4963,7 @@ import (
 	// The application protocol for this port.
 	// This field follows standard Kubernetes label syntax.
 	// Un-prefixed names are reserved for IANA standard service names (as per
-	// RFC-6335 and http://www.iana.org/assignments/service-names).
+	// RFC-6335 and https://www.iana.org/assignments/service-names).
 	// Non-standard protocols should use prefixed names such as
 	// mycompany.com/my-custom-protocol.
 	// +optional
@@ -4851,7 +5049,10 @@ import (
 	// +optional
 	metadata?: metav1.#ObjectMeta @go(ObjectMeta) @protobuf(1,bytes,opt)
 
-	// Secrets is the list of secrets allowed to be used by pods running using this ServiceAccount.
+	// Secrets is a list of the secrets in the same namespace that pods running using this ServiceAccount are allowed to use.
+	// Pods are only limited to this list if this service account has a "kubernetes.io/enforce-mountable-secrets" annotation set to "true".
+	// This field should not be used to find auto-generated service account token secrets for use outside of pods.
+	// Instead, tokens can be requested directly using the TokenRequest API, or service account token secrets can be manually created.
 	// More info: https://kubernetes.io/docs/concepts/configuration/secret
 	// +optional
 	// +patchMergeKey=name
@@ -4989,7 +5190,7 @@ import (
 	// The application protocol for this port.
 	// This field follows standard Kubernetes label syntax.
 	// Un-prefixed names are reserved for IANA standard service names (as per
-	// RFC-6335 and http://www.iana.org/assignments/service-names).
+	// RFC-6335 and https://www.iana.org/assignments/service-names).
 	// Non-standard protocols should use prefixed names such as
 	// mycompany.com/my-custom-protocol.
 	// +optional
@@ -5035,9 +5236,7 @@ import (
 	// +optional
 	taints?: [...#Taint] @go(Taints,[]Taint) @protobuf(5,bytes,opt)
 
-	// Deprecated. If specified, the source of the node's configuration.
-	// The DynamicKubeletConfig feature gate must be enabled for the Kubelet to use this field.
-	// This field is deprecated as of 1.22: https://git.k8s.io/enhancements/keps/sig-node/281-dynamic-kubelet-configuration
+	// Deprecated: Previously used to specify the source of the node's configuration for the DynamicKubeletConfig feature. This feature is removed from Kubelets as of 1.24 and will be fully removed in 1.26.
 	// +optional
 	configSource?: null | #NodeConfigSource @go(ConfigSource,*NodeConfigSource) @protobuf(6,bytes,opt)
 
@@ -5114,7 +5313,7 @@ import (
 	// OS Image reported by the node from /etc/os-release (e.g. Debian GNU/Linux 7 (wheezy)).
 	osImage: string @go(OSImage) @protobuf(5,bytes,opt)
 
-	// ContainerRuntime Version reported by the node through runtime remote API (e.g. docker://1.5.0).
+	// ContainerRuntime Version reported by the node through runtime remote API (e.g. containerd://1.4.2).
 	containerRuntimeVersion: string @go(ContainerRuntimeVersion) @protobuf(6,bytes,opt)
 
 	// Kubelet Version reported by the node.
@@ -5301,6 +5500,7 @@ import (
 	sizeBytes?: int64 @go(SizeBytes) @protobuf(2,varint,opt)
 }
 
+// +enum
 #NodePhase: string // #enumNodePhase
 
 #enumNodePhase:
@@ -5539,6 +5739,7 @@ import (
 	conditions?: [...#NamespaceCondition] @go(Conditions,[]NamespaceCondition) @protobuf(2,bytes,rep)
 }
 
+// +enum
 #NamespacePhase: string // #enumNamespacePhase
 
 #enumNamespacePhase:
@@ -5758,12 +5959,10 @@ import (
 	stdin?: bool @go(Stdin) @protobuf(1,varint,opt)
 
 	// Redirect the standard output stream of the pod for this call.
-	// Defaults to true.
 	// +optional
 	stdout?: bool @go(Stdout) @protobuf(2,varint,opt)
 
 	// Redirect the standard error stream of the pod for this call.
-	// Defaults to true.
 	// +optional
 	stderr?: bool @go(Stderr) @protobuf(3,varint,opt)
 
@@ -6038,7 +6237,8 @@ import (
 // List holds a list of objects, which may not be known by the server.
 #List: metav1.#List
 
-// LimitType is a type of object that is limited
+// LimitType is a type of object that is limited. It can be Pod, Container, PersistentVolumeClaim or
+// a fully qualified resource name.
 #LimitType: string // #enumLimitType
 
 #enumLimitType:
@@ -6172,6 +6372,7 @@ import (
 #DefaultResourceRequestsPrefix: "requests."
 
 // A ResourceQuotaScope defines a filter that must match each object tracked by a quota
+// +enum
 #ResourceQuotaScope: string // #enumResourceQuotaScope
 
 #enumResourceQuotaScope:
@@ -6198,7 +6399,6 @@ import (
 #ResourceQuotaScopePriorityClass: #ResourceQuotaScope & "PriorityClass"
 
 // Match all pod objects that have cross-namespace pod (anti)affinity mentioned.
-// This is a beta feature enabled by the PodAffinityNamespaceSelector feature flag.
 #ResourceQuotaScopeCrossNamespacePodAffinity: #ResourceQuotaScope & "CrossNamespacePodAffinity"
 
 // ResourceQuotaSpec defines the desired hard limits to enforce for Quota.
@@ -6249,6 +6449,7 @@ import (
 
 // A scope selector operator is the set of operators that can be used in
 // a scope selector requirement.
+// +enum
 #ScopeSelectorOperator: string // #enumScopeSelectorOperator
 
 #enumScopeSelectorOperator:
@@ -6341,6 +6542,7 @@ import (
 	stringData?: {[string]: string} @go(StringData,map[string]string) @protobuf(4,bytes,rep)
 
 	// Used to facilitate programmatic handling of secret data.
+	// More info: https://kubernetes.io/docs/concepts/configuration/secret/#secret-types
 	// +optional
 	type?: #SecretType @go(Type) @protobuf(3,bytes,opt,casttype=SecretType)
 }
@@ -6630,12 +6832,14 @@ import (
 #SecurityContext: {
 	// The capabilities to add/drop when running containers.
 	// Defaults to the default set of capabilities granted by the container runtime.
+	// Note that this field cannot be set when spec.os.name is windows.
 	// +optional
 	capabilities?: null | #Capabilities @go(Capabilities,*Capabilities) @protobuf(1,bytes,opt)
 
 	// Run container in privileged mode.
 	// Processes in privileged containers are essentially equivalent to root on the host.
 	// Defaults to false.
+	// Note that this field cannot be set when spec.os.name is windows.
 	// +optional
 	privileged?: null | bool @go(Privileged,*bool) @protobuf(2,varint,opt)
 
@@ -6643,12 +6847,14 @@ import (
 	// If unspecified, the container runtime will allocate a random SELinux context for each
 	// container.  May also be set in PodSecurityContext.  If set in both SecurityContext and
 	// PodSecurityContext, the value specified in SecurityContext takes precedence.
+	// Note that this field cannot be set when spec.os.name is windows.
 	// +optional
 	seLinuxOptions?: null | #SELinuxOptions @go(SELinuxOptions,*SELinuxOptions) @protobuf(3,bytes,opt)
 
 	// The Windows specific settings applied to all containers.
 	// If unspecified, the options from the PodSecurityContext will be used.
 	// If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence.
+	// Note that this field cannot be set when spec.os.name is linux.
 	// +optional
 	windowsOptions?: null | #WindowsSecurityContextOptions @go(WindowsOptions,*WindowsSecurityContextOptions) @protobuf(10,bytes,opt)
 
@@ -6656,6 +6862,7 @@ import (
 	// Defaults to user specified in image metadata if unspecified.
 	// May also be set in PodSecurityContext.  If set in both SecurityContext and
 	// PodSecurityContext, the value specified in SecurityContext takes precedence.
+	// Note that this field cannot be set when spec.os.name is windows.
 	// +optional
 	runAsUser?: null | int64 @go(RunAsUser,*int64) @protobuf(4,varint,opt)
 
@@ -6663,6 +6870,7 @@ import (
 	// Uses runtime default if unset.
 	// May also be set in PodSecurityContext.  If set in both SecurityContext and
 	// PodSecurityContext, the value specified in SecurityContext takes precedence.
+	// Note that this field cannot be set when spec.os.name is windows.
 	// +optional
 	runAsGroup?: null | int64 @go(RunAsGroup,*int64) @protobuf(8,varint,opt)
 
@@ -6677,6 +6885,7 @@ import (
 
 	// Whether this container has a read-only root filesystem.
 	// Default is false.
+	// Note that this field cannot be set when spec.os.name is windows.
 	// +optional
 	readOnlyRootFilesystem?: null | bool @go(ReadOnlyRootFilesystem,*bool) @protobuf(6,varint,opt)
 
@@ -6686,6 +6895,7 @@ import (
 	// AllowPrivilegeEscalation is true always when the container is:
 	// 1) run as Privileged
 	// 2) has CAP_SYS_ADMIN
+	// Note that this field cannot be set when spec.os.name is windows.
 	// +optional
 	allowPrivilegeEscalation?: null | bool @go(AllowPrivilegeEscalation,*bool) @protobuf(7,varint,opt)
 
@@ -6693,16 +6903,19 @@ import (
 	// The default is DefaultProcMount which uses the container runtime defaults for
 	// readonly paths and masked paths.
 	// This requires the ProcMountType feature flag to be enabled.
+	// Note that this field cannot be set when spec.os.name is windows.
 	// +optional
 	procMount?: null | #ProcMountType @go(ProcMount,*ProcMountType) @protobuf(9,bytes,opt)
 
 	// The seccomp options to use by this container. If seccomp options are
 	// provided at both the pod & container level, the container options
 	// override the pod options.
+	// Note that this field cannot be set when spec.os.name is windows.
 	// +optional
 	seccompProfile?: null | #SeccompProfile @go(SeccompProfile,*SeccompProfile) @protobuf(11,bytes,opt)
 }
 
+// +enum
 #ProcMountType: string // #enumProcMountType
 
 #enumProcMountType:

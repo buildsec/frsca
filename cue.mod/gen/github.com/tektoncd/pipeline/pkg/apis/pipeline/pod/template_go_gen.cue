@@ -18,6 +18,7 @@ import corev1 "k8s.io/api/core/v1"
 
 	// If specified, the pod's tolerations.
 	// +optional
+	// +listType=atomic
 	tolerations?: [...corev1.#Toleration] @go(Tolerations,[]corev1.Toleration)
 
 	// If specified, the pod's scheduling constraints
@@ -34,6 +35,7 @@ import corev1 "k8s.io/api/core/v1"
 	// +optional
 	// +patchMergeKey=name
 	// +patchStrategy=merge,retainKeys
+	// +listType=atomic
 	volumes?: [...corev1.#Volume] @go(Volumes,[]corev1.Volume) @protobuf(1,bytes,rep)
 
 	// RuntimeClassName refers to a RuntimeClass object in the node.k8s.io
@@ -84,11 +86,13 @@ import corev1 "k8s.io/api/core/v1"
 
 	// ImagePullSecrets gives the name of the secret used by the pod to pull the image if specified
 	// +optional
+	// +listType=atomic
 	imagePullSecrets?: [...corev1.#LocalObjectReference] @go(ImagePullSecrets,[]corev1.LocalObjectReference)
 
 	// HostAliases is an optional list of hosts and IPs that will be injected into the pod's hosts
 	// file if specified. This is only valid for non-hostNetwork pods.
 	// +optional
+	// +listType=atomic
 	hostAliases?: [...corev1.#HostAlias] @go(HostAliases,[]corev1.HostAlias)
 
 	// HostNetwork specifies whether the pod may use the node network namespace

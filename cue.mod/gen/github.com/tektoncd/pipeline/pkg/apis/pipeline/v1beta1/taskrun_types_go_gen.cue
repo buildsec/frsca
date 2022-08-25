@@ -7,8 +7,8 @@ package v1beta1
 import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"github.com/tektoncd/pipeline/pkg/apis/pipeline/pod"
-	duckv1beta1 "knative.dev/pkg/apis/duck/v1beta1"
 	corev1 "k8s.io/api/core/v1"
+	duckv1beta1 "knative.dev/pkg/apis/duck/v1beta1"
 )
 
 // TaskRunSpec defines the desired state of TaskRun
@@ -17,6 +17,7 @@ import (
 	debug?: null | #TaskRunDebug @go(Debug,*TaskRunDebug)
 
 	// +optional
+	// +listType=atomic
 	params?: [...#Param] @go(Params,[]Param)
 
 	// +optional
@@ -47,7 +48,27 @@ import (
 
 	// Workspaces is a list of WorkspaceBindings from volumes to workspaces.
 	// +optional
+	// +listType=atomic
 	workspaces?: [...#WorkspaceBinding] @go(Workspaces,[]WorkspaceBinding)
+
+	// Overrides to apply to Steps in this TaskRun.
+	// If a field is specified in both a Step and a StepOverride,
+	// the value from the StepOverride will be used.
+	// This field is only supported when the alpha feature gate is enabled.
+	// +optional
+	// +listType=atomic
+	stepOverrides?: [...#TaskRunStepOverride] @go(StepOverrides,[]TaskRunStepOverride)
+
+	// Overrides to apply to Sidecars in this TaskRun.
+	// If a field is specified in both a Sidecar and a SidecarOverride,
+	// the value from the SidecarOverride will be used.
+	// This field is only supported when the alpha feature gate is enabled.
+	// +optional
+	// +listType=atomic
+	sidecarOverrides?: [...#TaskRunSidecarOverride] @go(SidecarOverrides,[]TaskRunSidecarOverride)
+
+	// Compute resources to use for this TaskRun
+	computeResources?: null | corev1.#ResourceRequirements @go(ComputeResources,*corev1.ResourceRequirements)
 }
 
 // TaskRunSpecStatus defines the taskrun spec status the user can provide
@@ -60,21 +81,25 @@ import (
 // TaskRunDebug defines the breakpoint config for a particular TaskRun
 #TaskRunDebug: {
 	// +optional
+	// +listType=atomic
 	breakpoint?: [...string] @go(Breakpoint,[]string)
 }
 
 // TaskRunInputs holds the input values that this task was invoked with.
 #TaskRunInputs: {
 	// +optional
+	// +listType=atomic
 	resources?: [...#TaskResourceBinding] @go(Resources,[]TaskResourceBinding)
 
 	// +optional
+	// +listType=atomic
 	params?: [...#Param] @go(Params,[]Param)
 }
 
 // TaskRunOutputs holds the output values that this task was invoked with.
 #TaskRunOutputs: {
 	// +optional
+	// +listType=atomic
 	resources?: [...#TaskResourceBinding] @go(Resources,[]TaskResourceBinding)
 }
 
@@ -96,7 +121,8 @@ import (
 	#TaskRunReasonSuccessful |
 	#TaskRunReasonFailed |
 	#TaskRunReasonCancelled |
-	#TaskRunReasonTimedOut
+	#TaskRunReasonTimedOut |
+	#TaskRunReasonImagePullFailed
 
 // TaskRunReasonStarted is the reason set when the TaskRun has just started
 #TaskRunReasonStarted: #TaskRunReason & "Started"
@@ -116,6 +142,13 @@ import (
 // TaskRunReasonTimedOut is the reason set when the Taskrun has timed out
 #TaskRunReasonTimedOut: #TaskRunReason & "TaskRunTimeout"
 
+// TaskRunReasonResolvingTaskRef indicates that the TaskRun is waiting for
+// its taskRef to be asynchronously resolved.
+#TaskRunReasonResolvingTaskRef: "ResolvingTaskRef"
+
+// TaskRunReasonImagePullFailed is the reason set when the step of a task fails due to image not being pulled
+#TaskRunReasonImagePullFailed: #TaskRunReason & "TaskRunImagePullFailed"
+
 // TaskRunStatusFields holds the fields of TaskRun's status.  This is defined
 // separately and inlined so that other types can readily consume these fields
 // via duck typing.
@@ -133,42 +166,57 @@ import (
 
 	// Steps describes the state of each build step container.
 	// +optional
+	// +listType=atomic
 	steps?: [...#StepState] @go(Steps,[]StepState)
 
 	// CloudEvents describe the state of each cloud event requested via a
 	// CloudEventResource.
 	// +optional
+	// +listType=atomic
 	cloudEvents?: [...#CloudEventDelivery] @go(CloudEvents,[]CloudEventDelivery)
 
 	// RetriesStatus contains the history of TaskRunStatus in case of a retry in order to keep record of failures.
 	// All TaskRunStatus stored in RetriesStatus will have no date within the RetriesStatus as is redundant.
 	// +optional
+	// +listType=atomic
 	retriesStatus?: [...#TaskRunStatus] @go(RetriesStatus,[]TaskRunStatus)
 
 	// Results from Resources built during the taskRun. currently includes
 	// the digest of build container images
 	// +optional
+	// +listType=atomic
 	resourcesResult?: [...#PipelineResourceResult] @go(ResourcesResult,[]PipelineResourceResult)
 
 	// TaskRunResults are the list of results written out by the task's containers
 	// +optional
+	// +listType=atomic
 	taskResults?: [...#TaskRunResult] @go(TaskRunResults,[]TaskRunResult)
 
 	// The list has one entry per sidecar in the manifest. Each entry is
 	// represents the imageid of the corresponding sidecar.
+	// +listType=atomic
 	sidecars?: [...#SidecarState] @go(Sidecars,[]SidecarState)
 
 	// TaskSpec contains the Spec from the dereferenced Task definition used to instantiate this TaskRun.
 	taskSpec?: null | #TaskSpec @go(TaskSpec,*TaskSpec)
 }
 
-// TaskRunResult used to describe the results of a task
-#TaskRunResult: {
-	// Name the given name
+// TaskRunStepOverride is used to override the values of a Step in the corresponding Task.
+#TaskRunStepOverride: {
+	// The name of the Step to override.
 	name: string @go(Name)
 
-	// Value the given value of the result
-	value: string @go(Value)
+	// The resource requirements to apply to the Step.
+	resources: corev1.#ResourceRequirements @go(Resources)
+}
+
+// TaskRunSidecarOverride is used to override the values of a Sidecar in the corresponding Task.
+#TaskRunSidecarOverride: {
+	// The name of the Sidecar to override.
+	name: string @go(Name)
+
+	// The resource requirements to apply to the Sidecar.
+	resources: corev1.#ResourceRequirements @go(Resources)
 }
 
 // StepState reports the results of running a step in a Task.

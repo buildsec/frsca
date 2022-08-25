@@ -6,7 +6,7 @@ package v1
 
 import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/api/admission/v1beta1"
+	admissionv1 "k8s.io/api/admission/v1"
 	authenticationv1 "k8s.io/api/authentication/v1"
 )
 
@@ -61,7 +61,7 @@ import (
 	admissionRequest?: string @go(AdmissionRequest)
 
 	// +optional
-	operation?: v1beta1.#Operation @go(Operation)
+	operation?: admissionv1.#Operation @go(Operation)
 }
 
 // RequestInfo contains permission info carried in an admission request.

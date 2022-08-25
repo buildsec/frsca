@@ -87,3 +87,14 @@ frsca: clusterPolicy?: [Name=_]: kyvernoV1.#ClusterPolicy & {
 	kind:       "ClusterPolicy"
 	metadata: name: *Name | string
 }
+
+// Compensate for Kyverno ImageVerification bool defaults
+frsca: clusterPolicy?: [_]: {
+    spec: rules: [...{
+        verifyImages: [...{
+            mutateDigest: *true | bool
+            verifyDigest: *true | bool
+            required: *true | bool
+        }]
+    }]
+}

@@ -16,7 +16,7 @@ import resource "github.com/tektoncd/pipeline/pkg/apis/resource/v1alpha1"
 	name: string @go(Name)
 
 	// Type is the user-specified type of the parameter. The possible types
-	// are currently "string" and "array", and "string" is the default.
+	// are currently "string", "array" and "object", and "string" is the default.
 	// +optional
 	type?: #ParamType @go(Type)
 
@@ -25,11 +25,20 @@ import resource "github.com/tektoncd/pipeline/pkg/apis/resource/v1alpha1"
 	// +optional
 	description?: string @go(Description)
 
+	// Properties is the JSON Schema properties to support key-value pairs parameter.
+	// +optional
+	properties?: {[string]: #PropertySpec} @go(Properties,map[string]PropertySpec)
+
 	// Default is the value a parameter takes if no input value is supplied. If
 	// default is set, a Task may be executed without a supplied value for the
 	// parameter.
 	// +optional
 	default?: null | #ArrayOrString @go(Default,*ArrayOrString)
+}
+
+// PropertySpec defines the struct for object keys
+#PropertySpec: {
+	type?: #ParamType @go(Type)
 }
 
 // ResourceParam declares a string value to use for the parameter called Name, and is used in
@@ -48,12 +57,16 @@ import resource "github.com/tektoncd/pipeline/pkg/apis/resource/v1alpha1"
 
 #enumParamType:
 	#ParamTypeString |
-	#ParamTypeArray
+	#ParamTypeArray |
+	#ParamTypeObject
 
 #ParamTypeString: #ParamType & "string"
 #ParamTypeArray:  #ParamType & "array"
+#ParamTypeObject: #ParamType & "object"
 
 // ArrayOrString is a type that can hold a single string or string array.
 // Used in JSON unmarshalling so that a single JSON field can accept
 // either an individual string or an array of strings.
+// TODO (@chuangw6): This struct will be renamed or be embedded in a new struct to take into
+// consideration the object case after the community reaches an agreement on it.
 #ArrayOrString: _

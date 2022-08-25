@@ -45,10 +45,12 @@ import (
 #TaskResources: {
 	// Inputs holds the mapping from the PipelineResources declared in
 	// DeclaredPipelineResources to the input PipelineResources required by the Task.
+	// +listType=atomic
 	inputs?: [...#TaskResource] @go(Inputs,[]TaskResource)
 
 	// Outputs holds the mapping from the PipelineResources declared in
 	// DeclaredPipelineResources to the input PipelineResources required by the Task.
+	// +listType=atomic
 	outputs?: [...#TaskResource] @go(Outputs,[]TaskResource)
 }
 
@@ -64,9 +66,11 @@ import (
 // TaskRunResources allows a TaskRun to declare inputs and outputs TaskResourceBinding
 #TaskRunResources: {
 	// Inputs holds the inputs resources this task was invoked with
+	// +listType=atomic
 	inputs?: [...#TaskResourceBinding] @go(Inputs,[]TaskResourceBinding)
 
 	// Outputs holds the inputs resources this task was invoked with
+	// +listType=atomic
 	outputs?: [...#TaskResourceBinding] @go(Outputs,[]TaskResourceBinding)
 }
 
@@ -79,6 +83,7 @@ import (
 	// The optional Path field corresponds to a path on disk at which the Resource can be found
 	// (used when providing the resource via mounted volume, overriding the default logic to fetch the Resource).
 	// +optional
+	// +listType=atomic
 	paths?: [...string] @go(Paths,[]string)
 }
 
@@ -108,17 +113,15 @@ import (
 
 // PipelineResourceResult used to export the image name and digest as json
 #PipelineResourceResult: {
-	key:           string @go(Key)
-	value:         string @go(Value)
-	resourceName?: string @go(ResourceName)
-
-	// The field ResourceRef should be deprecated and removed in the next API version.
-	// See https://github.com/tektoncd/pipeline/issues/2694 for more information.
-	resourceRef?: null | #PipelineResourceRef @go(ResourceRef,*PipelineResourceRef)
-	type?:        #ResultType                 @go(ResultType)
+	key:           string      @go(Key)
+	value:         string      @go(Value)
+	resourceName?: string      @go(ResourceName)
+	type?:         #ResultType @go(ResultType)
 }
 
 // ResultType used to find out whether a PipelineResourceResult is from a task result or not
+// Note that ResultsType is another type which is used to define the data type
+// (e.g. string, array, etc) we used for Results
 #ResultType: _ // #enumResultType
 
 #enumResultType:
@@ -144,7 +147,12 @@ import (
 
 // InternalTaskModifier implements TaskModifier for resources that are built-in to Tekton Pipelines.
 #InternalTaskModifier: {
-	StepsToPrepend: [...#Step] @go(,[]Step)
-	StepsToAppend: [...#Step] @go(,[]Step)
-	Volumes: [...v1.#Volume] @go(,[]v1.Volume)
+	// +listType=atomic
+	stepsToPrepend: [...#Step] @go(StepsToPrepend,[]Step)
+
+	// +listType=atomic
+	stepsToAppend: [...#Step] @go(StepsToAppend,[]Step)
+
+	// +listType=atomic
+	volumes: [...v1.#Volume] @go(Volumes,[]v1.Volume)
 }

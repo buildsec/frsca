@@ -41,27 +41,33 @@ import (
 
 	// Resources declares the names and types of the resources given to the
 	// Pipeline's tasks as inputs and outputs.
+	// +listType=atomic
 	resources?: [...#PipelineDeclaredResource] @go(Resources,[]PipelineDeclaredResource)
 
 	// Tasks declares the graph of Tasks that execute when this Pipeline is run.
+	// +listType=atomic
 	tasks?: [...#PipelineTask] @go(Tasks,[]PipelineTask)
 
 	// Params declares a list of input parameters that must be supplied when
 	// this Pipeline is run.
+	// +listType=atomic
 	params?: [...#ParamSpec] @go(Params,[]ParamSpec)
 
 	// Workspaces declares a set of named workspaces that are expected to be
 	// provided by a PipelineRun.
 	// +optional
+	// +listType=atomic
 	workspaces?: [...#PipelineWorkspaceDeclaration] @go(Workspaces,[]PipelineWorkspaceDeclaration)
 
 	// Results are values that this pipeline can output once run
 	// +optional
+	// +listType=atomic
 	results?: [...#PipelineResult] @go(Results,[]PipelineResult)
 
 	// Finally declares the list of Tasks that execute just before leaving the Pipeline
 	// i.e. either after all Tasks are finished executing successfully
 	// or after a failure which would result in ending the Pipeline
+	// +listType=atomic
 	finally?: [...#PipelineTask] @go(Finally,[]PipelineTask)
 }
 
@@ -70,12 +76,17 @@ import (
 	// Name the given name
 	name: string @go(Name)
 
+	// Type is the user-specified type of the result.
+	// The possible types are 'string', 'array', and 'object', with 'string' as the default.
+	// 'array' and 'object' types are alpha features.
+	type?: #ResultsType @go(Type)
+
 	// Description is a human-readable description of the result
 	// +optional
 	description: string @go(Description)
 
 	// Value the expression used to retrieve the value
-	value: string @go(Value)
+	value: #ArrayOrString @go(Value)
 }
 
 // PipelineTaskMetadata contains the labels or annotations for an EmbeddedTask
@@ -117,11 +128,6 @@ import (
 	// +optional
 	taskSpec?: null | #EmbeddedTask @go(TaskSpec,*EmbeddedTask)
 
-	// Conditions is a list of conditions that need to be true for the task to run
-	// Conditions are deprecated, use WhenExpressions instead
-	// +optional
-	conditions?: [...#PipelineTaskCondition] @go(Conditions,[]PipelineTaskCondition)
-
 	// WhenExpressions is a list of when expressions that need to be true for the task to run
 	// +optional
 	when?: #WhenExpressions @go(WhenExpressions)
@@ -133,6 +139,7 @@ import (
 	// RunAfter is the list of PipelineTask names that should be executed before
 	// this Task executes. (Used to force a specific ordering in graph execution.)
 	// +optional
+	// +listType=atomic
 	runAfter?: [...string] @go(RunAfter,[]string)
 
 	// Resources declares the resources given to this task as inputs and
@@ -142,11 +149,18 @@ import (
 
 	// Parameters declares parameters passed to this task.
 	// +optional
+	// +listType=atomic
 	params?: [...#Param] @go(Params,[]Param)
+
+	// Matrix declares parameters used to fan out this task.
+	// +optional
+	// +listType=atomic
+	matrix?: [...#Param] @go(Matrix,[]Param)
 
 	// Workspaces maps workspaces from the pipeline spec to the workspaces
 	// declared in the Task.
 	// +optional
+	// +listType=atomic
 	workspaces?: [...#WorkspacePipelineTaskBinding] @go(Workspaces,[]WorkspacePipelineTaskBinding)
 
 	// Time after which the TaskRun times out. Defaults to 1 hour.
@@ -163,20 +177,6 @@ import (
 #PipelineTaskParam: {
 	name:  string @go(Name)
 	value: string @go(Value)
-}
-
-// PipelineTaskCondition allows a PipelineTask to declare a Condition to be evaluated before
-// the Task is run.
-#PipelineTaskCondition: {
-	// ConditionRef is the name of the Condition to use for the conditionCheck
-	conditionRef: string @go(ConditionRef)
-
-	// Params declare parameters passed to this Condition
-	// +optional
-	params?: [...#Param] @go(Params,[]Param)
-
-	// Resources declare the resources provided to this Condition as input
-	resources?: [...#PipelineTaskInputResource] @go(Resources,[]PipelineTaskInputResource)
 }
 
 // PipelineDeclaredResource is used by a Pipeline to declare the types of the
@@ -203,10 +203,12 @@ import (
 #PipelineTaskResources: {
 	// Inputs holds the mapping from the PipelineResources declared in
 	// DeclaredPipelineResources to the input PipelineResources required by the Task.
+	// +listType=atomic
 	inputs?: [...#PipelineTaskInputResource] @go(Inputs,[]PipelineTaskInputResource)
 
 	// Outputs holds the mapping from the PipelineResources declared in
 	// DeclaredPipelineResources to the input PipelineResources required by the Task.
+	// +listType=atomic
 	outputs?: [...#PipelineTaskOutputResource] @go(Outputs,[]PipelineTaskOutputResource)
 }
 
@@ -223,6 +225,7 @@ import (
 	// From is the list of PipelineTask names that the resource has to come from.
 	// (Implies an ordering in the execution graph.)
 	// +optional
+	// +listType=atomic
 	from?: [...string] @go(From,[]string)
 }
 

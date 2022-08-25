@@ -50,6 +50,7 @@ import (
 	// must be supplied as inputs in TaskRuns unless they declare a default
 	// value.
 	// +optional
+	// +listType=atomic
 	params?: [...#ParamSpec] @go(Params,[]ParamSpec)
 
 	// Description is a user-facing description of the task that may be
@@ -59,89 +60,30 @@ import (
 
 	// Steps are the steps of the build; each step is run sequentially with the
 	// source mounted into /workspace.
+	// +listType=atomic
 	steps?: [...#Step] @go(Steps,[]Step)
 
 	// Volumes is a collection of volumes that are available to mount into the
 	// steps of the build.
+	// +listType=atomic
 	volumes?: [...corev1.#Volume] @go(Volumes,[]corev1.Volume)
 
 	// StepTemplate can be used as the basis for all step containers within the
 	// Task, so that the steps inherit settings on the base container.
-	stepTemplate?: null | corev1.#Container @go(StepTemplate,*corev1.Container)
+	stepTemplate?: null | #StepTemplate @go(StepTemplate,*StepTemplate)
 
 	// Sidecars are run alongside the Task's step containers. They begin before
 	// the steps start and end after the steps complete.
+	// +listType=atomic
 	sidecars?: [...#Sidecar] @go(Sidecars,[]Sidecar)
 
 	// Workspaces are the volumes that this Task requires.
+	// +listType=atomic
 	workspaces?: [...#WorkspaceDeclaration] @go(Workspaces,[]WorkspaceDeclaration)
 
 	// Results are values that this Task can output
+	// +listType=atomic
 	results?: [...#TaskResult] @go(Results,[]TaskResult)
-}
-
-// TaskResult used to describe the results of a task
-#TaskResult: {
-	// Name the given name
-	name: string @go(Name)
-
-	// Description is a human-readable description of the result
-	// +optional
-	description: string @go(Description)
-}
-
-// Step embeds the Container type, which allows it to include fields not
-// provided by Container.
-#Step: {
-	corev1.#Container
-
-	// Script is the contents of an executable file to execute.
-	//
-	// If Script is not empty, the Step cannot have an Command and the Args will be passed to the Script.
-	// +optional
-	script?: string @go(Script)
-
-	// Timeout is the time after which the step times out. Defaults to never.
-	// Refer to Go's ParseDuration documentation for expected format: https://golang.org/pkg/time/#ParseDuration
-	// +optional
-	timeout?: null | metav1.#Duration @go(Timeout,*metav1.Duration)
-
-	// This is an alpha field. You must set the "enable-api-fields" feature flag to "alpha"
-	// for this field to be supported.
-	//
-	// Workspaces is a list of workspaces from the Task that this Step wants
-	// exclusive access to. Adding a workspace to this list means that any
-	// other Step or Sidecar that does not also request this Workspace will
-	// not have access to it.
-	// +optional
-	workspaces?: [...#WorkspaceUsage] @go(Workspaces,[]WorkspaceUsage)
-
-	// OnError defines the exiting behavior of a container on error
-	// can be set to [ continue | stopAndFail ]
-	// stopAndFail indicates exit the taskRun if the container exits with non-zero exit code
-	// continue indicates continue executing the rest of the steps irrespective of the container exit code
-	onError?: string @go(OnError)
-}
-
-// Sidecar has nearly the same data structure as Step, consisting of a Container and an optional Script, but does not have the ability to timeout.
-#Sidecar: {
-	corev1.#Container
-
-	// Script is the contents of an executable file to execute.
-	//
-	// If Script is not empty, the Step cannot have an Command or Args.
-	// +optional
-	script?: string @go(Script)
-
-	// This is an alpha field. You must set the "enable-api-fields" feature flag to "alpha"
-	// for this field to be supported.
-	//
-	// Workspaces is a list of workspaces from the Task that this Sidecar wants
-	// exclusive access to. Adding a workspace to this list means that any
-	// other Step or Sidecar that does not also request this Workspace will
-	// not have access to it.
-	// +optional
-	workspaces?: [...#WorkspaceUsage] @go(Workspaces,[]WorkspaceUsage)
 }
 
 // TaskList contains a list of Task
@@ -153,34 +95,3 @@ import (
 	metadata?: metav1.#ListMeta @go(ListMeta)
 	items: [...#Task] @go(Items,[]Task)
 }
-
-// TaskRef can be used to refer to a specific instance of a task.
-// Copied from CrossVersionObjectReference: https://github.com/kubernetes/kubernetes/blob/169df7434155cbbc22f1532cba8e0a9588e29ad8/pkg/apis/autoscaling/types.go#L64
-#TaskRef: {
-	// Name of the referent; More info: http://kubernetes.io/docs/user-guide/identifiers#names
-	name?: string @go(Name)
-
-	// TaskKind indicates the kind of the task, namespaced or cluster scoped.
-	kind?: #TaskKind @go(Kind)
-
-	// API version of the referent
-	// +optional
-	apiVersion?: string @go(APIVersion)
-
-	// Bundle url reference to a Tekton Bundle.
-	// +optional
-	bundle?: string @go(Bundle)
-}
-
-// TaskKind defines the type of Task used by the pipeline.
-#TaskKind: string // #enumTaskKind
-
-#enumTaskKind:
-	#NamespacedTaskKind |
-	#ClusterTaskKind
-
-// NamespacedTaskKind indicates that the task type has a namespaced scope.
-#NamespacedTaskKind: #TaskKind & "Task"
-
-// ClusterTaskKind indicates that task type has a cluster scope.
-#ClusterTaskKind: #TaskKind & "ClusterTask"

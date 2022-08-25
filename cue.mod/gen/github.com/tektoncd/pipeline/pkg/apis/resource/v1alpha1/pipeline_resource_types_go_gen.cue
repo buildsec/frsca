@@ -74,10 +74,13 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// +optional
 	description?: string @go(Description)
 	type:         string @go(Type)
+
+	// +listType=atomic
 	params: [...#ResourceParam] @go(Params,[]ResourceParam)
 
 	// Secrets to fetch to populate some of resource fields
 	// +optional
+	// +listType=atomic
 	secrets?: [...#SecretParam] @go(SecretParams,[]SecretParam)
 }
 

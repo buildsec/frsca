@@ -6,14 +6,43 @@ package apis
 
 #CurrentField: ""
 
+// DiagnosticLevel is used to signal the severity of a particular diagnostic
+// in the form of a FieldError.
+#DiagnosticLevel: int // #enumDiagnosticLevel
+
+#enumDiagnosticLevel:
+	#ErrorLevel |
+	#WarningLevel
+
+#values_DiagnosticLevel: {
+	ErrorLevel:   #ErrorLevel
+	WarningLevel: #WarningLevel
+}
+
+// ErrorLevel is used to signify fatal/blocking diagnostics, e.g. those
+// that should block admission in a validating admission webhook.
+#ErrorLevel: #DiagnosticLevel & 0
+
+// WarningLevel is used to signify information/non-blocking diagnostics,
+// e.g. those that should be surfaced as warnings in a validating admission
+// webhook.
+#WarningLevel: #DiagnosticLevel & 1
+
 // FieldError is used to propagate the context of errors pertaining to
 // specific fields in a manner suitable for use in a recursive walk, so
 // that errors contain the appropriate field context.
 // FieldError methods are non-mutating.
 // +k8s:deepcopy-gen=true
 #FieldError: {
+	// Message holds the main diagnostic message carried by this FieldError
 	Message: string
+
+	// Paths holds a list of paths to which this diagnostic pertains
 	Paths: [...string] @go(,[]string)
+
+	// Level holds the severity of the diagnostic.
+	// If empty, this defaults to ErrorLevel.
+	Level: #DiagnosticLevel
 
 	// Details contains an optional longer payload.
 	// +optional

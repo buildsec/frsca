@@ -177,7 +177,7 @@ frsca: task: "deploy-using-kubectl": {
 			command: [
 				"sed",
 			]
-			image: "icr.io/gitsecure/alpine:latest@sha256:69704ef328d05a9f806b6b8502915e6a0a4faa4d72018dc42343f511490daf8a"
+			image: "docker.io/library/alpine:3.16.2@sha256:bc41182d7ef5ffc53a40b044e725193bc10142a1243f395ee852a8d9730fc2ad"
 			name:  "update-yaml"
 		}, {
 			args: [
@@ -190,7 +190,7 @@ frsca: task: "deploy-using-kubectl": {
 			command: [
 				"kubectl",
 			]
-			image: "icr.io/gitsecure/k8s-kubectl:latest@sha256:00e810f695528eb20ce91ce11346ef2ba59f1ea4fafc0d0d44101e63991d1567"
+			image: "docker.io/lachlanevenson/k8s-kubectl:v1.24.3@sha256:7b0568820851c1a1072379add4954aa25c9bf616d39f1f72887a6e7bb64df254"
 			name:  "run-kubectl"
 		}]
 		workspaces: [{

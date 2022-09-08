@@ -167,7 +167,7 @@ process that can be reviewed and audited.
 ```bash
 # Verify the image and the attestation.
 cosign verify --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
-cosign verify-attestation --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
+cosign verify-attestation --type slsaprovenance --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
 ```
 
 [cosign]: https://github.com/sigstore/cosign

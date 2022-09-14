@@ -57,7 +57,7 @@ jobs:
           docker run --rm gcr.io/go-containerregistry/crane ls "$(echo -n ${IMAGE_URL} | sed 's|:[^/]*$||')"
           tkn tr describe --last -o json | jq -r '.metadata.annotations["chains.tekton.dev/signed"]'
           cosign verify --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
-          cosign verify-attestation --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
+          cosign verify-attestation --type slsaprovenance --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
       - name: Run sample pipeline to test kyverno
         run: |
           make example-sample-pipeline
@@ -71,6 +71,6 @@ jobs:
           docker run --rm gcr.io/go-containerregistry/crane ls "$(echo -n ${IMAGE_URL} | sed 's|:[^/]*$||')"
 
           cosign verify --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
-          cosign verify-attestation --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
+          cosign verify-attestation --type slsaprovenance --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
 
           kubectl wait --timeout=5m --for=condition=ready pods -l app=picalc -n prod

@@ -129,7 +129,7 @@ sha256-f82fe2b635e304c7d8445c0117a4dbe35dd3c840078a39e21c88073a885c5e0f.sig
 
 ```bash
 cosign verify --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
-cosign verify-attestation --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
+cosign verify-attestation --type slsaprovenance --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
 ```
 
 With Tekton CLI (v0.23.0+):

@@ -356,7 +356,7 @@ name to the port exposed by the registry proxy:</p>
 </span></code></pre>
 <h4 id="verify-the-image-and-the-attestation">Verify the image and the attestation</h4>
 <pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">cosign</span><span> verify</span><span style="color:#bf616a;"> --key</span><span> k8s://tekton-chains/signing-secrets &quot;$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">IMAGE_URL</span><span style="color:#a3be8c;">}</span><span>&quot;
-</span><span style="color:#bf616a;">cosign</span><span> verify-attestation</span><span style="color:#bf616a;"> --key</span><span> k8s://tekton-chains/signing-secrets &quot;$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">IMAGE_URL</span><span style="color:#a3be8c;">}</span><span>&quot;
+</span><span style="color:#bf616a;">cosign</span><span> verify-attestation</span><span style="color:#bf616a;"> --type</span><span> slsaprovenance</span><span style="color:#bf616a;"> --key</span><span> k8s://tekton-chains/signing-secrets &quot;$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">IMAGE_URL</span><span style="color:#a3be8c;">}</span><span>&quot;
 </span></code></pre>
 <p>With Tekton CLI (v0.23.0+):</p>
 <pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">tkn</span><span> chain signature &quot;$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">TASK_RUN</span><span style="color:#a3be8c;">}</span><span>&quot;

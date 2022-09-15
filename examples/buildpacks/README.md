@@ -48,7 +48,7 @@ crane ls "$(echo -n ${IMAGE_URL} | sed 's|:[^/]*$||')"
 
 # Verify the image and the attestation.
 cosign verify --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
-cosign verify-attestation --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
+cosign verify-attestation --type slsaprovenance --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
 
 # Verify the signature and attestation with tkn.
 tkn chain signature "${TASK_RUN}"

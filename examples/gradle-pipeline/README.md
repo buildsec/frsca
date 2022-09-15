@@ -20,11 +20,11 @@ make example-gradle-pipeline
 tkn pr logs --last -f
 
 # Export the value of IMAGE_URL from the last pipeline run and the associated taskrun name:
-export IMAGE_URL="$(tkn pr describe --last -o jsonpath='{..taskResults}' | jq -r '.[] | select(.name | match("IMAGE_URL$")) | .value')"
-export TASK_RUN="$(tkn pr describe --last -o json | jq -r '.status.taskRuns | keys[] as $k | {"k": $k, "v": .[$k]} | select(.v.status.taskResults[]?.name | match("IMAGE_URL$")) | .k')"
-
-## If using the registry-proxy
-# export IMAGE_URL="$(echo "${IMAGE_URL}" | sed 's#'${REGISTRY}'#127.0.0.1:5000#')"
+IMAGE_URL="$(tkn pr describe --last -o jsonpath='{..taskResults}' | jq -r '.[] | select(.name | match("IMAGE_URL$")) | .value')"
+TASK_RUN="$(tkn pr describe --last -o json | jq -r '.status.taskRuns | keys[] as $k | {"k": $k, "v": .[$k]} | select(.v.status.taskResults[]?.name | match("IMAGE_URL$")) | .k')"
+if [ "${REGISTRY}" = "registry.registry" ]; then
+  IMAGE_URL="$(echo "${IMAGE_URL}" | sed 's#'${REGISTRY}'#127.0.0.1:5000#')"
+fi
 
 # Double check that the attestation and the signature were uploaded to the OCI.
 crane ls "$(echo -n ${IMAGE_URL} | sed 's|:[^/]*$||')"

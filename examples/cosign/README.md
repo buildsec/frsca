@@ -23,15 +23,15 @@ make example-cosign
 tkn pr logs --last -f
 
 # Ensure it has been signed.
-export TASK_RUN=$(tkn pr describe --last -o json | jq -r '.status.taskRuns | keys[] as $k | {"k": $k, "v": .[$k]} | select(.v.status.taskResults[]?.name | match("IMAGE_URL$")) | .k')
+TASK_RUN=$(tkn pr describe --last -o json | jq -r '.status.taskRuns | keys[] as $k | {"k": $k, "v": .[$k]} | select(.v.status.taskResults[]?.name | match("IMAGE_URL$")) | .k')
 tkn tr describe "${TASK_RUN}" -o jsonpath='{.metadata.annotations.chains\.tekton\.dev/signed}'
 # Should output "true"
 
 # Export URL of the image created from the pipelinerun as IMAGE_URL.
-export IMAGE_URL=$(tkn pr describe --last -o jsonpath='{..taskResults}' | jq -r '.[] | select(.name | match("IMAGE_URL$")) | .value')
-
-## If using the registry-proxy
-# export IMAGE_URL="$(echo "${IMAGE_URL}" | sed 's#'${REGISTRY}'#127.0.0.1:5000#')"
+IMAGE_URL=$(tkn pr describe --last -o jsonpath='{..taskResults}' | jq -r '.[] | select(.name | match("IMAGE_URL$")) | .value')
+if [ "${REGISTRY}" = "registry.registry" ]; then
+  IMAGE_URL="$(echo "${IMAGE_URL}" | sed 's#'${REGISTRY}'#127.0.0.1:5000#')"
+fi
 
 # Double check that the SBOM, the attestation and the signature were uploaded to the OCI.
 crane ls "$(echo -n ${IMAGE_URL} | sed 's|:[^/]*$||')"

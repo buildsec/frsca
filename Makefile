@@ -37,11 +37,11 @@ setup-frsca: setup-certs install-components setup-components setup-kyverno
 
 .PHONY: install-components
 install-components: 
-	make -j install-tekton-pipelines install-tekton-chains install-spire install-vault install-kyverno
+	make -j install-tekton-pipelines install-tekton-chains install-spire install-vault install-gitea install-kyverno
 
 .PHONY: setup-components
 setup-components: 
-	make -j setup-tekton-pipelines setup-tekton-chains setup-spire setup-vault setup-registry
+	make setup-gitea setup-tekton-pipelines setup-tekton-chains setup-spire setup-vault setup-registry
 
 .PHONY: setup-certs
 setup-certs: ## Setup certificates used by vault and spire
@@ -54,6 +54,14 @@ setup-registry: ## Setup a registry
 .PHONY: registry-proxy
 registry-proxy: ## Forward the registry to the host
 	bash platform/05-registry-proxy.sh
+
+.PHONY: install-gitea
+install-gitea:
+	bash platform/06-gitea-install.sh
+
+.PHONY: setup-gitea
+setup-gitea:
+	bash platform/07-gitea-setup.sh
 
 .PHONY: install-tekton-pipelines
 install-tekton-pipelines: ## Install a Tekton CD

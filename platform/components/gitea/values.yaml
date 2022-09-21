@@ -1,0 +1,213 @@
+replicaCount: 1
+
+clusterDomain: cluster.local
+
+image:
+  repository: gitea/gitea
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+  pullPolicy: Always
+  rootless: false  # only possible when running 1.14 or later
+
+imagePullSecrets: []
+
+# Security context is only usable with rootless image due to image design
+podSecurityContext:
+  fsGroup: 1000
+
+containerSecurityContext: {}
+#   allowPrivilegeEscalation: false
+#   capabilities:
+#     drop:
+#       - ALL
+#   # Add the SYS_CHROOT capability for root and rootless images if you intend to
+#   # run pods on nodes that use the container runtime cri-o. Otherwise, you will
+#   # get an error message from the SSH server that it is not possible to read from
+#   # the repository.
+#   # https://gitea.com/gitea/helm-chart/issues/161
+#     add:
+#       - SYS_CHROOT
+#   privileged: false
+#   readOnlyRootFilesystem: true
+#   runAsGroup: 1000
+#   runAsNonRoot: true
+#   runAsUser: 1000
+
+service:
+  http:
+    type: ClusterIP
+    port: 3000
+    clusterIP: None
+    # loadBalancerIP:
+    # nodePort:
+    # externalTrafficPolicy:
+    # externalIPs:
+    # ipFamilyPolicy:
+    # ipFamilies:
+    loadBalancerSourceRanges: []
+    annotations:
+  ssh:
+    type: ClusterIP
+    port: 22
+    clusterIP: None
+    # loadBalancerIP:
+    # nodePort:
+    # externalTrafficPolicy:
+    # externalIPs:
+    # ipFamilyPolicy:
+    # ipFamilies:
+    # hostPort:
+    loadBalancerSourceRanges: []
+    annotations:
+
+ingress:
+  enabled: false
+  # className: nginx
+  annotations: {}
+  # kubernetes.io/ingress.class: nginx
+  # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: git.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - git.example.com
+  # Mostly for argocd or any other CI that uses `helm template | kubectl apply` or similar
+  # If helm doesn't correctly detect your ingress API version you can set it here.
+  # apiVersion: networking.k8s.io/v1
+
+resources: {}
+# We usually recommend not to specify default resources and to leave this as a conscious
+# choice for the user. This also increases chances charts run on environments with little
+# resources, such as Minikube. If you do want to specify resources, uncomment the following
+# lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+# limits:
+#   cpu: 100m
+#   memory: 128Mi
+# requests:
+#   cpu: 100m
+#   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+statefulset:
+  env: []
+  # - name: VARIABLE
+  #   value: my-value
+  terminationGracePeriodSeconds: 60
+  labels: {}
+  annotations: {}
+
+persistence:
+  enabled: true
+  # existingClaim:
+  size: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  labels: {}
+  annotations: {}
+  # storageClass:
+  # subPath:
+
+# additional volumes to add to the Gitea statefulset.
+extraVolumes:
+  - name: ca-certs
+    configMap:
+      name: ca-certs
+  - name: certs
+    secret:
+      defaultMode: 420
+      secretName: gitea-http-certs
+
+# additional volumes to mount, both to the init container and to the main
+# container. As an example, can be used to mount a client cert when connecting
+# to an external Postgres server.
+extraVolumeMounts:
+  - name: ca-certs
+    mountPath: /etc/ssl/certs/ca-certificates.crt
+    subPath: ca-certificates.crt
+    readOnly: true
+  - mountPath: /var/run/certs
+    name: certs
+    readOnly: true
+
+# bash shell script copied verbatim to the start of the init-container.
+initPreScript: ""
+# initPreScript: |
+#   mkdir -p /data/git/.postgresql
+#   cp /pg-ssl/* /data/git/.postgresql/
+#   chown -R git:git /data/git/.postgresql/
+#   chmod 400 /data/git/.postgresql/postgresql.key
+
+# Configure commit/action signing prerequisites
+signing:
+  enabled: false
+  gpgHome: /data/git/.gnupg
+
+gitea:
+  admin:
+    username: gitea_admin
+    password: FRSCAgiteaAdmin
+    email: "gitea@local.domain"
+
+  metrics:
+    enabled: false
+    serviceMonitor:
+      enabled: false
+
+  config:
+    server:
+      # SSH_PORT: 22
+      SSH_DOMAIN: gitea-ssh.gitea.svc.cluster.local
+      ROOT_URL: https://gitea-http.gitea.svc.cluster.local
+      DOMAIN: gitea-http.gitea.svc.cluster.local
+      PROTOCOL: https
+      CERT_FILE: /var/run/certs/tls.crt
+      KEY_FILE: /var/run/certs/tls.key
+
+  additionalConfigSources: []
+  #   - secret:
+  #       secretName: gitea-app-ini-oauth
+  #   - configMap:
+  #       name: gitea-app-ini-plaintext
+
+  additionalConfigFromEnvs: []
+
+  podAnnotations: {}
+
+  # Modify the liveness probe for your needs or completely disable it by commenting out.
+  livenessProbe:
+    tcpSocket:
+      port: http
+    initialDelaySeconds: 30
+    timeoutSeconds: 1
+    periodSeconds: 20
+    successThreshold: 1
+    failureThreshold: 5
+
+  # Modify the readiness probe for your needs or completely disable it by commenting out.
+  readinessProbe:
+    tcpSocket:
+      port: http
+    initialDelaySeconds: 5
+    timeoutSeconds: 1
+    periodSeconds: 20
+    successThreshold: 1
+    failureThreshold: 3
+
+  # Modify the startup probe for your needs or completely disable it by commenting out.
+  startupProbe:
+    tcpSocket:
+      port: http
+    initialDelaySeconds: 15
+    timeoutSeconds: 1
+    periodSeconds: 15
+    successThreshold: 1
+    failureThreshold: 20

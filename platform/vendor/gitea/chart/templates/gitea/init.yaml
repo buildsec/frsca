@@ -1,0 +1,116 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "gitea.fullname" . }}-init
+  labels:
+    {{- include "gitea.labels" . | nindent 4 }}
+type: Opaque
+stringData:
+  init_directory_structure.sh: |-
+    #!/usr/bin/env bash
+
+    set -euo pipefail
+
+    {{- if .Values.initPreScript }}
+    # BEGIN: initPreScript
+    {{- with .Values.initPreScript -}}
+    {{ . | nindent 4}}
+    {{- end -}}
+    # END: initPreScript
+    {{- end }}
+
+    set -x
+
+    {{- if not .Values.image.rootless }}
+    chown 1000:1000 /data
+    {{- end }}
+    mkdir -p /data/git/.ssh
+    chmod -R 700 /data/git/.ssh
+    [ ! -d /data/gitea ] && mkdir -p /data/gitea/conf
+
+    # prepare temp directory structure
+    mkdir -p "${GITEA_TEMP}"
+    {{- if not .Values.image.rootless }}
+    chown 1000:1000 "${GITEA_TEMP}"
+    {{- end }}
+    chmod ug+rwx "${GITEA_TEMP}"
+
+  configure_gitea.sh: |-
+    #!/usr/bin/env bash
+
+    set -euo pipefail
+
+    echo '==== BEGIN GITEA CONFIGURATION ===='
+
+    { # try
+      gitea migrate
+    } || { # catch
+      echo "Gitea migrate might fail due to database connection...This init-container will try again in a few seconds"
+      exit 1
+    }
+    
+
+    {{- if or .Values.gitea.admin.existingSecret (and .Values.gitea.admin.username .Values.gitea.admin.password) }}
+    function configure_admin_user() {
+      local ACCOUNT_ID=$(gitea admin user list --admin | grep -e "\s\+${GITEA_ADMIN_USERNAME}\s\+" | awk -F " " "{printf \$1}")
+      if [[ -z "${ACCOUNT_ID}" ]]; then
+        echo "No admin user '${GITEA_ADMIN_USERNAME}' found. Creating now..."
+        gitea admin user create --admin --username "${GITEA_ADMIN_USERNAME}" --password "${GITEA_ADMIN_PASSWORD}" --email {{ .Values.gitea.admin.email | quote }} --must-change-password=false
+        echo '...created.'
+      else
+        echo "Admin account '${GITEA_ADMIN_USERNAME}' already exist. Running update to sync password..."
+        gitea admin user change-password --username "${GITEA_ADMIN_USERNAME}" --password "${GITEA_ADMIN_PASSWORD}"
+        echo '...password sync done.'
+      fi
+    }
+
+    configure_admin_user
+    {{- end }}
+
+    function configure_ldap() {
+      {{- if .Values.gitea.ldap }}
+      {{- range $idx, $value := .Values.gitea.ldap }}
+      local LDAP_NAME={{ (printf "%s" $value.name) | squote }}
+      local GITEA_AUTH_ID=$(gitea admin auth list --vertical-bars | grep -E "\|${LDAP_NAME}\s+\|" | grep -iE '\|LDAP \(via BindDN\)\s+\|' | awk -F " "  "{print \$1}")
+
+      if [[ -z "${GITEA_AUTH_ID}" ]]; then
+        echo "No ldap configuration found with name '${LDAP_NAME}'. Installing it now..."
+        gitea admin auth add-ldap {{- include "gitea.ldap_settings" (list $idx $value) | indent 1 }}
+        echo '...installed.'
+      else
+        echo "Existing ldap configuration with name '${LDAP_NAME}': '${GITEA_AUTH_ID}'. Running update to sync settings..."
+        gitea admin auth update-ldap --id "${GITEA_AUTH_ID}" {{- include "gitea.ldap_settings" (list $idx $value) | indent 1 }}
+        echo '...sync settings done.'
+      fi
+      {{- end }}
+      {{- else }}
+        echo 'no ldap configuration... skipping.'
+      {{- end }}
+    }
+
+    configure_ldap
+
+    function configure_oauth() {
+      {{- if .Values.gitea.oauth }}
+      {{- range $idx, $value := .Values.gitea.oauth }}
+      local OAUTH_NAME={{ (printf "%s" $value.name) | squote }}
+      local AUTH_ID=$(gitea admin auth list --vertical-bars | grep -E "\|${OAUTH_NAME}\s+\|" | grep -iE '\|OAuth2\s+\|' | awk -F " "  "{print \$1}")
+
+      if [[ -z "${AUTH_ID}" ]]; then
+        echo "No oauth configuration found with name '${OAUTH_NAME}'. Installing it now..."
+        gitea admin auth add-oauth {{- include "gitea.oauth_settings" (list $idx $value) | indent 1 }}
+        echo '...installed.'
+      else
+        echo "Existing oauth configuration with name '${OAUTH_NAME}': '${AUTH_ID}'. Running update to sync settings..."
+        gitea admin auth update-oauth --id "${AUTH_ID}" {{- include "gitea.oauth_settings" (list $idx $value) | indent 1 }}
+        echo '...sync settings done.'
+      fi
+      {{- end }}
+      {{- else }}
+        echo 'no oauth configuration... skipping.'
+      {{- end }}
+    }
+
+    configure_oauth
+
+    echo '==== END GITEA CONFIGURATION ===='

@@ -19,6 +19,7 @@ kubectl apply -f "${GIT_ROOT}"/platform/vendor/tekton/catalog/main/pipeline/buil
 
 # Patch tasks for built in CA
 kubectl patch Task buildpacks --patch-file "${GIT_ROOT}"/platform/components/tekton/tasks/patch_buildpacks.yml --type=json
+kubectl patch Task git-clone --patch-file "${GIT_ROOT}"/platform/components/tekton/tasks/patch_git_clone.yml --type=json
 kubectl patch Task jib-gradle --patch-file "${GIT_ROOT}"/platform/components/tekton/tasks/patch_gradle.yml --type=json
 kubectl patch Task kaniko --patch-file "${GIT_ROOT}"/platform/components/tekton/tasks/patch_kaniko.yml --type=json
 kubectl patch Task trivy-scanner --patch-file "${GIT_ROOT}"/platform/components/tekton/tasks/patch_trivy.yml --type=json

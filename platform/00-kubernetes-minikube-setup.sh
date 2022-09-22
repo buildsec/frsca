@@ -6,10 +6,9 @@ set -euo pipefail
 #       There are multiple ways to validate signatures, checksums, etc.
 
 # PINNED VERSIONS GO HERE
-MINIKUBE_VERSION=v1.25.2
+MINIKUBE_VERSION=v1.26.1
 MINIKUBE_FILE_NAME=minikube-linux-amd64
 MINIKUBE_URL=https://github.com/kubernetes/minikube/releases/download/$MINIKUBE_VERSION/$MINIKUBE_FILE_NAME
-MINIKUBE_SHA256=ef610fa83571920f1b6c8538bb31a8dc5e10ff7e1fcdca071b2a8544c349c6fd
 
 HELM_VERSION=v3.7.1
 HELM_FILE_NAME=helm-v3.7.1-linux-amd64.tar.gz
@@ -71,14 +70,11 @@ case "${PLATFORM}" in
       TMP=$(mktemp -d)
       pushd "$TMP"
       curl -LO $MINIKUBE_URL
-      ACTUAL_SHA256=$(sha256sum $MINIKUBE_FILE_NAME | awk '{print $1}')
-      [[ $ACTUAL_SHA256 == "$MINIKUBE_SHA256" ]] || (
-        echo "Expected SHA256 for $MINIKUBE_FILE_NAME: $MINIKUBE_SHA256"
-        echo "Actual SHA256 for $MINIKUBE_FILE_NAME: $ACTUAL_SHA256"
-        exit 1
-      )
+      curl -LO "$MINIKUBE_URL.sha256"
+      echo "$(<$MINIKUBE_FILE_NAME.sha256) $MINIKUBE_FILE_NAME" | sha256sum --check
       sudo install ${MINIKUBE_FILE_NAME} ${INSTALL_DIR}/minikube
       rm $MINIKUBE_FILE_NAME
+      rm $MINIKUBE_FILE_NAME.sha256
       popd
       rmdir "$TMP"
     )

@@ -9,17 +9,15 @@ set -euo pipefail
 MINIKUBE_VERSION=v1.25.2
 MINIKUBE_FILE_NAME=minikube-linux-amd64
 MINIKUBE_URL=https://github.com/kubernetes/minikube/releases/download/$MINIKUBE_VERSION/$MINIKUBE_FILE_NAME
-MINIKUBE_SHA256=ef610fa83571920f1b6c8538bb31a8dc5e10ff7e1fcdca071b2a8544c349c6fd
 
 HELM_VERSION=v3.7.1
 HELM_FILE_NAME=helm-v3.7.1-linux-amd64.tar.gz
 HELM_URL=https://get.helm.sh/$HELM_FILE_NAME
-HELM_SHA256="6cd6cad4b97e10c33c978ff3ac97bb42b68f79766f1d2284cfd62ec04cd177f4"
 
 TKN_VERSION=v0.23.1
 TKN_FILE_NAME=tkn_0.23.1_Linux_x86_64.tar.gz
-TKN_URL=https://github.com/tektoncd/cli/releases/download/$TKN_VERSION/$TKN_FILE_NAME
-TKN_SHA256=2496b1315c116ab7fc99fe698d0b29c9cbe40cffa85c060b7c644b8004157f5e
+TKN_URL=https://github.com/tektoncd/cli/releases/download/$TKN_VERSION
+TKN_CHECKSUMS=checksums.txt
 
 KUBECTL_VERSION=v1.22.3
 KUBECTL_FILE_NAME=kubectl
@@ -71,14 +69,11 @@ case "${PLATFORM}" in
       TMP=$(mktemp -d)
       pushd "$TMP"
       curl -LO $MINIKUBE_URL
-      ACTUAL_SHA256=$(sha256sum $MINIKUBE_FILE_NAME | awk '{print $1}')
-      [[ $ACTUAL_SHA256 == "$MINIKUBE_SHA256" ]] || (
-        echo "Expected SHA256 for $MINIKUBE_FILE_NAME: $MINIKUBE_SHA256"
-        echo "Actual SHA256 for $MINIKUBE_FILE_NAME: $ACTUAL_SHA256"
-        exit 1
-      )
+      curl -LO "$MINIKUBE_URL.sha256"
+      echo "$(<$MINIKUBE_FILE_NAME.sha256) $MINIKUBE_FILE_NAME" | sha256sum --check
       sudo install ${MINIKUBE_FILE_NAME} ${INSTALL_DIR}/minikube
       rm $MINIKUBE_FILE_NAME
+      rm $MINIKUBE_FILE_NAME.sha256
       popd
       rmdir "$TMP"
     )
@@ -88,16 +83,13 @@ case "${PLATFORM}" in
       TMP=$(mktemp -d)
       pushd "$TMP"
       curl -LO $HELM_URL
-      ACTUAL_SHA256=$(sha256sum ${HELM_FILE_NAME} | awk '{print $1}')
-      [[ $ACTUAL_SHA256 == "$HELM_SHA256" ]] || (
-        echo "Expected SHA256 for $HELM_FILE_NAME: $HELM_SHA256"
-        echo "Actual SHA256 for $HELM_FILE_NAME: $ACTUAL_SHA256"
-        exit 1
-      )
+      curl -LO "$HELM_URL.sha256"
+      echo "$(<$HELM_FILE_NAME.sha256) $HELM_FILE_NAME" | sha256sum --check
       tar xvf $HELM_FILE_NAME
       sudo install linux-amd64/helm $INSTALL_DIR/helm
       rm -rf linux-amd64
       rm $HELM_FILE_NAME
+      rm $HELM_FILE_NAME.sha256
       popd
       rmdir "$TMP"
     )
@@ -106,15 +98,12 @@ case "${PLATFORM}" in
       echo -e "${C_GREEN}tkn not found, installing...${C_RESET_ALL}"
       TMP=$(mktemp -d)
       pushd "$TMP"
-      curl -LO $TKN_URL
-      ACTUAL_SHA256=$(sha256sum $TKN_FILE_NAME | awk '{print $1}')
-      [[ $ACTUAL_SHA256 == "$TKN_SHA256" ]] || (
-        echo "Expected SHA256 for $TKN_FILE_NAME: $TKN_SHA256"
-        echo "Actual SHA256 for $TKN_FILE_NAME: $ACTUAL_SHA256"
-        exit 1
-      )
+      curl -LO "$TKN_URL/$TKN_FILE_NAME"
+      curl -LO "$TKN_URL/$TKN_CHECKSUMS"
+      grep "$TKN_FILE_NAME" "$TKN_CHECKSUMS" | sha256sum --check
       sudo tar xvzf $TKN_FILE_NAME -C "$INSTALL_DIR" tkn
       rm $TKN_FILE_NAME
+      rm $TKN_CHECKSUMS
       popd
       rmdir "$TMP"
     )

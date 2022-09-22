@@ -172,8 +172,8 @@ frsca: trigger: "example-golang": {
 			name:  "SOURCE_SUBPATH"
 			value: "."
 		}, {
-      name: "SOURCE_REFERENCE"
-      value: "$(tt.params.gitrevision)"
+			name: "SOURCE_REFERENCE"
+			value: "$(tt.params.gitrevision)"
 		}, {
 			name: "ARGS"
 			value: [

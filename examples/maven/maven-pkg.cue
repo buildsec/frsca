@@ -5,10 +5,10 @@ frsca: pipeline: "example-maven": spec: {
 		name:        "git-source"
 		description: "The git repo"
 	}, {
-    name:        "maven-settings"
-    description: "maven-settings"
-  }]
-  params: [{
+		name:        "maven-settings"
+		description: "maven-settings"
+	}]
+	params: [{
 		name:        "SOURCE_URL"
 		type:        "string"
 		description: "git repo"
@@ -21,7 +21,7 @@ frsca: pipeline: "example-maven": spec: {
 		name:        "SOURCE_REFERENCE"
 		type:        "string"
 		description: "git commit branch, or tag"
-  }]
+	}]
 	tasks: [{
 		name: "clone-repo"
 		taskRef: name: "git-clone"
@@ -52,17 +52,17 @@ frsca: pipeline: "example-maven": spec: {
 			name:      "source"
 			workspace: "git-source"
 		}, {
-      name:      "maven-settings"
+			name:      "maven-settings"
 			workspace: "maven-settings"
-    }]
+		}]
 		params: [{
 			name:  "GOALS"
 			value: [
-        "--no-transfer-progress",
-        "-DskipTests",
-        "clean",
-        "package"
-      ]
+				"--no-transfer-progress",
+				"-DskipTests",
+				"clean",
+				"package"
+			]
 		}]
 	}]
 }
@@ -72,13 +72,13 @@ frsca: trigger: "example-maven": {
 		pipelineRef: name: "example-maven"
 		params: [{
 			name:  "SOURCE_URL"
-			value: "https://gitea-http.gitea:3000/frsca/example-maven"
+			value: "\(_GIT_ORG)/example-maven"
 		}, {
 			name:  "SOURCE_SUBPATH"
 			value: "."
 		}, {
-      name: "SOURCE_REFERENCE"
-      value: "$(tt.params.gitrevision)"
+			name: "SOURCE_REFERENCE"
+			value: "$(tt.params.gitrevision)"
 		}]
 		workspaces: [{
 			name: "git-source"

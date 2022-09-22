@@ -29,8 +29,8 @@ frsca: trigger: "example-buildpacks": {
 			name:  "SOURCE_SUBPATH"
 			value: "apps/ruby-bundler"
 		}, {
-      name: "SOURCE_REFERENCE"
-      value: "$(tt.params.gitrevision)"
+			name: "SOURCE_REFERENCE"
+			value: "$(tt.params.gitrevision)"
 		}, {
 			name:  "CACHE_IMAGE"
 			value: _CACHE_IMAGE

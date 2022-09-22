@@ -151,8 +151,8 @@ frsca: trigger: "example-sample-pipeline": {
 			name:  "SOURCE_SUBPATH"
 			value: "."
 		}, {
-      name: "SOURCE_REFERENCE"
-      value: "$(tt.params.gitrevision)"
+			name: "SOURCE_REFERENCE"
+			value: "$(tt.params.gitrevision)"
 		}, {
 			name:  "pathToContext"
 			value: "src"

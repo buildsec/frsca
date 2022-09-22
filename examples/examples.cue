@@ -5,6 +5,7 @@ _IMAGE: name: string
 _REPOSITORY: *"ttl.sh" | string @tag(repository)
 _APP_IMAGE: *"\(_REPOSITORY)/\(_IMAGE.name)" | string @tag(appImage)
 _GIT_ORG: *"https://gitea-http.gitea:3000/frsca" | string @tag(gitOrg)
+_NAMESPACE: *"default" | string @tag(namespace)
 
 frsca: secret: "kube-api-secret": {
 	metadata: annotations: "kubernetes.io/service-account.name": "pipeline-account"
@@ -32,7 +33,7 @@ frsca: clusterRoleBinding: "pipeline-role-binding": {
 	}
 	subjects: [{
 		kind: "ServiceAccount"
-		namespace: "default"
+		namespace: "\(_NAMESPACE)"
 		name: "pipeline-account"
 	}]
 }

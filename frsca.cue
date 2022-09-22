@@ -112,13 +112,13 @@ frsca: clusterPolicy?: [Name=_]: kyvernoV1.#ClusterPolicy & {
 
 // Compensate for Kyverno ImageVerification bool defaults
 frsca: clusterPolicy?: [_]: {
-    spec: rules: [...{
-        verifyImages: [...{
-            mutateDigest: *true | bool
-            verifyDigest: *true | bool
-            required: *true | bool
-        }]
-    }]
+	spec: rules: [...{
+		verifyImages: [...{
+			mutateDigest: *true | bool
+			verifyDigest: *true | bool
+			required: *true | bool
+		}]
+	}]
 }
 
 // watch is used to add a tekton trigger to run a pipeline
@@ -140,7 +140,7 @@ frsca: trigger?: [Name=_]: {
 			params: [{
 				name: "gitrevision"
 				description: *"The git revision" | string
-				default: *"master" | string
+				default: *"main" | string
 			},...]
 			resourcetemplates: [ pipelineV1Beta1.#PipelineRun & pr ]
 		}

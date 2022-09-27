@@ -39,8 +39,8 @@ jobs:
       - name: Start minikube
         run: |
           make setup-minikube
-      - name: Try the cluster !
-        run: kubectl get pods -A
+      - name: Test the environment
+        run: goss --gossfile goss-environment.yaml validate
       - name: Initialize FRSCA
         env:
           REGISTRY: "registry.registry"

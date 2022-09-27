@@ -164,6 +164,7 @@ case "${PLATFORM}" in
       popd
       rmdir "$TMP"
     )
+
     jq --version || (
       echo -e "${C_GREEN}jq not found, installing...${C_RESET_ALL}" 
       
@@ -177,6 +178,26 @@ case "${PLATFORM}" in
         echo -e "${C_RED}jq cannot be automatically installed, please install it manually${C_RESET_ALL}"
         exit 1
       fi
+    )
+
+    goss --version || (
+      echo -e "${C_GREEN}goss not found, installing...${C_RESET_ALL}"
+      GOSS_VERSION=v0.3.18
+      GOSS_RELEASE_URL="https://github.com/aelsabbahy/goss/releases/download/${GOSS_VERSION}"
+      GOSS_ARCH=$(uname -m | sed -e 's/x86_64/amd64/')
+      GOSS_PLATFORM=$(uname | tr '[:upper:]' '[:lower:]')
+      GOSS_FILE_NAME="goss-${GOSS_PLATFORM}-${GOSS_ARCH}"
+      GOSS_CHECKSUM_FILE_NAME="${GOSS_FILE_NAME}.sha256"
+      TMP=$(mktemp -d)
+      pushd "$TMP"
+      curl -sLO "${GOSS_RELEASE_URL}/${GOSS_FILE_NAME}"
+      curl -sLO "${GOSS_RELEASE_URL}/${GOSS_CHECKSUM_FILE_NAME}"
+      sha256sum -c "$GOSS_CHECKSUM_FILE_NAME"
+      sudo install "$GOSS_FILE_NAME" "$INSTALL_DIR"/goss
+      rm "${GOSS_FILE_NAME}"
+      rm "${GOSS_CHECKSUM_FILE_NAME}"
+      popd
+      rmdir "$TMP"
     )
     ;;
   *)

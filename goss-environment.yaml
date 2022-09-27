@@ -1,0 +1,58 @@
+command:
+  cosign-version:
+    exit-status: 0
+    exec: "cosign version"
+    timeout: 5000
+  cue-version:
+    exit-status: 0
+    exec: "cue version"
+    stdout:
+      - "cue version"
+    timeout: 5000
+  git-version:
+    exit-status: 0
+    exec: "git version"
+    stdout:
+      - "git version"
+    timeout: 5000
+  go-version:
+    exit-status: 0
+    exec: "go version"
+    stdout:
+      - "go version"
+    timeout: 5000
+  helm-version:
+    exit-status: 0
+    exec: "helm list"
+    timeout: 5000
+  jq-version:
+    exit-status: 0
+    exec: "jq --version"
+    stdout:
+      - "jq"
+    timeout: 5000
+  kubectl-version:
+    exit-status: 0
+    exec: "kubectl version"
+    stdout:
+      - "Client Version:"
+    timeout: 5000
+  minikube-version:
+    exit-status: 0
+    exec: "minikube version"
+    stdout:
+      - "minikube version"
+    timeout: 5000
+  tkn-version:
+    exit-status: 0
+    exec: "tkn version"
+    stdout:
+      - "Client version:"
+    timeout: 5000
+  try-cluster:
+    title: Try the cluster
+    exec: kubectl get pods -A
+    stderr: []
+    exit-status: 0
+    timeout: 10000
+    skip: false

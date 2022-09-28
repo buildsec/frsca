@@ -207,3 +207,12 @@ cue.mod:
 	cue get go github.com/tektoncd/triggers/pkg/apis/triggers/v1beta1
 	cue get go k8s.io/api/core/v1
 	cue get go k8s.io/api/rbac/v1
+
+.PHONY: setup-tests ## Setup the integration tests
+setup-tests:
+	cd integration-tests/integration-tests && poetry install --without dev
+
+.PHONY: test ## Run the integration tests
+test:
+	cd integration-tests/integration-tests \
+		&& poetry run pytest -v -m chains --hosts="kubectl://pod?context=minikube&namespace=tekton-chains"

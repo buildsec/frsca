@@ -1,3 +1,8 @@
+*$py.class
+*.pub
+*.py[cod]
+.vscode/
+__pycache__/
 base64_*
 docs/public/
 hello.txt
@@ -6,5 +11,3 @@ kubernetes/scripts/payload
 kubernetes/scripts/signature
 result
 target/
-*.pub
-.vscode/

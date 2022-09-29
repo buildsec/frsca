@@ -6,7 +6,7 @@ set -euo pipefail
 #       There are multiple ways to validate signatures, checksums, etc.
 
 # PINNED VERSIONS GO HERE
-MINIKUBE_VERSION=v1.25.2
+MINIKUBE_VERSION=v1.26.1
 MINIKUBE_FILE_NAME=minikube-linux-amd64
 MINIKUBE_URL=https://github.com/kubernetes/minikube/releases/download/$MINIKUBE_VERSION/$MINIKUBE_FILE_NAME
 

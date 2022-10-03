@@ -8,6 +8,58 @@ import (
 	triggersV1Beta1 "github.com/tektoncd/triggers/pkg/apis/triggers/v1beta1"
 )
 
+// FRSCA Configuration
+frscaConfig: {
+    arch: string // untransformed architecture string
+    archSed: string // transformed architecture string (e.g. x86_64 -> amd64)
+    platform: string // untransformed platform string
+    platformLower: string // lowercase platform string
+	cosign: {
+		imageBase: string | *"gcr.io/projectsigstore/cosign"
+		versionNumber: string | *"1.12.0"
+		imageDigest: string | *"sha256:880cc3ec8088fa59a43025d4f20961e8abc7c732e276a211cfb8b66793455dd0"
+		releaseUrl: string | *"https://github.com/sigstore/cosign/releases/download/\(version)"
+		checksumsFileName: string | *"cosign_checksums.txt"
+		checksumsAsset: "\(releaseUrl)/\(checksumsFileName)"
+		version: "v\(versionNumber)"
+		imageUrl: "\(imageBase):\(version)@\(imageDigest)"
+        _arch: archSed
+        fileName: "cosign-\(platformLower)-\(_arch)"
+        asset: "\(releaseUrl)/\(fileName)"
+	}
+	helm: {
+		version: string | *"v3.7.1"
+		releaseUrl: string | *"https://get.helm.sh"
+        _arch: archSed
+		dir: "\(platformLower)-\(_arch)"
+        fileName: "helm-\(version)-\(dir).tar.gz"
+        asset: "\(releaseUrl)/\(fileName)"
+	}
+	kubectl: {
+		version: string | *"v1.24.3"
+		releaseUrl: string | *"https://dl.k8s.io/release/\(version)"
+        _arch: archSed
+		asset: "\(releaseUrl)/bin/\(platformLower)/\(_arch)/kubectl"
+		checksumUrl: "\(asset).sha256"
+	}
+	minikube: {
+		version: string | *"v1.26.1"
+		releaseUrl: string | *"https://github.com/kubernetes/minikube/releases/download/\(version)"
+        _arch: archSed
+		fileName: "minikube-\(platformLower)-\(_arch)"
+		asset: "\(releaseUrl)/\(fileName)"
+	}
+	tektonCli: {
+		versionNumber: string | *"0.23.1"
+		version: "v\(versionNumber)"
+		releaseUrl: string | *"https://github.com/tektoncd/cli/releases/download/\(version)"
+		_arch: arch
+		fileName: "tkn_\(versionNumber)_\(platform)_\(_arch).tar.gz"
+		asset: "\(releaseUrl)/\(fileName)"
+		checksums: "checksums.txt"
+	}
+} 
+
 frsca: configMap?: [Name=_]: k8sCoreV1.#ConfigMap & {
 	apiVersion: "v1"
 	kind:       "ConfigMap"

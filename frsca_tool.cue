@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"tool/cli"
+	"tool/exec"
 	"tool/file"
 )
 
@@ -46,4 +47,38 @@ command: {
 	print: cli.Print & {
 		text: json.MarshalStream([ for x in frsca for y in x {y}])
 	}
+    config: cli.Print & {
+        name: string | *"cosign" @tag(configName)
+        item: string | *"asset" @tag(configItem)
+        n: {for k, v in frscaConfig if k == name {v}}
+        i: {for k, v in n if k == item {v}}
+        text: i
+    }
 }
+
+// operations to support local runtime environment interrogation
+_configArch: exec.Run & {
+    cmd: ["bash", "-c", "uname -m"]
+    stdout: string
+}
+
+_configArchSed: exec.Run & {
+    cmd: ["bash", "-c", "uname -m | sed -e 's/x86_64/amd64/'"]
+    stdout: string
+}
+
+_configPlatform: exec.Run & {
+    cmd: ["bash", "-c", "uname"]
+    stdout: string
+}
+
+_configPlatformLower: exec.Run & {
+    cmd: ["bash", "-c", "uname | tr '[:upper:]' '[:lower:]'"]
+    stdout: string
+}
+
+// configuration attributes that are dependent on runtime environment
+frscaConfig: arch: strings.TrimSpace(_configArch.stdout)
+frscaConfig: archSed: strings.TrimSpace(_configArchSed.stdout)
+frscaConfig: platform: strings.TrimSpace(_configPlatform.stdout)
+frscaConfig: platformLower: strings.TrimSpace(_configPlatformLower.stdout)

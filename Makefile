@@ -16,6 +16,7 @@ teardown: ## Destroy the minikube environment
 
 .PHONY: setup-minikube
 setup-minikube: ## Setup a Kubernetes cluster using Minikube
+	bash platform/00-bootstrap-cue.sh
 	bash platform/00-kubernetes-minikube-setup.sh
 
 .PHONY: setup-dev

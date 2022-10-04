@@ -9,10 +9,12 @@ DEFAULT_REPOSITORY=$(xxd -l 16 -c 16 -p < /dev/random)
 C_GREEN='\033[32m'
 C_RESET_ALL='\033[0m'
 
-# Install the buildpacks pipelinerun.
-echo -e "${C_GREEN}Creating a buildpacks pipelinerun: REPOSITORY=${REPOSITORY}${C_RESET_ALL}"
-pushd "${GIT_ROOT}"/examples/buildpacks
+# Install the golang trigger.
+echo -e "${C_GREEN}Creating a Golang example trigger: REPOSITORY=${REPOSITORY}${C_RESET_ALL}"
+pushd "${GIT_ROOT}"/examples/go-pipeline
 cue cmd -t "repository=${REPOSITORY}" apply | kubectl apply -f -
-cue cmd -t "repository=${REPOSITORY}" create | kubectl create -f -
 popd
-tkn pipelinerun describe --last
+
+# wait for listener to be ready
+kubectl wait --timeout=5m --for=condition=ready \
+  eventlisteners.triggers.tekton.dev example-golang-listener

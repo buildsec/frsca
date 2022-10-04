@@ -5,6 +5,7 @@ go 1.19
 require (
 	github.com/kyverno/kyverno v1.7.2
 	github.com/tektoncd/pipeline v0.38.1
+	github.com/tektoncd/triggers v0.20.2
 	k8s.io/api v0.24.3
 )
 

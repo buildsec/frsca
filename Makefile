@@ -33,15 +33,17 @@ setup-minikube: ## Setup a Kubernetes cluster using Minikube
 	bash platform/00-kubernetes-minikube-setup.sh
 
 .PHONY: setup-frsca
-setup-frsca: setup-certs install-components setup-components setup-kyverno
+setup-frsca: setup-certs install-components setup-components setup-kyverno setup-examples
 
 .PHONY: install-components
 install-components: 
 	make -j install-tekton-pipelines install-tekton-chains install-spire install-vault install-gitea install-kyverno
 
 .PHONY: setup-components
-setup-components: 
-	make setup-gitea setup-tekton-pipelines setup-tekton-chains setup-spire setup-vault setup-registry
+setup-components: setup-gitea setup-tekton-pipelines setup-tekton-chains setup-spire setup-vault setup-registry
+
+.PHONY: setup-examples
+setup-examples: setup-example-buildpacks setup-example-golang-pipeline setup-example-gradle setup-example-ibm-tutorial setup-example-maven setup-example-sample
 
 .PHONY: setup-certs
 setup-certs: ## Setup certificates used by vault and spire
@@ -120,33 +122,57 @@ setup-opa-gatekeeper: ##  Setup opa gatekeeper
 setup-efk-stack: ## Setup up EFK stack
 	bash platform/40-efk-stack-setup/40-efk-stack-setup.sh
 
+.PHONY: setup-example-buildpacks
+setup-example-buildpacks: ## Setup the buildpacks example
+	bash examples/buildpacks/buildpacks-setup.sh
+
 .PHONY: example-buildpacks
 example-buildpacks: ## Run the buildpacks example
-	bash examples/buildpacks/buildpacks.sh
+	bash examples/buildpacks/buildpacks-run.sh
 
 .PHONY: example-cosign
 example-cosign: ## Run the cosign example
 	bash examples/cosign/cosign.sh
 
-.PHONY: example-maven
-example-maven: ## Run the maven example
-	bash examples/maven/maven.sh
+.PHONY: setup-example-golang-pipeline
+setup-example-golang-pipeline: ## Setup the go-pipeline example
+	bash examples/go-pipeline/go-pipeline-setup.sh
 
 .PHONY: example-golang-pipeline
 example-golang-pipeline: ## Run the go-pipeline example
-	bash examples/go-pipeline/go-pipeline.sh
+	bash examples/go-pipeline/go-pipeline-run.sh
+
+.PHONY: setup-example-gradle
+setup-example-gradle: ## Setup the gradle example
+	bash examples/gradle-pipeline/gradle-pipeline-setup.sh
 
 .PHONY: example-gradle-pipeline
 example-gradle-pipeline: ## Run the gradle-pipeline example
-	bash examples/gradle-pipeline/gradle-pipeline.sh
+	bash examples/gradle-pipeline/gradle-pipeline-run.sh
 
-.PHONY: example-sample-pipeline
-example-sample-pipeline: ## Run the sample-pipeline example
-	bash examples/sample-pipeline/sample-pipeline.sh
+.PHONY: setup-example-ibm-tutorial
+setup-example-ibm-tutorial: ## Setup the IBM pipeline example
+	bash examples/ibm-tutorial/ibm-tutorial-setup.sh
 
 .PHONY: example-ibm-tutorial
 example-ibm-tutorial: ## Run the IBM pipeline example
-	bash examples/ibm-tutorial/ibm-tutorial.sh
+	bash examples/ibm-tutorial/ibm-tutorial-run.sh
+
+.PHONY: setup-example-maven
+setup-example-maven: ## Setup the maven example
+	bash examples/maven/maven-setup.sh
+
+.PHONY: example-maven
+example-maven: ## Run the maven example
+	bash examples/maven/maven-run.sh
+
+.PHONY: setup-example-sample
+setup-example-sample: ## Setup the sample-pipeline example
+	bash examples/sample-pipeline/sample-pipeline-setup.sh
+
+.PHONY: example-sample-pipeline
+example-sample-pipeline: ## Run the sample-pipeline example
+	bash examples/sample-pipeline/sample-pipeline-run.sh
 
 .PHONY: docs-setup
 docs-setup: ## Install the tool to build the documentation
@@ -187,4 +213,12 @@ fmt-md:
 vendor:
 	bash platform/vendor/vendor.sh
 	bash platform/vendor/vendor-helm-all.sh -f
-	
+
+.PHONY: cue.mod
+cue.mod:
+	rm -rf cue.mod/gen
+	cue get go github.com/kyverno/kyverno/api/kyverno/v1
+	cue get go github.com/tektoncd/pipeline/pkg/apis/pipeline/v1beta1
+	cue get go github.com/tektoncd/triggers/pkg/apis/triggers/v1beta1
+	cue get go k8s.io/api/core/v1
+	cue get go k8s.io/api/rbac/v1

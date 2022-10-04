@@ -9,10 +9,12 @@ DEFAULT_REPOSITORY=$(xxd -l 16 -c 16 -p < /dev/random)
 C_GREEN='\033[32m'
 C_RESET_ALL='\033[0m'
 
-# Create the IBM tutorial pipelinerun.
-echo -e "${C_GREEN}Creating a IBM tutorial pipelinerun: REPOSITORY=${REPOSITORY}${C_RESET_ALL}"
+# Setup the ibm-tutorial trigger.
+echo -e "${C_GREEN}Creating a ibm-tutorial example trigger: REPOSITORY=${REPOSITORY}${C_RESET_ALL}"
 pushd "${GIT_ROOT}"/examples/ibm-tutorial
 cue cmd -t "repository=${REPOSITORY}" apply | kubectl apply -f -
-cue cmd -t "repository=${REPOSITORY}" create | kubectl create -f -
 popd
-tkn pipelinerun describe --last
+
+# wait for listener to be ready
+kubectl wait --timeout=5m --for=condition=ready \
+  eventlisteners.triggers.tekton.dev example-ibm-tutorial-listener

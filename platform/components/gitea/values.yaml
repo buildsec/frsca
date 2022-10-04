@@ -171,6 +171,8 @@ gitea:
       PROTOCOL: https
       CERT_FILE: /var/run/certs/tls.crt
       KEY_FILE: /var/run/certs/tls.key
+    webhook:
+      ALLOWED_HOST_LIST: "*.svc.cluster.local"
 
   additionalConfigSources: []
   #   - secret:

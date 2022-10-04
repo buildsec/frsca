@@ -1,19 +1,28 @@
 package frsca
 
-_IMAGE: name: "picalc"
+_IMAGE: name: "example-ibm"
 
-frsca: pipeline: "build-and-deploy-pipeline": spec: {
+frsca: pipeline: "example-ibm-tutorial": spec: {
 	workspaces: [{
 		name:        "git-source"
 		description: "The git repo"
 	}]
 	params: [{
-		name:        "gitUrl"
-		description: "Git repository url"
+		name:        "image"
+		description: "reference of the image to build"
 	}, {
-		name:        "gitRevision"
-		description: "Git revision to check out"
-		default:     "master"
+		name:        "SOURCE_URL"
+		type:        "string"
+		description: "git repo"
+	}, {
+		name:        "SOURCE_SUBPATH"
+		type:        "string"
+		default:     "."
+		description: "path within git repo"
+	}, {
+		name:        "SOURCE_REFERENCE"
+		type:        "string"
+		description: "git commit branch, or tag"
 	}, {
 		name:        "pathToContext"
 		description: "The path to the build context, used by Kaniko - within the workspace"
@@ -21,13 +30,6 @@ frsca: pipeline: "build-and-deploy-pipeline": spec: {
 	}, {
 		name:        "pathToYamlFile"
 		description: "The path to the yaml file to deploy within the git source"
-	}, {
-		name:        "imageUrl"
-		description: "Image name including repository"
-	}, {
-		name:        "imageTag"
-		description: "Image tag"
-		default:     "latest"
 	}]
 	tasks: [{
 		name: "clone-repo"
@@ -38,13 +40,13 @@ frsca: pipeline: "build-and-deploy-pipeline": spec: {
 		}]
 		params: [{
 			name:  "url"
-			value: "$(params.gitUrl)"
+			value: "$(params.SOURCE_URL)"
 		}, {
 			name:  "revision"
-			value: "$(params.gitRevision)"
+			value: "$(params.SOURCE_REFERENCE)"
 		}, {
 			name:  "subdirectory"
-			value: "."
+			value: "$(params.SOURCE_SUBPATH)"
 		}, {
 			name:  "deleteExisting"
 			value: "true"
@@ -64,31 +66,36 @@ frsca: pipeline: "build-and-deploy-pipeline": spec: {
 			value: "$(params.pathToContext)"
 		}, {
 			name:  "IMAGE"
-			value: "$(params.imageUrl):$(params.imageTag)"
+			value: "$(params.image)"
 		}]
 	}]
 }
 
-frsca: pipelineRun: "picalc-pr-": spec: {
-	pipelineRef: name: "build-and-deploy-pipeline"
-	params: [{
-		name:  "gitUrl"
-		value: "\(_GIT_ORG)/example-ibm-tutorial"
-	}, {
-		name:  "gitRevision"
-		value: "beta-update"
-	}, {
-		name:  "pathToYamlFile"
-		value: "kubernetes/picalc.yaml"
-	}, {
-		name:  "imageUrl"
-		value: _APP_IMAGE
-	}, {
-		name:  "imageTag"
-		value: "1h"
-	}]
-	serviceAccountName: "pipeline-account"
-	workspaces: [{
-		name: "git-source"
-	}]
+frsca: trigger: "example-ibm-tutorial": {
+	pipelineRun: spec: {
+		params: [{
+			name:  "image"
+			value: "\(_APP_IMAGE):$(tt.params.gitrevision)"
+		}, {
+			name:  "SOURCE_URL"
+			value: "\(_GIT_ORG)/example-ibm-tutorial"
+		}, {
+			name:  "SOURCE_SUBPATH"
+			value: "."
+		}, {
+			name: "SOURCE_REFERENCE"
+			value: "$(tt.params.gitrevision)"
+		}, {
+			name:  "pathToContext"
+			value: "src"
+		}, {
+			name:  "pathToYamlFile"
+			value: "kubernetes/picalc.yaml"
+		}]
+		pipelineRef: name: "example-ibm-tutorial"
+		serviceAccountName: "pipeline-account"
+		workspaces: [{
+			name: "git-source"
+		}]
+	}
 }

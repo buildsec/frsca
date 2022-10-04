@@ -15,9 +15,9 @@ frsca: pipelineRun: "ko-pipelinerun-": spec: {
 		name:  "SOURCE_SUBPATH"
 		value: "./cmd/cosign"
 	},{
-    name: "KO_DOCKER_REPO"
-    value: _REPOSITORY
-  },]
+		name: "KO_DOCKER_REPO"
+		value: _REPOSITORY
+	},]
 	workspaces: [{
 		name:    "source-ws"
 		subPath: "source"

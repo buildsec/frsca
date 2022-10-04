@@ -47,6 +47,7 @@ jobs:
       - name: Run buildpacks pipeline
         run: |
           make example-buildpacks
+          sleep 15
           tkn pr logs --last -f
           if [ "$(tkn pr describe --last -o jsonpath='{.status.conditions[?(@.type == "Succeeded")].status}')" != "True" ]; then
             tkn pr describe --last
@@ -61,6 +62,7 @@ jobs:
       - name: Run sample pipeline to test kyverno
         run: |
           make example-sample-pipeline
+          sleep 15
           tkn pr logs --last -f
           if [ "$(tkn pr describe --last -o jsonpath='{.status.conditions[?(@.type == "Succeeded")].status}')" != "True" ]; then
             tkn pr describe --last

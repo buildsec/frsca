@@ -5,6 +5,7 @@ _IMAGE: name: string
 _REPOSITORY: *"ttl.sh" | string @tag(repository)
 _APP_IMAGE: *"\(_REPOSITORY)/\(_IMAGE.name)" | string @tag(appImage)
 _GIT_ORG: *"https://gitea-http.gitea:3000/frsca" | string @tag(gitOrg)
+_NAMESPACE: *"default" | string @tag(namespace)
 
 frsca: secret: "kube-api-secret": {
 	metadata: annotations: "kubernetes.io/service-account.name": "pipeline-account"
@@ -32,7 +33,7 @@ frsca: clusterRoleBinding: "pipeline-role-binding": {
 	}
 	subjects: [{
 		kind: "ServiceAccount"
-		namespace: "default"
+		namespace: "\(_NAMESPACE)"
 		name: "pipeline-account"
 	}]
 }
@@ -51,6 +52,22 @@ frsca: pipelineRun: [Name=_]: spec: workspaces: [{
 	name: *"\(Name)ws" | string
 	persistentVolumeClaim: claimName: "\(Name)source-ws-pvc"
 }, ...]
+
+// same PVC settings for pipelineRuns within a triggerTemplate
+for name, tt in frsca.triggerTemplate {
+	frsca: persistentVolumeClaim: "\(name)-source-ws-pvc": {
+		spec: {
+			accessModes: ["ReadWriteOnce"]
+			resources: requests: storage: "500Mi"
+		}
+	}
+}
+frsca: triggerTemplate: [Name=_]: spec: resourcetemplates: [{
+	spec: workspaces: [{
+		name: *"\(Name)-ws" | string
+		persistentVolumeClaim: claimName: "\(Name)-source-ws-pvc"
+	}, ...]
+}]
 
 frsca: configMap: "grype-config-map": {
 	data: ".grype.yaml": """

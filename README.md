@@ -1,5 +1,9 @@
 # FRSCA
 
+<p align="center">
+<img src="frsca_mascot-color.png" alt="frsca logo" width="200"></img>
+</p>
+
 ## About The Project
 
 Factory for Repeatable Secure Creation of Artifacts (aka FRSCA pronounced Fresca)

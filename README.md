@@ -48,21 +48,25 @@ pipeline run:
 ```bash
 # Install and setup minikube (run only if need a local k8s)
 make setup-minikube
+make setup-dev
 make setup-frsca
+make setup-examples
 ```
 
 This will perform the following actions:
 
 1. Install and setup minikube, and supporting cli tools, like `cosign` and `jq`
    if they are not already installed.
-2. Install and setup FRSCA's components which include:
+1. Install development tooling to simulate a production environment, which includes:
    1. [Cert-manager]
-   2. [registry],
-   3. [Tekton Pipelines]
-   4. [Tekton Chains]
-   5. [SPIFFE/Spire]
-   6. [Vault]
-   7. [Kyverno]
+   1. [registry]
+   1. [SPIFFE/Spire]
+   1. [Vault]
+1. Install and setup FRSCA's components which include:
+   1. [Tekton Pipelines]
+   1. [Tekton Chains]
+   1. [Kyverno]
+1. Setup a mirror of example repositories and tekton triggers for each mirror.
 
 Once FRSCA has been installed you can follow the various examples under `/examples`.
 

@@ -1,19 +1,5 @@
-# Project configuration.
-PROJECT_NAME = frsca
-
-# Makefile parameters.
-TAG ?= 10m	# This is the TTL for the ttl.sh registry
-
 # General.
 SHELL = /usr/bin/env bash
-TOPDIR = $(shell git rev-parse --show-toplevel)
-
-# Docker.
-DOCKERFILE = Dockerfile
-DOCKER_ORG = ttl.sh
-DOCKER_REPO = $(DOCKER_ORG)/$(PROJECT_NAME)
-DOCKER_IMG = $(DOCKER_REPO):$(TAG)
-SBOM = $(DOCKER_REPO)/sbom:$(TAG)
 
 help: # Display help
 	@awk -F ':|##' \
@@ -25,25 +11,24 @@ help: # Display help
 quickstart: setup-minikube setup-frsca example-buildpacks ## Spin up the FRSCA project into minikube
 
 .PHONY: teardown
-teardown:
+teardown: ## Destroy the minikube environment
 	minikube delete
 
 .PHONY: setup-minikube
 setup-minikube: ## Setup a Kubernetes cluster using Minikube
 	bash platform/00-kubernetes-minikube-setup.sh
 
-.PHONY: setup-frsca
-setup-frsca: setup-certs install-components setup-components setup-kyverno setup-examples
+.PHONY: setup-dev
+setup-dev: setup-certs install-spire install-vault install-gitea setup-spire setup-vault setup-registry ## Setup prerequisities for a development environment
 
-.PHONY: install-components
-install-components: 
-	make -j install-tekton-pipelines install-tekton-chains install-spire install-vault install-gitea install-kyverno
-
-.PHONY: setup-components
-setup-components: setup-gitea setup-tekton-pipelines setup-tekton-chains setup-spire setup-vault setup-registry
+.PHONY: setup-frsca-core
+setup-frsca-core: install-tekton-pipelines install-tekton-chains install-kyverno setup-tekton-pipelines setup-tekton-chains setup-kyverno ## Setup FRSCA environment
 
 .PHONY: setup-examples
-setup-examples: setup-example-buildpacks setup-example-golang-pipeline setup-example-gradle setup-example-ibm-tutorial setup-example-maven setup-example-sample
+setup-examples: setup-example-mirror setup-example-buildpacks setup-example-golang-pipeline setup-example-gradle setup-example-ibm-tutorial setup-example-maven setup-example-sample ## Setup examples, mirroring external repos and creating tekton triggers
+
+.PHONY: setup-frsca
+setup-frsca: setup-dev setup-frsca-core setup-examples ## Deploy FRSCA with the development components and examples
 
 .PHONY: setup-certs
 setup-certs: ## Setup certificates used by vault and spire
@@ -58,12 +43,8 @@ registry-proxy: ## Forward the registry to the host
 	bash platform/05-registry-proxy.sh
 
 .PHONY: install-gitea
-install-gitea:
+install-gitea: ## Install a Gitea server
 	bash platform/06-gitea-install.sh
-
-.PHONY: setup-gitea
-setup-gitea:
-	bash platform/07-gitea-setup.sh
 
 .PHONY: install-tekton-pipelines
 install-tekton-pipelines: ## Install a Tekton CD
@@ -115,16 +96,40 @@ setup-kyverno: ## Setup Kyverno
 	bash platform/31-kyverno-setup.sh
 
 .PHONY: setup-opa-gatekeeper
-setup-opa-gatekeeper: ##  Setup opa gatekeeper
+setup-opa-gatekeeper: ## Setup opa gatekeeper
 	bash platform/35-opa-gatekeeper-setup.sh
 
 .PHONY: setup-efk-stack
 setup-efk-stack: ## Setup up EFK stack
 	bash platform/40-efk-stack-setup/40-efk-stack-setup.sh
 
+.PHONY: setup-example-mirror
+setup-example-mirror: ## Mirror example repos to gitea development server
+	bash platform/50-example-mirror.sh
+
 .PHONY: setup-example-buildpacks
 setup-example-buildpacks: ## Setup the buildpacks example
 	bash examples/buildpacks/buildpacks-setup.sh
+
+.PHONY: setup-example-golang-pipeline
+setup-example-golang-pipeline: ## Setup the go-pipeline example
+	bash examples/go-pipeline/go-pipeline-setup.sh
+
+.PHONY: setup-example-gradle
+setup-example-gradle: ## Setup the gradle example
+	bash examples/gradle-pipeline/gradle-pipeline-setup.sh
+
+.PHONY: setup-example-ibm-tutorial
+setup-example-ibm-tutorial: ## Setup the IBM pipeline example
+	bash examples/ibm-tutorial/ibm-tutorial-setup.sh
+
+.PHONY: setup-example-maven
+setup-example-maven: ## Setup the maven example
+	bash examples/maven/maven-setup.sh
+
+.PHONY: setup-example-sample
+setup-example-sample: ## Setup the sample-pipeline example
+	bash examples/sample-pipeline/sample-pipeline-setup.sh
 
 .PHONY: example-buildpacks
 example-buildpacks: ## Run the buildpacks example
@@ -134,41 +139,21 @@ example-buildpacks: ## Run the buildpacks example
 example-cosign: ## Run the cosign example
 	bash examples/cosign/cosign.sh
 
-.PHONY: setup-example-golang-pipeline
-setup-example-golang-pipeline: ## Setup the go-pipeline example
-	bash examples/go-pipeline/go-pipeline-setup.sh
-
 .PHONY: example-golang-pipeline
 example-golang-pipeline: ## Run the go-pipeline example
 	bash examples/go-pipeline/go-pipeline-run.sh
-
-.PHONY: setup-example-gradle
-setup-example-gradle: ## Setup the gradle example
-	bash examples/gradle-pipeline/gradle-pipeline-setup.sh
 
 .PHONY: example-gradle-pipeline
 example-gradle-pipeline: ## Run the gradle-pipeline example
 	bash examples/gradle-pipeline/gradle-pipeline-run.sh
 
-.PHONY: setup-example-ibm-tutorial
-setup-example-ibm-tutorial: ## Setup the IBM pipeline example
-	bash examples/ibm-tutorial/ibm-tutorial-setup.sh
-
 .PHONY: example-ibm-tutorial
 example-ibm-tutorial: ## Run the IBM pipeline example
 	bash examples/ibm-tutorial/ibm-tutorial-run.sh
 
-.PHONY: setup-example-maven
-setup-example-maven: ## Setup the maven example
-	bash examples/maven/maven-setup.sh
-
 .PHONY: example-maven
 example-maven: ## Run the maven example
 	bash examples/maven/maven-run.sh
-
-.PHONY: setup-example-sample
-setup-example-sample: ## Setup the sample-pipeline example
-	bash examples/sample-pipeline/sample-pipeline-setup.sh
 
 .PHONY: example-sample-pipeline
 example-sample-pipeline: ## Run the sample-pipeline example
@@ -205,12 +190,12 @@ lint-spellcheck:
 lint-yaml: ## Lint yaml files
 	yamllint .
 
-.PHONY: fmt-md ## Format markdown files
-fmt-md:
-	npx --yes prettier --write --prose-wrap always **/*.md
+.PHONY: fmt-md
+fmt-md: ## Format markdown files
+	npx --yes prettier --write --prose-wrap always "**/*.md"
 
-.PHONY: vendor ## vendor upstream projects
-vendor:
+.PHONY: vendor
+vendor: ## vendor upstream projects
 	bash platform/vendor/vendor.sh
 	bash platform/vendor/vendor-helm-all.sh -f
 

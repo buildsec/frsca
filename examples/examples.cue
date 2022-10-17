@@ -79,6 +79,64 @@ frsca: configMap: "grype-config-map": {
 		"""
 }
 
+frsca: configMap: "syft-config-map": {
+	data: ".syft.yaml": """
+	quiet: false
+	check-for-app-update: true
+
+	rekor-cataloger:
+	cataloger:
+		enabled: true
+
+	package:
+	search-indexed-archives: true
+	search-unindexed-archives: false
+
+	cataloger:
+		enabled: true
+		scope: "squashed"
+
+	file-classification:
+	cataloger:
+		enabled: true
+		scope: "squashed"
+
+	file-contents:
+	cataloger:
+		enabled: false
+		scope: "squashed"
+
+	skip-files-above-size: 1048576
+
+	globs: ["**/**"]
+
+	file-metadata:
+	cataloger:
+		enabled: true
+		scope: "squashed"
+
+	digests: ["sha256"]
+
+	secrets:
+	cataloger:
+		enabled: true
+		scope: "all-layers"
+
+	reveal-values: false
+	skip-files-above-size: 1048576
+
+	registry:
+	insecure-skip-tls-verify: false
+	insecure-use-http: false
+
+	log:
+	structured: false
+	level: "error"
+	file: ""
+
+	"""
+}
+
 frsca: task: [_]: {
 	spec: {
 		volumes: [{

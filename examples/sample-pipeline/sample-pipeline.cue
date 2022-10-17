@@ -85,6 +85,9 @@ frsca: pipeline: "example-sample-pipeline": spec: {
 		workspaces: [{
 			name:      "source"
 			workspace: "git-source"
+		}, {
+			name: "syft-config"
+			workspace: "syft-config"
 		}]
 	}, {
 		name: "vulnerability-scan"
@@ -129,6 +132,8 @@ frsca: pipeline: "example-sample-pipeline": spec: {
 		name:        "git-source"
 	}, {
 		name: "grype-config"
+	}, {
+		name: "syft-config"
 	}]
 }
 
@@ -167,6 +172,11 @@ frsca: trigger: "example-sample-pipeline": {
 			name: "grype-config"
 			configMap: {
 				name: "grype-config-map"
+			}
+		}, {
+			name: "syft-config"
+			configMap: {
+				name: "syft-config-map"
 			}
 		}]
 	}
@@ -250,12 +260,14 @@ frsca: task: "syft-bom-generator": {
 		steps: [{
 			args: [
 				"-o",
-				"json",
+				"spdx-json",
+				"--config",
+				"/var/syft-config/.syft.yaml",
 				"--file",
 				"$(workspaces.source.path)/$(params.sbom-filepath)",
 				"$(params.image-ref)",
 			]
-			image: "anchore/syft:v0.44.1@sha256:d5b44590062d4d9fc192455b5face4ebfd7879ec1540c939aa1766e5dcf4d5fc"
+			image: "anchore/syft:v0.58.0@sha256:46f909ad6f296606893fd6f21d079bb78e7c6e45487f233b9ae4cfdd958ef457"
 			name:  "syft-bom-generator"
 		}, {
 			image: "gcr.io/projectsigstore/cosign:v1.12.0@sha256:880cc3ec8088fa59a43025d4f20961e8abc7c732e276a211cfb8b66793455dd0"
@@ -264,12 +276,15 @@ frsca: task: "syft-bom-generator": {
 				"attach",
 				"sbom",
 				"--sbom", "$(workspaces.source.path)/$(params.sbom-filepath)",
-				"--type", "syft",
+				"--type", "spdx",
 				"$(params.image-ref)"
 			]
 		}]
 		workspaces: [{
 			name: "source"
+		}, {
+			name: "syft-config"
+			mountPath: "/var/syft-config/.syft.yaml"
 		}]
 	}
 }

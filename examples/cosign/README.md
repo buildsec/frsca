@@ -11,8 +11,14 @@ Execute the following commands from the root of this repository:
 # Only if a cluster is needed.
 make setup-minikube
 
+# Use the built-in registry, or replace with your own local registry
+export REGISTRY=registry.registry
+
 # Setup FRSCA environment
 make setup-frsca
+
+# if using the built-in registry, run the proxy in the background or another window
+make registry-proxy >/dev/null &
 
 # Run a new pipeline.
 make example-cosign
@@ -23,15 +29,16 @@ make example-cosign
 tkn pr logs --last -f
 
 # Ensure it has been signed.
-export TASK_RUN=$(tkn pr describe --last -o json | jq -r '.status.taskRuns | keys[] as $k | {"k": $k, "v": .[$k]} | select(.v.status.taskResults[]?.name | match("IMAGE_URL$")) | .k')
+TASK_RUN=$(tkn pr describe --last -o json | jq -r '.status.taskRuns | keys[] as $k | {"k": $k, "v": .[$k]} | select(.v.status.taskResults[]?.name | match("IMAGE_URL$")) | .k')
 tkn tr describe "${TASK_RUN}" -o jsonpath='{.metadata.annotations.chains\.tekton\.dev/signed}'
 # Should output "true"
 
 # Export URL of the image created from the pipelinerun as IMAGE_URL.
-export IMAGE_URL=$(tkn pr describe --last -o jsonpath='{..taskResults}' | jq -r '.[] | select(.name | match("IMAGE_URL$")) | .value')
-
-## If using the registry-proxy
-# export IMAGE_URL="$(echo "${IMAGE_URL}" | sed 's#'${REGISTRY}'#127.0.0.1:5000#')"
+IMAGE_URL=$(tkn pr describe --last -o jsonpath='{..taskResults}' | jq -r '.[] | select(.name | match("IMAGE_URL$")) | .value')
+if [ "${REGISTRY}" = "registry.registry" ]; then
+  : "${REGISTRY_PORT:=5000}"
+  IMAGE_URL="$(echo "${IMAGE_URL}" | sed 's#'${REGISTRY}'#127.0.0.1:'${REGISTRY_PORT}'#')"
+fi
 
 # Double check that the SBOM, the attestation and the signature were uploaded to the OCI.
 crane ls "$(echo -n ${IMAGE_URL} | sed 's|:[^/]*$||')"
@@ -40,6 +47,9 @@ crane ls "$(echo -n ${IMAGE_URL} | sed 's|:[^/]*$||')"
 #   sha256-7e8eb5bef5ad530a910926df57d73a373ac2860d539eb363c51e0b3479480c88.att
 #   sha256-7e8eb5bef5ad530a910926df57d73a373ac2860d539eb363c51e0b3479480c88.sbom
 #   sha256-7e8eb5bef5ad530a910926df57d73a373ac2860d539eb363c51e0b3479480c88.sig
+
+# if the registry proxy is running in the background, it can be stopped when you finish the demo
+kill %?registry-proxy
 ```
 
 ## Verifications

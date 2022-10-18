@@ -201,6 +201,8 @@ frsca: task: "deploy-using-kubectl": {
 				"s;__IMAGE__;$(params.image);g",
 				"-e",
 				"s;__DIGEST__;$(params.imageDigest);g",
+				"-e",
+				"s;registry.registry/;localhost:5000/;g",
 				"$(workspaces.git-source.path)/$(params.pathToYamlFile)",
 			]
 			command: [

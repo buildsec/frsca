@@ -54,7 +54,7 @@ echo -e "${C_GREEN}Installing packages if needed...${C_RESET_ALL}"
 case "${PLATFORM}" in
 
   Darwin)
-    minikube version || brew install minikube
+    minikube version || brew tap-new "$USER"/local-minikube; brew extract --version=1.26.1 minikube "$USER"/local-minikube; brew install minikube@1.26.1
     helm version || brew install helm
     tkn version || brew install tektoncd-cli
     kubectl version --client || brew install kubectl

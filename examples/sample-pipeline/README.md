@@ -56,6 +56,11 @@ tkn chain payload "${TASK_RUN}"
 
 # if the registry proxy is running in the background, it can be stopped
 kill %?registry-proxy
+
+# Verify the signature and attestation with kubectl
+export TASK_RUN_UID=$(kubectl get tr ${TASK_RUN} -o json | jq -r .metadata.uid)
+kubectl get tr "${TASK_RUN}" -o json | jq -r '.metadata.annotations."chains.tekton.dev/signature-taskrun-'${TASK_RUN_UID}'"' | base64 --decode > sig
+cosign verify-blob --key k8s://tekton-chains/signing-secrets --signature sig sig
 ```
 
 Once successfully completed. You should be able to see your application deployed

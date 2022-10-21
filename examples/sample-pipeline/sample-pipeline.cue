@@ -31,6 +31,12 @@ frsca: pipeline: "example-sample-pipeline": spec: {
 	}, {
 		description: "The path to the yaml file to deploy within the git source"
 		name:        "pathToYamlFile"
+	}, {
+		description: "CHAINS-GIT_URL"
+		name:        "CHAINS-GIT_URL"
+	}, {
+		description: "CHAINS-GIT_COMMIT"
+		name:        "CHAINS-GIT_COMMIT"
 	}]
 	tasks: [{
 		name: "clone-repo"
@@ -77,6 +83,12 @@ frsca: pipeline: "example-sample-pipeline": spec: {
 		}, {
 			name:  "image-digest"
 			value: "$(tasks.build-and-push-image.results.IMAGE_DIGEST)"
+		}, {
+			name:        "CHAINS-GIT_URL"
+			value: "$(params.CHAINS-GIT_URL)"
+		}, {
+			name:        "CHAINS-GIT_COMMIT"
+			value: "$(params.CHAINS-GIT_COMMIT)"
 		}]
 		runAfter: [
 			"build-and-push-image",
@@ -164,6 +176,12 @@ frsca: trigger: "example-sample-pipeline": {
 		}, {
 			name:  "pathToYamlFile"
 			value: "kubernetes/picalc.yaml"
+		}, {
+			name:        "CHAINS-GIT_URL"
+			value: "\(_GIT_ORG)/example-sample-pipeline"
+		}, {
+			name:        "CHAINS-GIT_COMMIT"
+			value: "$(tt.params.gitrevision)"
 		}]
 		serviceAccountName: "pipeline-account"
 		workspaces: [{
@@ -247,6 +265,12 @@ frsca: task: "syft-bom-generator": {
 			default:     "frsca-sbom.json"
 			description: "filepath to store the sbom artifacts"
 			name:        "sbom-filepath"
+		}, {
+			description: "CHAINS-GIT_URL"
+			name:        "CHAINS-GIT_URL"
+		}, {
+			description: "CHAINS-GIT_COMMIT"
+			name:        "CHAINS-GIT_COMMIT"
 		}]
 		results: [{
 			description: "status of syft task, possible value are-success|failure"

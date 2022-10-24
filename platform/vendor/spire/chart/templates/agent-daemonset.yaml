@@ -58,6 +58,8 @@ spec:
               readOnly: false
             - name: spire-token
               mountPath: /var/run/secrets/tokens
+            - name: spire-agent-socket-dir
+              mountPath: /run/spire/sockets
           livenessProbe:
             httpGet:
               path: /live
@@ -74,6 +76,55 @@ spec:
             periodSeconds: 5
           resources:
             {{- toYaml .Values.resources.agent | nindent 12 }}
+        # This is the container which runs the SPIFFE CSI driver.
+        - name: spiffe-csi-driver
+          image: ghcr.io/spiffe/spiffe-csi-driver:nightly
+          imagePullPolicy: IfNotPresent
+          args: [
+            "-workload-api-socket-dir", "/spire-agent-socket",
+            "-csi-socket-path", "/spiffe-csi/csi.sock",
+          ]
+          env:
+            # The CSI driver needs a unique node ID. The node name can be
+            # used for this purpose.
+            - name: MY_NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+          volumeMounts:
+            # The volume containing the SPIRE agent socket. The SPIFFE CSI
+            # driver will mount this directory into containers.
+            - mountPath: /spire-agent-socket
+              name: spire-agent-socket-dir
+              readOnly: true
+            # The volume that will contain the CSI driver socket shared
+            # with the kubelet and the driver registrar.
+            - mountPath: /spiffe-csi
+              name: spiffe-csi-socket-dir
+            # The volume containing mount points for containers.
+            - mountPath: /var/lib/kubelet/pods
+              mountPropagation: Bidirectional
+              name: mountpoint-dir
+          securityContext:
+            privileged: true
+        # This container runs the CSI Node Driver Registrar which takes care
+        # of all the little details required to register a CSI driver with
+        # the kubelet.
+        - name: node-driver-registrar
+          image: quay.io/k8scsi/csi-node-driver-registrar:v2.0.1
+          imagePullPolicy: IfNotPresent
+          args: [
+            "-csi-address", "/spiffe-csi/csi.sock",
+            "-kubelet-registration-path", "/var/lib/kubelet/plugins/csi.spiffe.io/csi.sock",
+          ]
+          volumeMounts:
+            # The registrar needs access to the SPIFFE CSI driver socket
+            - mountPath: /spiffe-csi
+              name: spiffe-csi-socket-dir
+            # The registrar needs access to the Kubelet plugin registration
+            # directory
+            - name: kubelet-plugin-registration-dir
+              mountPath: /registration
       volumes:
         - name: spire-config
           configMap:
@@ -92,6 +143,33 @@ spec:
                 path: spire-agent
                 expirationSeconds: 7200
                 audience: spire-server
+        # This volume is used to share the Workload API socket between the CSI
+        # driver and SPIRE agent. Note, an emptyDir volume could also be used,
+        # however, this can lead to broken bind mounts in the workload
+        # containers if the agent pod is restarted (since the emptyDir
+        # directory on the node that was mounted into workload containers by
+        # the CSI driver belongs to the old pod instance and is no longer
+        # valid).
+        - name: spire-agent-socket-dir
+          hostPath:
+            path: /run/spire/agent-sockets
+            type: DirectoryOrCreate
+        # This volume is where the socket for kubelet->driver communication lives
+        - name: spiffe-csi-socket-dir
+          hostPath:
+            path: /var/lib/kubelet/plugins/csi.spiffe.io
+            type: DirectoryOrCreate
+        # This volume is where the SPIFFE CSI driver mounts volumes
+        - name: mountpoint-dir
+          hostPath:
+            path: /var/lib/kubelet/pods
+            type: Directory
+        # This volume is where the node-driver-registrar registers the plugin
+        # with kubelet
+        - name: kubelet-plugin-registration-dir
+          hostPath:
+            path: /var/lib/kubelet/plugins_registry
+            type: Directory
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

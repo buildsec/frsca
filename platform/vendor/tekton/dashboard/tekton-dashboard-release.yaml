@@ -97,7 +97,6 @@ rules:
       - tekton.dev
     resources:
       - clustertasks
-      - clustertasks/status
     verbs:
       - get
       - list
@@ -132,7 +131,6 @@ rules:
       - tekton.dev
     resources:
       - clustertasks
-      - clustertasks/status
     verbs:
       - create
       - update
@@ -185,13 +183,7 @@ rules:
       - pipelines
       - pipelineruns
       - pipelineresources
-      - conditions
-      - tasks/status
-      - taskruns/status
-      - pipelines/status
-      - pipelineruns/status
-      - taskruns/finalizers
-      - pipelineruns/finalizers
+      - runs
     verbs:
       - get
       - list
@@ -215,13 +207,7 @@ rules:
       - pipelines
       - pipelineruns
       - pipelineresources
-      - conditions
-      - taskruns/finalizers
-      - pipelineruns/finalizers
-      - tasks/status
-      - taskruns/status
-      - pipelines/status
-      - pipelineruns/status
+      - runs
     verbs:
       - create
       - update
@@ -277,7 +263,7 @@ subjects:
 ---
 apiVersion: v1
 data:
-  version: v0.26.0
+  version: v0.29.2
 kind: ConfigMap
 metadata:
   labels:
@@ -295,9 +281,9 @@ metadata:
     app.kubernetes.io/instance: default
     app.kubernetes.io/name: dashboard
     app.kubernetes.io/part-of: tekton-dashboard
-    app.kubernetes.io/version: v0.26.0
-    dashboard.tekton.dev/release: v0.26.0
-    version: v0.26.0
+    app.kubernetes.io/version: v0.29.2
+    dashboard.tekton.dev/release: v0.29.2
+    version: v0.29.2
   name: tekton-dashboard
   namespace: tekton-pipelines
 spec:
@@ -321,9 +307,9 @@ metadata:
     app.kubernetes.io/instance: default
     app.kubernetes.io/name: dashboard
     app.kubernetes.io/part-of: tekton-dashboard
-    app.kubernetes.io/version: v0.26.0
-    dashboard.tekton.dev/release: v0.26.0
-    version: v0.26.0
+    app.kubernetes.io/version: v0.29.2
+    dashboard.tekton.dev/release: v0.29.2
+    version: v0.29.2
   name: tekton-dashboard
   namespace: tekton-pipelines
 spec:
@@ -342,7 +328,7 @@ spec:
         app.kubernetes.io/instance: default
         app.kubernetes.io/name: dashboard
         app.kubernetes.io/part-of: tekton-dashboard
-        app.kubernetes.io/version: v0.26.0
+        app.kubernetes.io/version: v0.29.2
       name: tekton-dashboard
     spec:
       containers:
@@ -362,7 +348,7 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
-          image: gcr.io/tekton-releases/github.com/tektoncd/dashboard/cmd/dashboard:v0.26.0@sha256:d3963622f12448e566e3d4afb27f9b47e71d8fd8b38bab7edbbacbb9c75e331e
+          image: gcr.io/tekton-releases/github.com/tektoncd/dashboard/cmd/dashboard:v0.29.2@sha256:67425f5fa32c591578ba6c8b6d4d6a135f8ca195745e023f3f311e3f1ee6ea37
           livenessProbe:
             httpGet:
               path: /health

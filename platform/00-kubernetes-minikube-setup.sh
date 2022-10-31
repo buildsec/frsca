@@ -55,7 +55,12 @@ echo -e "${C_GREEN}Installing packages if needed...${C_RESET_ALL}"
 case "${PLATFORM}" in
 
   Darwin)
-    minikube version || brew tap-new "$USER"/local-minikube; brew extract --version=1.26.1 minikube "$USER"/local-minikube; brew install minikube@1.26.1
+    minikube version || (
+      brew untap -f "${USER}"/local-minikube || echo "${USER}/local-minikube already untapped"
+      brew tap-new "${USER}"/local-minikube
+      brew extract --version="${MINIKUBE_VERSION#v}" minikube "${USER}"/local-minikube
+      brew install minikube@"${MINIKUBE_VERSION#v}"
+    )
     helm version || brew install helm
     tkn version || brew install tektoncd-cli
     kubectl version --client || brew install kubectl

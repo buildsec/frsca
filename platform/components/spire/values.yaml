@@ -5,6 +5,9 @@ server:
 agent:
   kubeletSkipVerification: true
 
+csi:
+  enabled: true
+
 client:
   enabled: false
 

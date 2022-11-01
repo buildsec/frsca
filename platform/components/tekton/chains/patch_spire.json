@@ -42,9 +42,9 @@
         ],
         "volumes": [
           {
-            "hostPath": {
-              "path": "/run/spire/sockets",
-              "type": "DirectoryOrCreate"
+            "csi": {
+              "driver": "csi.spiffe.io",
+              "readOnly": true
             },
             "name": "spire-agent-socket"
           }

@@ -50,7 +50,7 @@ spec:
               mountPath: /run/spire/data
               readOnly: false
             - name: spire-server-socket
-              mountPath: /tmp/spire-server/private
+              mountPath: {{ .Values.server.sockDir }}
               readOnly: false
           livenessProbe:
             httpGet:
@@ -70,7 +70,7 @@ spec:
             {{- toYaml .Values.resources.server | nindent 12 }}
         {{- if .Values.oidc.enabled }}
         - name: spire-oidc
-          image: {{ .Values.image.repository }}/oidc-discovery-provider:{{ .Values.image.tag }}
+          image: {{ .Values.image.repository }}/spire-oidc-provider:{{ .Values.image.tag }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
           - -config
@@ -81,7 +81,7 @@ spec:
             protocol: TCP
           volumeMounts:
           - name: spire-server-socket
-            mountPath: /tmp/spire-server/private
+            mountPath: {{ .Values.server.sockDir }}
             readOnly: false
           - name: spire-oidc-config
             mountPath: /run/spire/oidc/config/
@@ -89,9 +89,18 @@ spec:
           - name: spire-data
             mountPath: /run/spire/data
             readOnly: false
+          livenessProbe:
+            httpGet:
+              path: /live
+              port: 8080
+            failureThreshold: 2
+            initialDelaySeconds: 15
+            periodSeconds: 60
+            timeoutSeconds: 3
           readinessProbe:
-            exec:
-              command: ["/bin/ps", "aux", " ||", "grep", "oidc-discovery-provider -config /run/spire/oidc/config/oidc-discovery-provider.conf"]
+            httpGet:
+              path: /ready
+              port: 8080
             initialDelaySeconds: 5
             periodSeconds: 5
           resources:
@@ -109,7 +118,7 @@ spec:
             protocol: TCP
           volumeMounts:
           - name: spire-server-socket
-            mountPath: /tmp/spire-server/private
+            mountPath: {{ .Values.server.sockDir }}
             readOnly: true
           - name: spire-oidc-nginx-config
             mountPath: /etc/nginx/conf.d/

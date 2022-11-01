@@ -67,6 +67,7 @@ case "${PLATFORM}" in
     cosign version || brew install sigstore/tap/cosign
     cue version || brew install cue-lang/tap/cue
     jq --version || brew install jq
+    crane version || brew install crane
     ;;
 
   Linux)

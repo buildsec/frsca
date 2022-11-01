@@ -9,7 +9,7 @@ data:
     server {
       bind_address = "0.0.0.0"
       bind_port = "8081"
-      # socket_path = "/run/spire/sockets/server.sock"
+      socket_path = "{{ .Values.server.sockDir }}/{{ .Values.server.sockName }}"
       trust_domain = "{{ .Values.server.trustDomain }}"
       data_dir = "/run/spire/data"
       log_level = "DEBUG"

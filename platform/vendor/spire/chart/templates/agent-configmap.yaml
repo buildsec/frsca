@@ -11,7 +11,7 @@ data:
       log_level = "DEBUG"
       server_address = "{{ include "spire.fullname" . }}-server"
       server_port = "8081"
-      # socket_path = "/run/spire/sockets/agent.sock"
+      socket_path = "{{ .Values.agent.sockDir }}/{{ .Values.agent.sockName }}"
       trust_bundle_path = "/run/spire/bundle/bundle.crt"
       trust_domain = "{{ index .Values.server.trustDomain }}"
     }

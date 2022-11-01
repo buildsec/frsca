@@ -6,9 +6,12 @@
 replicaCount: 1
 
 image:
-  repository: gcr.io/spiffe-io
+  repository: ghcr.io/spiffe
   pullPolicy: IfNotPresent
-  tag: "1.0.2"
+  tag: "1.4.4"
+  tagCSI: "0.2.0" # csi driver version
+  waitForIt: "gcr.io/spiffe-io/wait-for-it"
+  csiRegistrar: "quay.io/k8scsi/csi-node-driver-registrar:v2.0.1"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -17,10 +20,15 @@ fullnameOverride: ""
 server:
   trustDomain: example.org
   clusterName: demo-cluster
+  sockDir: "/tmp/spire-server/private"
+  sockName: "api.sock"
 
 agent:
   # verification should be disabled in some environments, including Minikube
   kubeletSkipVerification: false
+  hostDir: "/run/spire/sockets"
+  sockDir: "/tmp/spire-agent/public"
+  sockName: "api.sock" # use api.sock for backwards compatibility
 
 oidc:
   enabled: false
@@ -32,6 +40,9 @@ oidc:
   certsSecret: ""
 
 client:
+  enabled: false
+
+csi:
   enabled: false
 
 serviceAccount:

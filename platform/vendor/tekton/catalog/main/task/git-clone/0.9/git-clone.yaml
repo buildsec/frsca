@@ -3,9 +3,9 @@ kind: Task
 metadata:
   name: git-clone
   labels:
-    app.kubernetes.io/version: "0.6"
+    app.kubernetes.io/version: "0.9"
   annotations:
-    tekton.dev/pipelines.minVersion: "0.29.0"
+    tekton.dev/pipelines.minVersion: "0.38.0"
     tekton.dev/categories: Git
     tekton.dev/tags: git
     tekton.dev/displayName: "git clone"
@@ -67,6 +67,10 @@ spec:
       description: Set the `http.sslVerify` global git config. Setting this to `false` is not advised unless you are sure that you trust your git remote.
       type: string
       default: "true"
+    - name: crtFileName
+      description: file name of mounted crt using ssl-ca-directory workspace. default value is ca-bundle.crt.
+      type: string
+      default: "ca-bundle.crt"
     - name: subdirectory
       description: Subdirectory inside the `output` Workspace to clone the repo into.
       type: string
@@ -98,13 +102,12 @@ spec:
     - name: gitInitImage
       description: The image providing the git-init binary that this Task runs.
       type: string
-      default: "gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/git-init:v0.29.0"
+      default: "gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/git-init:v0.40.2"
     - name: userHome
       description: |
-        Absolute path to the user's home directory. Set this explicitly if you are running the image as a non-root user or have overridden
-        the gitInitImage param with an image containing custom user configuration.
+        Absolute path to the user's home directory.
       type: string
-      default: "/tekton/home"
+      default: "/home/git"
   results:
     - name: commit
       description: The precise commit SHA that was fetched by this Task.
@@ -128,6 +131,8 @@ spec:
         value: $(params.depth)
       - name: PARAM_SSL_VERIFY
         value: $(params.sslVerify)
+      - name: PARAM_CRT_FILENAME
+        value: $(params.crtFileName)
       - name: PARAM_SUBDIRECTORY
         value: $(params.subdirectory)
       - name: PARAM_DELETE_EXISTING
@@ -158,6 +163,9 @@ spec:
         value: $(workspaces.ssl-ca-directory.bound)
       - name: WORKSPACE_SSL_CA_DIRECTORY_PATH
         value: $(workspaces.ssl-ca-directory.path)
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
       script: |
         #!/usr/bin/env sh
         set -eu
@@ -165,7 +173,6 @@ spec:
         if [ "${PARAM_VERBOSE}" = "true" ] ; then
           set -x
         fi
-
 
         if [ "${WORKSPACE_BASIC_AUTH_DIRECTORY_BOUND}" = "true" ] ; then
           cp "${WORKSPACE_BASIC_AUTH_DIRECTORY_PATH}/.git-credentials" "${PARAM_USER_HOME}/.git-credentials"
@@ -182,6 +189,9 @@ spec:
 
         if [ "${WORKSPACE_SSL_CA_DIRECTORY_BOUND}" = "true" ] ; then
            export GIT_SSL_CAPATH="${WORKSPACE_SSL_CA_DIRECTORY_PATH}"
+           if [ "${PARAM_CRT_FILENAME}" != "" ] ; then
+              export GIT_SSL_CAINFO="${WORKSPACE_SSL_CA_DIRECTORY_PATH}/${PARAM_CRT_FILENAME}"
+           fi
         fi
         CHECKOUT_DIR="${WORKSPACE_OUTPUT_PATH}/${PARAM_SUBDIRECTORY}"
 
@@ -208,6 +218,7 @@ spec:
         test -z "${PARAM_HTTPS_PROXY}" || export HTTPS_PROXY="${PARAM_HTTPS_PROXY}"
         test -z "${PARAM_NO_PROXY}" || export NO_PROXY="${PARAM_NO_PROXY}"
 
+        git config --global --add safe.directory "${WORKSPACE_OUTPUT_PATH}"
         /ko-app/git-init \
           -url="${PARAM_URL}" \
           -revision="${PARAM_REVISION}" \

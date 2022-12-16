@@ -12,7 +12,11 @@ C_RESET_ALL='\033[0m'
 #   https://nirmata.com/2021/08/12/kubernetes-supply-chain-policy-management-with-cosign-and-kyverno/
 #   Installation: https://kyverno.io/docs/installation/
 
+# added delete and create instead of apply as kyverno install errors with 
+# invalid: metadata.annotations: Too long: must have at most 262144 bytes
+# when kubectl apply is used. https://kyverno.io/docs/installation/#notes-for-argocd-users
 echo -e "${C_GREEN}Delete Kyverno if already installed...${C_RESET_ALL}"
+
 kubectl delete -f "$KYVERNO_INSTALL_DIR"/install.yaml || true
 
 echo -e "${C_GREEN}Installing Kyverno...${C_RESET_ALL}"

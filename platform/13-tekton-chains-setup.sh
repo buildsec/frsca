@@ -31,4 +31,7 @@ kubectl patch \
       -n tekton-chains \
       --patch-file "$GIT_ROOT"/platform/components/tekton/chains/patch_ca_certs.json
 
+kubectl scale deployment -n tekton-chains tekton-chains-controller --replicas=0
+kubectl scale deployment -n tekton-chains tekton-chains-controller --replicas=1
+
 kubectl rollout status -n tekton-chains deployment/tekton-chains-controller

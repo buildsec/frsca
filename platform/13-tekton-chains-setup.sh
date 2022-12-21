@@ -31,4 +31,7 @@ kubectl patch \
       -n tekton-chains \
       --patch-file "$GIT_ROOT"/platform/components/tekton/chains/patch_ca_certs.json
 
+# restart tekton chains controller for patched configmap
+kubectl rollout restart -n tekton-chains deployment/tekton-chains-controller
+
 kubectl rollout status -n tekton-chains deployment/tekton-chains-controller

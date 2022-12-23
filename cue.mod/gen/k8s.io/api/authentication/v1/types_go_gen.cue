@@ -133,7 +133,7 @@ import (
 // TokenRequestSpec contains client provided parameters of a token request.
 #TokenRequestSpec: {
 	// Audiences are the intendend audiences of the token. A recipient of a
-	// token must identitfy themself with an identifier in the list of
+	// token must identify themself with an identifier in the list of
 	// audiences of the token, and otherwise should reject the token. A
 	// token issued for multiple audiences may be used to authenticate
 	// against any of the audiences listed but implies a high degree of

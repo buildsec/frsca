@@ -33,7 +33,7 @@ import resource "github.com/tektoncd/pipeline/pkg/apis/resource/v1alpha1"
 	// default is set, a Task may be executed without a supplied value for the
 	// parameter.
 	// +optional
-	default?: null | #ArrayOrString @go(Default,*ArrayOrString)
+	default?: null | #ParamValue @go(Default,*ParamValue)
 }
 
 // PropertySpec defines the struct for object keys
@@ -45,10 +45,10 @@ import resource "github.com/tektoncd/pipeline/pkg/apis/resource/v1alpha1"
 // the specific context of PipelineResources.
 #ResourceParam: resource.#ResourceParam
 
-// Param declares an ArrayOrString to use for the parameter called name.
+// Param declares an ParamValues to use for the parameter called name.
 #Param: {
-	name:  string         @go(Name)
-	value: #ArrayOrString @go(Value)
+	name:  string      @go(Name)
+	value: #ParamValue @go(Value)
 }
 
 // ParamType indicates the type of an input parameter;
@@ -64,9 +64,10 @@ import resource "github.com/tektoncd/pipeline/pkg/apis/resource/v1alpha1"
 #ParamTypeArray:  #ParamType & "array"
 #ParamTypeObject: #ParamType & "object"
 
-// ArrayOrString is a type that can hold a single string or string array.
+// ParamValue is a type that can hold a single string or string array.
 // Used in JSON unmarshalling so that a single JSON field can accept
 // either an individual string or an array of strings.
-// TODO (@chuangw6): This struct will be renamed or be embedded in a new struct to take into
-// consideration the object case after the community reaches an agreement on it.
+#ParamValue: _
+
+// ArrayOrString is deprecated, this is to keep backward compatibility
 #ArrayOrString: _

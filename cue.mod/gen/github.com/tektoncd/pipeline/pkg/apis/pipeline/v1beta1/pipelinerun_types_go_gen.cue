@@ -72,7 +72,7 @@ import (
 	timeout?: null | metav1.#Duration @go(Timeout,*metav1.Duration)
 
 	// PodTemplate holds pod specific configuration
-	podTemplate?: null | pod.#Template @go(PodTemplate,*github.com/tektoncd/pipeline/pkg/apis/pipeline/pod.Template)
+	podTemplate?: null | pod.#Template @go(PodTemplate,*pod.Template)
 
 	// Workspaces holds a set of workspace bindings that must match names
 	// with those declared in the pipeline.
@@ -234,6 +234,13 @@ import (
 	// +optional
 	// +listType=atomic
 	childReferences?: [...#ChildStatusReference] @go(ChildReferences,[]ChildStatusReference)
+
+	// FinallyStartTime is when all non-finally tasks have been completed and only finally tasks are being executed.
+	// +optional
+	finallyStartTime?: null | metav1.#Time @go(FinallyStartTime,*metav1.Time)
+
+	// Provenance contains some key authenticated metadata about how a software artifact was built (what sources, what inputs/outputs, etc.).
+	provenance?: null | #Provenance @go(Provenance,*Provenance)
 }
 
 // SkippedTask is used to describe the Tasks that were skipped due to their When Expressions
@@ -262,6 +269,9 @@ import (
 	#GracefullyCancelledSkip |
 	#GracefullyStoppedSkip |
 	#MissingResultsSkip |
+	#PipelineTimedOutSkip |
+	#TasksTimedOutSkip |
+	#FinallyTimedOutSkip |
 	#None
 
 // WhenExpressionsSkip means the task was skipped due to at least one of its when expressions evaluating to false
@@ -282,6 +292,15 @@ import (
 // MissingResultsSkip means the task was skipped because it's missing necessary results
 #MissingResultsSkip: #SkippingReason & "Results were missing"
 
+// PipelineTimedOutSkip means the task was skipped because the PipelineRun has passed its overall timeout.
+#PipelineTimedOutSkip: #SkippingReason & "PipelineRun timeout has been reached"
+
+// TasksTimedOutSkip means the task was skipped because the PipelineRun has passed its Timeouts.Tasks.
+#TasksTimedOutSkip: #SkippingReason & "PipelineRun Tasks timeout has been reached"
+
+// FinallyTimedOutSkip means the task was skipped because the PipelineRun has passed its Timeouts.Finally.
+#FinallyTimedOutSkip: #SkippingReason & "PipelineRun Finally timeout has been reached"
+
 // None means the task was not skipped
 #None: #SkippingReason & "None"
 
@@ -291,7 +310,7 @@ import (
 	name: string @go(Name)
 
 	// Value is the result returned from the execution of this PipelineRun
-	value: #ArrayOrString @go(Value)
+	value: #ParamValue @go(Value)
 }
 
 // PipelineRunTaskRunStatus contains the name of the PipelineTask for this TaskRun and the TaskRun's Status
@@ -345,7 +364,7 @@ import (
 #PipelineTaskRunSpec: {
 	pipelineTaskName?:       string               @go(PipelineTaskName)
 	taskServiceAccountName?: string               @go(TaskServiceAccountName)
-	taskPodTemplate?:        null | pod.#Template @go(TaskPodTemplate,*github.com/tektoncd/pipeline/pkg/apis/pipeline/pod.Template)
+	taskPodTemplate?:        null | pod.#Template @go(TaskPodTemplate,*pod.Template)
 
 	// +listType=atomic
 	stepOverrides?: [...#TaskRunStepOverride] @go(StepOverrides,[]TaskRunStepOverride)

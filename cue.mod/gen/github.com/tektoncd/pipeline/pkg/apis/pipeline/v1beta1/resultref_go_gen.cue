@@ -22,6 +22,9 @@ _#objectResultExpressionFormat: "tasks.<taskName>.results.<objectResultName>.<in
 // ResultTaskPart Constant used to define the "tasks" part of a pipeline result reference
 #ResultTaskPart: "tasks"
 
+// ResultFinallyPart Constant used to define the "finally" part of a pipeline result reference
+#ResultFinallyPart: "finally"
+
 // ResultResultPart Constant used to define the "results" part of a pipeline result reference
 #ResultResultPart: "results"
 

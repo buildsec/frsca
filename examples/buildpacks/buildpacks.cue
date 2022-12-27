@@ -9,7 +9,7 @@ frsca: trigger: "example-buildpacks": {
 		pipelineRef: name: "buildpacks"
 		params: [{
 			name:  "BUILDER_IMAGE"
-			value: "docker.io/cnbs/sample-builder:bionic@sha256:6c03dd604503b59820fd15adbc65c0a077a47e31d404a3dcad190f3179e920b5"
+			value: "docker.io/cnbs/sample-builder:bionic@sha256:e81ef84a8c4fbe9522bb4ad0c889384df5554efd292548b48cc0606531e567dc"
 		}, {
 			name:  "TRUST_BUILDER"
 			value: "true"

@@ -46,15 +46,10 @@ jobs:
       - name: Try the cluster !
         run: kubectl get pods -A
       - name: Initialize FRSCA
-        env:
-          REGISTRY: "registry.registry"
         run: |
           make setup-frsca
       - name: Run buildpacks pipeline
-        env:
-          REGISTRY: "registry.registry"
         run: |
-          make registry-proxy >/dev/null &
           make example-buildpacks
           sleep 15
           tkn pr logs --last -f
@@ -71,12 +66,8 @@ jobs:
           tkn tr describe --last -o json | jq -r '.metadata.annotations["chains.tekton.dev/signed"]'
           cosign verify --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
           cosign verify-attestation --type slsaprovenance --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
-          kill %?registry-proxy
       - name: Run sample pipeline to test kyverno
-        env:
-          REGISTRY: "registry.registry"
         run: |
-          make registry-proxy >/dev/null &
           make example-sample-pipeline
           sleep 15
           tkn pr logs --last -f
@@ -95,4 +86,85 @@ jobs:
           cosign verify-attestation --type slsaprovenance --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
 
           kubectl wait --timeout=5m --for=condition=ready pods -l app=picalc -n prod
-          kill %?registry-proxy
+      - name: Run go pipeline
+        run: |
+          make example-golang-pipeline
+          sleep 15
+          tkn pr logs --last -f
+          if [ "$(tkn pr describe --last -o jsonpath='{.status.conditions[?(@.type == "Succeeded")].status}')" != "True" ]; then
+            tkn pr describe --last
+            exit 1
+          fi
+          sleep 60
+          export IMAGE_URL=$(tkn pr describe --last -o jsonpath='{..taskResults}' | jq -r '.[] | select(.name | match("IMAGE_URL$")) | .value')
+          if [ "${REGISTRY}" = "registry.registry" ]; then
+            IMAGE_URL="$(echo "${IMAGE_URL}" | sed 's#'${REGISTRY}'#127.0.0.1:5000#')"
+          fi
+          docker run --rm gcr.io/go-containerregistry/crane ls "$(echo -n ${IMAGE_URL} | sed 's|:[^/]*$||')"
+          cosign verify --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
+          cosign verify-attestation --type slsaprovenance --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
+      - name: Run IBM tutorial pipeline
+        run: |
+          make example-ibm-tutorial
+          sleep 15
+          tkn pr logs --last -f
+          if [ "$(tkn pr describe --last -o jsonpath='{.status.conditions[?(@.type == "Succeeded")].status}')" != "True" ]; then
+            tkn pr describe --last
+            exit 1
+          fi
+          sleep 60
+          export IMAGE_URL=$(tkn pr describe --last -o jsonpath='{..taskResults}' | jq -r '.[] | select(.name | match("IMAGE_URL$")) | .value')
+          if [ "${REGISTRY}" = "registry.registry" ]; then
+            IMAGE_URL="$(echo "${IMAGE_URL}" | sed 's#'${REGISTRY}'#127.0.0.1:5000#')"
+          fi
+          docker run --rm gcr.io/go-containerregistry/crane ls "$(echo -n ${IMAGE_URL} | sed 's|:[^/]*$||')"
+          cosign verify --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
+          cosign verify-attestation --type slsaprovenance --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
+      - name: Run gradle pipeline
+        run: |
+          make example-gradle-pipeline
+          sleep 15
+          tkn pr logs --last -f
+          if [ "$(tkn pr describe --last -o jsonpath='{.status.conditions[?(@.type == "Succeeded")].status}')" != "True" ]; then
+            tkn pr describe --last
+            exit 1
+          fi
+          sleep 60
+          export IMAGE_URL=$(tkn pr describe --last -o jsonpath='{..taskResults}' | jq -r '.[] | select(.name | match("IMAGE_URL$")) | .value')
+          if [ "${REGISTRY}" = "registry.registry" ]; then
+            IMAGE_URL="$(echo "${IMAGE_URL}" | sed 's#'${REGISTRY}'#127.0.0.1:5000#')"
+          fi
+          docker run --rm gcr.io/go-containerregistry/crane ls "$(echo -n ${IMAGE_URL} | sed 's|:[^/]*$||')"
+          cosign verify --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
+          cosign verify-attestation --type slsaprovenance --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
+      - name: Run maven pipeline
+        run: |
+          make example-maven
+          sleep 15
+          tkn pr logs --last -f
+          if [ "$(tkn pr describe --last -o jsonpath='{.status.conditions[?(@.type == "Succeeded")].status}')" != "True" ]; then
+            tkn pr describe --last
+            exit 1
+          fi
+      - name: Run cosign pipeline
+        run: |
+          make example-cosign
+          sleep 15
+          tkn pr logs --last -f
+          if [ "$(tkn pr describe --last -o jsonpath='{.status.conditions[?(@.type == "Succeeded")].status}')" != "True" ]; then
+            tkn pr describe --last
+            exit 1
+          fi
+          sleep 60
+          export IMAGE_URL=$(tkn pr describe --last -o jsonpath='{..taskResults}' | jq -r '.[] | select(.name | match("IMAGE_URL$")) | .value')
+          if [ "${REGISTRY}" = "registry.registry" ]; then
+            IMAGE_URL="$(echo "${IMAGE_URL}" | sed 's#'${REGISTRY}'#127.0.0.1:5000#')"
+          fi
+          export TASK_RUN=$(tkn pr describe --last -o json | jq -r '.status.taskRuns | keys[] as $k | {"k": $k, "v": .[$k]} | select(.v.status.taskResults[]?.name | match("IMAGE_URL$")) | .k')
+
+          tkn tr describe "${TASK_RUN}" -o jsonpath='{.metadata.annotations.chains\.tekton\.dev/signed}'
+
+          docker run --rm gcr.io/go-containerregistry/crane ls "$(echo -n ${IMAGE_URL} | sed 's|:[^/]*$||')"
+
+          cosign verify --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
+          cosign verify-attestation --type slsaprovenance --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"

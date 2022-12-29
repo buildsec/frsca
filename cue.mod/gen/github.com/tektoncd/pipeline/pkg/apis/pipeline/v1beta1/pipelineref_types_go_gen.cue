@@ -14,6 +14,7 @@ package v1beta1
 	apiVersion?: string @go(APIVersion)
 
 	// Bundle url reference to a Tekton Bundle.
+	// Deprecated: Please use ResolverRef with the bundles resolver instead.
 	// +optional
 	bundle?: string @go(Bundle)
 

@@ -86,7 +86,7 @@ import (
 	description: string @go(Description)
 
 	// Value the expression used to retrieve the value
-	value: #ArrayOrString @go(Value)
+	value: #ParamValue @go(Value)
 }
 
 // PipelineTaskMetadata contains the labels or annotations for an EmbeddedTask
@@ -154,8 +154,7 @@ import (
 
 	// Matrix declares parameters used to fan out this task.
 	// +optional
-	// +listType=atomic
-	matrix?: [...#Param] @go(Matrix,[]Param)
+	matrix?: null | #Matrix @go(Matrix,*Matrix)
 
 	// Workspaces maps workspaces from the pipeline spec to the workspaces
 	// declared in the Task.
@@ -168,6 +167,16 @@ import (
 	// Refer Go's ParseDuration documentation for expected format: https://golang.org/pkg/time/#ParseDuration
 	// +optional
 	timeout?: null | metav1.#Duration @go(Timeout,*metav1.Duration)
+}
+
+// Matrix is used to fan out Tasks in a Pipeline
+#Matrix: {
+	// Params is a list of parameters used to fan out the pipelineTask
+	// Params takes only `Parameters` of type `"array"`
+	// Each array element is supplied to the `PipelineTask` by substituting `params` of type `"string"` in the underlying `Task`.
+	// The names of the `params` in the `Matrix` must match the names of the `params` in the underlying `Task` that they will be substituting.
+	// +listType=atomic
+	params?: [...#Param] @go(Params,[]Param)
 }
 
 // PipelineTaskList is a list of PipelineTasks

@@ -14,7 +14,7 @@ frsca: clusterPolicy: "attest-code-review": {
 					}, {
 						key:      "{{ buildType }}"
 						operator: "Equals"
-						value:    "https://tekton.dev/attestations/chains@v2"
+						value:    "tekton.dev/v1beta1/TaskRun"
 					}]
 				}]
 			}]

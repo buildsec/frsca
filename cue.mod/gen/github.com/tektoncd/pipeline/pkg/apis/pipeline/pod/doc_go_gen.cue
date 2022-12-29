@@ -3,4 +3,7 @@
 //cue:generate cue get go github.com/tektoncd/pipeline/pkg/apis/pipeline/pod
 
 // Package pod contains non-versioned pod configuration
+// +k8s:openapi-gen=true
+// +gencrdrefdocs:unversionedTypes
+// +groupName=tekton.dev
 package pod

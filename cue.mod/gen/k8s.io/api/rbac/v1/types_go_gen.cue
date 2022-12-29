@@ -24,7 +24,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	verbs: [...string] @go(Verbs,[]string) @protobuf(1,bytes,rep)
 
 	// APIGroups is the name of the APIGroup that contains the resources.  If multiple API groups are specified, any action requested against one of
-	// the enumerated resources in any API group will be allowed.
+	// the enumerated resources in any API group will be allowed. "" represents the core API group and "*" represents all API groups.
 	// +optional
 	apiGroups?: [...string] @go(APIGroups,[]string) @protobuf(2,bytes,rep)
 

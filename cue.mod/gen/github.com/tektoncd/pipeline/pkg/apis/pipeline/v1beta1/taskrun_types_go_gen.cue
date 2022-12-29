@@ -37,6 +37,10 @@ import (
 	// +optional
 	status?: #TaskRunSpecStatus @go(Status)
 
+	// Status message for cancellation.
+	// +optional
+	statusMessage?: #TaskRunSpecStatusMessage @go(StatusMessage)
+
 	// Time after which the build times out. Defaults to 1 hour.
 	// Specified build timeout should be less than 24h.
 	// Refer Go's ParseDuration documentation for expected format: https://golang.org/pkg/time/#ParseDuration
@@ -44,7 +48,7 @@ import (
 	timeout?: null | metav1.#Duration @go(Timeout,*metav1.Duration)
 
 	// PodTemplate holds pod specific configuration
-	podTemplate?: null | pod.#Template @go(PodTemplate,*github.com/tektoncd/pipeline/pkg/apis/pipeline/pod.Template)
+	podTemplate?: null | pod.#Template @go(PodTemplate,*pod.Template)
 
 	// Workspaces is a list of WorkspaceBindings from volumes to workspaces.
 	// +optional
@@ -78,6 +82,20 @@ import (
 // if not already cancelled or terminated
 #TaskRunSpecStatusCancelled: "TaskRunCancelled"
 
+// TaskRunSpecStatusMessage defines human readable status messages for the TaskRun.
+#TaskRunSpecStatusMessage: string // #enumTaskRunSpecStatusMessage
+
+#enumTaskRunSpecStatusMessage:
+	#TaskRunCancelledByPipelineMsg |
+	#TaskRunCancelledByPipelineTimeoutMsg
+
+// TaskRunCancelledByPipelineMsg indicates that the PipelineRun of which this
+// TaskRun was a part of has been cancelled.
+#TaskRunCancelledByPipelineMsg: #TaskRunSpecStatusMessage & "TaskRun cancelled as the PipelineRun it belongs to has been cancelled."
+
+// TaskRunCancelledByPipelineTimeoutMsg indicates that the TaskRun was cancelled because the PipelineRun running it timed out.
+#TaskRunCancelledByPipelineTimeoutMsg: #TaskRunSpecStatusMessage & "TaskRun cancelled as the PipelineRun it belongs to has timed out."
+
 // TaskRunDebug defines the breakpoint config for a particular TaskRun
 #TaskRunDebug: {
 	// +optional
@@ -110,6 +128,16 @@ import (
 	#TaskRunStatusFields
 }
 
+// TaskRunConditionType is an enum used to store TaskRun custom conditions
+// conditions such as one used in spire results verification
+#TaskRunConditionType: string // #enumTaskRunConditionType
+
+#enumTaskRunConditionType:
+	#TaskRunConditionResultsVerified
+
+// TaskRunConditionResultsVerified is a Condition Type that indicates that the results were verified by spire
+#TaskRunConditionResultsVerified: #TaskRunConditionType & "SignedResultsVerified"
+
 // TaskRunReason is an enum used to store all TaskRun reason for
 // the Succeeded condition that are controlled by the TaskRun itself. Failure
 // reasons that emerge from underlying resources are not included here
@@ -122,7 +150,10 @@ import (
 	#TaskRunReasonFailed |
 	#TaskRunReasonCancelled |
 	#TaskRunReasonTimedOut |
-	#TaskRunReasonImagePullFailed
+	#TaskRunReasonImagePullFailed |
+	#TaskRunReasonResultsVerified |
+	#TaskRunReasonsResultsVerificationFailed |
+	#AwaitingTaskRunResults
 
 // TaskRunReasonStarted is the reason set when the TaskRun has just started
 #TaskRunReasonStarted: #TaskRunReason & "Started"
@@ -148,6 +179,15 @@ import (
 
 // TaskRunReasonImagePullFailed is the reason set when the step of a task fails due to image not being pulled
 #TaskRunReasonImagePullFailed: #TaskRunReason & "TaskRunImagePullFailed"
+
+// TaskRunReasonResultsVerified is the reason set when the TaskRun results are verified by spire
+#TaskRunReasonResultsVerified: #TaskRunReason & "TaskRunResultsVerified"
+
+// TaskRunReasonsResultsVerificationFailed is the reason set when the TaskRun results are failed to verify by spire
+#TaskRunReasonsResultsVerificationFailed: #TaskRunReason & "TaskRunResultsVerificationFailed"
+
+// AwaitingTaskRunResults is the reason set when waiting upon `TaskRun` results and signatures to verify
+#AwaitingTaskRunResults: #TaskRunReason & "AwaitingTaskRunResults"
 
 // TaskRunStatusFields holds the fields of TaskRun's status.  This is defined
 // separately and inlined so that other types can readily consume these fields
@@ -199,6 +239,9 @@ import (
 
 	// TaskSpec contains the Spec from the dereferenced Task definition used to instantiate this TaskRun.
 	taskSpec?: null | #TaskSpec @go(TaskSpec,*TaskSpec)
+
+	// Provenance contains some key authenticated metadata about how a software artifact was built (what sources, what inputs/outputs, etc.).
+	provenance?: null | #Provenance @go(Provenance,*Provenance)
 }
 
 // TaskRunStepOverride is used to override the values of a Step in the corresponding Task.

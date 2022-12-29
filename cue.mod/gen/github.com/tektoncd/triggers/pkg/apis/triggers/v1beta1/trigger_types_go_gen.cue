@@ -103,8 +103,6 @@ import (
 	name?: string @go(Name)
 
 	// InterceptorKind indicates the kind of the Interceptor, namespaced or cluster scoped.
-	// Currently only InterceptorKind is ClusterInterceptor, so the only valid value
-	// is the default one
 	// +optional
 	kind?: #InterceptorKind @go(Kind)
 
@@ -117,10 +115,14 @@ import (
 #InterceptorKind: string // #enumInterceptorKind
 
 #enumInterceptorKind:
-	#ClusterInterceptorKind
+	#ClusterInterceptorKind |
+	#NamespacedInterceptorKind
 
-// ClusterTaskKind indicates that task type has a cluster scope.
+// ClusterInterceptorKind indicates that Interceptor type has a cluster scope.
 #ClusterInterceptorKind: #InterceptorKind & "ClusterInterceptor"
+
+// NamespacedInterceptorKind indicates that Interceptor type has a namespace scope.
+#NamespacedInterceptorKind: #InterceptorKind & "NamespacedInterceptor"
 
 // WebhookInterceptor provides a webhook to intercept and pre-process events
 #WebhookInterceptor: {

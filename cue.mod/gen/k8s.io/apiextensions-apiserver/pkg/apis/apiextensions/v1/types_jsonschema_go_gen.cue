@@ -203,8 +203,8 @@ package v1
 	// - '-' escapes to '__dash__'
 	// - '/' escapes to '__slash__'
 	// - Property names that exactly match a CEL RESERVED keyword escape to '__{keyword}__'. The keywords are:
-	//   "true", "false", "null", "in", "as", "break", "const", "continue", "else", "for", "function", "if",
-	//   "import", "let", "loop", "package", "namespace", "return".
+	//	  "true", "false", "null", "in", "as", "break", "const", "continue", "else", "for", "function", "if",
+	//	  "import", "let", "loop", "package", "namespace", "return".
 	// Examples:
 	//   - Rule accessing a property named "namespace": {"rule": "self.__namespace__ > 0"}
 	//   - Rule accessing a property named "x-prop": {"rule": "self.x__dash__prop > 0"}

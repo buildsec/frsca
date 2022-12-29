@@ -9,30 +9,18 @@ package v1beta1
 #ResolverName: string
 
 // ResolverRef can be used to refer to a Pipeline or Task in a remote
-// location like a git repo. This feature is in alpha and these fields
-// are only available when the alpha feature gate is enabled.
+// location like a git repo.
 #ResolverRef: {
 	// Resolver is the name of the resolver that should perform
 	// resolution of the referenced Tekton resource, such as "git".
 	// +optional
 	resolver?: #ResolverName @go(Resolver)
 
-	// Resource contains the parameters used to identify the
+	// Params contains the parameters used to identify the
 	// referenced Tekton resource. Example entries might include
 	// "repo" or "path" but the set of params ultimately depends on
 	// the chosen resolver.
 	// +optional
 	// +listType=atomic
-	resource?: [...#ResolverParam] @go(Resource,[]ResolverParam)
-}
-
-// ResolverParam is a single parameter passed to a resolver.
-#ResolverParam: {
-	// Name is the name of the parameter that will be passed to the
-	// resolver.
-	name: string @go(Name)
-
-	// Value is the string value of the parameter that will be
-	// passed to the resolver.
-	value: string @go(Value)
+	params?: [...#Param] @go(Params,[]Param)
 }

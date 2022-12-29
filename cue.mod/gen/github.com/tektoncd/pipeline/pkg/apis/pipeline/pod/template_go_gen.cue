@@ -98,4 +98,17 @@ import corev1 "k8s.io/api/core/v1"
 	// HostNetwork specifies whether the pod may use the node network namespace
 	// +optional
 	hostNetwork?: bool @go(HostNetwork)
+
+	// TopologySpreadConstraints controls how Pods are spread across your cluster among
+	// failure-domains such as regions, zones, nodes, and other user-defined topology domains.
+	// +optional
+	// +listType=atomic
+	topologySpreadConstraints?: [...corev1.#TopologySpreadConstraint] @go(TopologySpreadConstraints,[]corev1.TopologySpreadConstraint)
 }
+
+// PodTemplate holds pod specific configuration
+//nolint:revive
+#PodTemplate: #Template
+
+// AAPodTemplate holds pod specific configuration for the affinity-assistant
+#AAPodTemplate: #AffinityAssistantTemplate

@@ -75,6 +75,9 @@ frsca: pipeline: "example-gradle": spec: {
 		params: [{
 			name:  "IMAGE"
 			value: "$(params.image)"
+		}, {
+			name:  "BUILDER_IMAGE"
+			value: "gcr.io/cloud-builders/gradle:5.6.2-jdk-8@sha256:e065611da363329b9c16d2f97d7c2ebb02d339affb09db970e6f6cef4ea4a1ce"
 		}]
 	}, {
 		name: "trivy-scan-local-fs"

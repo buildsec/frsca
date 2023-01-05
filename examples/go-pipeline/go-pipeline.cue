@@ -178,6 +178,7 @@ frsca: trigger: "example-golang": {
 			name: "ARGS"
 			value: [
 				"fs",
+				"--skip-update",
 				"--exit-code",
 				"1",
 			]
@@ -185,6 +186,7 @@ frsca: trigger: "example-golang": {
 			name: "IMAGEARGS"
 			value: [
 				"image",
+				"--skip-update",
 				"--exit-code",
 				"0",
 			]

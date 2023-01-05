@@ -140,6 +140,7 @@ frsca: trigger: "example-gradle": {
 			name: "ARGS"
 			value: [
 				"fs",
+				"--skip-update",
 				"--exit-code",
 				"1",
 			]
@@ -147,6 +148,8 @@ frsca: trigger: "example-gradle": {
 			name: "IMAGEARGS"
 			value: [
 				"image",
+				"--skip-update",
+				"--offline-scan",
 				"--exit-code",
 				"0",
 			]

@@ -38,7 +38,7 @@ files:
     validation_type: "sha256"
   - release_file: "https://raw.githubusercontent.com/tektoncd/catalog/main/task/git-clone/0.9/git-clone.yaml"
     destination_dir: "tekton/catalog/main/task/git-clone/0.9"
-    sha256: "ca4c32bcfe52c1975088d77c69e4b0540fdac68dc5a10a17ab963a349101bb7e"
+    sha256: "d4d59da1eeef1207f9b04e319ae095f08bf618815104905f8fcebbdb6f99c1ac"
     validation_type: "sha256"
   - release_file: "https://raw.githubusercontent.com/tektoncd/catalog/main/task/golang-build/0.3/golang-build.yaml"
     destination_dir: "tekton/catalog/main/task/golang-build/0.3"

@@ -21,6 +21,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c  # v3.3.0
+      - name: Workaround for detected dubious ownership
+        run: git config --global --add safe.directory /github/workspace
       - name: build
         uses: shalzz/zola-deploy-action@4e8cfaf04f68aef5146e33319e4e3e8e9b26e2c0  # v0.16.1
         env:

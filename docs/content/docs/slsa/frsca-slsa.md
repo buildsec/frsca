@@ -1,4 +1,17 @@
-# How FRSCA pipelines are meeting SLSA levels 1-3
++++
+title = "How FRSCA is meeting SLSA levels 1-3"
+description = "A document describing how FRSCA is meeting SLSA compliance, specifically levels 1-3"
+date = 2023-02-07T08:20:00+00:00
+updated = 2023-02-07T08:20:00+00:00
+draft = false
+weight = 20
+sort_by = "weight"
+template = "docs/page.html"
+
+[extra]
+toc = true
+top = false
++++
 
 ## Reminder on SLSA levels
 
@@ -20,6 +33,8 @@ The full requirements table can be found here:
 ```other
 frsca/examples/sample-pipeline
 ```
+
+For the purposes of this document, we're going to be comparing SLSA requirements to what we are deploying via the sample-pipeline.  Please read `frsca/examples/sample-pipeline/README.md` for information on setting up FRSCA and the sample pipeline.
 
 # SLSA 1 Requirements
 

@@ -1,5 +1,5 @@
 +++
-title = "How FRSCA is meeting SLSA levels 1-3"
+title = "SLSA"
 description = "Read how FRSCA is meeting various necessary requirements of SLSA levels 1 through 3."
 date = 2023-02-06T18:00:00+00:00
 updated = 2023-02-06T18:00:00+00:00

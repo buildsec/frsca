@@ -5,9 +5,9 @@ using [custom values][].
 
 ## Usage
 
-- Deploy Elasticsearch chart with the default values: `make install`
+* Deploy Elasticsearch chart with the default values: `make install`
 
-- You can now setup a port forward to query Elasticsearch API:
+* You can now setup a port forward to query Elasticsearch API:
 
   ```
   kubectl port-forward svc/elasticsearch-master 9200
@@ -18,8 +18,7 @@ using [custom values][].
 
 You can also run [goss integration tests][] using `make test`
 
-[custom values]:
-  https://github.com/elastic/helm-charts/tree/7.17/elasticsearch/examples/openshift/values.yaml
-[goss integration tests]:
-  https://github.com/elastic/helm-charts/tree/7.17/elasticsearch/examples/openshift/test/goss.yaml
+
+[custom values]: https://github.com/elastic/helm-charts/tree/7.17/elasticsearch/examples/openshift/values.yaml
+[goss integration tests]: https://github.com/elastic/helm-charts/tree/7.17/elasticsearch/examples/openshift/test/goss.yaml
 [openshift]: https://www.openshift.com/

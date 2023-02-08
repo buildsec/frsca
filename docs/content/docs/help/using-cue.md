@@ -14,9 +14,9 @@ top = false
 
 ## CUE Module Structure
 
-The top level of Factory for Repeatable Secure Creation of Artifacts (FRSCA) is
-structured as a [CUE module](https://cuelang.org/docs/concepts/packages/) and
-follows the
+The top level of Factory for Repeatable Secure Creation of Artifacts (FRSCA)
+is structured as a
+[CUE module](https://cuelang.org/docs/concepts/packages/) and follows the
 [schema/policy/data](https://cuelang.org/docs/concepts/packages/#file-organization)
 pattern for organizing the files.
 
@@ -25,8 +25,8 @@ The
 directory is predominantly for CUE package management. All of the files in
 `cue.mod/gen/...` are generated from the `cue get go ...` command importing go
 modules and converting them to CUE. These can then be imported and used to
-verify the structure of things such as `ConfigMap`. `frsca.cue` imports several
-of these and creates base structures based on these imported go structs.
+verify the structure of things such as `ConfigMap`. `frsca.cue` imports several of
+these and creates base structures based on these imported go structs.
 
 For the most part, CUE expects the evaluation to be done relative to the root of
 the CUE module. Evaluation can be narrowed by providing a path to a subdirectory

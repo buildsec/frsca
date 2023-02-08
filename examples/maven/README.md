@@ -19,7 +19,7 @@ make example-maven
 # Wait until it completes.
 tkn pr logs --last -f
 
-# to do
+# to do 
 verify jar-file
 ```
 

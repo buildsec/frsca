@@ -7,8 +7,7 @@ helm repo add gatekeeper https://open-policy-agent.github.io/gatekeeper/charts
 helm repo update
 ```
 
-_See [helm repo](https://helm.sh/docs/helm/helm_repo/) for command
-documentation._
+_See [helm repo](https://helm.sh/docs/helm/helm_repo/) for command documentation._
 
 ## Install Chart
 
@@ -23,17 +22,15 @@ $ helm install -n gatekeeper-system [RELEASE_NAME] gatekeeper/gatekeeper --creat
 
 _See [parameters](#parameters) below._
 
-_See [helm install](https://helm.sh/docs/helm/helm_install/) for command
-documentation._
+_See [helm install](https://helm.sh/docs/helm/helm_install/) for command documentation._
 
 ## Upgrade Chart
 
-**Upgrading from < v3.4.0** Chart 3.4.0 deprecates support for Helm 2 and also
-removes the creation of the `gatekeeper-system` Namespace from within the chart.
-This follows Helm 3 Best Practices.
+**Upgrading from < v3.4.0**
+Chart 3.4.0 deprecates support for Helm 2 and also removes the creation of the `gatekeeper-system` Namespace from within the chart. This follows Helm 3 Best Practices.
 
-Option 1: A simple way to upgrade is to uninstall first and re-install with
-3.4.0 or greater.
+Option 1:
+A simple way to upgrade is to uninstall first and re-install with 3.4.0 or greater.
 
 ```console
 $ helm uninstall gatekeeper
@@ -41,10 +38,8 @@ $ helm install -n gatekeeper-system [RELEASE_NAME] gatekeeper/gatekeeper --creat
 
 ```
 
-Option 2: Run the `helm_migrate.sh` script before installing the 3.4.0 or
-greater chart. This will remove the Helm secret for the original release, while
-keeping all of the resources. It then updates the annotations of the resources
-so that the new chart can import and manage them.
+Option 2:
+Run the `helm_migrate.sh` script before installing the 3.4.0 or greater chart. This will remove the Helm secret for the original release, while keeping all of the resources. It then updates the annotations of the resources so that the new chart can import and manage them.
 
 ```console
 $ helm_migrate.sh
@@ -52,24 +47,18 @@ $ helm install -n gatekeeper-system gatekeeper gatekeeper/gatekeeper
 ```
 
 **Upgrading from >= v3.4.0**
-
 ```console
 $ helm upgrade -n gatekeeper-system [RELEASE_NAME] gatekeeper/gatekeeper
 ```
 
-_See [helm 2 to 3](https://helm.sh/docs/topics/v2_v3_migration/) for Helm 2
-migration documentation._
+_See [helm 2 to 3](https://helm.sh/docs/topics/v2_v3_migration/) for Helm 2 migration documentation._
+
 
 ## Exempting Namespace
 
-The Helm chart automatically sets the Gatekeeper flag
-`--exempt-namespace={{ .Release.Namespace }}` in order to exempt the namespace
-where the chart is installed, and adds the `admission.gatekeeper.sh/ignore`
-label to the namespace during a post-install hook.
+The Helm chart automatically sets the Gatekeeper flag `--exempt-namespace={{ .Release.Namespace }}` in order to exempt the namespace where the chart is installed, and adds the `admission.gatekeeper.sh/ignore` label to the namespace during a post-install hook.
 
-_See
-[Exempting Namespaces](https://open-policy-agent.github.io/gatekeeper/website/docs/exempt-namespaces)
-for more information._
+_See [Exempting Namespaces](https://open-policy-agent.github.io/gatekeeper/website/docs/exempt-namespaces) for more information._
 
 ## Parameters
 
@@ -90,14 +79,14 @@ for more information._
 | validatingWebhookFailurePolicy               | The failurePolicy for the validating webhook                                           | `Ignore`                                                                  |
 | validatingWebhookCheckIgnoreFailurePolicy    | The failurePolicy for the check-ignore-label validating webhook                        | `Fail`                                                                    |
 | enableDeleteOperations                       | Enable validating webhook for delete operations                                        | `false`                                                                   |
-| experimentalEnableMutation                   | Enable mutation (alpha feature)                                                        | `false`                                                                   |
+| experimentalEnableMutation                   | Enable mutation  (alpha feature)                                                       | `false`                                                                   |
 | emitAdmissionEvents                          | Emit K8s events in gatekeeper namespace for admission violations (alpha feature)       | `false`                                                                   |
 | emitAuditEvents                              | Emit K8s events in gatekeeper namespace for audit violations (alpha feature)           | `false`                                                                   |
 | logDenies                                    | Log detailed info on each deny                                                         | `false`                                                                   |
 | logLevel                                     | Minimum log level                                                                      | `INFO`                                                                    |
 | image.pullPolicy                             | The image pull policy                                                                  | `IfNotPresent`                                                            |
 | image.repository                             | Image repository                                                                       | `openpolicyagent/gatekeeper`                                              |
-| image.release                                | The image release tag to use                                                           | Current release version: `v3.6.0`                                         |
+| image.release                                | The image release tag to use                                                           | Current release version: `v3.6.0`                                  |
 | image.pullSecrets                            | Specify an array of imagePullSecrets                                                   | `[]`                                                                      |
 | resources                                    | The resource request/limits for the container image                                    | limits: 1 CPU, 512Mi, requests: 100mCPU, 256Mi                            |
 | nodeSelector                                 | The node selector to use for pod scheduling                                            | `kubernetes.io/os: linux`                                                 |
@@ -128,5 +117,5 @@ This Helm chart is autogenerated from the Gatekeeper static manifest. The
 generator code lives under `cmd/build/helmify`. To make modifications to this
 template, please edit `kustomization.yaml`, `kustomize-for-helm.yaml` and
 `replacements.go` under that directory and then run `make manifests`. Your
-changes will show up in the `manifest_staging` directory and will be promoted to
-the root `charts` directory the next time a Gatekeeper release is cut.
+changes will show up in the `manifest_staging` directory and will be promoted
+to the root `charts` directory the next time a Gatekeeper release is cut.

@@ -9,9 +9,9 @@ releases:
 
 ## Usage
 
-- Deploy the 3 Elasticsearch releases: `make install`
+* Deploy the 3 Elasticsearch releases: `make install`
 
-- You can now setup a port forward to query Elasticsearch API:
+* You can now setup a port forward to query Elasticsearch API:
 
   ```
   kubectl port-forward svc/multi-master 9200
@@ -22,11 +22,8 @@ releases:
 
 You can also run [goss integration tests][] using `make test`
 
-[client values]:
-  https://github.com/elastic/helm-charts/tree/7.17/elasticsearch/examples/multi/client.yaml
-[data values]:
-  https://github.com/elastic/helm-charts/tree/7.17/elasticsearch/examples/multi/data.yaml
-[goss integration tests]:
-  https://github.com/elastic/helm-charts/tree/7.17/elasticsearch/examples/multi/test/goss.yaml
-[master values]:
-  https://github.com/elastic/helm-charts/tree/7.17/elasticsearch/examples/multi/master.yaml
+
+[client values]: https://github.com/elastic/helm-charts/tree/7.17/elasticsearch/examples/multi/client.yaml
+[data values]: https://github.com/elastic/helm-charts/tree/7.17/elasticsearch/examples/multi/data.yaml
+[goss integration tests]: https://github.com/elastic/helm-charts/tree/7.17/elasticsearch/examples/multi/test/goss.yaml
+[master values]: https://github.com/elastic/helm-charts/tree/7.17/elasticsearch/examples/multi/master.yaml

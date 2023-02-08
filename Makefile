@@ -176,7 +176,7 @@ lint: lint-md lint-yaml lint-shell ## Run all linters
 
 .PHONY: lint-md
 lint-md: ## Lint markdown files
-	npx --yes markdownlint-cli2  "**/*.md" "#docs/themes" "#platform/vendor"
+	npx --yes markdownlint-cli2  "**/*.md" "#docs/themes" "#platform/"
 
 .PHONY: lint-shell
 lint-shell: ## Lint shell files

@@ -56,8 +56,8 @@ kill %?registry-proxy
 
 ### SBOM
 
-Based on the [CycloneDX documentation](https://cyclonedx.org/use-cases/),
-there is a lot you can do with it! Let's see in practice how it is.
+Based on the [CycloneDX documentation](https://cyclonedx.org/use-cases/), there
+is a lot you can do with it! Let's see in practice how it is.
 
 Start by cloning the [cosign] repository:
 
@@ -97,26 +97,27 @@ Generate the SBOM with [cyclonedx-gomod] from the [cosign] source repository:
 
 ##### Known vulnerabilities
 
-* CPE
-  * Online search: <https://nvd.nist.gov/products/cpe/search>
-* SWID
-  * Java CLI tool: <https://csrc.nist.gov/Projects/Software-Identification-SWID/resources>
-* Use Package URL ([PURL](<https://github.com/package-url/purl-spec>)) standard
-  to identify and locate dependencies.
+- CPE
+  - Online search: <https://nvd.nist.gov/products/cpe/search>
+- SWID
+  - Java CLI tool:
+    <https://csrc.nist.gov/Projects/Software-Identification-SWID/resources>
+- Use Package URL ([PURL](https://github.com/package-url/purl-spec)) standard to
+  identify and locate dependencies.
 
 ##### Integrity verification
 
-* No tool to verify the integrity automatically
+- No tool to verify the integrity automatically
 
 ##### Authenticity
 
-* No tool to validate signature(s). There should be something similar to what
-[cosign] does with the DSS envelopes.
+- No tool to validate signature(s). There should be something similar to what
+  [cosign] does with the DSS envelopes.
 
 ##### Package evaluation
 
-* Uses PURL
-* Seems interesting but I am not so sure what to do with it
+- Uses PURL
+- Seems interesting but I am not so sure what to do with it
 
 ##### License compliance
 
@@ -126,25 +127,25 @@ List the licenses found in the SBOM:
 jq '.components[].evidence.licenses[]?.license.id' cyclonedx.sbom |sort -u
 ```
 
-* No licenses are simply shown as a blank line.
-* No tool to validate the licenses against <https://spdx.org/licenses/>.
-* No tool to validate licenses against company policy.
-* If a dependency has no license, it appears only on the CLI tool output.
+- No licenses are simply shown as a blank line.
+- No tool to validate the licenses against <https://spdx.org/licenses/>.
+- No tool to validate licenses against company policy.
+- If a dependency has no license, it appears only on the CLI tool output.
 
 ##### Assembly
 
-* Not so sure what to do with this one.
-* Seems to be CycloneDX specific.
+- Not so sure what to do with this one.
+- Seems to be CycloneDX specific.
 
 ##### Dependency graph
 
-* Not a new feature, it can also be done using the lock files.
-* Not sure how useful that is.
+- Not a new feature, it can also be done using the lock files.
+- Not sure how useful that is.
 
 ##### Provenance
 
-* This would be good to trust software suppliers
-* If you trust a supplier, do you trust *ALL* that it supplies?
+- This would be good to trust software suppliers
+- If you trust a supplier, do you trust _ALL_ that it supplies?
 
 ##### Pedigree
 
@@ -154,8 +155,8 @@ jq '.components[].evidence.licenses[]?.license.id' cyclonedx.sbom |sort -u
 
 ##### Packaging and distribution
 
-* This sounds great!
-* It seems to be what we would use instead of a "build tool SBOM".
+- This sounds great!
+- It seems to be what we would use instead of a "build tool SBOM".
 
 ##### Composition completeness
 

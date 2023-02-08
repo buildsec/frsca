@@ -5,11 +5,12 @@ solution written in Go. It is published under the MIT license.
 
 ## Introduction
 
-This helm chart has taken some inspiration from [jfelten's helm
-chart](https://github.com/jfelten/gitea-helm-chart). But takes a completely
-different approach in providing a database and cache with dependencies.
-Additionally, this chart provides LDAP and admin user configuration with values,
-as well as being deployed as a statefulset to retain stored repositories.
+This helm chart has taken some inspiration from
+[jfelten's helm chart](https://github.com/jfelten/gitea-helm-chart). But takes a
+completely different approach in providing a database and cache with
+dependencies. Additionally, this chart provides LDAP and admin user
+configuration with values, as well as being deployed as a statefulset to retain
+stored repositories.
 
 ## Dependencies
 
@@ -40,13 +41,14 @@ helm install gitea gitea-charts/gitea
 ## Chart upgrade to 5.0.0
 
 :warning: The most recent `5.0.0` update brings some major and breaking changes.
-Please note the following changes in the Chart to upgrade successfully. :warning:
+Please note the following changes in the Chart to upgrade successfully.
+:warning:
 
 ### Enable Dependencies
 
-:warning: The values to enable the dependencies,
-such as PostgreSQL, Memcached, MySQL and MariaDB
-have been moved from `gitea.database.builtIn.` to the dependency values. :warning:
+:warning: The values to enable the dependencies, such as PostgreSQL, Memcached,
+MySQL and MariaDB have been moved from `gitea.database.builtIn.` to the
+dependency values. :warning:
 
 You can now enable the dependencies as followed:
 
@@ -80,28 +82,28 @@ automatically in certain situations:
 
 - New install: By default the secrets are created automatically. If you provide
   secrets via `gitea.config` they will be used instead of automatic generation.
-- Existing installs: The secrets won't be deployed, neither via
-  configuration nor via auto generation. We explicitly prevent to set new secrets.
+- Existing installs: The secrets won't be deployed, neither via configuration
+  nor via auto generation. We explicitly prevent to set new secrets.
 
-> :rotating_light: It would be possible to set new secret keys manually by entering
-the running container and rewriting the app.ini by hand. However, this it is
-not advisable to do so for existing installations. Certain settings like
-_LDAP_ would not be readable anymore.
+> :rotating*light: It would be possible to set new secret keys manually by
+> entering the running container and rewriting the app.ini by hand. However,
+> this it is not advisable to do so for existing installations. Certain settings
+> like \_LDAP* would not be readable anymore.
 
 ### Probes
 
-> :boom: `gitea.customLivenessProbe`, `gitea.customReadinessProbe` and `gitea.customStartupProbe`
-have been removed.
+> :boom: `gitea.customLivenessProbe`, `gitea.customReadinessProbe` and
+> `gitea.customStartupProbe` have been removed.
 
 They are replaced by the settings `gitea.livenessProbe`, `gitea.readinessProbe`
-and `gitea.startupProbe` which are now fully configurable and used _as-is_ for
-a Chart deployment.
-If you have customized their values instead of using the `custom` prefixed settings,
-please ensure that you remove the `enabled` property from each of them.
+and `gitea.startupProbe` which are now fully configurable and used _as-is_ for a
+Chart deployment. If you have customized their values instead of using the
+`custom` prefixed settings, please ensure that you remove the `enabled` property
+from each of them.
 
-In case you want to disable one of these probes, let's say the `livenessProbe`, add
-the following to your values. The `podAnnotation` is just there to have a bit more
-context.
+In case you want to disable one of these probes, let's say the `livenessProbe`,
+add the following to your values. The `podAnnotation` is just there to have a
+bit more context.
 
 ```diff
 gitea:
@@ -112,15 +114,15 @@ gitea:
 ### Multiple OAuth and LDAP authentication sources
 
 With `5.0.0` of this Chart it is now possible to configure Gitea with multiple
-OAuth and LDAP sources. As a result, you need to update an existing OAuth/LDAP configuration
-in your customized `values.yaml` by replacing the object with settings to a list
-of settings objects. See [OAuth2 Settings](#oauth-settings) and
-[LDAP Settings](#ldap-settings) section for details.
+OAuth and LDAP sources. As a result, you need to update an existing OAuth/LDAP
+configuration in your customized `values.yaml` by replacing the object with
+settings to a list of settings objects. See [OAuth2 Settings](#oauth-settings)
+and [LDAP Settings](#ldap-settings) section for details.
 
 ## Chart upgrade from 3.x.x to 4.0.0
 
-:warning: The most recent `4.0.0` update brings some breaking changes. Please note
-the following changes in the Chart to upgrade successfully. :warning:
+:warning: The most recent `4.0.0` update brings some breaking changes. Please
+note the following changes in the Chart to upgrade successfully. :warning:
 
 ### Ingress changes
 
@@ -160,8 +162,8 @@ paths:
 ### Dropped kebab-case support
 
 In 3.x.x it was possible to provide an ldap configuration via kebab-case, this
-support has now been dropped and only camel case is supported. See [LDAP
-section](#ldap-settings) for more information.
+support has now been dropped and only camel case is supported. See
+[LDAP section](#ldap-settings) for more information.
 
 ### Dependency update
 
@@ -239,7 +241,8 @@ service and ingress settings. All defaults can be overwritten in `gitea.config`.
 INSTALL_LOCK is always set to true, since we want to configure Gitea with this
 helm chart and everything is taken care of.
 
-_All default settings are made directly in the generated app.ini, not in the Values._
+_All default settings are made directly in the generated app.ini, not in the
+Values._
 
 #### Database defaults
 
@@ -258,7 +261,8 @@ USER = gitea
 #### Memcached defaults
 
 Memcached is handled the exact same way as database builtIn. Once Memcached
-builtIn is enabled, this chart will generate the following part in the `app.ini`:
+builtIn is enabled, this chart will generate the following part in the
+`app.ini`:
 
 ```ini
 [cache]
@@ -297,17 +301,19 @@ ENABLED = false
 
 ### Additional _app.ini_ settings
 
-> **The [generic](https://docs.gitea.io/en-us/config-cheat-sheet/#overall-default)
-section cannot be defined that way.**
+> **The
+> [generic](https://docs.gitea.io/en-us/config-cheat-sheet/#overall-default)
+> section cannot be defined that way.**
 
-Some settings inside _app.ini_ (like passwords or whole authentication configurations)
-must be considered sensitive and therefore should not be passed via plain text
-inside the _values.yaml_ file. In times of _GitOps_ the values.yaml could be stored
-in a Git repository where sensitive data should never be accessible.
+Some settings inside _app.ini_ (like passwords or whole authentication
+configurations) must be considered sensitive and therefore should not be passed
+via plain text inside the _values.yaml_ file. In times of _GitOps_ the
+values.yaml could be stored in a Git repository where sensitive data should
+never be accessible.
 
-The Helm Chart supports this approach and let the user define custom sources like
-Kubernetes Secrets to be loaded as environment variables during _app.ini_ creation
-or update.
+The Helm Chart supports this approach and let the user define custom sources
+like Kubernetes Secrets to be loaded as environment variables during _app.ini_
+creation or update.
 
 ```yaml
 gitea:
@@ -321,7 +327,8 @@ gitea:
 This would mount the two additional volumes (`oauth` and `some-additionals`)
 from different sources to the init containerwhere the _app.ini_ gets updated.
 All files mounted that way will be read and converted to environment variables
-and then added to the _app.ini_ using [environment-to-ini](https://github.com/go-gitea/gitea/tree/main/contrib/environment-to-ini).
+and then added to the _app.ini_ using
+[environment-to-ini](https://github.com/go-gitea/gitea/tree/main/contrib/environment-to-ini).
 
 The key of such additional source represents the section inside the _app.ini_.
 The value for each key can be multiline ini-like definitions.
@@ -358,19 +365,18 @@ stringData:
 
 #### User defined environment variables in app.ini
 
-Users are able to define their own environment variables,
-which are loaded into the containers. We also support to
-directly interact with the generated _app.ini_.
+Users are able to define their own environment variables, which are loaded into
+the containers. We also support to directly interact with the generated
+_app.ini_.
 
-To inject self defined variables into the _app.ini_ a
-certain format needs to be honored. This is
-described in detail on the [env-to-ini](https://github.com/go-gitea/gitea/tree/main/contrib/environment-to-ini)
+To inject self defined variables into the _app.ini_ a certain format needs to be
+honored. This is described in detail on the
+[env-to-ini](https://github.com/go-gitea/gitea/tree/main/contrib/environment-to-ini)
 page.
 
 Note that the Prefix on this helm chart is `ENV_TO_INI`.
 
-For example a database setting needs to have the following
-format:
+For example a database setting needs to have the following format:
 
 ```yaml
 gitea:
@@ -411,7 +417,8 @@ postgresql:
 
 ### Ports and external url
 
-By default port `3000` is used for web traffic and `22` for ssh. Those can be changed:
+By default port `3000` is used for web traffic and `22` for ssh. Those can be
+changed:
 
 ```yaml
 service:
@@ -517,34 +524,37 @@ persistence:
 When using PostgreSQL as dependency, this will also be deployed as a statefulset
 by default.
 
-If you want to manage your own PVC you can simply pass the PVC name to the chart.
+If you want to manage your own PVC you can simply pass the PVC name to the
+chart.
 
 ```yaml
+persistence:
+  enabled: true
+  existingClaim: MyAwesomeGiteaClaim
+```
+
+In case that peristence has been disabled it will simply use an empty dir
+volume.
+
+PostgreSQL handles the persistence in the exact same way. You can interact with
+the postgres settings as displayed in the following example:
+
+```yaml
+postgresql:
   persistence:
     enabled: true
-    existingClaim: MyAwesomeGiteaClaim
+    existingClaim: MyAwesomeGiteaPostgresClaim
 ```
 
-In case that peristence has been disabled it will simply use an empty dir volume.
-
-PostgreSQL handles the persistence in the exact same way.
-You can interact with the postgres settings as displayed in the following example:
-
-```yaml
-  postgresql:
-    persistence:
-      enabled: true
-      existingClaim: MyAwesomeGiteaPostgresClaim
-```
-
-MySQL also handles persistence the same, even though it is not deployed as a statefulset.
-You can interact with the postgres settings as displayed in the following example:
+MySQL also handles persistence the same, even though it is not deployed as a
+statefulset. You can interact with the postgres settings as displayed in the
+following example:
 
 ```yaml
-  mysql:
-    persistence:
-      enabled: true
-      existingClaim: MyAwesomeGiteaMysqlClaim
+mysql:
+  persistence:
+    enabled: true
+    existingClaim: MyAwesomeGiteaMysqlClaim
 ```
 
 ### Admin User
@@ -555,11 +565,11 @@ not possible to delete an admin user after it has been created. This has to be
 done in the ui. You cannot use `admin` as username.
 
 ```yaml
-  gitea:
-    admin:
-      username: "MyAwesomeGiteaAdmin"
-      password: "AReallyAwesomeGiteaPassword"
-      email: "gi@tea.com"
+gitea:
+  admin:
+    username: "MyAwesomeGiteaAdmin"
+    password: "AReallyAwesomeGiteaPassword"
+    email: "gi@tea.com"
 ```
 
 You can also use an existing Secret to configure the admin user:
@@ -577,32 +587,32 @@ stringData:
 
 ```yaml
 gitea:
-    admin:
-      existingSecret: gitea-admin-secret
+  admin:
+    existingSecret: gitea-admin-secret
 ```
 
 ### LDAP Settings
 
-Like the admin user the LDAP settings can be updated.
-All LDAP values from <https://docs.gitea.io/en-us/command-line/#admin> are available.
+Like the admin user the LDAP settings can be updated. All LDAP values from
+<https://docs.gitea.io/en-us/command-line/#admin> are available.
 
 Multiple LDAP sources can be configured with additional LDAP list items.
 
 ```yaml
-  gitea:
-    ldap:
-      - name: MyAwesomeGiteaLdap
-        securityProtocol: unencrypted
-        host: "127.0.0.1"
-        port: "389"
-        userSearchBase: ou=Users,dc=example,dc=com
-        userFilter: sAMAccountName=%s
-        adminFilter: CN=Admin,CN=Group,DC=example,DC=com
-        emailAttribute: mail
-        bindDn: CN=ldap read,OU=Spezial,DC=example,DC=com
-        bindPassword: JustAnotherBindPw
-        usernameAttribute: CN
-        publicSSHKeyAttribute: publicSSHKey
+gitea:
+  ldap:
+    - name: MyAwesomeGiteaLdap
+      securityProtocol: unencrypted
+      host: "127.0.0.1"
+      port: "389"
+      userSearchBase: ou=Users,dc=example,dc=com
+      userFilter: sAMAccountName=%s
+      adminFilter: CN=Admin,CN=Group,DC=example,DC=com
+      emailAttribute: mail
+      bindDn: CN=ldap read,OU=Spezial,DC=example,DC=com
+      bindPassword: JustAnotherBindPw
+      usernameAttribute: CN
+      publicSSHKeyAttribute: publicSSHKey
 ```
 
 You can also use an existing secret to set the bindDn and bindPassword:
@@ -639,19 +649,19 @@ without any value. Affected options:
 
 Like the admin user, OAuth2 settings can be updated and disabled but not
 deleted. Deleting OAuth2 settings has to be done in the ui. All OAuth2 values,
-which are documented [here](https://docs.gitea.io/en-us/command-line/#admin), are
-available.
+which are documented [here](https://docs.gitea.io/en-us/command-line/#admin),
+are available.
 
 Multiple OAuth2 sources can be configured with additional OAuth list items.
 
 ```yaml
 gitea:
   oauth:
-    - name: 'MyAwesomeGiteaOAuth'
-      provider: 'openidConnect'
-      key: 'hello'
-      secret: 'world'
-      autoDiscoverUrl: 'https://gitea.example.com/.well-known/openid-configuration'
+    - name: "MyAwesomeGiteaOAuth"
+      provider: "openidConnect"
+      key: "hello"
+      secret: "world"
+      autoDiscoverUrl: "https://gitea.example.com/.well-known/openid-configuration"
       #useCustomUrls:
       #customAuthUrl:
       #customTokenUrl:
@@ -675,9 +685,8 @@ stringData:
 ```yaml
 gitea:
   oauth:
-    - name: 'MyAwesomeGiteaOAuth'
-      existingSecret: gitea-oauth-secret
-        ...
+    - name: "MyAwesomeGiteaOAuth"
+      existingSecret: gitea-oauth-secret ...
 ```
 
 ### Metrics and profiling
@@ -716,17 +725,17 @@ gitea:
 
 ### Others
 
-| Parameter                                   | Description                                                          | Default |
-| ------------------------------------------- | -------------------------------------------------------------------- | ------- |
-| `statefulset.annotations`                   | Annotations for the Gitea StatefulSet to be created                  | `{}`    |
-| `statefulset.terminationGracePeriodSeconds` | How long to wait until forcefully kill the pod                       | `60`    |
-| `statefulset.env`                           | Additional environment variables to pass to containers               | `[]`    |
-| `extraVolumes`                              | Additional volumes to mount to the Gitea statefulset                 | `{}`    |
-| `extraVolumeMounts`                         | Additional volume mounts for the Gitea containers                    | `{}`    |
-| `initPreScript`                             | Bash script copied verbatim to start of init container               |         |
-| `podSecurityContext.fsGroup`                | Set the shared file system group for all containers                  | 1000    |
-| `containerSecurityContext`                  | Run init and Gitea containers as a specific securityContext          | `{}`    |
-| `schedulerName`                             | Use an alternate scheduler, e.g. "stork"                             |         |
+| Parameter                                   | Description                                                 | Default |
+| ------------------------------------------- | ----------------------------------------------------------- | ------- |
+| `statefulset.annotations`                   | Annotations for the Gitea StatefulSet to be created         | `{}`    |
+| `statefulset.terminationGracePeriodSeconds` | How long to wait until forcefully kill the pod              | `60`    |
+| `statefulset.env`                           | Additional environment variables to pass to containers      | `[]`    |
+| `extraVolumes`                              | Additional volumes to mount to the Gitea statefulset        | `{}`    |
+| `extraVolumeMounts`                         | Additional volume mounts for the Gitea containers           | `{}`    |
+| `initPreScript`                             | Bash script copied verbatim to start of init container      |         |
+| `podSecurityContext.fsGroup`                | Set the shared file system group for all containers         | 1000    |
+| `containerSecurityContext`                  | Run init and Gitea containers as a specific securityContext | `{}`    |
+| `schedulerName`                             | Use an alternate scheduler, e.g. "stork"                    |         |
 
 ### Image
 
@@ -752,16 +761,16 @@ gitea:
 
 ### Ingress
 
-| Parameter                            | Description                                                                  | Default                                            |
-| ------------------------------------ | ---------------------------------------------------------------------------- | -------------------------------------------------- |
-| `ingress.enabled`                    | enable ingress                                                               | `false`                                            |
-| `ingress.annotations`                | add ingress annotations                                                      |                                                    |
-| `ingress.hosts[0].host`              | add hosts for ingress                                                        | `git.example.com`                                  |
-| `ingress.hosts[0].paths[0].path`     | add path for each ingress host                                               | `/`                                                |
-| `ingress.hosts[0].paths[0].pathType` | add ingress path type                                                        | `Prefix`                                           |
-| `ingress.tls`                        | add ingress tls settings                                                     | `[]`                                               |
-| `ingress.className`                  | add ingress class name. Only used in k8s 1.19+                               |                                                    |
-| `ingress.apiVersion`                 | specify APIVersion of ingress object.  Mostly would only be used for argocd. | version indicated by helm's `Capabilities` object. |
+| Parameter                            | Description                                                                 | Default                                            |
+| ------------------------------------ | --------------------------------------------------------------------------- | -------------------------------------------------- |
+| `ingress.enabled`                    | enable ingress                                                              | `false`                                            |
+| `ingress.annotations`                | add ingress annotations                                                     |                                                    |
+| `ingress.hosts[0].host`              | add hosts for ingress                                                       | `git.example.com`                                  |
+| `ingress.hosts[0].paths[0].path`     | add path for each ingress host                                              | `/`                                                |
+| `ingress.hosts[0].paths[0].pathType` | add ingress path type                                                       | `Prefix`                                           |
+| `ingress.tls`                        | add ingress tls settings                                                    | `[]`                                               |
+| `ingress.className`                  | add ingress class name. Only used in k8s 1.19+                              |                                                    |
+| `ingress.apiVersion`                 | specify APIVersion of ingress object. Mostly would only be used for argocd. | version indicated by helm's `Capabilities` object. |
 
 ### Service
 
@@ -781,7 +790,8 @@ gitea:
 | `service.http.loadBalancerSourceRanges` | Source range filter for http loadbalancer                                                                    | `[]`        |
 | `service.http.annotations`              | http service annotations                                                                                     |             |
 
-For dual-stack parameters see official kubernetes [dual-stack concept documentation](https://kubernetes.io/docs/concepts/services-networking/dual-stack/).
+For dual-stack parameters see official kubernetes
+[dual-stack concept documentation](https://kubernetes.io/docs/concepts/services-networking/dual-stack/).
 
 #### SSH
 
@@ -799,7 +809,8 @@ For dual-stack parameters see official kubernetes [dual-stack concept documentat
 | `service.ssh.loadBalancerSourceRanges` | Source range filter for ssh loadbalancer                                                                    | `[]`        |
 | `service.ssh.annotations`              | ssh service annotations                                                                                     |             |
 
-For dual-stack parameters see official kubernetes [dual-stack concept documentation](https://kubernetes.io/docs/concepts/services-networking/dual-stack/).
+For dual-stack parameters see official kubernetes
+[dual-stack concept documentation](https://kubernetes.io/docs/concepts/services-networking/dual-stack/).
 
 ### Gitea Configuration
 
@@ -817,39 +828,39 @@ Configure Liveness, Readiness and Startup
 - Default status: Enabled
 - Default action: tcp socket connect
 
-| Parameter                                  | Description                                                          | Default |
-| ------------------------------------------ | -------------------------------------------------------------------- | ------- |
-| `gitea.livenessProbe.initialDelaySeconds`  | Delay before probe start                                             | `200`   |
-| `gitea.livenessProbe.timeoutSeconds`       | probe timeout                                                        | `1`     |
-| `gitea.livenessProbe.periodSeconds`        | period between probes                                                | `10`    |
-| `gitea.livenessProbe.successThreshold`     | Minimum consecutive success probes                                   | `1`     |
-| `gitea.livenessProbe.failureThreshold`     | Minimum consecutive error probes                                     | `10`    |
+| Parameter                                 | Description                        | Default |
+| ----------------------------------------- | ---------------------------------- | ------- |
+| `gitea.livenessProbe.initialDelaySeconds` | Delay before probe start           | `200`   |
+| `gitea.livenessProbe.timeoutSeconds`      | probe timeout                      | `1`     |
+| `gitea.livenessProbe.periodSeconds`       | period between probes              | `10`    |
+| `gitea.livenessProbe.successThreshold`    | Minimum consecutive success probes | `1`     |
+| `gitea.livenessProbe.failureThreshold`    | Minimum consecutive error probes   | `10`    |
 
 #### Readiness probe
 
 - Default status: Enabled
 - Default action: tcp socket connect
 
-| Parameter                                  | Description                                                          | Default |
-| ------------------------------------------ | -------------------------------------------------------------------- | ------- |
-| `gitea.readinessProbe.initialDelaySeconds` | Delay before probe start                                             | `5`     |
-| `gitea.readinessProbe.timeoutSeconds`      | probe timeout                                                        | `1`     |
-| `gitea.readinessProbe.periodSeconds`       | period between probes                                                | `10`    |
-| `gitea.readinessProbe.successThreshold`    | Minimum consecutive success probes                                   | `1`     |
-| `gitea.readinessProbe.failureThreshold`    | Minimum consecutive error probes                                     | `3`     |
+| Parameter                                  | Description                        | Default |
+| ------------------------------------------ | ---------------------------------- | ------- |
+| `gitea.readinessProbe.initialDelaySeconds` | Delay before probe start           | `5`     |
+| `gitea.readinessProbe.timeoutSeconds`      | probe timeout                      | `1`     |
+| `gitea.readinessProbe.periodSeconds`       | period between probes              | `10`    |
+| `gitea.readinessProbe.successThreshold`    | Minimum consecutive success probes | `1`     |
+| `gitea.readinessProbe.failureThreshold`    | Minimum consecutive error probes   | `3`     |
 
 #### Startup probe
 
 - Default status: Disabled
 - Default action: tcp socket connect
 
-| Parameter                                  | Description                                                          | Default |
-| ------------------------------------------ | -------------------------------------------------------------------- | ------- |
-| `gitea.startupProbe.initialDelaySeconds`   | Delay before probe start                                             | `60`    |
-| `gitea.startupProbe.timeoutSeconds`        | probe timeout                                                        | `1`     |
-| `gitea.startupProbe.periodSeconds`         | period between probes                                                | `10`    |
-| `gitea.startupProbe.successThreshold`      | Minimum consecutive success probes                                   | `1`     |
-| `gitea.startupProbe.failureThreshold`      | Minimum consecutive error probes                                     | `10`    |
+| Parameter                                | Description                        | Default |
+| ---------------------------------------- | ---------------------------------- | ------- |
+| `gitea.startupProbe.initialDelaySeconds` | Delay before probe start           | `60`    |
+| `gitea.startupProbe.timeoutSeconds`      | probe timeout                      | `1`     |
+| `gitea.startupProbe.periodSeconds`       | period between probes              | `10`    |
+| `gitea.startupProbe.successThreshold`    | Minimum consecutive success probes | `1`     |
+| `gitea.startupProbe.failureThreshold`    | Minimum consecutive error probes   | `10`    |
 
 ### Memcached BuiltIn
 
@@ -928,8 +939,8 @@ be used:
    will install the dependencies listed in `Chart.yml` and deploy the current
    state of the helm chart found locally. If you want to test a branch, make
    sure to switch to the respective branch first.
-  `helm install --dependency-update gitea . -f values.yaml`.
+   `helm install --dependency-update gitea . -f values.yaml`.
 4. Gitea is now deployed in `minikube`. To access it, it's port needs to be
-   forwarded first from `minikube` to localhost first via `kubectl --namespace
-   default port-forward svc/gitea-http 3000:3000`. Now Gitea is accessible at
-   [http://localhost:3000](http://localhost:3000).
+   forwarded first from `minikube` to localhost first via
+   `kubectl --namespace default port-forward svc/gitea-http 3000:3000`. Now
+   Gitea is accessible at [http://localhost:3000](http://localhost:3000).

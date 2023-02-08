@@ -1,8 +1,12 @@
 # MariaDB
 
-[MariaDB](https://mariadb.org) is one of the most popular database servers in the world. It’s made by the original developers of MySQL and guaranteed to stay open source. Notable users include Wikipedia, Facebook and Google.
+[MariaDB](https://mariadb.org) is one of the most popular database servers in
+the world. It’s made by the original developers of MySQL and guaranteed to stay
+open source. Notable users include Wikipedia, Facebook and Google.
 
-MariaDB is developed as open source software and as a relational database it provides an SQL interface for accessing data. The latest versions of MariaDB also include GIS and JSON features.
+MariaDB is developed as open source software and as a relational database it
+provides an SQL interface for accessing data. The latest versions of MariaDB
+also include GIS and JSON features.
 
 ## TL;DR
 
@@ -13,9 +17,15 @@ $ helm install my-release bitnami/mariadb
 
 ## Introduction
 
-This chart bootstraps a [MariaDB](https://github.com/bitnami/bitnami-docker-mariadb) replication cluster deployment on a [Kubernetes](http://kubernetes.io) cluster using the [Helm](https://helm.sh) package manager.
+This chart bootstraps a
+[MariaDB](https://github.com/bitnami/bitnami-docker-mariadb) replication cluster
+deployment on a [Kubernetes](http://kubernetes.io) cluster using the
+[Helm](https://helm.sh) package manager.
 
-Bitnami charts can be used with [Kubeapps](https://kubeapps.com/) for deployment and management of Helm Charts in clusters. This chart has been tested to work with NGINX Ingress, cert-manager, fluentd and Prometheus on top of the [BKPR](https://kubeprod.io/).
+Bitnami charts can be used with [Kubeapps](https://kubeapps.com/) for deployment
+and management of Helm Charts in clusters. This chart has been tested to work
+with NGINX Ingress, cert-manager, fluentd and Prometheus on top of the
+[BKPR](https://kubeprod.io/).
 
 ## Prerequisites
 
@@ -31,7 +41,9 @@ To install the chart with the release name `my-release`:
 $ helm install my-release bitnami/mariadb
 ```
 
-The command deploys MariaDB on the Kubernetes cluster in the default configuration. The [Parameters](#parameters) section lists the parameters that can be configured during installation.
+The command deploys MariaDB on the Kubernetes cluster in the default
+configuration. The [Parameters](#parameters) section lists the parameters that
+can be configured during installation.
 
 > **Tip**: List all releases using `helm list`
 
@@ -43,14 +55,16 @@ To uninstall/delete the `my-release` deployment:
 $ helm delete my-release
 ```
 
-The command removes all the Kubernetes components associated with the chart and deletes the release.
+The command removes all the Kubernetes components associated with the chart and
+deletes the release.
 
 ## Parameters
 
-The following table lists the configurable parameters of the MariaDB chart and their default values.
+The following table lists the configurable parameters of the MariaDB chart and
+their default values.
 
 | Parameter                 | Description                                     | Default                                                 |
-|---------------------------|-------------------------------------------------|---------------------------------------------------------|
+| ------------------------- | ----------------------------------------------- | ------------------------------------------------------- |
 | `global.imageRegistry`    | Global Docker Image registry                    | `nil`                                                   |
 | `global.imagePullSecrets` | Global Docker registry secret names as an array | `[]` (does not add image pull secrets to deployed pods) |
 | `global.storageClass`     | Global storage class for dynamic provisioning   | `nil`                                                   |
@@ -58,7 +72,7 @@ The following table lists the configurable parameters of the MariaDB chart and t
 ### Common parameters
 
 | Parameter           | Description                                                                 | Default         |
-|---------------------|-----------------------------------------------------------------------------|-----------------|
+| ------------------- | --------------------------------------------------------------------------- | --------------- |
 | `nameOverride`      | String to partially override mariadb.fullname                               | `nil`           |
 | `fullnameOverride`  | String to fully override mariadb.fullname                                   | `nil`           |
 | `clusterDomain`     | Default Kubernetes cluster domain                                           | `cluster.local` |
@@ -70,7 +84,7 @@ The following table lists the configurable parameters of the MariaDB chart and t
 ### MariaDB common parameters
 
 | Parameter                  | Description                                                                                                                                                                                                                                                                   | Default                                                 |
-|----------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------|
+| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
 | `image.registry`           | MariaDB image registry                                                                                                                                                                                                                                                        | `docker.io`                                             |
 | `image.repository`         | MariaDB image name                                                                                                                                                                                                                                                            | `bitnami/mariadb`                                       |
 | `image.tag`                | MariaDB image tag                                                                                                                                                                                                                                                             | `{TAG_NAME}`                                            |
@@ -94,7 +108,7 @@ The following table lists the configurable parameters of the MariaDB chart and t
 ### MariaDB Primary parameters
 
 | Parameter                                    | Description                                                                                                       | Default                        |
-|----------------------------------------------|-------------------------------------------------------------------------------------------------------------------|--------------------------------|
+| -------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ------------------------------ |
 | `primary.command`                            | Override default container command on MariaDB Primary container(s) (useful when using custom images)              | `nil`                          |
 | `primary.args`                               | Override default container args on MariaDB Primary container(s) (useful when using custom images)                 | `nil`                          |
 | `primary.configuration`                      | MariaDB Primary configuration to be injected as ConfigMap                                                         | Check `values.yaml` file       |
@@ -151,7 +165,7 @@ The following table lists the configurable parameters of the MariaDB chart and t
 ### MariaDB Secondary parameters
 
 | Parameter                                      | Description                                                                                                           | Default                        |
-|------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|--------------------------------|
+| ---------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
 | `secondary.command`                            | Override default container command on MariaDB Secondary container(s) (useful when using custom images)                | `nil`                          |
 | `secondary.args`                               | Override default container args on MariaDB Secondary container(s) (useful when using custom images)                   | `nil`                          |
 | `secondary.configuration`                      | MariaDB Secondary configuration to be injected as ConfigMap                                                           | Check `values.yaml` file       |
@@ -209,7 +223,7 @@ The following table lists the configurable parameters of the MariaDB chart and t
 ### RBAC parameters
 
 | Parameter                    | Description                                              | Default                                         |
-|------------------------------|----------------------------------------------------------|-------------------------------------------------|
+| ---------------------------- | -------------------------------------------------------- | ----------------------------------------------- |
 | `serviceAccount.create`      | Enable the creation of a ServiceAccount for MariaDB pods | `true`                                          |
 | `serviceAccount.name`        | Name of the created ServiceAccount                       | Generated using the `mariadb.fullname` template |
 | `serviceAccount.annotations` | Annotations for MariaDB Service Account                  | `{}` (evaluated as a template)                  |
@@ -218,20 +232,20 @@ The following table lists the configurable parameters of the MariaDB chart and t
 ### Volume Permissions parameters
 
 | Parameter                              | Description                                                                                                          | Default                                                 |
-|----------------------------------------|----------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------|
+| -------------------------------------- | -------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
 | `volumePermissions.enabled`            | Enable init container that changes the owner and group of the persistent volume(s) mountpoint to `runAsUser:fsGroup` | `false`                                                 |
 | `volumePermissions.image.registry`     | Init container volume-permissions image registry                                                                     | `docker.io`                                             |
 | `volumePermissions.image.repository`   | Init container volume-permissions image name                                                                         | `bitnami/bitnami-shell`                                 |
 | `volumePermissions.image.tag`          | Init container volume-permissions image tag                                                                          | `"10"`                                                  |
 | `volumePermissions.image.pullPolicy`   | Init container volume-permissions image pull policy                                                                  | `Always`                                                |
 | `volumePermissions.image.pullSecrets`  | Specify docker-registry secret names as an array                                                                     | `[]` (does not add image pull secrets to deployed pods) |
-| `volumePermissions.resources.limits`   | Init container volume-permissions resource  limits                                                                   | `{}`                                                    |
-| `volumePermissions.resources.requests` | Init container volume-permissions resource  requests                                                                 | `{}`                                                    |
+| `volumePermissions.resources.limits`   | Init container volume-permissions resource limits                                                                    | `{}`                                                    |
+| `volumePermissions.resources.requests` | Init container volume-permissions resource requests                                                                  | `{}`                                                    |
 
 ### Metrics parameters
 
 | Parameter                                 | Description                                                                         | Default                   |
-|-------------------------------------------|-------------------------------------------------------------------------------------|---------------------------|
+| ----------------------------------------- | ----------------------------------------------------------------------------------- | ------------------------- |
 | `metrics.enabled`                         | Start a side-car prometheus exporter                                                | `false`                   |
 | `metrics.image.registry`                  | Exporter image registry                                                             | `docker.io`               |
 | `metrics.image.repository`                | Exporter image name                                                                 | `bitnami/mysqld-exporter` |
@@ -252,9 +266,14 @@ The following table lists the configurable parameters of the MariaDB chart and t
 | `metrics.serviceMonitor.additionalLabels` | Used to pass Labels that are required by the Installed Prometheus Operator          | `{}`                      |
 | `metrics.serviceMonitor.release`          | Used to pass Labels release that sometimes should be custom for Prometheus Operator | `nil`                     |
 
-The above parameters map to the env variables defined in [bitnami/mariadb](http://github.com/bitnami/bitnami-docker-mariadb). For more information please refer to the [bitnami/mariadb](http://github.com/bitnami/bitnami-docker-mariadb) image documentation.
+The above parameters map to the env variables defined in
+[bitnami/mariadb](http://github.com/bitnami/bitnami-docker-mariadb). For more
+information please refer to the
+[bitnami/mariadb](http://github.com/bitnami/bitnami-docker-mariadb) image
+documentation.
 
-Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example,
+Specify each parameter using the `--set key=value[,key=value]` argument to
+`helm install`. For example,
 
 ```bash
 $ helm install my-release \
@@ -262,11 +281,17 @@ $ helm install my-release \
     bitnami/mariadb
 ```
 
-The above command sets the MariaDB `root` account password to `secretpassword`. Additionally it creates a database named `my_database`.
+The above command sets the MariaDB `root` account password to `secretpassword`.
+Additionally it creates a database named `my_database`.
 
-> NOTE: Once this chart is deployed, it is not possible to change the application's access credentials, such as usernames or passwords, using Helm. To change these application credentials after deployment, delete any persistent volumes (PVs) used by the chart and re-deploy it, or use the application's built-in administrative tools if available.
+> NOTE: Once this chart is deployed, it is not possible to change the
+> application's access credentials, such as usernames or passwords, using Helm.
+> To change these application credentials after deployment, delete any
+> persistent volumes (PVs) used by the chart and re-deploy it, or use the
+> application's built-in administrative tools if available.
 
-Alternatively, a YAML file that specifies the values for the parameters can be provided while installing the chart. For example,
+Alternatively, a YAML file that specifies the values for the parameters can be
+provided while installing the chart. For example,
 
 ```bash
 $ helm install my-release -f values.yaml bitnami/mariadb
@@ -278,113 +303,189 @@ $ helm install my-release -f values.yaml bitnami/mariadb
 
 ### [Rolling VS Immutable tags](https://docs.bitnami.com/containers/how-to/understand-rolling-tags-containers/)
 
-It is strongly recommended to use immutable tags in a production environment. This ensures your deployment does not change automatically if the same tag is updated with a different image.
+It is strongly recommended to use immutable tags in a production environment.
+This ensures your deployment does not change automatically if the same tag is
+updated with a different image.
 
-Bitnami will release a new chart updating its containers if a new version of the main container, significant changes, or critical vulnerabilities exist.
+Bitnami will release a new chart updating its containers if a new version of the
+main container, significant changes, or critical vulnerabilities exist.
 
 ### Change MariaDB version
 
-To modify the MariaDB version used in this chart you can specify a [valid image tag](https://hub.docker.com/r/bitnami/mariadb/tags/) using the `image.tag` parameter. For example, `image.tag=X.Y.Z`. This approach is also applicable to other images like exporters.
+To modify the MariaDB version used in this chart you can specify a
+[valid image tag](https://hub.docker.com/r/bitnami/mariadb/tags/) using the
+`image.tag` parameter. For example, `image.tag=X.Y.Z`. This approach is also
+applicable to other images like exporters.
 
 ### Initialize a fresh instance
 
-The [Bitnami MariaDB](https://github.com/bitnami/bitnami-docker-mariadb) image allows you to use your custom scripts to initialize a fresh instance. Custom scripts may be specified using the `initdbScripts` parameter. Alternatively, an external ConfigMap may be created with all the initialization scripts and the ConfigMap passed to the chart via the `initdbScriptsConfigMap` parameter. Note that this will override the `initdbScripts` parameter.
+The [Bitnami MariaDB](https://github.com/bitnami/bitnami-docker-mariadb) image
+allows you to use your custom scripts to initialize a fresh instance. Custom
+scripts may be specified using the `initdbScripts` parameter. Alternatively, an
+external ConfigMap may be created with all the initialization scripts and the
+ConfigMap passed to the chart via the `initdbScriptsConfigMap` parameter. Note
+that this will override the `initdbScripts` parameter.
 
 The allowed extensions are `.sh`, `.sql` and `.sql.gz`.
 
-These scripts are treated differently depending on their extension. While `.sh` scripts are executed on all the nodes, `.sql` and `.sql.gz` scripts are only executed on the primary nodes. This is because `.sh` scripts support conditional tests to identify the type of node they are running on, while such tests are not supported in `.sql` or `.sql.gz` files.
+These scripts are treated differently depending on their extension. While `.sh`
+scripts are executed on all the nodes, `.sql` and `.sql.gz` scripts are only
+executed on the primary nodes. This is because `.sh` scripts support conditional
+tests to identify the type of node they are running on, while such tests are not
+supported in `.sql` or `.sql.gz` files.
 
 [Refer to the chart documentation for more information and a usage example](https://docs.bitnami.com/kubernetes/infrastructure/mariadb/configuration/customize-new-instance/).
 
 ### Sidecars and Init Containers
 
-If additional containers are needed in the same pod as MariaDB (such as additional metrics or logging exporters), they can be defined using the sidecars parameter.
+If additional containers are needed in the same pod as MariaDB (such as
+additional metrics or logging exporters), they can be defined using the sidecars
+parameter.
 
-The Helm chart already includes sidecar containers for the Prometheus exporters. These can be activated by adding the `–enable-metrics=true` parameter at deployment time. The `sidecars` parameter should therefore only be used for any extra sidecar containers. [See an example of configuring and using sidecar containers](https://docs.bitnami.com/kubernetes/infrastructure/mariadb/administration/configure-use-sidecars/).
+The Helm chart already includes sidecar containers for the Prometheus exporters.
+These can be activated by adding the `–enable-metrics=true` parameter at
+deployment time. The `sidecars` parameter should therefore only be used for any
+extra sidecar containers.
+[See an example of configuring and using sidecar containers](https://docs.bitnami.com/kubernetes/infrastructure/mariadb/administration/configure-use-sidecars/).
 
-Similarly, additional containers can be added to MariaDB pods using the `initContainers` parameter. [See an example of configuring and using init containers](https://docs.bitnami.com/kubernetes/infrastructure/mariadb/administration/configure-use-init-containers/).
+Similarly, additional containers can be added to MariaDB pods using the
+`initContainers` parameter.
+[See an example of configuring and using init containers](https://docs.bitnami.com/kubernetes/infrastructure/mariadb/administration/configure-use-init-containers/).
 
 ## Persistence
 
-The [Bitnami MariaDB](https://github.com/bitnami/bitnami-docker-mariadb) image stores the MariaDB data and configurations at the `/bitnami/mariadb` path of the container.
+The [Bitnami MariaDB](https://github.com/bitnami/bitnami-docker-mariadb) image
+stores the MariaDB data and configurations at the `/bitnami/mariadb` path of the
+container.
 
-The chart mounts a [Persistent Volume](https://kubernetes.io/docs/user-guide/persistent-volumes/) volume at this location. The volume is created using dynamic volume provisioning, by default. An existing PersistentVolumeClaim can also be defined.
+The chart mounts a
+[Persistent Volume](https://kubernetes.io/docs/user-guide/persistent-volumes/)
+volume at this location. The volume is created using dynamic volume
+provisioning, by default. An existing PersistentVolumeClaim can also be defined.
 
 [Learn more about persistence in the chart documentation](https://docs.bitnami.com/kubernetes/infrastructure/mariadb/configuration/understand-chart-persistence/).
 
 ### Adjust permissions of persistent volume mountpoint
 
-As the image run as non-root by default, it is necessary to adjust the ownership of the persistent volume so that the container can write data into it.
+As the image run as non-root by default, it is necessary to adjust the ownership
+of the persistent volume so that the container can write data into it.
 
-By default, the chart is configured to use Kubernetes Security Context to automatically change the ownership of the volume. However, this feature does not work in all Kubernetes distributions.
+By default, the chart is configured to use Kubernetes Security Context to
+automatically change the ownership of the volume. However, this feature does not
+work in all Kubernetes distributions.
 
-As an alternative, this chart supports using an initContainer to change the ownership of the volume before mounting it in the final destination. You can enable this initContainer by setting `volumePermissions.enabled` to `true`.
+As an alternative, this chart supports using an initContainer to change the
+ownership of the volume before mounting it in the final destination. You can
+enable this initContainer by setting `volumePermissions.enabled` to `true`.
 
 ## Troubleshooting
 
-Find more information about how to deal with common errors related to Bitnami’s Helm charts in [this troubleshooting guide](https://docs.bitnami.com/general/how-to/troubleshoot-helm-chart-issues).
+Find more information about how to deal with common errors related to Bitnami’s
+Helm charts in
+[this troubleshooting guide](https://docs.bitnami.com/general/how-to/troubleshoot-helm-chart-issues).
 
 ## Upgrading
 
-It's necessary to set the `auth.rootPassword` parameter when upgrading for readiness/liveness probes to work properly. When you install this chart for the first time, some notes will be displayed providing the credentials you must use under the 'Administrator credentials' section. Please note down the password and run the command below to upgrade your chart:
+It's necessary to set the `auth.rootPassword` parameter when upgrading for
+readiness/liveness probes to work properly. When you install this chart for the
+first time, some notes will be displayed providing the credentials you must use
+under the 'Administrator credentials' section. Please note down the password and
+run the command below to upgrade your chart:
 
 ```bash
 $ helm upgrade my-release bitnami/mariadb --set auth.rootPassword=[ROOT_PASSWORD]
 ```
 
-| Note: you need to substitute the placeholder _[ROOT_PASSWORD]_ with the value obtained in the installation notes.
+| Note: you need to substitute the placeholder _[ROOT_PASSWORD]_ with the value
+obtained in the installation notes.
 
 ### To 9.0.0
 
-[On November 13, 2020, Helm v2 support was formally finished](https://github.com/helm/charts#status-of-the-project), this major version is the result of the required changes applied to the Helm Chart to be able to incorporate the different features added in Helm v3 and to be consistent with the Helm project itself regarding the Helm v2 EOL.
+[On November 13, 2020, Helm v2 support was formally finished](https://github.com/helm/charts#status-of-the-project),
+this major version is the result of the required changes applied to the Helm
+Chart to be able to incorporate the different features added in Helm v3 and to
+be consistent with the Helm project itself regarding the Helm v2 EOL.
 
 [Learn more about this change and related upgrade considerations](https://docs.bitnami.com/kubernetes/infrastructure/mariadb/administration/upgrade-helm3/).
 
 ### To 8.0.0
 
-- Several parameters were renamed or disappeared in favor of new ones on this major version:
-  - The terms *master* and *slave* have been replaced by the terms *primary* and *secondary*. Therefore, parameters prefixed with `master` or `slave` are now prefixed with `primary` or `secondary`, respectively.
-  - `securityContext.*` is deprecated in favor of `primary.podSecurityContext`, `primary.containerSecurityContext`, `secondary.podSecurityContext`, and `secondary.containerSecurityContext`.
+- Several parameters were renamed or disappeared in favor of new ones on this
+  major version:
+  - The terms _master_ and _slave_ have been replaced by the terms _primary_ and
+    _secondary_. Therefore, parameters prefixed with `master` or `slave` are now
+    prefixed with `primary` or `secondary`, respectively.
+  - `securityContext.*` is deprecated in favor of `primary.podSecurityContext`,
+    `primary.containerSecurityContext`, `secondary.podSecurityContext`, and
+    `secondary.containerSecurityContext`.
   - Credentials parameter are reorganized under the `auth` parameter.
-  - `replication.enabled` parameter is deprecated in favor of `architecture` parameter that accepts two values: `standalone` and `replication`.
-- The default MariaDB version was updated from 10.3 to 10.5. According to the official documentation, upgrading from 10.3 should be painless. However, there are some things that have changed which could affect an upgrade:
+  - `replication.enabled` parameter is deprecated in favor of `architecture`
+    parameter that accepts two values: `standalone` and `replication`.
+- The default MariaDB version was updated from 10.3 to 10.5. According to the
+  official documentation, upgrading from 10.3 should be painless. However, there
+  are some things that have changed which could affect an upgrade:
   - [Incompatible changes upgrading from MariaDB 10.3 to MariaDB 10.4](https://mariadb.com/kb/en/upgrading-from-mariadb-103-to-mariadb-104/#incompatible-changes-between-103-and-104).
   - [Incompatible changes upgrading from MariaDB 10.4 to MariaDB 10.5](https://mariadb.com/kb/en/upgrading-from-mariadb-104-to-mariadb-105/#incompatible-changes-between-104-and-105).
-- Chart labels were adapted to follow the [Helm charts standard labels](https://helm.sh/docs/chart_best_practices/labels/#standard-labels).
-- This version also introduces `bitnami/common`, a [library chart](https://helm.sh/docs/topics/library_charts/#helm) as a dependency. More documentation about this new utility could be found [here](https://github.com/bitnami/charts/tree/master/bitnami/common#bitnami-common-library-chart). Please, make sure that you have updated the chart dependencies before executing any upgrade.
+- Chart labels were adapted to follow the
+  [Helm charts standard labels](https://helm.sh/docs/chart_best_practices/labels/#standard-labels).
+- This version also introduces `bitnami/common`, a
+  [library chart](https://helm.sh/docs/topics/library_charts/#helm) as a
+  dependency. More documentation about this new utility could be found
+  [here](https://github.com/bitnami/charts/tree/master/bitnami/common#bitnami-common-library-chart).
+  Please, make sure that you have updated the chart dependencies before
+  executing any upgrade.
 
 Consequences:
 
-Backwards compatibility is not guaranteed. To upgrade to `8.0.0`, install a new release of the MariaDB chart, and migrate the data from your previous release. You have 2 alternatives to do so:
+Backwards compatibility is not guaranteed. To upgrade to `8.0.0`, install a new
+release of the MariaDB chart, and migrate the data from your previous release.
+You have 2 alternatives to do so:
 
-- Create a backup of the database, and restore it on the new release using tools such as [mysqldump](https://mariadb.com/kb/en/mysqldump/).
-- Reuse the PVC used to hold the master data on your previous release. To do so, use the `primary.persistence.existingClaim` parameter. The following example assumes that the release name is `mariadb`:
+- Create a backup of the database, and restore it on the new release using tools
+  such as [mysqldump](https://mariadb.com/kb/en/mysqldump/).
+- Reuse the PVC used to hold the master data on your previous release. To do so,
+  use the `primary.persistence.existingClaim` parameter. The following example
+  assumes that the release name is `mariadb`:
 
 ```bash
 $ helm install mariadb bitnami/mariadb --set auth.rootPassword=[ROOT_PASSWORD] --set primary.persistence.existingClaim=[EXISTING_PVC]
 ```
 
-| Note: you need to substitute the placeholder _[EXISTING_PVC]_ with the name of the PVC used on your previous release, and _[ROOT_PASSWORD]_ with the root password used in your previous release.
+| Note: you need to substitute the placeholder _[EXISTING_PVC]_ with the name of
+the PVC used on your previous release, and _[ROOT_PASSWORD]_ with the root
+password used in your previous release.
 
 ### To 7.0.0
 
-Helm performs a lookup for the object based on its group (apps), version (v1), and kind (Deployment). Also known as its GroupVersionKind, or GVK. Changing the GVK is considered a compatibility breaker from Kubernetes' point of view, so you cannot "upgrade" those objects to the new GVK in-place. Earlier versions of Helm 3 did not perform the lookup correctly which has since been fixed to match the spec.
+Helm performs a lookup for the object based on its group (apps), version (v1),
+and kind (Deployment). Also known as its GroupVersionKind, or GVK. Changing the
+GVK is considered a compatibility breaker from Kubernetes' point of view, so you
+cannot "upgrade" those objects to the new GVK in-place. Earlier versions of Helm
+3 did not perform the lookup correctly which has since been fixed to match the
+spec.
 
-In https://github.com/helm/charts/pull/17308 the `apiVersion` of the statefulset resources was updated to `apps/v1` in tune with the api's deprecated, resulting in compatibility breakage.
+In https://github.com/helm/charts/pull/17308 the `apiVersion` of the statefulset
+resources was updated to `apps/v1` in tune with the api's deprecated, resulting
+in compatibility breakage.
 
 This major version bump signifies this change.
 
 ### To 6.0.0
 
-MariaDB version was updated from 10.1 to 10.3, there are no changes in the chart itself. According to the official documentation, upgrading from 10.1 should be painless. However, there are some things that have changed which could affect an upgrade:
+MariaDB version was updated from 10.1 to 10.3, there are no changes in the chart
+itself. According to the official documentation, upgrading from 10.1 should be
+painless. However, there are some things that have changed which could affect an
+upgrade:
 
 - [Incompatible changes upgrading from MariaDB 10.1 to MariaDB 10.2](https://mariadb.com/kb/en/library/upgrading-from-mariadb-101-to-mariadb-102//#incompatible-changes-between-101-and-102)
 - [Incompatible changes upgrading from MariaDB 10.2 to MariaDB 10.3](https://mariadb.com/kb/en/library/upgrading-from-mariadb-102-to-mariadb-103/#incompatible-changes-between-102-and-103)
 
 ### To 5.0.0
 
-Backwards compatibility is not guaranteed unless you modify the labels used on the chart's deployments.
-Use the workaround below to upgrade from versions previous to 5.0.0. The following example assumes that the release name is mariadb:
+Backwards compatibility is not guaranteed unless you modify the labels used on
+the chart's deployments. Use the workaround below to upgrade from versions
+previous to 5.0.0. The following example assumes that the release name is
+mariadb:
 
 ```console
 $ kubectl delete statefulset opencart-mariadb --cascade=false

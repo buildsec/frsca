@@ -8,11 +8,11 @@ deployment you should generate SSL certificates following the [official docs][].
 
 ## Usage
 
-* Create the required secrets: `make secrets`
+- Create the required secrets: `make secrets`
 
-* Deploy Elasticsearch chart with the default values: `make install`
+- Deploy Elasticsearch chart with the default values: `make install`
 
-* You can now setup a port forward to query Elasticsearch API:
+- You can now setup a port forward to query Elasticsearch API:
 
   ```
   kubectl port-forward svc/security-master 9200
@@ -23,7 +23,9 @@ deployment you should generate SSL certificates following the [official docs][].
 
 You can also run [goss integration tests][] using `make test`
 
-
-[goss integration tests]: https://github.com/elastic/helm-charts/tree/7.17/elasticsearch/examples/security/test/goss.yaml
-[official docs]: https://www.elastic.co/guide/en/elasticsearch/reference/7.17/configuring-tls.html#node-certificates
-[values]: https://github.com/elastic/helm-charts/tree/7.17/elasticsearch/examples/security/values.yaml
+[goss integration tests]:
+  https://github.com/elastic/helm-charts/tree/7.17/elasticsearch/examples/security/test/goss.yaml
+[official docs]:
+  https://www.elastic.co/guide/en/elasticsearch/reference/7.17/configuring-tls.html#node-certificates
+[values]:
+  https://github.com/elastic/helm-charts/tree/7.17/elasticsearch/examples/security/values.yaml

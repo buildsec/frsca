@@ -1,6 +1,7 @@
 ---
 title: "How to Contribute"
-description: "Contribute to the Factory for Repeatable Secure Creation of Artifacts."
+description:
+  "Contribute to the Factory for Repeatable Secure Creation of Artifacts."
 date: 2021-11-25T18:10:00+00:00
 updated: 2021-11-25T18:10:00+00:00
 draft: false
@@ -13,8 +14,7 @@ The FRSCA project welcomes any kind of contributions, from code to documentation
 via fixing typos. Please feel free to raise an [issue] if you would like to work
 on something major to ensure efficient collaboration and avoid duplicate effort.
 
-The code lives in the
-[frsca repository](https://github.com/buildsec/frsca).
+The code lives in the [frsca repository](https://github.com/buildsec/frsca).
 
 ## Guidelines
 

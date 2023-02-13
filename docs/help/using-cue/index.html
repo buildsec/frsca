@@ -227,20 +227,20 @@
 					
 					
 					
-							<h3>Contributing</h3>
+							<h3>SLSA</h3>
 							<ul class="list-unstyled">
 							                           
-									<li><a class="docs-link" href="https://buildsec.github.io/frsca/docs/contributing/how-to-contribute/">How to Contribute</a></li>
+									<li><a class="docs-link" href="https://buildsec.github.io/frsca/docs/slsa/frsca-slsa/">How FRSCA is meeting SLSA levels 1-3</a></li>
 							
 					</ul>
 					
 					
 					
 					
-							<h3>SLSA</h3>
+							<h3>Contributing</h3>
 							<ul class="list-unstyled">
 							                           
-									<li><a class="docs-link" href="https://buildsec.github.io/frsca/docs/slsa/frsca-slsa/">How FRSCA is meeting SLSA levels 1-3</a></li>
+									<li><a class="docs-link" href="https://buildsec.github.io/frsca/docs/contributing/how-to-contribute/">How to Contribute</a></li>
 							
 					</ul>
 					
@@ -291,9 +291,9 @@
          <h1>Using CUE</h1> 
         <p class="lead">Working with CUE in Factory for Repeatable Secure Creation of Artifacts.</p>
         <h2 id="cue-module-structure">CUE Module Structure</h2>
-<p>The top level of Factory for Repeatable Secure Creation of Artifacts (FRSCA)
-is structured as a
-<a href="https://cuelang.org/docs/concepts/packages/">CUE module</a> and follows the
+<p>The top level of Factory for Repeatable Secure Creation of Artifacts (FRSCA) is
+structured as a <a href="https://cuelang.org/docs/concepts/packages/">CUE module</a> and
+follows the
 <a href="https://cuelang.org/docs/concepts/packages/#file-organization">schema/policy/data</a>
 pattern for organizing the files.</p>
 <p>The
@@ -301,8 +301,8 @@ pattern for organizing the files.</p>
 directory is predominantly for CUE package management. All of the files in
 <code>cue.mod/gen/...</code> are generated from the <code>cue get go ...</code> command importing go
 modules and converting them to CUE. These can then be imported and used to
-verify the structure of things such as <code>ConfigMap</code>. <code>frsca.cue</code> imports several of
-these and creates base structures based on these imported go structs.</p>
+verify the structure of things such as <code>ConfigMap</code>. <code>frsca.cue</code> imports several
+of these and creates base structures based on these imported go structs.</p>
 <p>For the most part, CUE expects the evaluation to be done relative to the root of
 the CUE module. Evaluation can be narrowed by providing a path to a subdirectory
 (e.g. <code>cue eval ./examples/buildpacks</code>). CUE will then only evaluate things in
@@ -379,10 +379,10 @@ values (<code>repository</code> in this case) into the CUE definitions.</p>
           
             
               
-              <a href="https:&#x2F;&#x2F;buildsec.github.io&#x2F;frsca&#x2F;docs&#x2F;slsa&#x2F;frsca-slsa&#x2F;">
+              <a href="https:&#x2F;&#x2F;buildsec.github.io&#x2F;frsca&#x2F;docs&#x2F;contributing&#x2F;how-to-contribute&#x2F;">
                 <div class="card my-1">
                   <div class="card-body py-2">
-                    &larr; How FRSCA is meeting SLSA levels 1-3
+                    &larr; How to Contribute
                   </div>
                 </div>
               </a>

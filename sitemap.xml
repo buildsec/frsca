@@ -38,4 +38,11 @@
     <url>
         <loc>https://buildsec.github.io/frsca/docs/help/using-cue/</loc>
     </url>
+    <url>
+        <loc>https://buildsec.github.io/frsca/docs/slsa/</loc>
+    </url>
+    <url>
+        <loc>https://buildsec.github.io/frsca/docs/slsa/frsca-slsa/</loc>
+        <lastmod>2023-02-07T08:20:00+00:00</lastmod>
+    </url>
 </urlset>

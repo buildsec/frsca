@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://buildsec.github.io/frsca/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://buildsec.github.io/frsca/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://buildsec.github.io/frsca/main.css">
+
+
+
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>How FRSCA is meeting SLSA levels 1-3 | FRSCA</title>
+<meta name="description" content="A document describing how FRSCA is meeting SLSA compliance, specifically levels 1-3">
+<link rel="canonical" href="https://buildsec.github.io/frsca/docs/slsa/frsca-slsa/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://buildsec.github.io/frsca/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Docs",
+            "item": "https://buildsec.github.io/frsca/docs/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Slsa",
+            "item": "https://buildsec.github.io/frsca/docs/slsa/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  4 ,
+            "name": "Frsca Slsa",
+            "item": "https://buildsec.github.io/frsca/docs/slsa/frsca-slsa/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+  <meta name="theme-color" content="#fff">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://buildsec.github.io/frsca/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://buildsec.github.io/frsca/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://buildsec.github.io/frsca/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://buildsec.github.io/frsca/site.webmanifest">
+  
+
+
+  
+
+</head>
+
+  
+
+<body class="docs single">
+  
+  
+  
+  
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://buildsec.github.io/frsca">FRSCA</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+				
+					<li class="nav-item">
+						<a class="nav-link" href="https://github.com/buildsec/frsca"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg><span class="ms-2 visually-hidden">GitHub</span></a>
+					</li>
+				
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+						<li class="nav-item docs active">
+							<a class="nav-link" href="https://buildsec.github.io/frsca/docs/getting-started/introduction/">Docs</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+				<form class="navbar-form flex-grow-1 order-7 order-md-3">
+					<input id="userinput" class="form-control is-search" type="search" placeholder="Search docs..."
+						aria-label="Search docs..." autocomplete="off">
+					<div id="suggestions" class="shadow bg-white rounded"></div>
+				</form>
+			
+		</div>
+	</div>
+</header>
+
+
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row flex-xl-nowrap">
+	  
+<div class="col-lg-5 col-xl-4 docs-sidebar">
+	<nav class="docs-links" aria-label="Main navigation">
+			
+			
+			
+			
+					
+					
+					
+							<h3>Getting Started</h3>
+							<ul class="list-unstyled">
+							                           
+									<li><a class="docs-link" href="https://buildsec.github.io/frsca/docs/getting-started/introduction/">Factory for Repeatable Secure Creation of Artifacts (FRSCA)</a></li>
+							                           
+									<li><a class="docs-link" href="https://buildsec.github.io/frsca/docs/getting-started/quick-start/">Quick Start</a></li>
+							                           
+									<li><a class="docs-link" href="https://buildsec.github.io/frsca/docs/getting-started/architecture/">Architecture</a></li>
+							
+					</ul>
+					
+					
+					
+					
+							<h3>Contributing</h3>
+							<ul class="list-unstyled">
+							                           
+									<li><a class="docs-link" href="https://buildsec.github.io/frsca/docs/contributing/how-to-contribute/">How to Contribute</a></li>
+							
+					</ul>
+					
+					
+					
+					
+							<h3>SLSA</h3>
+							<ul class="list-unstyled">
+							                           
+									<li><a class="docs-link active" href="https://buildsec.github.io/frsca/docs/slsa/frsca-slsa/">How FRSCA is meeting SLSA levels 1-3</a></li>
+							
+					</ul>
+					
+					
+					
+					
+							<h3>Help</h3>
+							<ul class="list-unstyled">
+							                           
+									<li><a class="docs-link" href="https://buildsec.github.io/frsca/docs/help/faq/">FAQ</a></li>
+							                           
+									<li><a class="docs-link" href="https://buildsec.github.io/frsca/docs/help/using-cue/">Using CUE</a></li>
+							
+					</ul>
+					
+					
+			
+	</nav>
+</div>
+
+	  
+  
+  <nav class="docs-toc d-none d-xl-block col-xl-3" aria-label="Secondary navigation">
+  	<div class="page-links">
+  			<h3>On this page</h3>
+  			<nav id="TableOfContents">
+  					<ul>
+  							
+  							<li><a href="https://buildsec.github.io/frsca/docs/slsa/frsca-slsa/#reminder-on-slsa-levels">Reminder on SLSA levels</a></li>
+  							
+  							
+  							<li><a href="https://buildsec.github.io/frsca/docs/slsa/frsca-slsa/#sample-pipeline">sample-pipeline</a></li>
+  							
+  							
+  							<li><a href="https://buildsec.github.io/frsca/docs/slsa/frsca-slsa/#slsa-1-requirements">SLSA 1 Requirements</a></li>
+  							
+  							
+  							<li><a href="https://buildsec.github.io/frsca/docs/slsa/frsca-slsa/#slsa-2-requirements">SLSA 2 Requirements</a></li>
+  							
+  							
+  							<li><a href="https://buildsec.github.io/frsca/docs/slsa/frsca-slsa/#slsa-3-requirements">SLSA 3 Requirements</a></li>
+  							
+  							
+  					</ul>
+  			</nav>
+  	</div>
+  </nav>
+  
+
+      <main class="docs-content col-lg-11 col-xl-9">
+         <h1>How FRSCA is meeting SLSA levels 1-3</h1> 
+        
+        <h2 id="reminder-on-slsa-levels">Reminder on SLSA levels</h2>
+<p>SLSA levels at a high level are as follows (table from
+<a href="https://slsa.dev/spec/v0.1/levels#summary-of-levels">https://slsa.dev/spec/v0.1/levels#summary-of-levels</a>):</p>
+<table><thead><tr><th><strong>Level</strong></th><th><strong>Description</strong></th><th><strong>Example</strong></th></tr></thead><tbody>
+<tr><td>1</td><td>Documentation of the build process</td><td>Unsigned provenance</td></tr>
+<tr><td>2</td><td>Tamper resistance of the build service</td><td>Hosted source/build, signed provenance</td></tr>
+<tr><td>3</td><td>Extra resistance to specific threats</td><td>Security controls on host, non-falsifiable provenance</td></tr>
+<tr><td>4</td><td>Highest levels of confidence and trust</td><td>Two-party review + hermetic builds</td></tr>
+</tbody></table>
+<p>The full requirements table can be found here:</p>
+<p><a href="https://slsa.dev/spec/v0.1/requirements#summary-table">Requirements</a></p>
+<h2 id="sample-pipeline">sample-pipeline</h2>
+<pre data-lang="other" style="background-color:#2b303b;color:#c0c5ce;" class="language-other "><code class="language-other" data-lang="other"><span>frsca/examples/sample-pipeline
+</span></code></pre>
+<p>For the purposes of this document, we're going to be comparing SLSA requirements
+to what we are deploying via the sample-pipeline. Please read
+<code>frsca/examples/sample-pipeline/README.md</code> for information on setting up FRSCA
+and the sample pipeline.</p>
+<h1 id="slsa-1-requirements">SLSA 1 Requirements</h1>
+<ol>
+<li>Build -
+<a href="https://slsa.dev/spec/v0.1/requirements#scripted-build">Scripted build</a>
+<strong>✅</strong></li>
+<li>Provenance - <a href="https://slsa.dev/spec/v0.1/requirements#available">Available</a>
+✅</li>
+</ol>
+<p><code>sample-pipeline</code> meets both of these requirements. The build is scripted, which
+is evident in following individual steps from the <code>Makefile</code> down through the
+various shell scripts which setup the FRSCA environment and trigger the build
+via Tekton Pipelines.</p>
+<p>Because we're using Tekton Chains in conjunction with Tekton Pipelines,
+provenance is created and available, satisfying the last requirement of SLSA 1.</p>
+<p>To prove, once the pipeline completes:</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span>&gt; crane </span><span style="color:#bf616a;">ls </span><span>&quot;$</span><span style="color:#a3be8c;">(</span><span style="color:#96b5b4;">echo </span><span style="color:#bf616a;">-n </span><span>$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">IMAGE_URL</span><span style="color:#a3be8c;">} </span><span>| </span><span style="color:#bf616a;">sed </span><span>&#39;</span><span style="color:#a3be8c;">s|:[^/]*$||</span><span>&#39;</span><span style="color:#a3be8c;">)</span><span>&quot;
+</span><span>
+</span><span style="color:#bf616a;">0066d00de427d12b9a14e56f02f302031d9c40f3
+</span><span style="color:#bf616a;">sha256-e6dc8ea1ff666893462b64d997d496af8e69e905f2eeaf2ab7ec1fd565921d46.att
+</span><span style="color:#bf616a;">sha256-e6dc8ea1ff666893462b64d997d496af8e69e905f2eeaf2ab7ec1fd565921d46.sbom
+</span><span style="color:#bf616a;">sha256-e6dc8ea1ff666893462b64d997d496af8e69e905f2eeaf2ab7ec1fd565921d46.sig
+</span></code></pre>
+<h1 id="slsa-2-requirements">SLSA 2 Requirements</h1>
+<ol>
+<li>Source -
+<a href="https://slsa.dev/spec/v0.1/requirements#version-controlled">Version controlled</a>
+✅*</li>
+<li>Build -
+<a href="https://slsa.dev/spec/v0.1/requirements#build-service">Build service</a> ✅</li>
+<li>Provenance -
+<a href="https://slsa.dev/spec/v0.1/requirements#authenticated">Authenticated</a> ✅</li>
+<li>Provenance -
+<a href="https://slsa.dev/spec/v0.1/requirements#service-generated">Service generated</a>
+✅</li>
+</ol>
+<p>SLSA 2 introduces four new requirements in addition to the requirements of SLSA
+1, all of which are being met by this sample pipeline.</p>
+<ol>
+<li>
+<p>In this example, the original source code is version controlled.</p>
+<ul>
+<li>It is up to the consumer of FRSCA to ensure they are following proper
+source requirements.</li>
+</ul>
+</li>
+<li>
+<p>The build is being performed within a TaskRun in a Tekton Pipelines
+PipelineRun.</p>
+</li>
+<li>
+<p>Provenance is not ony available, but it is authenticated.</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span>&gt; cosign </span><span style="color:#bf616a;">verify --key</span><span> k8s://tekton-chains/signing-secrets &quot;$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">IMAGE_URL</span><span style="color:#a3be8c;">}</span><span>&quot;
+</span><span>
+</span><span style="color:#bf616a;">Verification</span><span> for ttl.sh/6b1d3c200c0fe4005da60bddc63873ef/example-sample:919eef3dd425318e9a65cb79b00ee323210ef070 --
+</span><span style="color:#bf616a;">The</span><span> following checks were performed on each of these signatures:
+</span><span>  </span><span style="color:#bf616a;">-</span><span> The cosign claims were validated
+</span><span>  </span><span style="color:#bf616a;">-</span><span> The signatures were verified against the specified public key
+</span><span>
+</span><span>&gt; cosign </span><span style="color:#bf616a;">verify-attestation --type</span><span> slsaprovenance</span><span style="color:#bf616a;"> --key</span><span> k8s://tekton-chains/signing-secrets &quot;$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">IMAGE_URL</span><span style="color:#a3be8c;">}</span><span>&quot;
+</span><span>
+</span><span style="color:#bf616a;">Verification</span><span> for ttl.sh/6b1d3c200c0fe4005da60bddc63873ef/example-sample:919eef3dd425318e9a65cb79b00ee323210ef070 --
+</span><span style="color:#bf616a;">The</span><span> following checks were performed on each of these signatures:
+</span><span>  </span><span style="color:#bf616a;">-</span><span> The cosign claims were validated
+</span><span>  </span><span style="color:#bf616a;">-</span><span> The signatures were verified against the specified public key
+</span></code></pre>
+</li>
+<li>
+<p>Tekton Chains observes Tekton Pipelines TaskRuns outputting an OCI image and
+generates provenance directly from the data it obtains, so we're satisfying
+service generated requirements.</p>
+</li>
+</ol>
+<h1 id="slsa-3-requirements">SLSA 3 Requirements</h1>
+<ol>
+<li>Source -
+<a href="https://slsa.dev/spec/v0.1/requirements#verified-history">Verified history</a>
+✅*</li>
+<li>Source -
+<a href="https://slsa.dev/spec/v0.1/requirements#retained-indefinitely">Retained indefinitely</a>
+(18 mo. for SLSA 3) ✅*</li>
+<li>Build -
+<a href="https://slsa.dev/spec/v0.1/requirements#build-as-code">Build as code</a> ✅</li>
+<li>Build -
+<a href="https://slsa.dev/spec/v0.1/requirements#ephemeral-environment">Ephemeral environment</a>
+✅</li>
+<li>Build - <a href="https://slsa.dev/spec/v0.1/requirements#isolated">Isolated</a> ✅</li>
+<li>Provenance -
+<a href="https://slsa.dev/spec/v0.1/requirements#non-falsifiable">Non-falsifiable</a>
+(in progress)</li>
+</ol>
+<p>Requirements 1 &amp; 2 are asterisked due to the lack of control the FRSCA platform
+has around the source code management platforms leveraged by the end user.</p>
+<ol>
+<li>
+<p>See above.</p>
+</li>
+<li>
+<p>See above.</p>
+</li>
+<li>
+<p>Every step in the end-to-end build process via Tekton is described as code.</p>
+</li>
+<li>
+<p>Tasks are executed within a Pod that is specifically tied to that particular
+TaskRun, and when the TaskRun is complete, the Pod is not reused.</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">example-sample-pipeline-7mvgr-clone-repo-pod</span><span>             0/1     Completed   0          44h
+</span><span style="color:#bf616a;">example-sample-pipeline-7mvgr-build-and-push-image-pod</span><span>   0/2     Completed   0          44h
+</span><span style="color:#bf616a;">example-sample-pipeline-7mvgr-vulnerability-scan-pod</span><span>     0/1     Completed   0          44h
+</span><span style="color:#bf616a;">example-sample-pipeline-7mvgr-generate-bom-pod</span><span>           0/2     Completed   0          44h
+</span><span style="color:#bf616a;">example-sample-pipeline-7mvgr-deploy-to-cluster-pod</span><span>      0/2     Completed   0          44h
+</span></code></pre>
+</li>
+<li>
+<p>In the same vein, the build process within a PipelineRun is completely
+isolated from other PipelineRuns, and TaskRuns within a PipelineRun also do
+not share data between each other unless explicitly defined.</p>
+</li>
+<li>
+<p>Non-falsifiable provenance support by means of SPIFFE/SPIRE is currently in
+development and awaiting approval. See
+<a href="https://github.com/tektoncd/community/blob/main/teps/0089-nonfalsifiable-provenance-support.md">TEP-89</a>
+for more information.</p>
+</li>
+</ol>
+
+        
+        
+<div class="docs-navigation d-flex justify-content-between">
+  
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+          
+        
+      
+        
+        
+          
+        
+      
+        
+        
+          
+            
+              
+              <a href="https:&#x2F;&#x2F;buildsec.github.io&#x2F;frsca&#x2F;docs&#x2F;contributing&#x2F;how-to-contribute&#x2F;">
+                <div class="card my-1">
+                  <div class="card-body py-2">
+                    &larr; How to Contribute
+                  </div>
+                </div>
+              </a>
+            
+            
+            
+          
+        
+      
+        
+        
+          
+        
+      
+    
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+      
+      
+        
+      
+    
+      
+      
+        
+      
+    
+      
+      
+        
+          
+          
+          <a class="ms-auto" href="https:&#x2F;&#x2F;buildsec.github.io&#x2F;frsca&#x2F;docs&#x2F;help&#x2F;faq&#x2F;">
+            <div class="card my-1">
+              <div class="card-body py-2">
+                FAQ &rarr;
+              </div>
+            </div>
+          </a>
+          
+          
+          
+        
+      
+    
+  
+</div>
+
+      </main>
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+						<li class="list-inline-item">Powered by <a href="https://www.getzola.org/">Zola</a>, and <a href="https://github.com/aaranxu/adidoks">AdiDoks</a></li>
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script src="https://buildsec.github.io/frsca/js/main.js" defer></script>
+
+  <script src="https://buildsec.github.io/frsca/plugins/elasticlunr.min.js" defer></script>
+  <script src="https://buildsec.github.io/frsca/search_index.en.js" defer></script>
+  <script src="https://buildsec.github.io/frsca/js/search.js" defer></script>
+
+  
+</body>
+</html>

@@ -4,7 +4,8 @@
 -Scorecard](https://api.securityscorecards.dev/projects/github.com/buildsec/frsca/badge)](https://api.securityscorecards.dev/projects/github.com/buildsec/frsca)
 
 <p align="center">
-<img src="frsca_mascot-color.png" alt="frsca logo" width="200"></img>
+<img src="https://buildsec.github.io/frsca/img/frsca_mascot-color.png"
+  alt="frsca logo" width="200"></img>
 </p>
 
 ## About The Project

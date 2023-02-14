@@ -38,6 +38,14 @@ CUE_FILE_NAME=cue_${CUE_VERSION}_linux_amd64.tar.gz
 CUE_URL=https://github.com/cue-lang/cue/releases/download/${CUE_VERSION}
 CUE_CHECKSUMS=checksums.txt
 
+CRANE_ARCH=x86_64
+CRANE_BIN=crane
+CRANE_OS=Linux
+CRANE_VERSION=v0.13.0
+CRANE_RELEASE_URL="https://github.com/google/go-containerregistry/releases/download/${CRANE_VERSION}"
+CRANE_CHECKSUMS="checksums.txt"
+CRANE_ASSET="go-containerregistry_${CRANE_OS}_${CRANE_ARCH}.tar.gz"
+
 INSTALL_DIR=/usr/local/bin
 CHECKSUM_FILE=download_checksum.txt
 
@@ -170,6 +178,7 @@ case "${PLATFORM}" in
       popd
       rmdir "$TMP"
     )
+
     jq --version || (
       echo -e "${C_GREEN}jq not found, installing...${C_RESET_ALL}" 
       
@@ -184,7 +193,24 @@ case "${PLATFORM}" in
         exit 1
       fi
     )
+
+    [[ "$(crane version)" == "${CRANE_VERSION#v}" ]] || (
+      echo -e "${C_GREEN}crane not found, installing...${C_RESET_ALL}"
+      TMP=$(mktemp -d)
+      pushd "$TMP"
+      curl -sLO "${CRANE_RELEASE_URL}/${CRANE_ASSET}"
+      curl -sLO "${CRANE_RELEASE_URL}/${CRANE_CHECKSUMS}"
+      grep "$CRANE_ASSET" "$CRANE_CHECKSUMS" |grep -v sbom > "$CHECKSUM_FILE"
+      sha256sum -c "$CHECKSUM_FILE"
+      sudo install "${CRANE_ASSET}" "${INSTALL_DIR}/${CRANE_BIN}"
+      rm "${CRANE_ASSET}"
+      rm "${CRANE_CHECKSUMS}"
+      rm "${CHECKSUM_FILE}"
+      popd
+      rmdir "$TMP"
+    )
     ;;
+
   *)
     echo -e "${C_RED}The ${PLATFORM} platform is unimplemented or unsupported.${C_RESET_ALL}"
     exit 1

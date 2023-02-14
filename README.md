@@ -53,9 +53,7 @@ pipeline run:
 ```bash
 # Install and setup minikube (run only if need a local k8s)
 make setup-minikube
-make setup-dev
 make setup-frsca
-make setup-examples
 ```
 
 This will perform the following actions:

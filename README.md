@@ -1,13 +1,17 @@
 # FRSCA
 
+[![OpenSSF
+-Scorecard](https://api.securityscorecards.dev/projects/github.com/buildsec/frsca/badge)](https://api.securityscorecards.dev/projects/github.com/buildsec/frsca)
+
 <p align="center">
-<img src="frsca_mascot-color.png" alt="frsca logo" width="200"></img>
+<img src="https://buildsec.github.io/frsca/img/frsca_mascot-color.png"
+  alt="frsca logo" width="200"></img>
 </p>
 
 ## About The Project
 
-Factory for Repeatable Secure Creation of Artifacts (aka FRSCA pronounced Fresca)
-aims to help secure the supply chain by securing build pipelines.
+Factory for Repeatable Secure Creation of Artifacts (aka FRSCA pronounced
+Fresca) aims to help secure the supply chain by securing build pipelines.
 
 It achieves its goals by being 2 things:
 
@@ -27,15 +31,16 @@ At its core FRSCA uses these projects to achieve its goals:
 - [Helm] and [CUE] - For provisioning kubernetes resources
 - [CUE] - For secure pipeline abstractions and definitions
 
-See: [Architecture Docs](https://buildsec.github.io/frsca/docs/getting-started/architecture/)
+See:
+[Architecture Docs](https://buildsec.github.io/frsca/docs/getting-started/architecture/)
 for more info
 
 FRSCA is also an implementation of the CNCF's
 [Secure Software Factory Reference Architecture](https://github.com/cncf/tag-security/blob/main/supply-chain-security/secure-software-factory/Secure_Software_Factory_Whitepaper.pdf)
 which is based on the CNCF's
 [Software Supply Chain Best Practices White Paper](https://github.com/cncf/tag-security/blob/main/supply-chain-security/supply-chain-security-paper/CNCF_SSCP_v1.pdf).
-It is also intended to follow [SLSA](https://slsa.dev) requirements closely
-and generate in-toto attesttations for SLSA provenance predicates.
+It is also intended to follow [SLSA](https://slsa.dev) requirements closely and
+generate in-toto attesttations for SLSA provenance predicates.
 
 _NOTE_: FRSCA is under very active development. A lot will change, it isn't
 production ready yet.
@@ -55,7 +60,8 @@ This will perform the following actions:
 
 1. Install and setup minikube, and supporting cli tools, like `cosign` and `jq`
    if they are not already installed.
-1. Install development tooling to simulate a production environment, which includes:
+1. Install development tooling to simulate a production environment, which
+   includes:
    1. [Cert-manager]
    1. [registry]
    1. [SPIFFE/Spire]
@@ -66,7 +72,8 @@ This will perform the following actions:
    1. [Kyverno]
 1. Setup a mirror of example repositories and tekton triggers for each mirror.
 
-Once FRSCA has been installed you can follow the various examples under `/examples`.
+Once FRSCA has been installed you can follow the various examples under
+`/examples`.
 
 Tearing down the Minikube cluster generated in the quickstart, simply run:
 
@@ -76,8 +83,7 @@ make teardown
 
 ## Going further
 
-The full documentation is available at
-<https://buildsec.github.io/frsca/>
+The full documentation is available at <https://buildsec.github.io/frsca/>
 
 ## Community
 

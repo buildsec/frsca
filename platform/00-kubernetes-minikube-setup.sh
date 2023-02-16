@@ -202,8 +202,10 @@ case "${PLATFORM}" in
       curl -sLO "${CRANE_RELEASE_URL}/${CRANE_CHECKSUMS}"
       grep "$CRANE_ASSET" "$CRANE_CHECKSUMS" |grep -v sbom > "$CHECKSUM_FILE"
       sha256sum -c "$CHECKSUM_FILE"
-      sudo install "${CRANE_ASSET}" "${INSTALL_DIR}/${CRANE_BIN}"
+      tar -xvf "${CRANE_ASSET}" "${CRANE_BIN}"
+      sudo install "${CRANE_BIN}" "${INSTALL_DIR}/${CRANE_BIN}"
       rm "${CRANE_ASSET}"
+      rm "${CRANE_BIN}"
       rm "${CRANE_CHECKSUMS}"
       rm "${CHECKSUM_FILE}"
       popd

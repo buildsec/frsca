@@ -67,7 +67,7 @@ jobs:
           if [ "${REGISTRY}" = "registry.registry" ]; then
             IMAGE_URL="$(echo "${IMAGE_URL}" | sed 's#'${REGISTRY}'#127.0.0.1:5000#')"
           fi
-          docker run --rm --net host gcr.io/go-containerregistry/crane ls "$(echo -n ${IMAGE_URL} | sed 's|:[^/]*$||')"
+          crane ls "$(echo -n ${IMAGE_URL} | sed 's|:[^/]*$||')"
           tkn tr describe --last -o json | jq -r '.metadata.annotations["chains.tekton.dev/signed"]'
           cosign verify --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
           cosign verify-attestation --type slsaprovenance --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
@@ -89,7 +89,7 @@ jobs:
           if [ "${REGISTRY}" = "registry.registry" ]; then
             IMAGE_URL="$(echo "${IMAGE_URL}" | sed 's#'${REGISTRY}'#127.0.0.1:5000#')"
           fi
-          docker run --rm --net host gcr.io/go-containerregistry/crane ls "$(echo -n ${IMAGE_URL} | sed 's|:[^/]*$||')"
+          crane ls "$(echo -n ${IMAGE_URL} | sed 's|:[^/]*$||')"
 
           cosign verify --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
           cosign verify-attestation --type slsaprovenance --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"

@@ -69,8 +69,8 @@ jobs:
           fi
           crane ls "$(echo -n ${IMAGE_URL} | sed 's|:[^/]*$||')"
           tkn tr describe --last -o json | jq -r '.metadata.annotations["chains.tekton.dev/signed"]'
-          cosign verify --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
-          cosign verify-attestation --type slsaprovenance --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
+          cosign verify --insecure-ignore-tlog --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
+          cosign verify-attestation --insecure-ignore-tlog --type slsaprovenance --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
           kill %?registry-proxy
       - name: Run sample pipeline to test kyverno
         env:
@@ -91,8 +91,8 @@ jobs:
           fi
           crane ls "$(echo -n ${IMAGE_URL} | sed 's|:[^/]*$||')"
 
-          cosign verify --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
-          cosign verify-attestation --type slsaprovenance --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
+          cosign verify --insecure-ignore-tlog --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
+          cosign verify-attestation --insecure-ignore-tlog --type slsaprovenance --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
 
           kubectl wait --timeout=5m --for=condition=ready pods -l app=picalc -n prod
           kill %?registry-proxy

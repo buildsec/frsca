@@ -93,14 +93,14 @@ SLSA 2 introduces four new requirements in addition to the requirements of SLSA
 1. Provenance is not ony available, but it is authenticated.
 
     ```bash
-    > cosign verify --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
+    > cosign verify --insecure-ignore-tlog --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
 
     Verification for ttl.sh/6b1d3c200c0fe4005da60bddc63873ef/example-sample:919eef3dd425318e9a65cb79b00ee323210ef070 --
     The following checks were performed on each of these signatures:
       - The cosign claims were validated
       - The signatures were verified against the specified public key
 
-    > cosign verify-attestation --type slsaprovenance --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
+    > cosign verify-attestation --insecure-ignore-tlog --type slsaprovenance --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
 
     Verification for ttl.sh/6b1d3c200c0fe4005da60bddc63873ef/example-sample:919eef3dd425318e9a65cb79b00ee323210ef070 --
     The following checks were performed on each of these signatures:

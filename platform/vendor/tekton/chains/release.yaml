@@ -50,6 +50,8 @@ metadata:
 #   artifacts.oci.storage: oci
 #   artifacts.oci.format: simplesigning
 #   artifacts.oci.signer: x509
+#   transparency.enabled: false
+#   transparency.url: https://rekor.sigstore.dev
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -62,7 +64,7 @@ metadata:
     app.kubernetes.io/instance: default
     app.kubernetes.io/part-of: tekton-chains
     pipeline.tekton.dev/release: "devel"
-    version: "v0.13.0"
+    version: "v0.15.0"
 spec:
   replicas: 1
   selector:
@@ -83,12 +85,12 @@ spec:
         app.kubernetes.io/part-of: tekton-chains
         # # tekton.dev/release value replaced with inputs.params.versionTag in pipeline/tekton/publish.yaml
         pipeline.tekton.dev/release: "devel"
-        version: "v0.13.0"
+        version: "v0.15.0"
     spec:
       serviceAccountName: tekton-chains-controller
       containers:
         - name: tekton-chains-controller
-          image: gcr.io/tekton-releases/github.com/tektoncd/chains/cmd/controller:v0.13.0@sha256:a2fb55efb915e0b188a67159f6c081de684cba78f69ac7f7fea530e4a2ec1e78
+          image: gcr.io/tekton-releases/github.com/tektoncd/chains/cmd/controller:v0.15.0@sha256:730fbfbf42a79adb4dc26b2aaf6cb83eb8c150ea5d75c1251b7a7a42aa29c58e
           volumeMounts:
             - name: signing-secrets
               mountPath: /etc/signing-secrets
@@ -332,7 +334,7 @@ data:
   # this ConfigMap such that even if we don't have access to
   # other resources in the namespace, we can still access
   # this ConfigMap.
-  version: "v0.13.0"
+  version: "v0.15.0"
 
 ---
 # Copyright 2019 Tekton Authors LLC

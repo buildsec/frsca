@@ -39,12 +39,12 @@ make setup-tekton-chains
 Configure Chains to use two storage backends and generate encryption keys:
 
 ```bash
-kubectl patch configmap chains-config -n tekton-chains -p='{"data":{"artifacts.oci.format":"simplesigning", "artifacts.oci.storage": "tekton,oci", "artifacts.taskrun.format":"in-toto", "artifacts.taskrun.storage": "tekton,oci"}}'
+kubectl patch configmap chains-config -n tekton-chains -p='{"data":{"artifacts.oci.format":"simplesigning", "artifacts.oci.storage": "tekton,oci", "artifacts.taskrun.format":"slsa/v1", "artifacts.taskrun.storage": "tekton,oci"}}'
 make tekton-generate-keys
 ```
 
 Here the configuration specifies two storages for the artifacts: `tekton,oci`
-and their respective formats: `in-toto` and `simplesigning`.
+and their respective formats: `slsa/v1` and `simplesigning`.
 
 Start the buildpacks pipeline:
 

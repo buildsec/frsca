@@ -272,7 +272,7 @@ frsca: task: "syft-bom-generator": {
 			image: "anchore/syft:v0.58.0@sha256:b764278a9a45f3493b78b8708a4d68447807397fe8c8f59bf21f18c9bee4be94"
 			name:  "syft-bom-generator"
 		}, {
-			image: "gcr.io/projectsigstore/cosign:v1.12.0@sha256:880cc3ec8088fa59a43025d4f20961e8abc7c732e276a211cfb8b66793455dd0"
+			image: "gcr.io/projectsigstore/cosign:v2.0.0@sha256:728944a9542a7235b4358c4ab2bcea855840e9d4b9594febca5c2207f5da7f38"
 			name:  "attach-sbom"
 			args: [
 				"attach",

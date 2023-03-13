@@ -48,6 +48,10 @@ for pr in frsca.pipelineRun {
 	}
 }
 
+frsca: trigger: [Name=_]: pipelineRun: spec: podTemplate: securityContext: {
+  fsGroup: 65532
+}
+
 frsca: pipelineRun: [Name=_]: spec: workspaces: [{
 	name: *"\(Name)ws" | string
 	persistentVolumeClaim: claimName: "\(Name)source-ws-pvc"

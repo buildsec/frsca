@@ -28,7 +28,7 @@ KUBECTL_VALIDATE_CHECKSUM_URL=$KUBECTL_URL.sha256
 COSIGN_ARCH=amd64
 COSIGN_BIN=cosign
 COSIGN_OS=$(uname | tr '[:upper:]' '[:lower:]')
-COSIGN_VERSION=v1.12.0
+COSIGN_VERSION=v2.0.0
 COSIGN_RELEASE_URL="https://github.com/sigstore/cosign/releases/download/${COSIGN_VERSION}"
 COSIGN_CHECKSUMS="cosign_checksums.txt"
 COSIGN_ASSET="${COSIGN_BIN}-${COSIGN_OS}-${COSIGN_ARCH}"
@@ -180,15 +180,15 @@ case "${PLATFORM}" in
     )
 
     jq --version || (
-      echo -e "${C_GREEN}jq not found, installing...${C_RESET_ALL}" 
-      
+      echo -e "${C_GREEN}jq not found, installing...${C_RESET_ALL}"
+
       if [ -x "$(command -v dnf)" ]; then
         sudo dnf install -y jq
       elif [ -x "$(command -v yum)" ]; then
         sudo yum install -y jq
       elif [ -x "$(command -v apt-get)" ]; then
         sudo apt-get install -y jq
-      else 
+      else
         echo -e "${C_RED}jq cannot be automatically installed, please install it manually${C_RESET_ALL}"
         exit 1
       fi

@@ -362,14 +362,14 @@ PipelineRun.</p>
 </li>
 <li>
 <p>Provenance is not ony available, but it is authenticated.</p>
-<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span>&gt; cosign </span><span style="color:#bf616a;">verify --key</span><span> k8s://tekton-chains/signing-secrets &quot;$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">IMAGE_URL</span><span style="color:#a3be8c;">}</span><span>&quot;
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span>&gt; cosign </span><span style="color:#bf616a;">verify --insecure-ignore-tlog --key</span><span> k8s://tekton-chains/signing-secrets &quot;$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">IMAGE_URL</span><span style="color:#a3be8c;">}</span><span>&quot;
 </span><span>
 </span><span style="color:#bf616a;">Verification</span><span> for ttl.sh/6b1d3c200c0fe4005da60bddc63873ef/example-sample:919eef3dd425318e9a65cb79b00ee323210ef070 --
 </span><span style="color:#bf616a;">The</span><span> following checks were performed on each of these signatures:
 </span><span>  </span><span style="color:#bf616a;">-</span><span> The cosign claims were validated
 </span><span>  </span><span style="color:#bf616a;">-</span><span> The signatures were verified against the specified public key
 </span><span>
-</span><span>&gt; cosign </span><span style="color:#bf616a;">verify-attestation --type</span><span> slsaprovenance</span><span style="color:#bf616a;"> --key</span><span> k8s://tekton-chains/signing-secrets &quot;$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">IMAGE_URL</span><span style="color:#a3be8c;">}</span><span>&quot;
+</span><span>&gt; cosign </span><span style="color:#bf616a;">verify-attestation --insecure-ignore-tlog --type</span><span> slsaprovenance</span><span style="color:#bf616a;"> --key</span><span> k8s://tekton-chains/signing-secrets &quot;$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">IMAGE_URL</span><span style="color:#a3be8c;">}</span><span>&quot;
 </span><span>
 </span><span style="color:#bf616a;">Verification</span><span> for ttl.sh/6b1d3c200c0fe4005da60bddc63873ef/example-sample:919eef3dd425318e9a65cb79b00ee323210ef070 --
 </span><span style="color:#bf616a;">The</span><span> following checks were performed on each of these signatures:

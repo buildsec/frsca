@@ -69,8 +69,8 @@ export TASKRUN_UID=$(tkn tr describe --last -o  jsonpath='{.metadata.uid}')
 Use cosign to verify the signature and the attestation stored in OCI:
 
 ```bash
-cosign verify --key k8s://tekton-chains/signing-secrets ${IMAGE_URL}
-cosign verify-attestation --type slsaprovenance --key k8s://tekton-chains/signing-secrets ${IMAGE_URL}
+cosign verify --insecure-ignore-tlog --key k8s://tekton-chains/signing-secrets ${IMAGE_URL}
+cosign verify-attestation --insecure-ignore-tlog --type slsaprovenance --key k8s://tekton-chains/signing-secrets ${IMAGE_URL}
 ```
 
 Retrieve the signature and the attestation stored in the taskrun annotations:

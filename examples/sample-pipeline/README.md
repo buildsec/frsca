@@ -43,8 +43,8 @@ fi
 crane ls "$(echo -n ${IMAGE_URL} | sed 's|:[^/]*$||')"
 
 # Verify the image and the attestation.
-cosign verify --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
-cosign verify-attestation --type slsaprovenance --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
+cosign verify --insecure-ignore-tlog --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
+cosign verify-attestation --insecure-ignore-tlog --type slsaprovenance --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
 
 # Download the SBOM
 cosign download sbom "${IMAGE_URL}"

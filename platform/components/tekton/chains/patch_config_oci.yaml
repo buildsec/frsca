@@ -1,4 +1,4 @@
 ---
 data:
   artifacts.taskrun.storage: tekton,oci
-  artifacts.taskrun.format: in-toto
+  artifacts.taskrun.format: slsa/v1

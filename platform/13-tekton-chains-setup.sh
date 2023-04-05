@@ -10,7 +10,7 @@ C_RESET_ALL='\033[0m'
 # Setup tekton Chains
 echo -e "${C_GREEN}Setting up Tekton Chains...${C_RESET_ALL}"
 
-# Patch chains to generate in-toto provenance and store output in OCI
+# Patch chains to generate slsa/v1 provenance and store output in OCI
 kubectl patch \
       configmap chains-config \
       -n tekton-chains \

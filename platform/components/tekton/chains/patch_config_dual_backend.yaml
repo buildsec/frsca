@@ -1,5 +1,5 @@
 data:
   artifacts.oci.format: simplesigning
   artifacts.oci.storage: tekton,oci
-  artifacts.taskrun.format: in-toto
+  artifacts.taskrun.format: slsa/v1
   artifacts.taskrun.storage: tekton,oci

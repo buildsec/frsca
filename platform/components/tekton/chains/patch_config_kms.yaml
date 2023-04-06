@@ -1,6 +1,7 @@
 data:
   artifacts.oci.signer: kms
   artifacts.taskrun.signer: kms
+  artifacts.pipelinerun.signer: kms
   signers.kms.kmsref: "hashivault://frsca"
   signers.kms.auth.address: "http://vault.vault:8200"
   signers.kms.auth.oidc.path: jwt

@@ -3,3 +3,5 @@ data:
   artifacts.oci.storage: tekton,oci
   artifacts.taskrun.format: slsa/v1
   artifacts.taskrun.storage: tekton,oci
+  artifacts.pipelinerun.format: slsa/v1
+  artifacts.pipelinerun.storage: tekton,oci

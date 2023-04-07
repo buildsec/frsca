@@ -9,7 +9,7 @@ GIT_ROOT=$(git rev-parse --show-toplevel)
 
 cd "$GIT_ROOT/platform/vendor"
 
-./vendor-helm-chart.sh "$@" -d ./spire/chart       -c spire          -v 0.1.2   -r https://sudo-bmitch.github.io/helm-charts
+./vendor-helm-chart.sh "$@" -d ./spire/chart       -c spire          -v 0.1.3   -r https://sudo-bmitch.github.io/helm-charts
 ./vendor-helm-chart.sh "$@" -d ./vault/chart       -c vault          -v 0.20.0  -r https://helm.releases.hashicorp.com
 ./vendor-helm-chart.sh "$@" -d ./gatekeeper/chart  -c gatekeeper     -v 3.6.0   -r https://open-policy-agent.github.io/gatekeeper/charts
 ./vendor-helm-chart.sh "$@" -d ./elastic/chart     -c elasticsearch  -v 7.17.3  -r https://helm.elastic.co

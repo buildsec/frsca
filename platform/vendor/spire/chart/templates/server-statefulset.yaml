@@ -70,7 +70,7 @@ spec:
             {{- toYaml .Values.resources.server | nindent 12 }}
         {{- if .Values.oidc.enabled }}
         - name: spire-oidc
-          image: {{ .Values.image.repository }}/spire-oidc-provider:{{ .Values.image.tag }}
+          image: {{ .Values.image.repository }}/oidc-discovery-provider:{{ .Values.image.tag }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
           - -config

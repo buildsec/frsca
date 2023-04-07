@@ -17,20 +17,18 @@ data:
       ca_key_type = "rsa-2048"
 
       {{- if .Values.oidc.enabled }}
-      experimental {
-        // Turns on the bundle endpoint (required, true)
-        bundle_endpoint_enabled = true
-
-        // The address to listen on (optional, defaults to 0.0.0.0)
-        // bundle_endpoint_address = "0.0.0.0"
-
-        // The port to listen on (optional, defaults to 443)
-        bundle_endpoint_port = 8443
+      federation {
+        bundle_endpoint {
+          address = "0.0.0.0"
+          // The port to listen on (optional, defaults to 443)
+          port = 8443
+        }
       }
       jwt_issuer = "{{ .Values.oidc.discoveryDomain }}"
       {{- end }}
 
-      default_svid_ttl = "1h"
+      default_x509_svid_ttl = "1h"
+      default_jwt_svid_ttl = "1h"
       ca_subject = {
         country = ["US"],
         organization = ["SPIFFE"],

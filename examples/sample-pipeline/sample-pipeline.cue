@@ -251,6 +251,12 @@ frsca: task: "syft-bom-generator": {
 		results: [{
 			description: "status of syft task, possible value are-success|failure"
 			name:        "status"
+		},{
+			description: "name of the uploaded SBOM artifact"
+			name:        "SBOM_IMAGE_URL"
+		},{
+			description: "digest of the uploaded SBOM artifact"
+			name:        "SBOM_IMAGE_DIGEST"
 		}]
 		stepTemplate: {
 			name: "PIPELINE_DEBUG"
@@ -281,6 +287,32 @@ frsca: task: "syft-bom-generator": {
 				"--type", "spdx",
 				"$(params.image-ref)"
 			]
+		}, {
+			image: "ghcr.io/regclient/regctl:v0.4.7-alpine@sha256:82df50059df10e6848d33d75c92fb09eed502774f76f1750e41a829051b267e9"
+			name: "write-outputs"
+			env: [{
+				name: "image"
+				value: "$(params.image-ref)"
+			}, {
+				name: "digest"
+				value: "$(params.image-digest)"
+			}]
+			script: """
+			  sbom_image="$(echo ${image} | sed 's#[:@][^/]*$##')"
+				sbom_tag="$(echo ${digest} | sed 's/:/-/').sbom"
+				sbom_digest="$(regctl image digest "${sbom_image}:${sbom_tag}")"
+				file_sum="$(sha256sum "$(workspaces.source.path)/$(params.sbom-filepath)" | cut -f1 -d' ')"
+				layer_sum="$(regctl manifest get ${sbom_image}@${sbom_digest} --format '{{(index .Layers 0).Digest.Hex}}')"
+				if [ "$file_sum" != "$layer_sum" ]; then
+				  echo "SBOM layer hash does not match uploaded file hash (${layer_sum} != ${file_sum})" >&2
+				  exit 1
+				fi
+				echo -n "SBOM Image: "
+				echo -n "${sbom_image}:${sbom_tag}" | tee "$(results.SBOM_IMAGE_URL.path)"
+				echo
+				echo -n "SBOM Digest: "
+			  echo -n "${sbom_digest}" | tee "$(results.SBOM_IMAGE_DIGEST.path)"
+			"""
 		}]
 		workspaces: [{
 			name: "source"

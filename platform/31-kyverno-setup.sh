@@ -6,7 +6,11 @@ if kubectl -n vault get configmap frsca-certs >/dev/null 2>&1; then
 else
   USERPUBKEY=$(cosign public-key --key k8s://tekton-chains/signing-secrets)
 fi
-REPO="ttl.sh/*"
+REPO=${REGISTRY:-ttl.sh}
+if [ "${REPO}" = "registry.registry" ]; then
+  REPO="host.minikube.internal:5443"
+fi
+REPO="${REPO}/*"
 
 GIT_ROOT=$(git rev-parse --show-toplevel)
 
@@ -37,6 +41,10 @@ kubectl patch \
   deployment kyverno \
   -n kyverno \
   --type json --patch-file "${GIT_ROOT}"/platform/components/kyverno/patch_container_args.json
+kubectl patch \
+  deployment kyverno \
+  -n kyverno \
+  --patch-file "${GIT_ROOT}"/platform/components/kyverno/patch_ca_certs.json
 kubectl rollout status -n kyverno deployment/kyverno
 
 echo -e "${C_GREEN}Creating verify-image admission control policy...${C_RESET_ALL}"

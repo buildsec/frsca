@@ -12,6 +12,8 @@ spec:
     - registry.registry.svc.cluster.local
     - registry.registry
     - registry
+    - host.minikube.internal
+    - host.minikube.internal:5443
   privateKey:
     algorithm: ECDSA
     size: 256

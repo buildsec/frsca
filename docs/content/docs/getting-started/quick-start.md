@@ -47,11 +47,11 @@ The examples use the [ttl.sh](https://ttl.sh) registry to upload images by
 default. It is possible to change it to another registry of your choice by
 exporting the `$REGISTRY` variable.
 
-You may also use the local registry deployed inside the cluster. This requires
-setting the variable to `registry.registry`:
+You may also use the local registry deployed inside the minikube cluster. This
+requires setting the variable to `host.minikube.internal:5443`:
 
 ```bash
-export REGISTRY=registry.registry
+export REGISTRY=host.minikube.internal:5443
 ```
 
 Then to access the registry outside of minikube, open a separate terminal and

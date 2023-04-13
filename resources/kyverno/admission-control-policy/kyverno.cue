@@ -11,7 +11,7 @@ package frsca
 }
 
 frsca: clusterPolicy: [Name=_]: spec: {
-	validationFailureAction: "enforce"
+	validationFailureAction: *"Enforce" | string
 	background:              false
 	webhookTimeoutSeconds:   *30 | int
 	failurePolicy:           "Fail"

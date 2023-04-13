@@ -202,7 +202,7 @@ frsca: task: "deploy-using-kubectl": {
 				"-e",
 				"s;__DIGEST__;$(params.imageDigest);g",
 				"-e",
-				"s;registry.registry/;localhost:5000/;g",
+				"s;registry.registry/;host.minikube.internal:5443/;g",
 				"$(workspaces.git-source.path)/$(params.pathToYamlFile)",
 			]
 			command: [

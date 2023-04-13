@@ -17,6 +17,6 @@ frsca: configMap: "\(#keys.name)": {
 			-----END PUBLIC KEY-----
 			"""
 
-		ttlsh: #public.key
+		frscakey: #public.key
 	}
 }

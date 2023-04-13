@@ -234,6 +234,7 @@ else
     --extra-config=apiserver.service-account-issuer=api \
     --extra-config=apiserver.api-audiences=api,spire-server \
     --extra-config=apiserver.authorization-mode=Node,RBAC \
+    --insecure-registry=host.minikube.internal:5443 \
     --memory max
 fi
 

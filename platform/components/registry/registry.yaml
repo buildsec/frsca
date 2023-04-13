@@ -29,7 +29,7 @@ data:
         disable: false
     http:
       addr: :5000
-      relativeurls: false
+      relativeurls: true
     validation:
       disabled: true
     compatibility:
@@ -171,6 +171,7 @@ spec:
             - name: https
               containerPort: 443
               protocol: TCP
+              hostPort: 5443
           livenessProbe:
             failureThreshold: 2
             httpGet:
@@ -223,17 +224,20 @@ metadata:
   labels:
     app: registry
     component: proxy
+    instance: http
   name: registry-proxy
 spec:
   selector:
     matchLabels:
       app: registry
       component: proxy
+      instance: http
   template:
     metadata:
       labels:
         app: registry
         component: proxy
+        instance: http
     spec:
       containers:
         - image: "gcr.io/google_containers/kube-registry-proxy:0.4@sha256:1040f25a5273de0d72c54865a8efd47e3292de9fb8e5353e3fa76736b854f2da"
@@ -248,3 +252,5 @@ spec:
               value: registry
             - name: REGISTRY_PORT
               value: "5000"
+
+# TODO: add a port forward for 5443:443 for multi-node clusters using the internal registry

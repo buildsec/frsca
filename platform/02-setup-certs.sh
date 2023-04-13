@@ -7,7 +7,7 @@ GIT_ROOT=$(git rev-parse --show-toplevel)
 C_GREEN='\033[32m'
 C_RESET_ALL='\033[0m'
 
-for ns in cert-manager gitea registry spire tekton-chains tekton-pipelines vault; do
+for ns in cert-manager cosign-system gitea kyverno registry spire tekton-chains tekton-pipelines vault; do
   kubectl create namespace "${ns}" --dry-run=client -o=yaml | kubectl apply -f -
 done
 
@@ -59,7 +59,7 @@ docker run --rm -v "${ca_cert}:/tmp/cert.pem:ro,z" --entrypoint /bin/bash \
 
 # TODO: This should be changed to using a volume instead of a value directly in a config map
 #       as it would make it much more straightforward.
-for ns in default gitea registry tekton-chains tekton-pipelines; do
+for ns in default cosign-system gitea kyverno registry tekton-chains tekton-pipelines; do
   kubectl -n "${ns}" create configmap ca-certs \
     --from-file=ca-certificates.crt="${ca_bundle}" \
     --dry-run=client -o=yaml | kubectl apply --server-side=true -f -

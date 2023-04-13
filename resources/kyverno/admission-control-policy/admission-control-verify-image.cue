@@ -9,8 +9,8 @@ frsca: clusterPolicy: "verify-image": {
 			image: "gcr.io/projectsigstore/*"
 			key:   "{{ keys.data.projectsigstore }}"
 		}, {
-			image: "ttl.sh/*"
-			key:   "{{ keys.data.ttlsh }}"
+			image: #public.repo
+			key:   "{{ keys.data.frscakey }}"
 		}, {
 			image:   "ghcr.io/google/ko"
 			subject: "https://github.com/google/ko/*"

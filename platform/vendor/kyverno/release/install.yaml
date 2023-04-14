@@ -7,7 +7,7 @@ metadata:
     app: kyverno
     app.kubernetes.io/name: kyverno
     app.kubernetes.io/part-of: kyverno
-    app.kubernetes.io/version: latest
+    app.kubernetes.io/version: v1.9.2
   name: kyverno
 ---
 apiVersion: v1
@@ -16,7 +16,7 @@ metadata:
   name: kyverno-cleanup-controller
   labels:
     app.kubernetes.io/part-of: kyverno
-    app.kubernetes.io/version: latest
+    app.kubernetes.io/version: v1.9.2
     app.kubernetes.io/component: cleanup-controller
     app.kubernetes.io/name: kyverno-cleanup-controller
     app.kubernetes.io/instance: kyverno
@@ -31,7 +31,7 @@ metadata:
     app: kyverno
     app.kubernetes.io/name: kyverno
     app.kubernetes.io/part-of: kyverno
-    app.kubernetes.io/version: latest
+    app.kubernetes.io/version: v1.9.2
   namespace: kyverno
 ---
 apiVersion: v1
@@ -42,7 +42,7 @@ metadata:
     app: kyverno
     app.kubernetes.io/name: kyverno
     app.kubernetes.io/part-of: kyverno
-    app.kubernetes.io/version: latest
+    app.kubernetes.io/version: v1.9.2
   name: kyverno
   namespace: kyverno
 data:
@@ -58,7 +58,7 @@ metadata:
     app: kyverno
     app.kubernetes.io/name: kyverno
     app.kubernetes.io/part-of: kyverno
-    app.kubernetes.io/version: latest
+    app.kubernetes.io/version: v1.9.2
   name: kyverno-metrics
   namespace: kyverno
 data:
@@ -74,7 +74,7 @@ metadata:
     app: kyverno
     app.kubernetes.io/name: kyverno
     app.kubernetes.io/part-of: kyverno
-    app.kubernetes.io/version: latest
+    app.kubernetes.io/version: v1.9.2
   name: admissionreports.kyverno.io
 spec:
   group: kyverno.io
@@ -420,7 +420,7 @@ metadata:
     app: kyverno
     app.kubernetes.io/name: kyverno
     app.kubernetes.io/part-of: kyverno
-    app.kubernetes.io/version: latest
+    app.kubernetes.io/version: v1.9.2
   name: backgroundscanreports.kyverno.io
 spec:
   group: kyverno.io
@@ -726,7 +726,7 @@ metadata:
     app: kyverno
     app.kubernetes.io/name: kyverno
     app.kubernetes.io/part-of: kyverno
-    app.kubernetes.io/version: latest
+    app.kubernetes.io/version: v1.9.2
   name: cleanuppolicies.kyverno.io
 spec:
   group: kyverno.io
@@ -1775,7 +1775,7 @@ metadata:
     app: kyverno
     app.kubernetes.io/name: kyverno
     app.kubernetes.io/part-of: kyverno
-    app.kubernetes.io/version: latest
+    app.kubernetes.io/version: v1.9.2
   name: clusteradmissionreports.kyverno.io
 spec:
   group: kyverno.io
@@ -2122,7 +2122,7 @@ metadata:
     app: kyverno
     app.kubernetes.io/name: kyverno
     app.kubernetes.io/part-of: kyverno
-    app.kubernetes.io/version: latest
+    app.kubernetes.io/version: v1.9.2
   name: clusterbackgroundscanreports.kyverno.io
 spec:
   group: kyverno.io
@@ -2428,7 +2428,7 @@ metadata:
     app: kyverno
     app.kubernetes.io/name: kyverno
     app.kubernetes.io/part-of: kyverno
-    app.kubernetes.io/version: latest
+    app.kubernetes.io/version: v1.9.2
   name: clustercleanuppolicies.kyverno.io
 spec:
   group: kyverno.io
@@ -3477,7 +3477,7 @@ metadata:
     app: kyverno
     app.kubernetes.io/name: kyverno
     app.kubernetes.io/part-of: kyverno
-    app.kubernetes.io/version: latest
+    app.kubernetes.io/version: v1.9.2
   name: clusterpolicies.kyverno.io
 spec:
   group: kyverno.io
@@ -15958,7 +15958,7 @@ metadata:
     app: kyverno
     app.kubernetes.io/name: kyverno
     app.kubernetes.io/part-of: kyverno
-    app.kubernetes.io/version: latest
+    app.kubernetes.io/version: v1.9.2
   name: generaterequests.kyverno.io
 spec:
   group: kyverno.io
@@ -16147,7 +16147,7 @@ metadata:
     app: kyverno
     app.kubernetes.io/name: kyverno
     app.kubernetes.io/part-of: kyverno
-    app.kubernetes.io/version: latest
+    app.kubernetes.io/version: v1.9.2
   name: policies.kyverno.io
 spec:
   group: kyverno.io
@@ -28631,7 +28631,7 @@ metadata:
     app: kyverno
     app.kubernetes.io/name: kyverno
     app.kubernetes.io/part-of: kyverno
-    app.kubernetes.io/version: latest
+    app.kubernetes.io/version: v1.9.2
   name: policyexceptions.kyverno.io
 spec:
   group: kyverno.io
@@ -29119,7 +29119,7 @@ metadata:
     app: kyverno
     app.kubernetes.io/name: kyverno
     app.kubernetes.io/part-of: kyverno
-    app.kubernetes.io/version: latest
+    app.kubernetes.io/version: v1.9.2
   name: updaterequests.kyverno.io
 spec:
   group: kyverno.io
@@ -29485,6 +29485,7 @@ spec:
                 type: array
               handler:
                 description: Handler represents the instance ID that handles the UR
+                  Deprecated
                 type: string
               message:
                 description: Specifies request status message.
@@ -29511,7 +29512,7 @@ metadata:
     app: kyverno
     app.kubernetes.io/name: kyverno
     app.kubernetes.io/part-of: kyverno
-    app.kubernetes.io/version: latest
+    app.kubernetes.io/version: v1.9.2
   name: clusterpolicyreports.wgpolicyk8s.io
 spec:
   group: wgpolicyk8s.io
@@ -29879,7 +29880,7 @@ metadata:
     app: kyverno
     app.kubernetes.io/name: kyverno
     app.kubernetes.io/part-of: kyverno
-    app.kubernetes.io/version: latest
+    app.kubernetes.io/version: v1.9.2
   name: policyreports.wgpolicyk8s.io
 spec:
   group: wgpolicyk8s.io
@@ -30246,7 +30247,7 @@ metadata:
     app: kyverno
     app.kubernetes.io/name: kyverno
     app.kubernetes.io/part-of: kyverno
-    app.kubernetes.io/version: latest
+    app.kubernetes.io/version: v1.9.2
 rules:
 - apiGroups:
   - kyverno.io
@@ -30272,7 +30273,7 @@ metadata:
     app: kyverno
     app.kubernetes.io/name: kyverno
     app.kubernetes.io/part-of: kyverno
-    app.kubernetes.io/version: latest
+    app.kubernetes.io/version: v1.9.2
 rules:
   - apiGroups:
       - wgpolicyk8s.io
@@ -30298,7 +30299,7 @@ metadata:
     app: kyverno
     app.kubernetes.io/name: kyverno
     app.kubernetes.io/part-of: kyverno
-    app.kubernetes.io/version: latest
+    app.kubernetes.io/version: v1.9.2
 rules:
 - apiGroups:
     - kyverno.io
@@ -30326,7 +30327,7 @@ metadata:
     app: kyverno
     app.kubernetes.io/name: kyverno
     app.kubernetes.io/part-of: kyverno
-    app.kubernetes.io/version: latest
+    app.kubernetes.io/version: v1.9.2
 rules:
 - apiGroups:
   - kyverno.io
@@ -30351,7 +30352,7 @@ metadata:
     app: kyverno
     app.kubernetes.io/name: kyverno
     app.kubernetes.io/part-of: kyverno
-    app.kubernetes.io/version: latest
+    app.kubernetes.io/version: v1.9.2
 rules:
 - apiGroups:
   - kyverno.io
@@ -30372,7 +30373,7 @@ metadata:
   name: kyverno:cleanup-controller
   labels:
     app.kubernetes.io/part-of: kyverno
-    app.kubernetes.io/version: latest
+    app.kubernetes.io/version: v1.9.2
     app.kubernetes.io/component: cleanup-controller
     app.kubernetes.io/name: kyverno-cleanup-controller
     app.kubernetes.io/instance: kyverno
@@ -30389,7 +30390,7 @@ metadata:
   name: kyverno:cleanup-controller:core
   labels:
     app.kubernetes.io/part-of: kyverno
-    app.kubernetes.io/version: latest
+    app.kubernetes.io/version: v1.9.2
     app.kubernetes.io/component: cleanup-controller
     app.kubernetes.io/name: kyverno-cleanup-controller
     app.kubernetes.io/instance: kyverno
@@ -30457,7 +30458,7 @@ metadata:
     app: kyverno
     app.kubernetes.io/name: kyverno
     app.kubernetes.io/part-of: kyverno
-    app.kubernetes.io/version: latest
+    app.kubernetes.io/version: v1.9.2
 aggregationRule:
   clusterRoleSelectors:
   - matchLabels:
@@ -30473,7 +30474,7 @@ metadata:
     app: kyverno
     app.kubernetes.io/name: kyverno
     app.kubernetes.io/part-of: kyverno
-    app.kubernetes.io/version: latest
+    app.kubernetes.io/version: v1.9.2
 rules:
 - apiGroups:
     - rbac.authorization.k8s.io
@@ -30495,7 +30496,7 @@ metadata:
     app: kyverno
     app.kubernetes.io/name: kyverno
     app.kubernetes.io/part-of: kyverno
-    app.kubernetes.io/version: latest
+    app.kubernetes.io/version: v1.9.2
 rules:
 - apiGroups:
     - kyverno.io
@@ -30547,7 +30548,7 @@ metadata:
     app: kyverno
     app.kubernetes.io/name: kyverno
     app.kubernetes.io/part-of: kyverno
-    app.kubernetes.io/version: latest
+    app.kubernetes.io/version: v1.9.2
 rules:
 - apiGroups:
   - '*'
@@ -30567,7 +30568,7 @@ metadata:
     app: kyverno
     app.kubernetes.io/name: kyverno
     app.kubernetes.io/part-of: kyverno
-    app.kubernetes.io/version: latest
+    app.kubernetes.io/version: v1.9.2
 rules:
   - apiGroups:
       - networking.k8s.io
@@ -30613,7 +30614,7 @@ metadata:
     app: kyverno
     app.kubernetes.io/name: kyverno
     app.kubernetes.io/part-of: kyverno
-    app.kubernetes.io/version: latest
+    app.kubernetes.io/version: v1.9.2
 rules:
 - apiGroups:
   - ''
@@ -30635,7 +30636,7 @@ metadata:
     app: kyverno
     app.kubernetes.io/name: kyverno
     app.kubernetes.io/part-of: kyverno
-    app.kubernetes.io/version: latest
+    app.kubernetes.io/version: v1.9.2
 rules:
 - apiGroups:
   - admissionregistration.k8s.io
@@ -30658,7 +30659,7 @@ metadata:
   name: kyverno:cleanup-controller
   labels:
     app.kubernetes.io/part-of: kyverno
-    app.kubernetes.io/version: latest
+    app.kubernetes.io/version: v1.9.2
     app.kubernetes.io/component: cleanup-controller
     app.kubernetes.io/name: kyverno-cleanup-controller
     app.kubernetes.io/instance: kyverno
@@ -30680,7 +30681,7 @@ metadata:
     app: kyverno
     app.kubernetes.io/name: kyverno
     app.kubernetes.io/part-of: kyverno
-    app.kubernetes.io/version: latest
+    app.kubernetes.io/version: v1.9.2
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -30696,7 +30697,7 @@ metadata:
   name: kyverno:cleanup-controller
   labels:
     app.kubernetes.io/part-of: kyverno
-    app.kubernetes.io/version: latest
+    app.kubernetes.io/version: v1.9.2
     app.kubernetes.io/component: cleanup-controller
     app.kubernetes.io/name: kyverno-cleanup-controller
     app.kubernetes.io/instance: kyverno
@@ -30741,7 +30742,7 @@ metadata:
     app: kyverno
     app.kubernetes.io/name: kyverno
     app.kubernetes.io/part-of: kyverno
-    app.kubernetes.io/version: latest
+    app.kubernetes.io/version: v1.9.2
 rules:
 - apiGroups:
     - coordination.k8s.io
@@ -30770,7 +30771,7 @@ metadata:
   name: kyverno:cleanup-controller
   labels:
     app.kubernetes.io/part-of: kyverno
-    app.kubernetes.io/version: latest
+    app.kubernetes.io/version: v1.9.2
     app.kubernetes.io/component: cleanup-controller
     app.kubernetes.io/name: kyverno-cleanup-controller
     app.kubernetes.io/instance: kyverno
@@ -30794,7 +30795,7 @@ metadata:
     app: kyverno
     app.kubernetes.io/name: kyverno
     app.kubernetes.io/part-of: kyverno
-    app.kubernetes.io/version: latest
+    app.kubernetes.io/version: v1.9.2
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
@@ -30811,7 +30812,7 @@ metadata:
   namespace: kyverno
   labels:
     app.kubernetes.io/part-of: kyverno
-    app.kubernetes.io/version: latest
+    app.kubernetes.io/version: v1.9.2
     app.kubernetes.io/component: cleanup-controller
     app.kubernetes.io/name: kyverno-cleanup-controller
     app.kubernetes.io/instance: kyverno
@@ -30834,7 +30835,7 @@ metadata:
   namespace: kyverno
   labels:
     app.kubernetes.io/part-of: kyverno
-    app.kubernetes.io/version: latest
+    app.kubernetes.io/version: v1.9.2
     app.kubernetes.io/component: cleanup-controller
     app.kubernetes.io/name: kyverno-cleanup-controller
     app.kubernetes.io/instance: kyverno
@@ -30859,7 +30860,7 @@ metadata:
     app: kyverno
     app.kubernetes.io/name: kyverno
     app.kubernetes.io/part-of: kyverno
-    app.kubernetes.io/version: latest
+    app.kubernetes.io/version: v1.9.2
   namespace: kyverno
 spec:
   ports:
@@ -30881,7 +30882,7 @@ metadata:
     app: kyverno
     app.kubernetes.io/name: kyverno
     app.kubernetes.io/part-of: kyverno
-    app.kubernetes.io/version: latest
+    app.kubernetes.io/version: v1.9.2
   namespace: kyverno
 spec:
   ports:
@@ -30900,7 +30901,7 @@ metadata:
   name: kyverno-cleanup-controller
   labels:
     app.kubernetes.io/part-of: kyverno
-    app.kubernetes.io/version: latest
+    app.kubernetes.io/version: v1.9.2
     app.kubernetes.io/component: cleanup-controller
     app.kubernetes.io/name: kyverno-cleanup-controller
     app.kubernetes.io/instance: kyverno
@@ -30920,7 +30921,7 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/part-of: kyverno
-        app.kubernetes.io/version: latest
+        app.kubernetes.io/version: v1.9.2
         app.kubernetes.io/component: cleanup-controller
         app.kubernetes.io/name: kyverno-cleanup-controller
         app.kubernetes.io/instance: kyverno
@@ -30941,7 +30942,7 @@ spec:
       serviceAccountName: kyverno-cleanup-controller
       containers:
         - name: controller
-          image: "ghcr.io/kyverno/cleanup-controller:latest"
+          image: "ghcr.io/kyverno/cleanup-controller:v1.9.2"
           ports:
           - containerPort: 9443
             name: https
@@ -31022,7 +31023,7 @@ metadata:
     app: kyverno
     app.kubernetes.io/name: kyverno
     app.kubernetes.io/part-of: kyverno
-    app.kubernetes.io/version: latest
+    app.kubernetes.io/version: v1.9.2
   namespace: kyverno
 spec:
   selector:
@@ -31041,7 +31042,7 @@ spec:
         app: kyverno
         app.kubernetes.io/name: kyverno
         app.kubernetes.io/part-of: kyverno
-        app.kubernetes.io/version: latest
+        app.kubernetes.io/version: v1.9.2
     spec:
       affinity:
         podAntiAffinity:
@@ -31059,7 +31060,7 @@ spec:
       dnsPolicy: ClusterFirst
       initContainers:
         - name: kyverno-pre
-          image: "ghcr.io/kyverno/kyvernopre:latest"
+          image: "ghcr.io/kyverno/kyvernopre:v1.9.2"
           imagePullPolicy: IfNotPresent
           args:
             - --loggingFormat=text
@@ -31096,7 +31097,7 @@ spec:
             value: kyverno
       containers:
         - name: kyverno
-          image: "ghcr.io/kyverno/kyverno:latest"
+          image: "ghcr.io/kyverno/kyverno:v1.9.2"
           imagePullPolicy: IfNotPresent
           args:
             - --loggingFormat=text

@@ -1,0 +1,108 @@
+cosign:
+  # add the values in base64 encoded
+  cosignPub: ""
+  webhookName: "policy.sigstore.dev"
+
+installCRDs: true
+
+imagePullSecrets: []
+
+policywebhook:
+  configData: {}
+  replicaCount: 1
+  image:
+    repository: ghcr.io/sigstore/policy-controller/policy-webhook
+    # crane digest ghcr.io/sigstore/policy-controller/policy-webhook:v0.5.2
+    version: sha256:ae3d5b549c269c8b2a9b208d812365b6fc610d7a21c9ced8dc7eaae0a1914c09
+    pullPolicy: IfNotPresent
+  env: {}
+  extraArgs: {}
+  resources:
+    limits:
+      cpu: 100m
+      memory: 256Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+  serviceAccount:
+    annotations: {}
+  securityContext:
+    enabled: false
+    runAsUser: 65532
+  podSecurityContext:
+    enabled: true
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    capabilities:
+      drop:
+        - ALL
+  service:
+    annotations: {}
+    type: ClusterIP
+    port: 443
+  webhookNames:
+    defaulting: "defaulting.clusterimagepolicy.sigstore.dev"
+    validating: "validating.clusterimagepolicy.sigstore.dev"
+
+webhook:
+  replicaCount: 1
+  name: webhook
+  image:
+    repository: ghcr.io/sigstore/policy-controller/policy-controller
+    # crane digest ghcr.io/sigstore/policy-controller/policy-controller:v0.5.2
+    version: sha256:f23a23910f873d01864c01122120666adf78a1dbb43f674c4d423d5fe480a718
+    pullPolicy: IfNotPresent
+  env: {}
+  extraArgs: {}
+  resources:
+    limits:
+      cpu: 100m
+      memory: 256Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+  securityContext:
+    enabled: false
+    runAsUser: 65532
+  podSecurityContext:
+    enabled: true
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true
+    runAsUser: 1000
+    capabilities:
+      drop:
+        - ALL
+  serviceAccount:
+    annotations: {}
+  service:
+    annotations: {}
+    type: ClusterIP
+    port: 443
+    # For nodeport, specify the following:
+    #   type: NodePort
+    #   nodePort: <port-number>
+  volumeMounts: []
+  volumes: []
+  namespaceSelector:
+    matchExpressions:
+      - key: policy.sigstore.dev/include
+        operator: In
+        values: ["true"]
+  registryCaBundle: {}
+
+## common node selector for all the pods
+commonNodeSelector: {}
+#  key1: value1
+#  key2: value2
+
+## common tolerations for all the pods
+commonTolerations: []
+# - key: "key"
+#   operator: "Equal"
+#   value: "value"
+#   effect: "NoSchedule"
+
+## serviceMonitor makes policy controller metrics discoverable to prometheus
+serviceMonitor:
+  enabled: false

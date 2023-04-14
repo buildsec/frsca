@@ -24,12 +24,15 @@ jobs:
         run: make lint
 
   setup:
+    name: Test FRSCA Installation
     runs-on: ubuntu-latest
     env:
       REGISTRY: "host.minikube.internal:5443"
     needs:
       lint
-    name: Test FRSCA Installation
+    strategy:
+      matrix:
+        admission: [kyverno, policy-controller]
     steps:
       - uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab  # v3.5.2
       - name: Setup go
@@ -49,7 +52,7 @@ jobs:
         run: kubectl get pods -A
       - name: Initialize FRSCA
         run: |
-          make setup-frsca
+          make admission=${{ matrix.admission}} setup-frsca
       - name: Run buildpacks pipeline
         run: |
           make registry-proxy >/dev/null &

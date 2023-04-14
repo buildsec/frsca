@@ -69,11 +69,17 @@ This will perform the following actions:
 1. Install and setup FRSCA's components which include:
    1. [Tekton Pipelines]
    1. [Tekton Chains]
-   1. [Kyverno]
+   1. [Kyverno] (or [Policy Controller] with the setup command below)
 1. Setup a mirror of example repositories and tekton triggers for each mirror.
 
 Once FRSCA has been installed you can follow the various examples under
 `/examples`.
+
+To use policy-controller instead of kyverno, run:
+
+```bash
+make admission=policy-controller setup-frsca
+```
 
 Tearing down the Minikube cluster generated in the quickstart, simply run:
 
@@ -100,12 +106,13 @@ Slack channel: #frsca on [OpenSSF slack](https://slack.openssf.org/)
 
 Platform:
 
-- [Kyverno]
 - [Kubernetes]
 - [Tekton Pipelines]
 - [Tekton Chains]
 - [SPIFFE/Spire]
 - [Vault]
+- [Kyverno]
+- [Policy Controller]
 
 Tooling:
 
@@ -119,6 +126,7 @@ Tooling:
 [tekton chains]: https://github.com/tektoncd/chains
 [tekton pipelines]: https://tekton.dev/
 [kyverno]: https://kyverno.io/
+[policy controller]: https://github.com/sigstore/policy-controller
 [kubernetes]: https://k8s.io/
 [spiffe/spire]: https://spiffe.io/
 [cosign/sget]: https://github.com/sigstore/cosign

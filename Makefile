@@ -1,5 +1,6 @@
 # General.
 SHELL = /usr/bin/env bash
+admission ?= kyverno
 
 help: # Display help
 	@awk -F ':|##' \
@@ -22,13 +23,16 @@ setup-minikube: ## Setup a Kubernetes cluster using Minikube
 setup-dev: setup-certs install-spire install-vault install-gitea setup-spire setup-vault setup-registry ## Setup prerequisities for a development environment
 
 .PHONY: setup-frsca-core
-setup-frsca-core: install-tekton-pipelines install-tekton-chains install-kyverno setup-tekton-pipelines setup-tekton-chains setup-kyverno ## Setup FRSCA environment
+setup-frsca-core: install-tekton-pipelines install-tekton-chains setup-tekton-pipelines setup-tekton-chains ## Setup FRSCA environment
+
+.PHONY: setup-prod ## Setup prod namespace (admission controller)
+setup-prod: install-$(admission) setup-$(admission)
 
 .PHONY: setup-examples
 setup-examples: setup-example-mirror setup-example-buildpacks setup-example-golang-pipeline setup-example-gradle setup-example-ibm-tutorial setup-example-maven setup-example-sample ## Setup examples, mirroring external repos and creating tekton triggers
 
 .PHONY: setup-frsca
-setup-frsca: setup-dev setup-frsca-core setup-examples ## Deploy FRSCA with the development components and examples
+setup-frsca: setup-dev setup-frsca-core setup-prod setup-examples ## Deploy FRSCA with the development components and examples
 
 .PHONY: setup-certs
 setup-certs: ## Setup certificates used by vault and spire
@@ -94,6 +98,14 @@ install-kyverno: ## Install Kyverno
 .PHONY: setup-kyverno
 setup-kyverno: ## Setup Kyverno
 	bash platform/31-kyverno-setup.sh
+
+.PHONY: install-policy-controller
+install-policy-controller: ## Install policy-controller
+	bash platform/32-policy-controller-install.sh
+
+.PHONY: setup-policy-controller
+setup-policy-controller: ## Setup policy-controller
+	bash platform/33-policy-controller-setup.sh
 
 .PHONY: setup-opa-gatekeeper
 setup-opa-gatekeeper: ## Setup opa gatekeeper
@@ -203,6 +215,7 @@ vendor: ## vendor upstream projects
 cue.mod:
 	rm -rf cue.mod/gen
 	cue get go github.com/kyverno/kyverno/api/kyverno/v1
+	cue get go github.com/sigstore/policy-controller/pkg/apis/policy/v1beta1
 	cue get go github.com/tektoncd/pipeline/pkg/apis/pipeline/v1beta1
 	cue get go github.com/tektoncd/triggers/pkg/apis/triggers/v1beta1
 	cue get go k8s.io/api/core/v1

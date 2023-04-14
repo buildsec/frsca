@@ -4,6 +4,7 @@ import (
 	k8sCoreV1 "k8s.io/api/core/v1"
 	k8sRbacV1 "k8s.io/api/rbac/v1"
 	kyvernoV1 "github.com/kyverno/kyverno/api/kyverno/v1"
+	sigstoreImagePolicyV1Beta1 "github.com/sigstore/policy-controller/pkg/apis/policy/v1beta1"
 	pipelineV1Beta1 "github.com/tektoncd/pipeline/pkg/apis/pipeline/v1beta1"
 	triggersV1Beta1 "github.com/tektoncd/triggers/pkg/apis/triggers/v1beta1"
 )
@@ -119,6 +120,12 @@ frsca: clusterPolicy?: [_]: {
 			required: *true | bool
 		}]
 	}]
+}
+
+frsca: clusterImagePolicy?: [Name=_]: sigstoreImagePolicyV1Beta1.#ClusterImagePolicy & {
+	apiVersion: "policy.sigstore.dev/v1beta1"
+	kind: "ClusterImagePolicy"
+	metadata: name: *Name | string
 }
 
 // watch is used to add a tekton trigger to run a pipeline

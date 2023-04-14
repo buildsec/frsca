@@ -1,0 +1,73 @@
+# imagePullSecrets: []
+
+policywebhook:
+  # configData: {}
+  replicaCount: 1
+  # resources:
+  #   limits:
+  #     cpu: 100m
+  #     memory: 256Mi
+  #   requests:
+  #     cpu: 100m
+  #     memory: 128Mi
+  # securityContext:
+  #   enabled: false
+  #   runAsUser: 65532
+  # podSecurityContext:
+  #   enabled: true
+  #   allowPrivilegeEscalation: false
+  #   readOnlyRootFilesystem: true
+  #   runAsNonRoot: true
+  #   capabilities:
+  #     drop:
+  #       - ALL
+  # webhookNames:
+  #   defaulting: "defaulting.clusterimagepolicy.sigstore.dev"
+  #   validating: "validating.clusterimagepolicy.sigstore.dev"
+
+webhook:
+  replicaCount: 1
+  # resources:
+  #   limits:
+  #     cpu: 100m
+  #     memory: 256Mi
+  #   requests:
+  #     cpu: 100m
+  #     memory: 128Mi
+  # securityContext:
+  #   enabled: false
+  #   runAsUser: 65532
+  # podSecurityContext:
+  #   enabled: true
+  #   allowPrivilegeEscalation: false
+  #   readOnlyRootFilesystem: true
+  #   runAsUser: 1000
+  #   capabilities:
+  #     drop:
+  #       - ALL
+  # volumeMounts: []
+  # volumes: []
+  # namespaceSelector:
+  #   matchExpressions:
+  #     - key: policy.sigstore.dev/include
+  #       operator: In
+  #       values: ["true"]
+  registryCaBundle:
+    name: ca-certs
+    key: ca-certificates.crt
+
+## common node selector for all the pods
+# commonNodeSelector:
+#   key1: value1
+#   key2: value2
+
+## common tolerations for all the pods
+# commonTolerations:
+#   - key: "key"
+#     operator: "Equal"
+#     value: "value"
+#     effect: "NoSchedule"
+
+## serviceMonitor makes policy controller metrics discoverable to prometheus
+# serviceMonitor:
+#   enabled: false

@@ -549,30 +549,58 @@ import (
 	// * An existing PVC (PersistentVolumeClaim)
 	// If the provisioner or an external controller can support the specified data source,
 	// it will create a new volume based on the contents of the specified data source.
-	// If the AnyVolumeDataSource feature gate is enabled, this field will always have
-	// the same contents as the DataSourceRef field.
+	// When the AnyVolumeDataSource feature gate is enabled, dataSource contents will be copied to dataSourceRef,
+	// and dataSourceRef contents will be copied to dataSource when dataSourceRef.namespace is not specified.
+	// If the namespace is specified, then dataSourceRef will not be copied to dataSource.
 	// +optional
 	dataSource?: null | #TypedLocalObjectReference @go(DataSource,*TypedLocalObjectReference) @protobuf(7,bytes,opt)
 
 	// dataSourceRef specifies the object from which to populate the volume with data, if a non-empty
-	// volume is desired. This may be any local object from a non-empty API group (non
+	// volume is desired. This may be any object from a non-empty API group (non
 	// core object) or a PersistentVolumeClaim object.
 	// When this field is specified, volume binding will only succeed if the type of
 	// the specified object matches some installed volume populator or dynamic
 	// provisioner.
-	// This field will replace the functionality of the DataSource field and as such
+	// This field will replace the functionality of the dataSource field and as such
 	// if both fields are non-empty, they must have the same value. For backwards
-	// compatibility, both fields (DataSource and DataSourceRef) will be set to the same
+	// compatibility, when namespace isn't specified in dataSourceRef,
+	// both fields (dataSource and dataSourceRef) will be set to the same
 	// value automatically if one of them is empty and the other is non-empty.
-	// There are two important differences between DataSource and DataSourceRef:
-	// * While DataSource only allows two specific types of objects, DataSourceRef
+	// When namespace is specified in dataSourceRef,
+	// dataSource isn't set to the same value and must be empty.
+	// There are three important differences between dataSource and dataSourceRef:
+	// * While dataSource only allows two specific types of objects, dataSourceRef
 	//   allows any non-core object, as well as PersistentVolumeClaim objects.
-	// * While DataSource ignores disallowed values (dropping them), DataSourceRef
+	// * While dataSource ignores disallowed values (dropping them), dataSourceRef
 	//   preserves all values, and generates an error if a disallowed value is
 	//   specified.
+	// * While dataSource only allows local objects, dataSourceRef allows objects
+	//   in any namespaces.
 	// (Beta) Using this field requires the AnyVolumeDataSource feature gate to be enabled.
+	// (Alpha) Using the namespace field of dataSourceRef requires the CrossNamespaceVolumeDataSource feature gate to be enabled.
 	// +optional
-	dataSourceRef?: null | #TypedLocalObjectReference @go(DataSourceRef,*TypedLocalObjectReference) @protobuf(8,bytes,opt)
+	dataSourceRef?: null | #TypedObjectReference @go(DataSourceRef,*TypedObjectReference) @protobuf(8,bytes,opt)
+}
+
+#TypedObjectReference: {
+	// APIGroup is the group for the resource being referenced.
+	// If APIGroup is not specified, the specified Kind must be in the core API group.
+	// For any other third-party types, APIGroup is required.
+	// +optional
+	apiGroup?: null | string @go(APIGroup,*string) @protobuf(1,bytes,opt)
+
+	// Kind is the type of resource being referenced
+	kind: string @go(Kind) @protobuf(2,bytes,opt)
+
+	// Name is the name of resource being referenced
+	name: string @go(Name) @protobuf(3,bytes,opt)
+
+	// Namespace is the namespace of resource being referenced
+	// Note that when a namespace is specified, a gateway.networking.k8s.io/ReferenceGrant object is required in the referent namespace to allow that namespace's owner to accept the reference. See the ReferenceGrant documentation for details.
+	// (Alpha) This field requires the CrossNamespaceVolumeDataSource feature gate to be enabled.
+	// +featureGate=CrossNamespaceVolumeDataSource
+	// +optional
+	namespace?: null | string @go(Namespace,*string) @protobuf(4,bytes,opt)
 }
 
 // PersistentVolumeClaimConditionType is a valid value of PersistentVolumeClaimCondition.Type
@@ -1913,7 +1941,7 @@ import (
 	// must identify itself with an identifier specified in the audience of the
 	// token, and otherwise should reject the token. The audience defaults to the
 	// identifier of the apiserver.
-	//+optional
+	// +optional
 	audience?: string @go(Audience) @protobuf(1,bytes,rep)
 
 	// expirationSeconds is the requested duration of validity of the service
@@ -1922,7 +1950,7 @@ import (
 	// start trying to rotate the token if the token is older than 80 percent of
 	// its time to live or if the token is older than 24 hours.Defaults to 1 hour
 	// and must be at least 10 minutes.
-	//+optional
+	// +optional
 	expirationSeconds?: null | int64 @go(ExpirationSeconds,*int64) @protobuf(2,varint,opt)
 
 	// path is the path relative to the mount point of the file to project the
@@ -2590,6 +2618,28 @@ import (
 	// More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
 	// +optional
 	requests?: #ResourceList @go(Requests) @protobuf(2,bytes,rep,casttype=ResourceList,castkey=ResourceName)
+
+	// Claims lists the names of resources, defined in spec.resourceClaims,
+	// that are used by this container.
+	//
+	// This is an alpha field and requires enabling the
+	// DynamicResourceAllocation feature gate.
+	//
+	// This field is immutable.
+	//
+	// +listType=map
+	// +listMapKey=name
+	// +featureGate=DynamicResourceAllocation
+	// +optional
+	claims?: [...#ResourceClaim] @go(Claims,[]ResourceClaim) @protobuf(3,bytes,opt)
+}
+
+// ResourceClaim references one entry in PodSpec.ResourceClaims.
+#ResourceClaim: {
+	// Name must match the name of one entry in pod.spec.resourceClaims of
+	// the Pod where this field is used. It makes that resource available
+	// inside a container.
+	name: string @go(Name) @protobuf(1,bytes,opt)
 }
 
 // TerminationMessagePathDefault means the default path to capture the application termination message running in a container
@@ -2993,7 +3043,7 @@ import (
 	#PodInitialized |
 	#PodReady |
 	#PodScheduled |
-	#AlphaNoCompatGuaranteeDisruptionTarget
+	#DisruptionTarget
 
 // ContainersReady indicates whether all containers in the pod are ready.
 #ContainersReady: #PodConditionType & "ContainersReady"
@@ -3008,14 +3058,25 @@ import (
 // PodScheduled represents status of the scheduling process for this pod.
 #PodScheduled: #PodConditionType & "PodScheduled"
 
-// AlphaNoCompatGuaranteeDisruptionTarget indicates the pod is about to be deleted due to a
+// DisruptionTarget indicates the pod is about to be terminated due to a
 // disruption (such as preemption, eviction API or garbage-collection).
-// The constant is to be renamed once the name is accepted within the KEP-3329.
-#AlphaNoCompatGuaranteeDisruptionTarget: #PodConditionType & "DisruptionTarget"
+#DisruptionTarget: #PodConditionType & "DisruptionTarget"
 
 // PodReasonUnschedulable reason in PodScheduled PodCondition means that the scheduler
 // can't schedule the pod right now, for example due to insufficient resources in the cluster.
 #PodReasonUnschedulable: "Unschedulable"
+
+// PodReasonSchedulingGated reason in PodScheduled PodCondition means that the scheduler
+// skips scheduling the pod because one or more scheduling gates are still present.
+#PodReasonSchedulingGated: "SchedulingGated"
+
+// PodReasonSchedulerError reason in PodScheduled PodCondition means that some internal error happens
+// during scheduling, for example due to nodeAffinity parsing errors.
+#PodReasonSchedulerError: "SchedulerError"
+
+// TerminationByKubelet reason in DisruptionTarget pod condition indicates that the termination
+// is initiated by kubelet
+#PodReasonTerminationByKubelet: "TerminationByKubelet"
 
 // PodCondition contains details for the current condition of this pod.
 #PodCondition: {
@@ -3099,7 +3160,7 @@ import (
 // by the node selector terms.
 // +structType=atomic
 #NodeSelector: {
-	//Required. A list of node selector terms. The terms are ORed.
+	// Required. A list of node selector terms. The terms are ORed.
 	nodeSelectorTerms: [...#NodeSelectorTerm] @go(NodeSelectorTerms,[]NodeSelectorTerm) @protobuf(1,bytes,rep)
 }
 
@@ -3712,6 +3773,77 @@ import (
 	// +k8s:conversion-gen=false
 	// +optional
 	hostUsers?: null | bool @go(HostUsers,*bool) @protobuf(37,bytes,opt)
+
+	// SchedulingGates is an opaque list of values that if specified will block scheduling the pod.
+	// More info:  https://git.k8s.io/enhancements/keps/sig-scheduling/3521-pod-scheduling-readiness.
+	//
+	// This is an alpha-level feature enabled by PodSchedulingReadiness feature gate.
+	// +optional
+	// +patchMergeKey=name
+	// +patchStrategy=merge
+	// +listType=map
+	// +listMapKey=name
+	schedulingGates?: [...#PodSchedulingGate] @go(SchedulingGates,[]PodSchedulingGate) @protobuf(38,bytes,opt)
+
+	// ResourceClaims defines which ResourceClaims must be allocated
+	// and reserved before the Pod is allowed to start. The resources
+	// will be made available to those containers which consume them
+	// by name.
+	//
+	// This is an alpha field and requires enabling the
+	// DynamicResourceAllocation feature gate.
+	//
+	// This field is immutable.
+	//
+	// +patchMergeKey=name
+	// +patchStrategy=merge,retainKeys
+	// +listType=map
+	// +listMapKey=name
+	// +featureGate=DynamicResourceAllocation
+	// +optional
+	resourceClaims?: [...#PodResourceClaim] @go(ResourceClaims,[]PodResourceClaim) @protobuf(39,bytes,rep)
+}
+
+// PodResourceClaim references exactly one ResourceClaim through a ClaimSource.
+// It adds a name to it that uniquely identifies the ResourceClaim inside the Pod.
+// Containers that need access to the ResourceClaim reference it with this name.
+#PodResourceClaim: {
+	// Name uniquely identifies this resource claim inside the pod.
+	// This must be a DNS_LABEL.
+	name: string @go(Name) @protobuf(1,bytes)
+
+	// Source describes where to find the ResourceClaim.
+	source?: #ClaimSource @go(Source) @protobuf(2,bytes)
+}
+
+// ClaimSource describes a reference to a ResourceClaim.
+//
+// Exactly one of these fields should be set.  Consumers of this type must
+// treat an empty object as if it has an unknown value.
+#ClaimSource: {
+	// ResourceClaimName is the name of a ResourceClaim object in the same
+	// namespace as this pod.
+	resourceClaimName?: null | string @go(ResourceClaimName,*string) @protobuf(1,bytes,opt)
+
+	// ResourceClaimTemplateName is the name of a ResourceClaimTemplate
+	// object in the same namespace as this pod.
+	//
+	// The template will be used to create a new ResourceClaim, which will
+	// be bound to this pod. When this pod is deleted, the ResourceClaim
+	// will also be deleted. The name of the ResourceClaim will be <pod
+	// name>-<resource name>, where <resource name> is the
+	// PodResourceClaim.Name. Pod validation will reject the pod if the
+	// concatenated name is not valid for a ResourceClaim (e.g. too long).
+	//
+	// An existing ResourceClaim with that name that is not owned by the
+	// pod will not be used for the pod to avoid using an unrelated
+	// resource by mistake. Scheduling and pod startup are then blocked
+	// until the unrelated ResourceClaim is removed.
+	//
+	// This field is immutable and no changes will be made to the
+	// corresponding ResourceClaim by the control plane after creating the
+	// ResourceClaim.
+	resourceClaimTemplateName?: null | string @go(ResourceClaimTemplateName,*string) @protobuf(2,bytes,opt)
 }
 
 // OSName is the set of OS'es that can be used in OS.
@@ -3731,6 +3863,13 @@ import (
 	// https://github.com/opencontainers/runtime-spec/blob/master/config.md#platform-specific-configuration
 	// Clients should expect to handle additional values and treat unrecognized values in this field as os: null
 	name: #OSName @go(Name) @protobuf(1,bytes,opt)
+}
+
+// PodSchedulingGate is associated to a Pod to guard its scheduling.
+#PodSchedulingGate: {
+	// Name of the scheduling gate.
+	// Each scheduling gate must have a unique name field.
+	name: string @go(Name) @protobuf(1,bytes,opt)
 }
 
 // +enum
@@ -3860,7 +3999,7 @@ import (
 	// - Ignore: nodeAffinity/nodeSelector are ignored. All nodes are included in the calculations.
 	//
 	// If this value is nil, the behavior is equivalent to the Honor policy.
-	// This is a alpha-level feature enabled by the NodeInclusionPolicyInPodTopologySpread feature flag.
+	// This is a beta-level feature default enabled by the NodeInclusionPolicyInPodTopologySpread feature flag.
 	// +optional
 	nodeAffinityPolicy?: null | #NodeInclusionPolicy @go(NodeAffinityPolicy,*NodeInclusionPolicy) @protobuf(6,bytes,opt)
 
@@ -3871,7 +4010,7 @@ import (
 	// - Ignore: node taints are ignored. All nodes are included.
 	//
 	// If this value is nil, the behavior is equivalent to the Ignore policy.
-	// This is a alpha-level feature enabled by the NodeInclusionPolicyInPodTopologySpread feature flag.
+	// This is a beta-level feature default enabled by the NodeInclusionPolicyInPodTopologySpread feature flag.
 	// +optional
 	nodeTaintsPolicy?: null | #NodeInclusionPolicy @go(NodeTaintsPolicy,*NodeInclusionPolicy) @protobuf(7,bytes,opt)
 
@@ -3967,8 +4106,11 @@ import (
 	runAsNonRoot?: null | bool @go(RunAsNonRoot,*bool) @protobuf(3,varint,opt)
 
 	// A list of groups applied to the first process run in each container, in addition
-	// to the container's primary GID.  If unspecified, no groups will be added to
-	// any container.
+	// to the container's primary GID, the fsGroup (if specified), and group memberships
+	// defined in the container image for the uid of the container process. If unspecified,
+	// no additional groups are added to any container. Note that group memberships
+	// defined in the container image for the uid of the container process are still effective,
+	// even if they are not included in this list.
 	// Note that this field cannot be set when spec.os.name is windows.
 	// +optional
 	supplementalGroups?: [...int64] @go(SupplementalGroups,[]int64) @protobuf(4,varint,rep)
@@ -4101,7 +4243,7 @@ import (
 // IP address information for entries in the (plural) PodIPs field.
 // Each entry includes:
 //
-//	IP: An IP address allocated to the pod. Routable at least within the cluster.
+// IP: An IP address allocated to the pod. Routable at least within the cluster.
 #PodIP: {
 	// ip is an IP address (IPv4 or IPv6) assigned to the pod
 	ip?: string @go(IP) @protobuf(1,bytes,opt)
@@ -4510,7 +4652,7 @@ import (
 // ReplicationControllerStatus represents the current status of a replication
 // controller.
 #ReplicationControllerStatus: {
-	// Replicas is the most recently oberved number of replicas.
+	// Replicas is the most recently observed number of replicas.
 	// More info: https://kubernetes.io/docs/concepts/workloads/controllers/replicationcontroller#what-is-a-replicationcontroller
 	replicas: int32 @go(Replicas) @protobuf(1,varint,opt)
 
@@ -5022,7 +5164,6 @@ import (
 	// implementation (e.g. cloud providers) should ignore Services that set this field.
 	// This field can only be set when creating or updating a Service to type 'LoadBalancer'.
 	// Once set, it can not be changed. This field will be wiped when a service is updated to a non 'LoadBalancer' type.
-	// +featureGate=LoadBalancerClass
 	// +optional
 	loadBalancerClass?: null | string @go(LoadBalancerClass,*string) @protobuf(21,bytes,opt)
 
@@ -5032,7 +5173,6 @@ import (
 	// dropping the traffic if there are no local endpoints. The default value,
 	// "Cluster", uses the standard behavior of routing to all endpoints evenly
 	// (possibly modified by topology and other features).
-	// +featureGate=ServiceInternalTrafficPolicy
 	// +optional
 	internalTrafficPolicy?: null | #ServiceInternalTrafficPolicyType @go(InternalTrafficPolicy,*ServiceInternalTrafficPolicyType) @protobuf(22,bytes,opt)
 }
@@ -5181,17 +5321,17 @@ import (
 
 // Endpoints is a collection of endpoints that implement the actual service. Example:
 //
-//	 Name: "mysvc",
-//	 Subsets: [
-//	   {
-//	     Addresses: [{"ip": "10.10.1.1"}, {"ip": "10.10.2.2"}],
-//	     Ports: [{"name": "a", "port": 8675}, {"name": "b", "port": 309}]
-//	   },
-//	   {
-//	     Addresses: [{"ip": "10.10.3.3"}],
-//	     Ports: [{"name": "a", "port": 93}, {"name": "b", "port": 76}]
-//	   },
-//	]
+//  Name: "mysvc",
+//  Subsets: [
+//    {
+//      Addresses: [{"ip": "10.10.1.1"}, {"ip": "10.10.2.2"}],
+//      Ports: [{"name": "a", "port": 8675}, {"name": "b", "port": 309}]
+//    },
+//    {
+//      Addresses: [{"ip": "10.10.3.3"}],
+//      Ports: [{"name": "a", "port": 93}, {"name": "b", "port": 76}]
+//    },
+// ]
 #Endpoints: {
 	metav1.#TypeMeta
 
@@ -5215,15 +5355,15 @@ import (
 // expanded set of endpoints is the Cartesian product of Addresses x Ports.
 // For example, given:
 //
-//	{
-//	  Addresses: [{"ip": "10.10.1.1"}, {"ip": "10.10.2.2"}],
-//	  Ports:     [{"name": "a", "port": 8675}, {"name": "b", "port": 309}]
-//	}
+// {
+//   Addresses: [{"ip": "10.10.1.1"}, {"ip": "10.10.2.2"}],
+//   Ports:     [{"name": "a", "port": 8675}, {"name": "b", "port": 309}]
+// }
 //
 // The resulting set of endpoints can be viewed as:
 //
-//	a: [ 10.10.1.1:8675, 10.10.2.2:8675 ],
-//	b: [ 10.10.1.1:309, 10.10.2.2:309 ]
+// a: [ 10.10.1.1:8675, 10.10.2.2:8675 ],
+// b: [ 10.10.1.1:309, 10.10.2.2:309 ]
 #EndpointSubset: {
 	// IP addresses which offer the related ports that are marked as ready. These endpoints
 	// should be considered safe for load balancers and clients to utilize.
@@ -5333,7 +5473,7 @@ import (
 	// +optional
 	taints?: [...#Taint] @go(Taints,[]Taint) @protobuf(5,bytes,opt)
 
-	// Deprecated: Previously used to specify the source of the node's configuration for the DynamicKubeletConfig feature. This feature is removed from Kubelets as of 1.24 and will be fully removed in 1.26.
+	// Deprecated: Previously used to specify the source of the node's configuration for the DynamicKubeletConfig feature. This feature is removed.
 	// +optional
 	configSource?: null | #NodeConfigSource @go(ConfigSource,*NodeConfigSource) @protobuf(6,bytes,opt)
 
@@ -5506,7 +5646,7 @@ import (
 	// More info: https://kubernetes.io/docs/concepts/nodes/node/#addresses
 	// Note: This field is declared as mergeable, but the merge key is not sufficiently
 	// unique, which can cause data corruption when it is merged. Callers should instead
-	// use a full-replacement patch. See http://pr.k8s.io/79391 for an example.
+	// use a full-replacement patch. See https://pr.k8s.io/79391 for an example.
 	// +optional
 	// +patchMergeKey=type
 	// +patchStrategy=merge

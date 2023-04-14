@@ -21,11 +21,11 @@ package types
 //
 // * The cloudproviders have the own names: GCE has InstanceName, AWS has InstanceId.
 //
-//	For GCE, InstanceName is the Name of an Instance object in the GCE API.  On GCE, Instance.Name becomes the
-//	Hostname, and thus it makes sense also to use it as the Node.Name.  But that is GCE specific, and it is up
-//	to the cloudprovider how to do this mapping.
+// For GCE, InstanceName is the Name of an Instance object in the GCE API.  On GCE, Instance.Name becomes the
+// Hostname, and thus it makes sense also to use it as the Node.Name.  But that is GCE specific, and it is up
+// to the cloudprovider how to do this mapping.
 //
-//	For AWS, the InstanceID is not yet suitable for use as a Node.Name, so we actually use the
-//	PrivateDnsName for the Node.Name.  And this is _not_ always the same as the hostname: if
-//	we are using a custom DHCP domain it won't be.
+//         For AWS, the InstanceID is not yet suitable for use as a Node.Name, so we actually use the
+//         PrivateDnsName for the Node.Name.  And this is _not_ always the same as the hostname: if
+//         we are using a custom DHCP domain it won't be.
 #NodeName: string

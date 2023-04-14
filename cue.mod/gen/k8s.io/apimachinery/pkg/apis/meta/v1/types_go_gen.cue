@@ -1453,17 +1453,17 @@ import (
 // ---
 // This struct is intended for direct use as an array at the field path .status.conditions.  For example,
 //
-//	type FooStatus struct{
-//	    // Represents the observations of a foo's current state.
-//	    // Known .status.conditions.type are: "Available", "Progressing", and "Degraded"
-//	    // +patchMergeKey=type
-//	    // +patchStrategy=merge
-//	    // +listType=map
-//	    // +listMapKey=type
-//	    Conditions []metav1.Condition `json:"conditions,omitempty" patchStrategy:"merge" patchMergeKey:"type" protobuf:"bytes,1,rep,name=conditions"`
+// type FooStatus struct{
+//     // Represents the observations of a foo's current state.
+//     // Known .status.conditions.type are: "Available", "Progressing", and "Degraded"
+//     // +patchMergeKey=type
+//     // +patchStrategy=merge
+//     // +listType=map
+//     // +listMapKey=type
+//     Conditions []metav1.Condition `json:"conditions,omitempty" patchStrategy:"merge" patchMergeKey:"type" protobuf:"bytes,1,rep,name=conditions"`
 //
-//	    // other fields
-//	}
+//     // other fields
+// }
 #Condition: {
 	// type of condition in CamelCase or in foo.example.com/CamelCase.
 	// ---

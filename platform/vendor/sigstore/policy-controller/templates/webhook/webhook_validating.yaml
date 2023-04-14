@@ -1,0 +1,15 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: {{ required "A valid cosign.webhookName is required" .Values.cosign.webhookName }}
+webhooks:
+- name: {{ required "A valid cosign.webhookName is required" .Values.cosign.webhookName }}
+  namespaceSelector:
+{{- include "policy-controller.webhook.namespaceSelector" . | indent 4 }}
+  admissionReviewVersions: [v1]
+  clientConfig:
+    service:
+      name: webhook
+      namespace: {{ .Release.Namespace }}
+  failurePolicy: Fail
+  sideEffects: None

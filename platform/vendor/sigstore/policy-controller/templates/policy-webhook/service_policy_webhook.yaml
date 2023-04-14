@@ -1,0 +1,63 @@
+# Copyright 2022 The Sigstore Authors.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    {{- if .Values.policywebhook.service.annotations }}
+    {{ toYaml .Values.policywebhook.service.annotations | nindent 4 }}
+    {{- end }}
+  labels:
+    {{- include "policy-controller.labels" . | nindent 4 }}
+    control-plane: {{ template "policy-controller.fullname" . }}-policy-webhook
+  name: policy-webhook
+  namespace: {{ .Release.Namespace }}
+spec:
+  type: {{.Values.policywebhook.service.type}}
+  ports:
+  - name: https
+    port: {{ .Values.policywebhook.service.port }}
+    protocol: TCP
+    targetPort: https
+    {{- if and .Values.policywebhook.service.nodePort (eq "NodePort" .Values.policywebhook.service.type) }}
+    nodePort: {{ .Values.policywebhook.service.nodePort }}
+    {{- end }}
+  selector:
+    {{- include "policy-controller.selectorLabels" . | nindent 4 }}
+    control-plane: {{ template "policy-controller.fullname" . }}-policy-webhook
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    {{- if .Values.policywebhook.service.annotations }}
+    {{ toYaml .Values.policywebhook.service.annotations | nindent 4 }}
+    {{- end }}
+  labels:
+    {{- include "policy-controller.labels" . | nindent 4 }}
+    control-plane: {{ template "policy-controller.fullname" . }}-policy-webhook
+  name: {{ template "policy-controller.fullname" . }}-policy-webhook-metrics
+  namespace: {{ .Release.Namespace }}
+spec:
+  type: ClusterIP
+  ports:
+  - name: metrics
+    port: 9090
+    protocol: TCP
+    targetPort: metrics
+  selector:
+    {{- include "policy-controller.selectorLabels" . | nindent 4 }}
+    control-plane: {{ template "policy-controller.fullname" . }}-policy-webhook

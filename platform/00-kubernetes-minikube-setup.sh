@@ -6,7 +6,7 @@ set -euo pipefail
 #       There are multiple ways to validate signatures, checksums, etc.
 
 # PINNED VERSIONS GO HERE
-MINIKUBE_VERSION=v1.26.1
+MINIKUBE_VERSION=v1.30.1
 MINIKUBE_FILE_NAME=minikube-linux-amd64
 MINIKUBE_URL=https://github.com/kubernetes/minikube/releases/download/$MINIKUBE_VERSION/$MINIKUBE_FILE_NAME
 
@@ -20,7 +20,7 @@ TKN_FILE_NAME=tkn_0.30.0_Linux_x86_64.tar.gz
 TKN_URL=https://github.com/tektoncd/cli/releases/download/$TKN_VERSION/$TKN_FILE_NAME
 TKN_SHA256=34108766faf4cb58db12c02b872531f672b798a011316a9d3c0f74f418532e90
 
-KUBECTL_VERSION=v1.22.3
+KUBECTL_VERSION=v1.27.1
 KUBECTL_FILE_NAME=kubectl
 KUBECTL_URL=https://dl.k8s.io/release/$KUBECTL_VERSION/bin/linux/amd64/kubectl
 KUBECTL_VALIDATE_CHECKSUM_URL=$KUBECTL_URL.sha256

@@ -32,8 +32,8 @@ make example-sample-pipeline
 tkn pr logs --last -f
 
 # Export the value of IMAGE_URL from the last taskrun and the taskrun name:
-IMAGE_URL=$(tkn pr describe --last -o jsonpath='{..taskResults}' | jq -r '.[] | select(.name | match("IMAGE_URL$")) | .value')
-TASK_RUN=$(tkn pr describe --last -o json | jq -r '.status.taskRuns | keys[] as $k | {"k": $k, "v": .[$k]} | select(.v.status.taskResults[]?.name | match("IMAGE_URL$")) | .k')
+IMAGE_URL=$(tkn pr describe --last -o jsonpath='{..taskResults}' | jq -r '.[] | select(.name == "IMAGE_URL") | .value')
+TASK_RUN=$(tkn pr describe --last -o json | jq -r '.status.taskRuns | keys[] as $k | {"k": $k, "v": .[$k]} | select(.v.status.taskResults[]?.name == "IMAGE_URL") | .k')
 if [ "${REGISTRY}" = "registry.registry" ]; then
   : "${REGISTRY_PORT:=5000}"
   IMAGE_URL="$(echo "${IMAGE_URL}" | sed 's#'${REGISTRY}'#127.0.0.1:'${REGISTRY_PORT}'#')"

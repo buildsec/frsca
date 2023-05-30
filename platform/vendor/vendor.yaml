@@ -5,7 +5,7 @@ files:
     destination_dir: "tekton/pipeline"
     version: "v0.41.0"
   - release_file: "https://storage.googleapis.com/tekton-releases/chains/previous/v0.16.0/release.yaml"
-    rekor_uuid: "24296fb24b8ad77a9a10cc2c864ff3b62961e990c5e6ebc3374f9e6bcb0a5f52375ef3177c0ca8f0"
+    rekor_uuid: "24296fb24b8ad77a3c42d79eba887ff35f251406199a42b1707976f80eaab969211e6db424640a52"
     validation_type: "rekor"
     destination_dir: "tekton/chains"
     version: "v0.16.0"

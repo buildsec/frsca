@@ -12,7 +12,7 @@ mkdir /tmp/example-sample-pipeline
 cd /tmp/example-sample-pipeline
 git clone https://frsca:demo1234@gitea-http:3000/frsca/example-sample-pipeline .
 git commit -m 'Trigger Build' --allow-empty
-git push origin master
+git push
 cd -
 rm -rf /tmp/example-sample-pipeline
 EOF

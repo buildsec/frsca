@@ -76,9 +76,9 @@ frsca: triggerTemplate: [Name=_]: spec: resourcetemplates: [{
 frsca: configMap: "grype-config-map": {
 	data: ".grype.yaml": """
 		ignore:
-		#  - vulnerability: CVE-2022-30065
-		#    package:
-		#      type: apk
+		  - vulnerability: CVE-2023-2650
+		    package:
+		      type: apk
 
 		"""
 }

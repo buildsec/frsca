@@ -1,9 +1,9 @@
 package frsca
 
-frsca: clusterPolicy: "attest-code-review": {
+frsca: clusterPolicy: "attest-code-review-prod": {
 	spec: rules: [{
 		verifyImages: [{
-			image: #public.repo
+			imageReferences: [ #public.repo ]
 			attestations: [{
 				predicateType: "https://slsa.dev/provenance/v0.2"
 				conditions: [{
@@ -17,10 +17,22 @@ frsca: clusterPolicy: "attest-code-review": {
 						value:    "tekton.dev/v1beta1/TaskRun"
 					}]
 				}]
+				attestors: [{
+					entries: [{
+						keys: { publicKeys: #kyvernoKeys.ttlsh }
+					}]
+				}]
 			}]
-			key: "{{ keys.data.ttlsh }}"
-		}, {
-			image: "gcr.io/tekton-releases/github.com/tektoncd/*"
+		}]
+		match: resources: namespaces: ["prod"]
+	}]
+	metadata: annotations: "pod-policies.kyverno.io/autogen-controllers": "none"
+}
+
+frsca: clusterPolicy: "attest-code-review-tekton": {
+	spec: rules: [{
+		verifyImages: [{
+			imageReferences: [ "gcr.io/tekton-releases/github.com/tektoncd/*" ]
 			attestations: [{
 				predicateType: "https://slsa.dev/provenance/v0.2"
 				conditions: [{
@@ -31,15 +43,18 @@ frsca: clusterPolicy: "attest-code-review": {
 					}, {
 						key:      "{{ buildType }}"
 						operator: "Equals"
-						value:    "https://tekton.dev/attestations/chains@v2"
+						value:    "tekton.dev/v1beta1/TaskRun"
+					}]
+				}]
+				attestors: [{
+					entries: [{
+						keys: { publicKeys: #kyvernoKeys.tektoncd }
 					}]
 				}]
 			}]
-			key: "{{ keys.data.tektoncd }}"
 		}]
 		match: resources: namespaces: ["tekton-pipelines",
-			"tekton-chains",
-			"prod"]
+			"tekton-chains"]
 	}]
 	metadata: annotations: "pod-policies.kyverno.io/autogen-controllers": "none"
 }

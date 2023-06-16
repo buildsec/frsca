@@ -4,13 +4,13 @@ frsca: clusterPolicy: "verify-image": {
 	spec: rules: [{
 		verifyImages: [{
 			image: "gcr.io/tekton-releases/github.com/tektoncd/*"
-			key:   "{{ keys.data.tektoncd }}"
+			key:   #kyvernoKeys.tektoncd
 		}, {
 			image: "gcr.io/projectsigstore/*"
-			key:   "{{ keys.data.projectsigstore }}"
+			key:   #kyvernoKeys.projectsigstore
 		}, {
 			image: "ttl.sh/*"
-			key:   "{{ keys.data.ttlsh }}"
+			key:   #kyvernoKeys.ttlsh
 		}, {
 			image:   "ghcr.io/google/ko"
 			subject: "https://github.com/google/ko/*"

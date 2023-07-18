@@ -25,17 +25,24 @@ make example-buildpacks
 # Wait until it completes.
 tkn pr logs --last -f
 
-# Ensure it has been signed.
-tkn tr describe --last -o jsonpath='{.metadata.annotations.chains\.tekton\.dev/signed}'
-# Should output "true"
-
 # Export the value of IMAGE_URL from the last pipeline run and the associated taskrun name:
-IMAGE_URL=$(tkn pr describe --last -o jsonpath='{..taskResults}' | jq -r '.[] | select(.name | match("IMAGE_URL$")) | .value')
-TASK_RUN=$(tkn pr describe --last -o json | jq -r '.status.taskRuns | keys[] as $k | {"k": $k, "v": .[$k]} | select(.v.status.taskResults[]?.name | match("IMAGE_URL$")) | .k')
+TASK_RUNS=($(tkn pr describe --last -o jsonpath='{.status.childReferences}' | jq -r '.[] | select(.kind | match("TaskRun")) | .name'))
+TASK_RUN="none" IMAGE_URL="none"; for tr in "${TASK_RUNS[@]}"; do
+  image=$(tkn tr describe "${tr}" -o jsonpath='{.status.results}' | jq -r '.[] | select(.name | match("IMAGE_URL$")) | .value')
+  if [ -n "${image}" ]; then
+    TASK_RUN="${tr}"
+    IMAGE_URL="${image}"
+    break
+  fi
+done
 if [ "${REGISTRY}" = "registry.registry" ]; then
   : "${REGISTRY_PORT:=5000}"
   IMAGE_URL="$(echo "${IMAGE_URL}" | sed 's#'${REGISTRY}'#127.0.0.1:'${REGISTRY_PORT}'#')"
 fi
+
+# Ensure it has been signed.
+tkn tr describe "${TASK_RUN}" -o jsonpath='{.metadata.annotations.chains\.tekton\.dev/signed}'
+# Should output "true"
 
 # Double check that the attestation and the signature were uploaded to the OCI.
 crane ls "$(echo -n ${IMAGE_URL} | sed 's|:[^/]*$||')"

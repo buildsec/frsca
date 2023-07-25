@@ -73,6 +73,7 @@ import corev1 "k8s.io/api/core/v1"
 
 // WorkspacePipelineDeclaration creates a named slot in a Pipeline that a PipelineRun
 // is expected to populate with a workspace binding.
+//
 // Deprecated: use PipelineWorkspaceDeclaration type instead
 #WorkspacePipelineDeclaration: #PipelineWorkspaceDeclaration
 

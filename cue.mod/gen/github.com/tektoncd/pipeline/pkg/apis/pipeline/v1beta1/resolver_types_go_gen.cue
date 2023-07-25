@@ -22,5 +22,5 @@ package v1beta1
 	// the chosen resolver.
 	// +optional
 	// +listType=atomic
-	params?: [...#Param] @go(Params,[]Param)
+	params?: #Params @go(Params)
 }

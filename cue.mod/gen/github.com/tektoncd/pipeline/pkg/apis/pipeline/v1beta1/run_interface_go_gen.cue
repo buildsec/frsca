@@ -4,5 +4,5 @@
 
 package v1beta1
 
-// PipelineObject is implemented by Pipeline
-#PipelineObject: _
+// RunObject is implemented by CustomRun and Run
+#RunObject: _

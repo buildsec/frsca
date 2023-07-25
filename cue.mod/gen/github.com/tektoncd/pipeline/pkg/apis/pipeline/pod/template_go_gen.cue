@@ -16,6 +16,13 @@ import corev1 "k8s.io/api/core/v1"
 	// +optional
 	nodeSelector?: {[string]: string} @go(NodeSelector,map[string]string)
 
+	// List of environment variables that can be provided to the containers belonging to the pod.
+	// +optional
+	// +patchMergeKey=name
+	// +patchStrategy=merge
+	// +listType=atomic
+	env?: [...corev1.#EnvVar] @go(Env,[]corev1.EnvVar) @protobuf(7,bytes,rep)
+
 	// If specified, the pod's tolerations.
 	// +optional
 	// +listType=atomic
@@ -107,6 +114,7 @@ import corev1 "k8s.io/api/core/v1"
 }
 
 // PodTemplate holds pod specific configuration
+//
 //nolint:revive
 #PodTemplate: #Template
 

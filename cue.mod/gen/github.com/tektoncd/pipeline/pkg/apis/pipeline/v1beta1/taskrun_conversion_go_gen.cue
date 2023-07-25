@@ -4,5 +4,5 @@
 
 package v1beta1
 
-// PipelineObject is implemented by Pipeline
-#PipelineObject: _
+_#cloudEventsAnnotationKey:     "tekton.dev/v1beta1CloudEvents"
+_#resourcesResultAnnotationKey: "tekton.dev/v1beta1ResourcesResult"

@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608  # v4.1.0
-      - uses: mfinelli/setup-shfmt@8ec8aa2cfd83a7d20a6fb746c638aae1bc181ce9  # v2.0.1
+      - uses: mfinelli/setup-shfmt@031e887e39d899d773a7e9b6dd6472c2c23ff50d  # v3.0.1
       - name: Lint all
         run: make lint
 

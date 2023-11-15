@@ -4,8 +4,6 @@
 
 package v1beta1
 
-import resource "github.com/tektoncd/pipeline/pkg/apis/resource/v1alpha1"
-
 #ParamsPrefix: "params"
 
 // ParamSpec defines arbitrary parameters needed beyond typed inputs (such as
@@ -36,20 +34,22 @@ import resource "github.com/tektoncd/pipeline/pkg/apis/resource/v1alpha1"
 	default?: null | #ParamValue @go(Default,*ParamValue)
 }
 
+// ParamSpecs is a list of ParamSpec
+#ParamSpecs: [...#ParamSpec]
+
 // PropertySpec defines the struct for object keys
 #PropertySpec: {
 	type?: #ParamType @go(Type)
 }
-
-// ResourceParam declares a string value to use for the parameter called Name, and is used in
-// the specific context of PipelineResources.
-#ResourceParam: resource.#ResourceParam
 
 // Param declares an ParamValues to use for the parameter called name.
 #Param: {
 	name:  string      @go(Name)
 	value: #ParamValue @go(Value)
 }
+
+// Params is a list of Param
+#Params: [...#Param]
 
 // ParamType indicates the type of an input parameter;
 // Used to distinguish between a single string and an array of strings.
@@ -70,4 +70,6 @@ import resource "github.com/tektoncd/pipeline/pkg/apis/resource/v1alpha1"
 #ParamValue: _
 
 // ArrayOrString is deprecated, this is to keep backward compatibility
+//
+// Deprecated: Use ParamValue instead.
 #ArrayOrString: _

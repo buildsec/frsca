@@ -5,7 +5,7 @@ frsca: clusterPolicy: "attest-code-review": {
 		verifyImages: [{
 			image: #public.repo
 			attestations: [{
-				predicateType: "https://slsa.dev/provenance/v0.2"
+				type: "https://slsa.dev/provenance/v0.2"
 				conditions: [{
 					all: [{
 						key:      "{{ builder.id }}"
@@ -17,12 +17,24 @@ frsca: clusterPolicy: "attest-code-review": {
 						value:    "tekton.dev/v1beta1/TaskRun"
 					}]
 				}]
+        attestors: [{
+          entries: [{
+            keys: {
+              publicKeys: "{{ keys.data.ttlsh }}"
+              ctlog: ignoreSCT: true
+              rekor: {
+                ignoreTlog: true
+                url: "https://rekor.sigstore.dev"
+              }
+            }
+          }]
+        }]
 			}]
-			key: "{{ keys.data.ttlsh }}"
+			// key: "{{ keys.data.ttlsh }}"
 		}, {
 			image: "gcr.io/tekton-releases/github.com/tektoncd/*"
 			attestations: [{
-				predicateType: "https://slsa.dev/provenance/v0.2"
+				type: "https://slsa.dev/provenance/v0.2"
 				conditions: [{
 					all: [{
 						key:      "{{ builder.id }}"

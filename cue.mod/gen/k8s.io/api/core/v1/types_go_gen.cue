@@ -459,6 +459,13 @@ import (
 	// for machine parsing and tidy display in the CLI.
 	// +optional
 	reason?: string @go(Reason) @protobuf(3,bytes,opt)
+
+	// lastPhaseTransitionTime is the time the phase transitioned from one to another
+	// and automatically resets to current time everytime a volume phase transitions.
+	// This is an alpha field and requires enabling PersistentVolumeLastPhaseTransitionTime feature.
+	// +featureGate=PersistentVolumeLastPhaseTransitionTime
+	// +optional
+	lastPhaseTransitionTime?: null | metav1.#Time @go(LastPhaseTransitionTime,*metav1.Time) @protobuf(4,bytes,opt)
 }
 
 // PersistentVolumeList is a list of PersistentVolume items.
@@ -549,30 +556,58 @@ import (
 	// * An existing PVC (PersistentVolumeClaim)
 	// If the provisioner or an external controller can support the specified data source,
 	// it will create a new volume based on the contents of the specified data source.
-	// If the AnyVolumeDataSource feature gate is enabled, this field will always have
-	// the same contents as the DataSourceRef field.
+	// When the AnyVolumeDataSource feature gate is enabled, dataSource contents will be copied to dataSourceRef,
+	// and dataSourceRef contents will be copied to dataSource when dataSourceRef.namespace is not specified.
+	// If the namespace is specified, then dataSourceRef will not be copied to dataSource.
 	// +optional
 	dataSource?: null | #TypedLocalObjectReference @go(DataSource,*TypedLocalObjectReference) @protobuf(7,bytes,opt)
 
 	// dataSourceRef specifies the object from which to populate the volume with data, if a non-empty
-	// volume is desired. This may be any local object from a non-empty API group (non
+	// volume is desired. This may be any object from a non-empty API group (non
 	// core object) or a PersistentVolumeClaim object.
 	// When this field is specified, volume binding will only succeed if the type of
 	// the specified object matches some installed volume populator or dynamic
 	// provisioner.
-	// This field will replace the functionality of the DataSource field and as such
+	// This field will replace the functionality of the dataSource field and as such
 	// if both fields are non-empty, they must have the same value. For backwards
-	// compatibility, both fields (DataSource and DataSourceRef) will be set to the same
+	// compatibility, when namespace isn't specified in dataSourceRef,
+	// both fields (dataSource and dataSourceRef) will be set to the same
 	// value automatically if one of them is empty and the other is non-empty.
-	// There are two important differences between DataSource and DataSourceRef:
-	// * While DataSource only allows two specific types of objects, DataSourceRef
+	// When namespace is specified in dataSourceRef,
+	// dataSource isn't set to the same value and must be empty.
+	// There are three important differences between dataSource and dataSourceRef:
+	// * While dataSource only allows two specific types of objects, dataSourceRef
 	//   allows any non-core object, as well as PersistentVolumeClaim objects.
-	// * While DataSource ignores disallowed values (dropping them), DataSourceRef
+	// * While dataSource ignores disallowed values (dropping them), dataSourceRef
 	//   preserves all values, and generates an error if a disallowed value is
 	//   specified.
+	// * While dataSource only allows local objects, dataSourceRef allows objects
+	//   in any namespaces.
 	// (Beta) Using this field requires the AnyVolumeDataSource feature gate to be enabled.
+	// (Alpha) Using the namespace field of dataSourceRef requires the CrossNamespaceVolumeDataSource feature gate to be enabled.
 	// +optional
-	dataSourceRef?: null | #TypedLocalObjectReference @go(DataSourceRef,*TypedLocalObjectReference) @protobuf(8,bytes,opt)
+	dataSourceRef?: null | #TypedObjectReference @go(DataSourceRef,*TypedObjectReference) @protobuf(8,bytes,opt)
+}
+
+#TypedObjectReference: {
+	// APIGroup is the group for the resource being referenced.
+	// If APIGroup is not specified, the specified Kind must be in the core API group.
+	// For any other third-party types, APIGroup is required.
+	// +optional
+	apiGroup?: null | string @go(APIGroup,*string) @protobuf(1,bytes,opt)
+
+	// Kind is the type of resource being referenced
+	kind: string @go(Kind) @protobuf(2,bytes,opt)
+
+	// Name is the name of resource being referenced
+	name: string @go(Name) @protobuf(3,bytes,opt)
+
+	// Namespace is the namespace of resource being referenced
+	// Note that when a namespace is specified, a gateway.networking.k8s.io/ReferenceGrant object is required in the referent namespace to allow that namespace's owner to accept the reference. See the ReferenceGrant documentation for details.
+	// (Alpha) This field requires the CrossNamespaceVolumeDataSource feature gate to be enabled.
+	// +featureGate=CrossNamespaceVolumeDataSource
+	// +optional
+	namespace?: null | string @go(Namespace,*string) @protobuf(4,bytes,opt)
 }
 
 // PersistentVolumeClaimConditionType is a valid value of PersistentVolumeClaimCondition.Type
@@ -589,37 +624,37 @@ import (
 #PersistentVolumeClaimFileSystemResizePending: #PersistentVolumeClaimConditionType & "FileSystemResizePending"
 
 // +enum
-#PersistentVolumeClaimResizeStatus: string // #enumPersistentVolumeClaimResizeStatus
+// When a controller receives persistentvolume claim update with ClaimResourceStatus for a resource
+// that it does not recognizes, then it should ignore that update and let other controllers
+// handle it.
+#ClaimResourceStatus: string // #enumClaimResourceStatus
 
-#enumPersistentVolumeClaimResizeStatus:
-	#PersistentVolumeClaimNoExpansionInProgress |
-	#PersistentVolumeClaimControllerExpansionInProgress |
-	#PersistentVolumeClaimControllerExpansionFailed |
-	#PersistentVolumeClaimNodeExpansionPending |
-	#PersistentVolumeClaimNodeExpansionInProgress |
-	#PersistentVolumeClaimNodeExpansionFailed
+#enumClaimResourceStatus:
+	#PersistentVolumeClaimControllerResizeInProgress |
+	#PersistentVolumeClaimControllerResizeFailed |
+	#PersistentVolumeClaimNodeResizePending |
+	#PersistentVolumeClaimNodeResizeInProgress |
+	#PersistentVolumeClaimNodeResizeFailed
 
-// When expansion is complete, the empty string is set by resize controller or kubelet.
-#PersistentVolumeClaimNoExpansionInProgress: #PersistentVolumeClaimResizeStatus & ""
+// State set when resize controller starts resizing the volume in control-plane.
+#PersistentVolumeClaimControllerResizeInProgress: #ClaimResourceStatus & "ControllerResizeInProgress"
 
-// State set when resize controller starts expanding the volume in control-plane
-#PersistentVolumeClaimControllerExpansionInProgress: #PersistentVolumeClaimResizeStatus & "ControllerExpansionInProgress"
-
-// State set when expansion has failed in resize controller with a terminal error.
-// Transient errors such as timeout should not set this status and should leave ResizeStatus
+// State set when resize has failed in resize controller with a terminal error.
+// Transient errors such as timeout should not set this status and should leave allocatedResourceStatus
 // unmodified, so as resize controller can resume the volume expansion.
-#PersistentVolumeClaimControllerExpansionFailed: #PersistentVolumeClaimResizeStatus & "ControllerExpansionFailed"
+#PersistentVolumeClaimControllerResizeFailed: #ClaimResourceStatus & "ControllerResizeFailed"
 
-// State set when resize controller has finished expanding the volume but further expansion is needed on the node.
-#PersistentVolumeClaimNodeExpansionPending: #PersistentVolumeClaimResizeStatus & "NodeExpansionPending"
+// State set when resize controller has finished resizing the volume but further resizing of volume
+// is needed on the node.
+#PersistentVolumeClaimNodeResizePending: #ClaimResourceStatus & "NodeResizePending"
 
-// State set when kubelet starts expanding the volume.
-#PersistentVolumeClaimNodeExpansionInProgress: #PersistentVolumeClaimResizeStatus & "NodeExpansionInProgress"
+// State set when kubelet starts resizing the volume.
+#PersistentVolumeClaimNodeResizeInProgress: #ClaimResourceStatus & "NodeResizeInProgress"
 
-// State set when expansion has failed in kubelet with a terminal error. Transient errors don't set NodeExpansionFailed.
-#PersistentVolumeClaimNodeExpansionFailed: #PersistentVolumeClaimResizeStatus & "NodeExpansionFailed"
+// State set when resizing has failed in kubelet with a terminal error. Transient errors don't set NodeResizeFailed
+#PersistentVolumeClaimNodeResizeFailed: #ClaimResourceStatus & "NodeResizeFailed"
 
-// PersistentVolumeClaimCondition contails details about state of pvc
+// PersistentVolumeClaimCondition contains details about state of pvc
 #PersistentVolumeClaimCondition: {
 	type:   #PersistentVolumeClaimConditionType @go(Type) @protobuf(1,bytes,opt,casttype=PersistentVolumeClaimConditionType)
 	status: #ConditionStatus                    @go(Status) @protobuf(2,bytes,opt,casttype=ConditionStatus)
@@ -665,25 +700,71 @@ import (
 	// +patchStrategy=merge
 	conditions?: [...#PersistentVolumeClaimCondition] @go(Conditions,[]PersistentVolumeClaimCondition) @protobuf(4,bytes,rep)
 
-	// allocatedResources is the storage resource within AllocatedResources tracks the capacity allocated to a PVC. It may
-	// be larger than the actual capacity when a volume expansion operation is requested.
+	// allocatedResources tracks the resources allocated to a PVC including its capacity.
+	// Key names follow standard Kubernetes label syntax. Valid values are either:
+	// 	* Un-prefixed keys:
+	//		- storage - the capacity of the volume.
+	//	* Custom resources must use implementation-defined prefixed names such as "example.com/my-custom-resource"
+	// Apart from above values - keys that are unprefixed or have kubernetes.io prefix are considered
+	// reserved and hence may not be used.
+	//
+	// Capacity reported here may be larger than the actual capacity when a volume expansion operation
+	// is requested.
 	// For storage quota, the larger value from allocatedResources and PVC.spec.resources is used.
 	// If allocatedResources is not set, PVC.spec.resources alone is used for quota calculation.
 	// If a volume expansion capacity request is lowered, allocatedResources is only
 	// lowered if there are no expansion operations in progress and if the actual volume capacity
 	// is equal or lower than the requested capacity.
+	//
+	// A controller that receives PVC update with previously unknown resourceName
+	// should ignore the update for the purpose it was designed. For example - a controller that
+	// only is responsible for resizing capacity of the volume, should ignore PVC updates that change other valid
+	// resources associated with PVC.
+	//
 	// This is an alpha field and requires enabling RecoverVolumeExpansionFailure feature.
 	// +featureGate=RecoverVolumeExpansionFailure
 	// +optional
 	allocatedResources?: #ResourceList @go(AllocatedResources) @protobuf(5,bytes,rep,casttype=ResourceList,castkey=ResourceName)
 
-	// resizeStatus stores status of resize operation.
-	// ResizeStatus is not set by default but when expansion is complete resizeStatus is set to empty
-	// string by resize controller or kubelet.
+	// allocatedResourceStatuses stores status of resource being resized for the given PVC.
+	// Key names follow standard Kubernetes label syntax. Valid values are either:
+	// 	* Un-prefixed keys:
+	//		- storage - the capacity of the volume.
+	//	* Custom resources must use implementation-defined prefixed names such as "example.com/my-custom-resource"
+	// Apart from above values - keys that are unprefixed or have kubernetes.io prefix are considered
+	// reserved and hence may not be used.
+	//
+	// ClaimResourceStatus can be in any of following states:
+	//	- ControllerResizeInProgress:
+	//		State set when resize controller starts resizing the volume in control-plane.
+	// 	- ControllerResizeFailed:
+	//		State set when resize has failed in resize controller with a terminal error.
+	//	- NodeResizePending:
+	//		State set when resize controller has finished resizing the volume but further resizing of
+	//		volume is needed on the node.
+	//	- NodeResizeInProgress:
+	//		State set when kubelet starts resizing the volume.
+	//	- NodeResizeFailed:
+	//		State set when resizing has failed in kubelet with a terminal error. Transient errors don't set
+	//		NodeResizeFailed.
+	// For example: if expanding a PVC for more capacity - this field can be one of the following states:
+	// 	- pvc.status.allocatedResourceStatus['storage'] = "ControllerResizeInProgress"
+	//      - pvc.status.allocatedResourceStatus['storage'] = "ControllerResizeFailed"
+	//      - pvc.status.allocatedResourceStatus['storage'] = "NodeResizePending"
+	//      - pvc.status.allocatedResourceStatus['storage'] = "NodeResizeInProgress"
+	//      - pvc.status.allocatedResourceStatus['storage'] = "NodeResizeFailed"
+	// When this field is not set, it means that no resize operation is in progress for the given PVC.
+	//
+	// A controller that receives PVC update with previously unknown resourceName or ClaimResourceStatus
+	// should ignore the update for the purpose it was designed. For example - a controller that
+	// only is responsible for resizing capacity of the volume, should ignore PVC updates that change other valid
+	// resources associated with PVC.
+	//
 	// This is an alpha field and requires enabling RecoverVolumeExpansionFailure feature.
 	// +featureGate=RecoverVolumeExpansionFailure
+	// +mapType=granular
 	// +optional
-	resizeStatus?: null | #PersistentVolumeClaimResizeStatus @go(ResizeStatus,*PersistentVolumeClaimResizeStatus) @protobuf(6,bytes,opt,casttype=PersistentVolumeClaimResizeStatus)
+	allocatedResourceStatuses?: {[string]: #ClaimResourceStatus} @go(AllocatedResourceStatuses,map[ResourceName]ClaimResourceStatus) @protobuf(7,bytes,rep)
 }
 
 // +enum
@@ -824,7 +905,7 @@ import (
 	// The maximum usage on memory medium EmptyDir would be the minimum value between
 	// the SizeLimit specified here and the sum of memory limits of all containers in a pod.
 	// The default is nil which means that the limit is undefined.
-	// More info: http://kubernetes.io/docs/user-guide/volumes#emptydir
+	// More info: https://kubernetes.io/docs/concepts/storage/volumes#emptydir
 	// +optional
 	sizeLimit?: null | resource.#Quantity @go(SizeLimit,*resource.Quantity) @protobuf(2,bytes,opt)
 }
@@ -1913,7 +1994,7 @@ import (
 	// must identify itself with an identifier specified in the audience of the
 	// token, and otherwise should reject the token. The audience defaults to the
 	// identifier of the apiserver.
-	//+optional
+	// +optional
 	audience?: string @go(Audience) @protobuf(1,bytes,rep)
 
 	// expirationSeconds is the requested duration of validity of the service
@@ -1922,7 +2003,7 @@ import (
 	// start trying to rotate the token if the token is older than 80 percent of
 	// its time to live or if the token is older than 24 hours.Defaults to 1 hour
 	// and must be at least 10 minutes.
-	//+optional
+	// +optional
 	expirationSeconds?: null | int64 @go(ExpirationSeconds,*int64) @protobuf(2,varint,opt)
 
 	// path is the path relative to the mount point of the file to project the
@@ -2054,7 +2135,6 @@ import (
 	// controllerExpandSecretRef is a reference to the secret object containing
 	// sensitive information to pass to the CSI driver to complete the CSI
 	// ControllerExpandVolume call.
-	// This is an beta field and requires enabling ExpandCSIVolumes feature gate.
 	// This field is optional, and may be empty if no secret is required. If the
 	// secret object contains more than one secret, all secrets are passed.
 	// +optional
@@ -2063,9 +2143,10 @@ import (
 	// nodeExpandSecretRef is a reference to the secret object containing
 	// sensitive information to pass to the CSI driver to complete the CSI
 	// NodeExpandVolume call.
-	// This is an alpha field and requires enabling CSINodeExpandSecret feature gate.
+	// This is a beta field which is enabled default by CSINodeExpandSecret feature gate.
 	// This field is optional, may be omitted if no secret is required. If the
 	// secret object contains more than one secret, all secrets are passed.
+	// +featureGate=CSINodeExpandSecret
 	// +optional
 	nodeExpandSecretRef?: null | #SecretReference @go(NodeExpandSecretRef,*SecretReference) @protobuf(10,bytes,opt)
 }
@@ -2386,7 +2467,8 @@ import (
 
 // HTTPHeader describes a custom header to be used in HTTP probes
 #HTTPHeader: {
-	// The header field name
+	// The header field name.
+	// This will be canonicalized upon output, so case-variant names will be understood as the same header.
 	name: string @go(Name) @protobuf(1,bytes,opt)
 
 	// The header field value
@@ -2532,6 +2614,36 @@ import (
 // PullIfNotPresent means that kubelet pulls if the image isn't present on disk. Container will fail if the image isn't present and the pull fails.
 #PullIfNotPresent: #PullPolicy & "IfNotPresent"
 
+// ResourceResizeRestartPolicy specifies how to handle container resource resize.
+#ResourceResizeRestartPolicy: string // #enumResourceResizeRestartPolicy
+
+#enumResourceResizeRestartPolicy:
+	#NotRequired |
+	#RestartContainer
+
+// 'NotRequired' means Kubernetes will try to resize the container
+// without restarting it, if possible. Kubernetes may however choose to
+// restart the container if it is unable to actuate resize without a
+// restart. For e.g. the runtime doesn't support restart-free resizing.
+#NotRequired: #ResourceResizeRestartPolicy & "NotRequired"
+
+// 'RestartContainer' means Kubernetes will resize the container in-place
+// by stopping and starting the container when new resources are applied.
+// This is needed for legacy applications. For e.g. java apps using the
+// -xmxN flag which are unable to use resized memory without restarting.
+#RestartContainer: #ResourceResizeRestartPolicy & "RestartContainer"
+
+// ContainerResizePolicy represents resource resize policy for the container.
+#ContainerResizePolicy: {
+	// Name of the resource to which this resource resize policy applies.
+	// Supported values: cpu, memory.
+	resourceName: #ResourceName @go(ResourceName) @protobuf(1,bytes,opt,casttype=ResourceName)
+
+	// Restart policy to apply when specified resource is resized.
+	// If not specified, it defaults to NotRequired.
+	restartPolicy: #ResourceResizeRestartPolicy @go(RestartPolicy) @protobuf(2,bytes,opt,casttype=ResourceResizeRestartPolicy)
+}
+
 // PreemptionPolicy describes a policy for if/when to preempt a pod.
 // +enum
 #PreemptionPolicy: string // #enumPreemptionPolicy
@@ -2586,10 +2698,32 @@ import (
 
 	// Requests describes the minimum amount of compute resources required.
 	// If Requests is omitted for a container, it defaults to Limits if that is explicitly specified,
-	// otherwise to an implementation-defined value.
+	// otherwise to an implementation-defined value. Requests cannot exceed Limits.
 	// More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
 	// +optional
 	requests?: #ResourceList @go(Requests) @protobuf(2,bytes,rep,casttype=ResourceList,castkey=ResourceName)
+
+	// Claims lists the names of resources, defined in spec.resourceClaims,
+	// that are used by this container.
+	//
+	// This is an alpha field and requires enabling the
+	// DynamicResourceAllocation feature gate.
+	//
+	// This field is immutable. It can only be set for containers.
+	//
+	// +listType=map
+	// +listMapKey=name
+	// +featureGate=DynamicResourceAllocation
+	// +optional
+	claims?: [...#ResourceClaim] @go(Claims,[]ResourceClaim) @protobuf(3,bytes,opt)
+}
+
+// ResourceClaim references one entry in PodSpec.ResourceClaims.
+#ResourceClaim: {
+	// Name must match the name of one entry in pod.spec.resourceClaims of
+	// the Pod where this field is used. It makes that resource available
+	// inside a container.
+	name: string @go(Name) @protobuf(1,bytes,opt)
 }
 
 // TerminationMessagePathDefault means the default path to capture the application termination message running in a container
@@ -2674,6 +2808,31 @@ import (
 	// More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
 	// +optional
 	resources?: #ResourceRequirements @go(Resources) @protobuf(8,bytes,opt)
+
+	// Resources resize policy for the container.
+	// +featureGate=InPlacePodVerticalScaling
+	// +optional
+	// +listType=atomic
+	resizePolicy?: [...#ContainerResizePolicy] @go(ResizePolicy,[]ContainerResizePolicy) @protobuf(23,bytes,rep)
+
+	// RestartPolicy defines the restart behavior of individual containers in a pod.
+	// This field may only be set for init containers, and the only allowed value is "Always".
+	// For non-init containers or when this field is not specified,
+	// the restart behavior is defined by the Pod's restart policy and the container type.
+	// Setting the RestartPolicy as "Always" for the init container will have the following effect:
+	// this init container will be continually restarted on
+	// exit until all regular containers have terminated. Once all regular
+	// containers have completed, all init containers with restartPolicy "Always"
+	// will be shut down. This lifecycle differs from normal init containers and
+	// is often referred to as a "sidecar" container. Although this init
+	// container still starts in the init container sequence, it does not wait
+	// for the container to complete before proceeding to the next init
+	// container. Instead, the next init container starts immediately after this
+	// init container is started, or after any startupProbe has successfully
+	// completed.
+	// +featureGate=SidecarContainers
+	// +optional
+	restartPolicy?: null | #ContainerRestartPolicy @go(RestartPolicy,*ContainerRestartPolicy) @protobuf(24,bytes,opt,casttype=ContainerRestartPolicy)
 
 	// Pod volumes to mount into the container's filesystem.
 	// Cannot be updated.
@@ -2789,8 +2948,6 @@ import (
 	tcpSocket?: null | #TCPSocketAction @go(TCPSocket,*TCPSocketAction) @protobuf(3,bytes,opt)
 
 	// GRPC specifies an action involving a GRPC port.
-	// This is a beta field and requires enabling GRPCContainerProbe feature gate.
-	// +featureGate=GRPCContainerProbe
 	// +optional
 	grpc?: null | #GRPCAction @go(GRPC,*GRPCAction) @protobuf(4,bytes,opt)
 }
@@ -2915,41 +3072,76 @@ import (
 
 // ContainerStatus contains details for the current status of this container.
 #ContainerStatus: {
-	// This must be a DNS_LABEL. Each container in a pod must have a unique name.
+	// Name is a DNS_LABEL representing the unique name of the container.
+	// Each container in a pod must have a unique name across all container types.
 	// Cannot be updated.
 	name: string @go(Name) @protobuf(1,bytes,opt)
 
-	// Details about the container's current condition.
+	// State holds details about the container's current condition.
 	// +optional
 	state?: #ContainerState @go(State) @protobuf(2,bytes,opt)
 
-	// Details about the container's last termination condition.
+	// LastTerminationState holds the last termination state of the container to
+	// help debug container crashes and restarts. This field is not
+	// populated if the container is still running and RestartCount is 0.
 	// +optional
 	lastState?: #ContainerState @go(LastTerminationState) @protobuf(3,bytes,opt)
 
-	// Specifies whether the container has passed its readiness probe.
+	// Ready specifies whether the container is currently passing its readiness check.
+	// The value will change as readiness probes keep executing. If no readiness
+	// probes are specified, this field defaults to true once the container is
+	// fully started (see Started field).
+	//
+	// The value is typically used to determine whether a container is ready to
+	// accept traffic.
 	ready: bool @go(Ready) @protobuf(4,varint,opt)
 
-	// The number of times the container has been restarted.
+	// RestartCount holds the number of times the container has been restarted.
+	// Kubelet makes an effort to always increment the value, but there
+	// are cases when the state may be lost due to node restarts and then the value
+	// may be reset to 0. The value is never negative.
 	restartCount: int32 @go(RestartCount) @protobuf(5,varint,opt)
 
-	// The image the container is running.
+	// Image is the name of container image that the container is running.
+	// The container image may not match the image used in the PodSpec,
+	// as it may have been resolved by the runtime.
 	// More info: https://kubernetes.io/docs/concepts/containers/images.
 	image: string @go(Image) @protobuf(6,bytes,opt)
 
-	// ImageID of the container's image.
+	// ImageID is the image ID of the container's image. The image ID may not
+	// match the image ID of the image used in the PodSpec, as it may have been
+	// resolved by the runtime.
 	imageID: string @go(ImageID) @protobuf(7,bytes,opt)
 
-	// Container's ID in the format '<type>://<container_id>'.
+	// ContainerID is the ID of the container in the format '<type>://<container_id>'.
+	// Where type is a container runtime identifier, returned from Version call of CRI API
+	// (for example "containerd").
 	// +optional
 	containerID?: string @go(ContainerID) @protobuf(8,bytes,opt)
 
-	// Specifies whether the container has passed its startup probe.
-	// Initialized as false, becomes true after startupProbe is considered successful.
-	// Resets to false when the container is restarted, or if kubelet loses state temporarily.
-	// Is always true when no startupProbe is defined.
+	// Started indicates whether the container has finished its postStart lifecycle hook
+	// and passed its startup probe.
+	// Initialized as false, becomes true after startupProbe is considered
+	// successful. Resets to false when the container is restarted, or if kubelet
+	// loses state temporarily. In both cases, startup probes will run again.
+	// Is always true when no startupProbe is defined and container is running and
+	// has passed the postStart lifecycle hook. The null value must be treated the
+	// same as false.
 	// +optional
 	started?: null | bool @go(Started,*bool) @protobuf(9,varint,opt)
+
+	// AllocatedResources represents the compute resources allocated for this container by the
+	// node. Kubelet sets this value to Container.Resources.Requests upon successful pod admission
+	// and after successfully admitting desired pod resize.
+	// +featureGate=InPlacePodVerticalScaling
+	// +optional
+	allocatedResources?: #ResourceList @go(AllocatedResources) @protobuf(10,bytes,rep,casttype=ResourceList,castkey=ResourceName)
+
+	// Resources represents the compute resource requests and limits that have been successfully
+	// enacted on the running container after it has been started or has been successfully resized.
+	// +featureGate=InPlacePodVerticalScaling
+	// +optional
+	resources?: null | #ResourceRequirements @go(Resources,*ResourceRequirements) @protobuf(11,bytes,opt)
 }
 
 // PodPhase is a label for the condition of a pod at the current time.
@@ -2993,7 +3185,7 @@ import (
 	#PodInitialized |
 	#PodReady |
 	#PodScheduled |
-	#AlphaNoCompatGuaranteeDisruptionTarget
+	#DisruptionTarget
 
 // ContainersReady indicates whether all containers in the pod are ready.
 #ContainersReady: #PodConditionType & "ContainersReady"
@@ -3008,14 +3200,29 @@ import (
 // PodScheduled represents status of the scheduling process for this pod.
 #PodScheduled: #PodConditionType & "PodScheduled"
 
-// AlphaNoCompatGuaranteeDisruptionTarget indicates the pod is about to be deleted due to a
+// DisruptionTarget indicates the pod is about to be terminated due to a
 // disruption (such as preemption, eviction API or garbage-collection).
-// The constant is to be renamed once the name is accepted within the KEP-3329.
-#AlphaNoCompatGuaranteeDisruptionTarget: #PodConditionType & "DisruptionTarget"
+#DisruptionTarget: #PodConditionType & "DisruptionTarget"
 
 // PodReasonUnschedulable reason in PodScheduled PodCondition means that the scheduler
 // can't schedule the pod right now, for example due to insufficient resources in the cluster.
 #PodReasonUnschedulable: "Unschedulable"
+
+// PodReasonSchedulingGated reason in PodScheduled PodCondition means that the scheduler
+// skips scheduling the pod because one or more scheduling gates are still present.
+#PodReasonSchedulingGated: "SchedulingGated"
+
+// PodReasonSchedulerError reason in PodScheduled PodCondition means that some internal error happens
+// during scheduling, for example due to nodeAffinity parsing errors.
+#PodReasonSchedulerError: "SchedulerError"
+
+// TerminationByKubelet reason in DisruptionTarget pod condition indicates that the termination
+// is initiated by kubelet
+#PodReasonTerminationByKubelet: "TerminationByKubelet"
+
+// PodReasonPreemptionByScheduler reason in DisruptionTarget pod condition indicates that the
+// disruption was initiated by scheduler's preemption.
+#PodReasonPreemptionByScheduler: "PreemptionByScheduler"
 
 // PodCondition contains details for the current condition of this pod.
 #PodCondition: {
@@ -3045,6 +3252,27 @@ import (
 	message?: string @go(Message) @protobuf(6,bytes,opt)
 }
 
+// PodResizeStatus shows status of desired resize of a pod's containers.
+#PodResizeStatus: string // #enumPodResizeStatus
+
+#enumPodResizeStatus:
+	#PodResizeStatusProposed |
+	#PodResizeStatusInProgress |
+	#PodResizeStatusDeferred |
+	#PodResizeStatusInfeasible
+
+// Pod resources resize has been requested and will be evaluated by node.
+#PodResizeStatusProposed: #PodResizeStatus & "Proposed"
+
+// Pod resources resize has been accepted by node and is being actuated.
+#PodResizeStatusInProgress: #PodResizeStatus & "InProgress"
+
+// Node cannot resize the pod at this time and will keep retrying.
+#PodResizeStatusDeferred: #PodResizeStatus & "Deferred"
+
+// Requested pod resize is not feasible and will not be re-evaluated.
+#PodResizeStatusInfeasible: #PodResizeStatus & "Infeasible"
+
 // RestartPolicy describes how the container should be restarted.
 // Only one of the following restart policies may be specified.
 // If none of the following policies is specified, the default one
@@ -3060,6 +3288,15 @@ import (
 #RestartPolicyAlways:    #RestartPolicy & "Always"
 #RestartPolicyOnFailure: #RestartPolicy & "OnFailure"
 #RestartPolicyNever:     #RestartPolicy & "Never"
+
+// ContainerRestartPolicy is the restart policy for a single container.
+// This may only be set for init containers and only allowed value is "Always".
+#ContainerRestartPolicy: string // #enumContainerRestartPolicy
+
+#enumContainerRestartPolicy:
+	#ContainerRestartPolicyAlways
+
+#ContainerRestartPolicyAlways: #ContainerRestartPolicy & "Always"
 
 // DNSPolicy defines how a pod's DNS will be configured.
 // +enum
@@ -3099,7 +3336,7 @@ import (
 // by the node selector terms.
 // +structType=atomic
 #NodeSelector: {
-	//Required. A list of node selector terms. The terms are ORed.
+	// Required. A list of node selector terms. The terms are ORed.
 	nodeSelectorTerms: [...#NodeSelectorTerm] @go(NodeSelectorTerms,[]NodeSelectorTerm) @protobuf(1,bytes,rep)
 }
 
@@ -3459,7 +3696,7 @@ import (
 	ephemeralContainers?: [...#EphemeralContainer] @go(EphemeralContainers,[]EphemeralContainer) @protobuf(34,bytes,rep)
 
 	// Restart policy for all containers within the pod.
-	// One of Always, OnFailure, Never.
+	// One of Always, OnFailure, Never. In some contexts, only a subset of those values may be permitted.
 	// Default to Always.
 	// More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy
 	// +optional
@@ -3712,6 +3949,94 @@ import (
 	// +k8s:conversion-gen=false
 	// +optional
 	hostUsers?: null | bool @go(HostUsers,*bool) @protobuf(37,bytes,opt)
+
+	// SchedulingGates is an opaque list of values that if specified will block scheduling the pod.
+	// If schedulingGates is not empty, the pod will stay in the SchedulingGated state and the
+	// scheduler will not attempt to schedule the pod.
+	//
+	// SchedulingGates can only be set at pod creation time, and be removed only afterwards.
+	//
+	// This is a beta feature enabled by the PodSchedulingReadiness feature gate.
+	//
+	// +patchMergeKey=name
+	// +patchStrategy=merge
+	// +listType=map
+	// +listMapKey=name
+	// +featureGate=PodSchedulingReadiness
+	// +optional
+	schedulingGates?: [...#PodSchedulingGate] @go(SchedulingGates,[]PodSchedulingGate) @protobuf(38,bytes,opt)
+
+	// ResourceClaims defines which ResourceClaims must be allocated
+	// and reserved before the Pod is allowed to start. The resources
+	// will be made available to those containers which consume them
+	// by name.
+	//
+	// This is an alpha field and requires enabling the
+	// DynamicResourceAllocation feature gate.
+	//
+	// This field is immutable.
+	//
+	// +patchMergeKey=name
+	// +patchStrategy=merge,retainKeys
+	// +listType=map
+	// +listMapKey=name
+	// +featureGate=DynamicResourceAllocation
+	// +optional
+	resourceClaims?: [...#PodResourceClaim] @go(ResourceClaims,[]PodResourceClaim) @protobuf(39,bytes,rep)
+}
+
+// PodResourceClaim references exactly one ResourceClaim through a ClaimSource.
+// It adds a name to it that uniquely identifies the ResourceClaim inside the Pod.
+// Containers that need access to the ResourceClaim reference it with this name.
+#PodResourceClaim: {
+	// Name uniquely identifies this resource claim inside the pod.
+	// This must be a DNS_LABEL.
+	name: string @go(Name) @protobuf(1,bytes)
+
+	// Source describes where to find the ResourceClaim.
+	source?: #ClaimSource @go(Source) @protobuf(2,bytes)
+}
+
+// ClaimSource describes a reference to a ResourceClaim.
+//
+// Exactly one of these fields should be set.  Consumers of this type must
+// treat an empty object as if it has an unknown value.
+#ClaimSource: {
+	// ResourceClaimName is the name of a ResourceClaim object in the same
+	// namespace as this pod.
+	resourceClaimName?: null | string @go(ResourceClaimName,*string) @protobuf(1,bytes,opt)
+
+	// ResourceClaimTemplateName is the name of a ResourceClaimTemplate
+	// object in the same namespace as this pod.
+	//
+	// The template will be used to create a new ResourceClaim, which will
+	// be bound to this pod. When this pod is deleted, the ResourceClaim
+	// will also be deleted. The pod name and resource name, along with a
+	// generated component, will be used to form a unique name for the
+	// ResourceClaim, which will be recorded in pod.status.resourceClaimStatuses.
+	//
+	// This field is immutable and no changes will be made to the
+	// corresponding ResourceClaim by the control plane after creating the
+	// ResourceClaim.
+	resourceClaimTemplateName?: null | string @go(ResourceClaimTemplateName,*string) @protobuf(2,bytes,opt)
+}
+
+// PodResourceClaimStatus is stored in the PodStatus for each PodResourceClaim
+// which references a ResourceClaimTemplate. It stores the generated name for
+// the corresponding ResourceClaim.
+#PodResourceClaimStatus: {
+	// Name uniquely identifies this resource claim inside the pod.
+	// This must match the name of an entry in pod.spec.resourceClaims,
+	// which implies that the string must be a DNS_LABEL.
+	name: string @go(Name) @protobuf(1,bytes)
+
+	// ResourceClaimName is the name of the ResourceClaim that was
+	// generated for the Pod in the namespace of the Pod. It this is
+	// unset, then generating a ResourceClaim was not necessary. The
+	// pod.spec.resourceClaims entry can be ignored in this case.
+	//
+	// +optional
+	resourceClaimName?: null | string @go(ResourceClaimName,*string) @protobuf(2,bytes,opt)
 }
 
 // OSName is the set of OS'es that can be used in OS.
@@ -3731,6 +4056,13 @@ import (
 	// https://github.com/opencontainers/runtime-spec/blob/master/config.md#platform-specific-configuration
 	// Clients should expect to handle additional values and treat unrecognized values in this field as os: null
 	name: #OSName @go(Name) @protobuf(1,bytes,opt)
+}
+
+// PodSchedulingGate is associated to a Pod to guard its scheduling.
+#PodSchedulingGate: {
+	// Name of the scheduling gate.
+	// Each scheduling gate must have a unique name field.
+	name: string @go(Name) @protobuf(1,bytes,opt)
 }
 
 // +enum
@@ -3860,7 +4192,7 @@ import (
 	// - Ignore: nodeAffinity/nodeSelector are ignored. All nodes are included in the calculations.
 	//
 	// If this value is nil, the behavior is equivalent to the Honor policy.
-	// This is a alpha-level feature enabled by the NodeInclusionPolicyInPodTopologySpread feature flag.
+	// This is a beta-level feature default enabled by the NodeInclusionPolicyInPodTopologySpread feature flag.
 	// +optional
 	nodeAffinityPolicy?: null | #NodeInclusionPolicy @go(NodeAffinityPolicy,*NodeInclusionPolicy) @protobuf(6,bytes,opt)
 
@@ -3871,7 +4203,7 @@ import (
 	// - Ignore: node taints are ignored. All nodes are included.
 	//
 	// If this value is nil, the behavior is equivalent to the Ignore policy.
-	// This is a alpha-level feature enabled by the NodeInclusionPolicyInPodTopologySpread feature flag.
+	// This is a beta-level feature default enabled by the NodeInclusionPolicyInPodTopologySpread feature flag.
 	// +optional
 	nodeTaintsPolicy?: null | #NodeInclusionPolicy @go(NodeTaintsPolicy,*NodeInclusionPolicy) @protobuf(7,bytes,opt)
 
@@ -3879,8 +4211,12 @@ import (
 	// spreading will be calculated. The keys are used to lookup values from the
 	// incoming pod labels, those key-value labels are ANDed with labelSelector
 	// to select the group of existing pods over which spreading will be calculated
-	// for the incoming pod. Keys that don't exist in the incoming pod labels will
+	// for the incoming pod. The same key is forbidden to exist in both MatchLabelKeys and LabelSelector.
+	// MatchLabelKeys cannot be set when LabelSelector isn't set.
+	// Keys that don't exist in the incoming pod labels will
 	// be ignored. A null or empty list means only match against labelSelector.
+	//
+	// This is a beta field and requires the MatchLabelKeysInPodTopologySpread feature gate to be enabled (enabled by default).
 	// +listType=atomic
 	// +optional
 	matchLabelKeys?: [...string] @go(MatchLabelKeys,[]string) @protobuf(8,bytes,opt)
@@ -3967,8 +4303,11 @@ import (
 	runAsNonRoot?: null | bool @go(RunAsNonRoot,*bool) @protobuf(3,varint,opt)
 
 	// A list of groups applied to the first process run in each container, in addition
-	// to the container's primary GID.  If unspecified, no groups will be added to
-	// any container.
+	// to the container's primary GID, the fsGroup (if specified), and group memberships
+	// defined in the container image for the uid of the container process. If unspecified,
+	// no additional groups are added to any container. Note that group memberships
+	// defined in the container image for the uid of the container process are still effective,
+	// even if they are not included in this list.
 	// Note that this field cannot be set when spec.os.name is windows.
 	// +optional
 	supplementalGroups?: [...int64] @go(SupplementalGroups,[]int64) @protobuf(4,varint,rep)
@@ -4024,7 +4363,7 @@ import (
 	// localhostProfile indicates a profile defined in a file on the node should be used.
 	// The profile must be preconfigured on the node to work.
 	// Must be a descending path, relative to the kubelet's configured seccomp profile location.
-	// Must only be set if type is "Localhost".
+	// Must be set if type is "Localhost". Must NOT be set for any other type.
 	// +optional
 	localhostProfile?: null | string @go(LocalhostProfile,*string) @protobuf(2,bytes,opt)
 }
@@ -4098,12 +4437,15 @@ import (
 	value?: null | string @go(Value,*string) @protobuf(2,bytes,opt)
 }
 
-// IP address information for entries in the (plural) PodIPs field.
-// Each entry includes:
-//
-//	IP: An IP address allocated to the pod. Routable at least within the cluster.
+// PodIP represents a single IP address allocated to the pod.
 #PodIP: {
-	// ip is an IP address (IPv4 or IPv6) assigned to the pod
+	// IP is the IP address assigned to the pod
+	ip?: string @go(IP) @protobuf(1,bytes,opt)
+}
+
+// HostIP represents a single IP address allocated to the host.
+#HostIP: {
+	// IP is the IP address assigned to the host
 	ip?: string @go(IP) @protobuf(1,bytes,opt)
 }
 
@@ -4178,6 +4520,20 @@ import (
 	// already allocated to the pod.
 	// +optional
 	resources?: #ResourceRequirements @go(Resources) @protobuf(8,bytes,opt)
+
+	// Resources resize policy for the container.
+	// +featureGate=InPlacePodVerticalScaling
+	// +optional
+	// +listType=atomic
+	resizePolicy?: [...#ContainerResizePolicy] @go(ResizePolicy,[]ContainerResizePolicy) @protobuf(23,bytes,rep)
+
+	// Restart policy for the container to manage the restart behavior of each
+	// container within a pod.
+	// This may only be set for init containers. You cannot set this field on
+	// ephemeral containers.
+	// +featureGate=SidecarContainers
+	// +optional
+	restartPolicy?: null | #ContainerRestartPolicy @go(RestartPolicy,*ContainerRestartPolicy) @protobuf(24,bytes,opt,casttype=ContainerRestartPolicy)
 
 	// Pod volumes to mount into the container's filesystem. Subpath mounts are not allowed for ephemeral containers.
 	// Cannot be updated.
@@ -4335,11 +4691,23 @@ import (
 	// +optional
 	nominatedNodeName?: string @go(NominatedNodeName) @protobuf(11,bytes,opt)
 
-	// IP address of the host to which the pod is assigned. Empty if not yet scheduled.
+	// hostIP holds the IP address of the host to which the pod is assigned. Empty if the pod has not started yet.
+	// A pod can be assigned to a node that has a problem in kubelet which in turns mean that HostIP will
+	// not be updated even if there is a node is assigned to pod
 	// +optional
 	hostIP?: string @go(HostIP) @protobuf(5,bytes,opt)
 
-	// IP address allocated to the pod. Routable at least within the cluster.
+	// hostIPs holds the IP addresses allocated to the host. If this field is specified, the first entry must
+	// match the hostIP field. This list is empty if the pod has not started yet.
+	// A pod can be assigned to a node that has a problem in kubelet which in turns means that HostIPs will
+	// not be updated even if there is a node is assigned to this pod.
+	// +optional
+	// +patchStrategy=merge
+	// +patchMergeKey=ip
+	// +listType=atomic
+	hostIPs?: [...#HostIP] @go(HostIPs,[]HostIP) @protobuf(16,bytes,rep)
+
+	// podIP address allocated to the pod. Routable at least within the cluster.
 	// Empty if not yet allocated.
 	// +optional
 	podIP?: string @go(PodIP) @protobuf(6,bytes,opt)
@@ -4370,13 +4738,29 @@ import (
 
 	// The Quality of Service (QOS) classification assigned to the pod based on resource requirements
 	// See PodQOSClass type for available QOS classes
-	// More info: https://git.k8s.io/community/contributors/design-proposals/node/resource-qos.md
+	// More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-qos/#quality-of-service-classes
 	// +optional
 	qosClass?: #PodQOSClass @go(QOSClass) @protobuf(9,bytes,rep)
 
 	// Status for any ephemeral containers that have run in this pod.
 	// +optional
 	ephemeralContainerStatuses?: [...#ContainerStatus] @go(EphemeralContainerStatuses,[]ContainerStatus) @protobuf(13,bytes,rep)
+
+	// Status of resources resize desired for pod's containers.
+	// It is empty if no resources resize is pending.
+	// Any changes to container resources will automatically set this to "Proposed"
+	// +featureGate=InPlacePodVerticalScaling
+	// +optional
+	resize?: #PodResizeStatus @go(Resize) @protobuf(14,bytes,opt,casttype=PodResizeStatus)
+
+	// Status of resource claims.
+	// +patchMergeKey=name
+	// +patchStrategy=merge,retainKeys
+	// +listType=map
+	// +listMapKey=name
+	// +featureGate=DynamicResourceAllocation
+	// +optional
+	resourceClaimStatuses?: [...#PodResourceClaimStatus] @go(ResourceClaimStatuses,[]PodResourceClaimStatus) @protobuf(15,bytes,rep)
 }
 
 // PodStatusResult is a wrapper for PodStatus returned by kubelet that can be encode/decoded
@@ -4502,6 +4886,7 @@ import (
 
 	// Template is the object that describes the pod that will be created if
 	// insufficient replicas are detected. This takes precedence over a TemplateRef.
+	// The only allowed template.spec.restartPolicy value is "Always".
 	// More info: https://kubernetes.io/docs/concepts/workloads/controllers/replicationcontroller#pod-template
 	// +optional
 	template?: null | #PodTemplateSpec @go(Template,*PodTemplateSpec) @protobuf(3,bytes,opt)
@@ -4510,7 +4895,7 @@ import (
 // ReplicationControllerStatus represents the current status of a replication
 // controller.
 #ReplicationControllerStatus: {
-	// Replicas is the most recently oberved number of replicas.
+	// Replicas is the most recently observed number of replicas.
 	// More info: https://kubernetes.io/docs/concepts/workloads/controllers/replicationcontroller#what-is-a-replicationcontroller
 	replicas: int32 @go(Replicas) @protobuf(1,varint,opt)
 
@@ -4666,43 +5051,70 @@ import (
 // record, with no exposing or proxying of any pods involved.
 #ServiceTypeExternalName: #ServiceType & "ExternalName"
 
-// ServiceInternalTrafficPolicyType describes how nodes distribute service traffic they
+// ServiceInternalTrafficPolicy describes how nodes distribute service traffic they
 // receive on the ClusterIP.
 // +enum
-#ServiceInternalTrafficPolicyType: string // #enumServiceInternalTrafficPolicyType
+#ServiceInternalTrafficPolicy: string // #enumServiceInternalTrafficPolicy
+
+#enumServiceInternalTrafficPolicy:
+	#ServiceInternalTrafficPolicyCluster |
+	#ServiceInternalTrafficPolicyLocal
+
+// ServiceInternalTrafficPolicyCluster routes traffic to all endpoints.
+#ServiceInternalTrafficPolicyCluster: #ServiceInternalTrafficPolicy & "Cluster"
+
+// ServiceInternalTrafficPolicyLocal routes traffic only to endpoints on the same
+// node as the client pod (dropping the traffic if there are no local endpoints).
+#ServiceInternalTrafficPolicyLocal: #ServiceInternalTrafficPolicy & "Local"
+
+// for backwards compat
+// +enum
+#ServiceInternalTrafficPolicyType: #ServiceInternalTrafficPolicy // #enumServiceInternalTrafficPolicyType
 
 #enumServiceInternalTrafficPolicyType:
 	#ServiceInternalTrafficPolicyCluster |
 	#ServiceInternalTrafficPolicyLocal
 
-// ServiceInternalTrafficPolicyCluster routes traffic to all endpoints.
-#ServiceInternalTrafficPolicyCluster: #ServiceInternalTrafficPolicyType & "Cluster"
-
-// ServiceInternalTrafficPolicyLocal routes traffic only to endpoints on the same
-// node as the client pod (dropping the traffic if there are no local endpoints).
-#ServiceInternalTrafficPolicyLocal: #ServiceInternalTrafficPolicyType & "Local"
-
-// ServiceExternalTrafficPolicyType describes how nodes distribute service traffic they
+// ServiceExternalTrafficPolicy describes how nodes distribute service traffic they
 // receive on one of the Service's "externally-facing" addresses (NodePorts, ExternalIPs,
-// and LoadBalancer IPs).
+// and LoadBalancer IPs.
 // +enum
-#ServiceExternalTrafficPolicyType: string // #enumServiceExternalTrafficPolicyType
+#ServiceExternalTrafficPolicy: string // #enumServiceExternalTrafficPolicy
 
-#enumServiceExternalTrafficPolicyType:
-	#ServiceExternalTrafficPolicyTypeCluster |
-	#ServiceExternalTrafficPolicyTypeLocal
+#enumServiceExternalTrafficPolicy:
+	#ServiceExternalTrafficPolicyCluster |
+	#ServiceExternalTrafficPolicyLocal |
+	#ServiceExternalTrafficPolicyTypeLocal |
+	#ServiceExternalTrafficPolicyTypeCluster
 
-// ServiceExternalTrafficPolicyTypeCluster routes traffic to all endpoints.
-#ServiceExternalTrafficPolicyTypeCluster: #ServiceExternalTrafficPolicyType & "Cluster"
+// ServiceExternalTrafficPolicyCluster routes traffic to all endpoints.
+#ServiceExternalTrafficPolicyCluster: #ServiceExternalTrafficPolicy & "Cluster"
 
-// ServiceExternalTrafficPolicyTypeLocal preserves the source IP of the traffic by
+// ServiceExternalTrafficPolicyLocal preserves the source IP of the traffic by
 // routing only to endpoints on the same node as the traffic was received on
 // (dropping the traffic if there are no local endpoints).
-#ServiceExternalTrafficPolicyTypeLocal: #ServiceExternalTrafficPolicyType & "Local"
+#ServiceExternalTrafficPolicyLocal: #ServiceExternalTrafficPolicy & "Local"
+
+// for backwards compat
+// +enum
+#ServiceExternalTrafficPolicyType: #ServiceExternalTrafficPolicy // #enumServiceExternalTrafficPolicyType
+
+#enumServiceExternalTrafficPolicyType:
+	#ServiceExternalTrafficPolicyCluster |
+	#ServiceExternalTrafficPolicyLocal |
+	#ServiceExternalTrafficPolicyTypeLocal |
+	#ServiceExternalTrafficPolicyTypeCluster
+
+#ServiceExternalTrafficPolicyTypeLocal:   #ServiceExternalTrafficPolicy & "Local"
+#ServiceExternalTrafficPolicyTypeCluster: #ServiceExternalTrafficPolicy & "Cluster"
 
 // LoadBalancerPortsError represents the condition of the requested ports
 // on the cloud load balancer instance.
 #LoadBalancerPortsError: "LoadBalancerPortsError"
+
+// LoadBalancerPortsErrorReason reason in ServiceStatus condition LoadBalancerPortsError
+// means the LoadBalancer was not able to be configured correctly.
+#LoadBalancerPortsErrorReason: "LoadBalancerMixedProtocolNotSupported"
 
 // ServiceStatus represents the current status of a service.
 #ServiceStatus: {
@@ -4906,10 +5318,9 @@ import (
 	// This feature depends on whether the underlying cloud-provider supports specifying
 	// the loadBalancerIP when a load balancer is created.
 	// This field will be ignored if the cloud-provider does not support the feature.
-	// Deprecated: This field was under-specified and its meaning varies across implementations,
-	// and it cannot support dual-stack.
-	// As of Kubernetes v1.24, users are encouraged to use implementation-specific annotations when available.
-	// This field may be removed in a future API version.
+	// Deprecated: This field was under-specified and its meaning varies across implementations.
+	// Using it is non-portable and it may not support dual-stack.
+	// Users are encouraged to use implementation-specific annotations when available.
 	// +optional
 	loadBalancerIP?: string @go(LoadBalancerIP) @protobuf(8,bytes,opt)
 
@@ -4941,7 +5352,7 @@ import (
 	// a NodePort from within the cluster may need to take traffic policy into account
 	// when picking a node.
 	// +optional
-	externalTrafficPolicy?: #ServiceExternalTrafficPolicyType @go(ExternalTrafficPolicy) @protobuf(11,bytes,opt)
+	externalTrafficPolicy?: #ServiceExternalTrafficPolicy @go(ExternalTrafficPolicy) @protobuf(11,bytes,opt)
 
 	// healthCheckNodePort specifies the healthcheck nodePort for the service.
 	// This only applies when type is set to LoadBalancer and
@@ -5022,7 +5433,6 @@ import (
 	// implementation (e.g. cloud providers) should ignore Services that set this field.
 	// This field can only be set when creating or updating a Service to type 'LoadBalancer'.
 	// Once set, it can not be changed. This field will be wiped when a service is updated to a non 'LoadBalancer' type.
-	// +featureGate=LoadBalancerClass
 	// +optional
 	loadBalancerClass?: null | string @go(LoadBalancerClass,*string) @protobuf(21,bytes,opt)
 
@@ -5032,9 +5442,8 @@ import (
 	// dropping the traffic if there are no local endpoints. The default value,
 	// "Cluster", uses the standard behavior of routing to all endpoints evenly
 	// (possibly modified by topology and other features).
-	// +featureGate=ServiceInternalTrafficPolicy
 	// +optional
-	internalTrafficPolicy?: null | #ServiceInternalTrafficPolicyType @go(InternalTrafficPolicy,*ServiceInternalTrafficPolicyType) @protobuf(22,bytes,opt)
+	internalTrafficPolicy?: null | #ServiceInternalTrafficPolicy @go(InternalTrafficPolicy,*ServiceInternalTrafficPolicy) @protobuf(22,bytes,opt)
 }
 
 // ServicePort contains information on service's port.
@@ -5054,10 +5463,19 @@ import (
 	protocol?: #Protocol @go(Protocol) @protobuf(2,bytes,opt,casttype=Protocol)
 
 	// The application protocol for this port.
+	// This is used as a hint for implementations to offer richer behavior for protocols that they understand.
 	// This field follows standard Kubernetes label syntax.
-	// Un-prefixed names are reserved for IANA standard service names (as per
+	// Valid values are either:
+	//
+	// * Un-prefixed protocol names - reserved for IANA standard service names (as per
 	// RFC-6335 and https://www.iana.org/assignments/service-names).
-	// Non-standard protocols should use prefixed names such as
+	//
+	// * Kubernetes-defined prefixed names:
+	//   * 'kubernetes.io/h2c' - HTTP/2 over cleartext as described in https://www.rfc-editor.org/rfc/rfc7540
+	//   * 'kubernetes.io/ws'  - WebSocket over cleartext as described in https://www.rfc-editor.org/rfc/rfc6455
+	//   * 'kubernetes.io/wss' - WebSocket over TLS as described in https://www.rfc-editor.org/rfc/rfc6455
+	//
+	// * Other protocols should use implementation-defined prefixed names such as
 	// mycompany.com/my-custom-protocol.
 	// +optional
 	appProtocol?: null | string @go(AppProtocol,*string) @protobuf(6,bytes,opt)
@@ -5245,11 +5663,8 @@ import (
 // +structType=atomic
 #EndpointAddress: {
 	// The IP of this endpoint.
-	// May not be loopback (127.0.0.0/8), link-local (169.254.0.0/16),
-	// or link-local multicast ((224.0.0.0/24).
-	// IPv6 is also accepted but not fully supported on all platforms. Also, certain
-	// kubernetes components, like kube-proxy, are not IPv6 ready.
-	// TODO: This should allow hostname or IP, See #4447.
+	// May not be loopback (127.0.0.0/8 or ::1), link-local (169.254.0.0/16 or fe80::/10),
+	// or link-local multicast (224.0.0.0/24 or ff02::/16).
 	ip: string @go(IP) @protobuf(1,bytes,opt)
 
 	// The Hostname of this endpoint
@@ -5285,10 +5700,19 @@ import (
 	protocol?: #Protocol @go(Protocol) @protobuf(3,bytes,opt,casttype=Protocol)
 
 	// The application protocol for this port.
+	// This is used as a hint for implementations to offer richer behavior for protocols that they understand.
 	// This field follows standard Kubernetes label syntax.
-	// Un-prefixed names are reserved for IANA standard service names (as per
+	// Valid values are either:
+	//
+	// * Un-prefixed protocol names - reserved for IANA standard service names (as per
 	// RFC-6335 and https://www.iana.org/assignments/service-names).
-	// Non-standard protocols should use prefixed names such as
+	//
+	// * Kubernetes-defined prefixed names:
+	//   * 'kubernetes.io/h2c' - HTTP/2 over cleartext as described in https://www.rfc-editor.org/rfc/rfc7540
+	//   * 'kubernetes.io/ws'  - WebSocket over cleartext as described in https://www.rfc-editor.org/rfc/rfc6455
+	//   * 'kubernetes.io/wss' - WebSocket over TLS as described in https://www.rfc-editor.org/rfc/rfc6455
+	//
+	// * Other protocols should use implementation-defined prefixed names such as
 	// mycompany.com/my-custom-protocol.
 	// +optional
 	appProtocol?: null | string @go(AppProtocol,*string) @protobuf(4,bytes,opt)
@@ -5333,7 +5757,7 @@ import (
 	// +optional
 	taints?: [...#Taint] @go(Taints,[]Taint) @protobuf(5,bytes,opt)
 
-	// Deprecated: Previously used to specify the source of the node's configuration for the DynamicKubeletConfig feature. This feature is removed from Kubelets as of 1.24 and will be fully removed in 1.26.
+	// Deprecated: Previously used to specify the source of the node's configuration for the DynamicKubeletConfig feature. This feature is removed.
 	// +optional
 	configSource?: null | #NodeConfigSource @go(ConfigSource,*NodeConfigSource) @protobuf(6,bytes,opt)
 
@@ -5506,7 +5930,11 @@ import (
 	// More info: https://kubernetes.io/docs/concepts/nodes/node/#addresses
 	// Note: This field is declared as mergeable, but the merge key is not sufficiently
 	// unique, which can cause data corruption when it is merged. Callers should instead
-	// use a full-replacement patch. See http://pr.k8s.io/79391 for an example.
+	// use a full-replacement patch. See https://pr.k8s.io/79391 for an example.
+	// Consumers should assume that addresses can change during the
+	// lifetime of a Node. However, there are some exceptions where this may not
+	// be possible, such as Pods that inherit a Node's address in its own status or
+	// consumers of the downward API (status.hostIP).
 	// +optional
 	// +patchMergeKey=type
 	// +patchStrategy=merge
@@ -7069,12 +7497,9 @@ import (
 	runAsUserName?: null | string @go(RunAsUserName,*string) @protobuf(3,bytes,opt)
 
 	// HostProcess determines if a container should be run as a 'Host Process' container.
-	// This field is alpha-level and will only be honored by components that enable the
-	// WindowsHostProcessContainers feature flag. Setting this field without the feature
-	// flag will result in errors when validating the Pod. All of a Pod's containers must
-	// have the same effective HostProcess value (it is not allowed to have a mix of HostProcess
-	// containers and non-HostProcess containers).  In addition, if HostProcess is true
-	// then HostNetwork must also be set to true.
+	// All of a Pod's containers must have the same effective HostProcess value
+	// (it is not allowed to have a mix of HostProcess containers and non-HostProcess containers).
+	// In addition, if HostProcess is true then HostNetwork must also be set to true.
 	// +optional
 	hostProcess?: null | bool @go(HostProcess,*bool) @protobuf(4,bytes,opt)
 }
@@ -7162,6 +7587,11 @@ import (
 // Name of header that specifies a request ID used to associate the error
 // and data streams for a single forwarded connection
 #PortForwardRequestIDHeader: "requestID"
+
+// MixedProtocolNotSupported error in PortStatus means that the cloud provider
+// can't publish the port on the load balancer because mixed values of protocols
+// on the same LoadBalancer type of Service are not supported by the cloud provider.
+#MixedProtocolNotSupported: "MixedProtocolNotSupported"
 
 #PortStatus: {
 	// Port is the port number of the service port of which status is recorded here

@@ -202,7 +202,6 @@ vendor: ## vendor upstream projects
 .PHONY: cue.mod
 cue.mod:
 	rm -rf cue.mod/gen
-	cue get go github.com/kyverno/kyverno/api/kyverno/v1
 	cue get go github.com/tektoncd/pipeline/pkg/apis/pipeline/v1beta1
 	cue get go github.com/tektoncd/triggers/pkg/apis/triggers/v1beta1
 	cue get go k8s.io/api/core/v1

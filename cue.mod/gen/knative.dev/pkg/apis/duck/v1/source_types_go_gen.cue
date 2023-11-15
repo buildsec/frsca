@@ -56,6 +56,11 @@ import (
 	// as part of its CloudEvents.
 	// +optional
 	ceAttributes?: [...#CloudEventAttributes] @go(CloudEventAttributes,[]CloudEventAttributes)
+
+	// SinkCACerts are Certification Authority (CA) certificates in PEM format
+	// according to https://www.rfc-editor.org/rfc/rfc7468.
+	// +optional
+	sinkCACerts?: null | string @go(SinkCACerts,*string)
 }
 
 // CloudEventAttributes specifies the attributes that a Source

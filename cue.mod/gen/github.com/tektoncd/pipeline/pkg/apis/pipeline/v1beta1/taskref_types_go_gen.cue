@@ -9,14 +9,19 @@ package v1beta1
 	// Name of the referent; More info: http://kubernetes.io/docs/user-guide/identifiers#names
 	name?: string @go(Name)
 
-	// TaskKind indicates the kind of the task, namespaced or cluster scoped.
+	// TaskKind indicates the Kind of the Task:
+	// 1. Namespaced Task when Kind is set to "Task". If Kind is "", it defaults to "Task".
+	// 2. Cluster-Scoped Task when Kind is set to "ClusterTask"
+	// 3. Custom Task when Kind is non-empty and APIVersion is non-empty
 	kind?: #TaskKind @go(Kind)
 
 	// API version of the referent
+	// Note: A Task with non-empty APIVersion and Kind is considered a Custom Task
 	// +optional
 	apiVersion?: string @go(APIVersion)
 
 	// Bundle url reference to a Tekton Bundle.
+	//
 	// Deprecated: Please use ResolverRef with the bundles resolver instead.
 	// +optional
 	bundle?: string @go(Bundle)

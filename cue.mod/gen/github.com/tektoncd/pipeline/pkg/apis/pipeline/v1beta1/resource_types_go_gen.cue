@@ -5,43 +5,61 @@
 package v1beta1
 
 import (
+	"github.com/tektoncd/pipeline/pkg/result"
 	resource "github.com/tektoncd/pipeline/pkg/apis/resource/v1alpha1"
 	"k8s.io/api/core/v1"
 )
 
+// RunResult is used to write key/value pairs to TaskRun pod termination messages.
+// It has been migrated to the result package and kept for backward compatibility
+#RunResult: result.#RunResult
+
+// PipelineResourceResult has been deprecated with the migration of PipelineResources
+// Deprecated: Use RunResult instead
+#PipelineResourceResult: result.#RunResult
+
+// ResultType of PipelineResourceResult has been deprecated with the migration of PipelineResources
+// Deprecated: v1beta1.ResultType is only kept for backward compatibility
+#ResultType: _
+
+// ResourceParam declares a string value to use for the parameter called Name, and is used in
+// the specific context of PipelineResources.
+//
+// Deprecated: Unused, preserved only for backwards compatibility
+#ResourceParam: resource.#ResourceParam
+
 // PipelineResourceType represents the type of endpoint the pipelineResource is, so that the
 // controller will know this pipelineResource should be fetched and optionally what
 // additional metatdata should be provided for it.
-#PipelineResourceType: string // #enumPipelineResourceType
+//
+// Deprecated: Unused, preserved only for backwards compatibility
+#PipelineResourceType: string
 
-#enumPipelineResourceType:
-	#PipelineResourceTypeGit |
-	#PipelineResourceTypeStorage |
-	#PipelineResourceTypeImage |
-	#PipelineResourceTypeCluster |
-	#PipelineResourceTypePullRequest |
-	#PipelineResourceTypeCloudEvent
+// PipelineDeclaredResource is used by a Pipeline to declare the types of the
+// PipelineResources that it will required to run and names which can be used to
+// refer to these PipelineResources in PipelineTaskResourceBindings.
+//
+// Deprecated: Unused, preserved only for backwards compatibility
+#PipelineDeclaredResource: {
+	// Name is the name that will be used by the Pipeline to refer to this resource.
+	// It does not directly correspond to the name of any PipelineResources Task
+	// inputs or outputs, and it does not correspond to the actual names of the
+	// PipelineResources that will be bound in the PipelineRun.
+	name: string @go(Name)
 
-// PipelineResourceTypeGit indicates that this source is a GitHub repo.
-#PipelineResourceTypeGit: "git"
+	// Type is the type of the PipelineResource.
+	type: string @go(Type)
 
-// PipelineResourceTypeStorage indicates that this source is a storage blob resource.
-#PipelineResourceTypeStorage: "storage"
-
-// PipelineResourceTypeImage indicates that this source is a docker Image.
-#PipelineResourceTypeImage: "image"
-
-// PipelineResourceTypeCluster indicates that this source is a k8s cluster Image.
-#PipelineResourceTypeCluster: "cluster"
-
-// PipelineResourceTypePullRequest indicates that this source is a SCM Pull Request.
-#PipelineResourceTypePullRequest: "pullRequest"
-
-// PipelineResourceTypeCloudEvent indicates that this source is a cloud event URI
-#PipelineResourceTypeCloudEvent: "cloudEvent"
+	// Optional declares the resource as optional.
+	// optional: true - the resource is considered optional
+	// optional: false - the resource is considered required (default/equivalent of not specifying it)
+	optional?: bool @go(Optional)
+}
 
 // TaskResources allows a Pipeline to declare how its DeclaredPipelineResources
 // should be provided to a Task as its inputs and outputs.
+//
+// Deprecated: Unused, preserved only for backwards compatibility
 #TaskResources: {
 	// Inputs holds the mapping from the PipelineResources declared in
 	// DeclaredPipelineResources to the input PipelineResources required by the Task.
@@ -59,11 +77,15 @@ import (
 // the Task definition, and when provided as an Input, the Name will be the
 // path to the volume mounted containing this Resource as an input (e.g.
 // an input Resource named `workspace` will be mounted at `/workspace`).
+//
+// Deprecated: Unused, preserved only for backwards compatibility
 #TaskResource: {
 	resource.#ResourceDeclaration
 }
 
 // TaskRunResources allows a TaskRun to declare inputs and outputs TaskResourceBinding
+//
+// Deprecated: Unused, preserved only for backwards compatibility
 #TaskRunResources: {
 	// Inputs holds the inputs resources this task was invoked with
 	// +listType=atomic
@@ -76,6 +98,8 @@ import (
 
 // TaskResourceBinding points to the PipelineResource that
 // will be used for the Task input or output called Name.
+//
+// Deprecated: Unused, preserved only for backwards compatibility
 #TaskResourceBinding: {
 	#PipelineResourceBinding
 
@@ -92,10 +116,14 @@ import (
 // PipelineResources within the type's definition, and when provided as an Input, the Name will be the
 // path to the volume mounted containing this PipelineResource as an input (e.g.
 // an input Resource named `workspace` will be mounted at `/workspace`).
+//
+// Deprecated: Unused, preserved only for backwards compatibility
 #ResourceDeclaration: resource.#ResourceDeclaration
 
 // PipelineResourceBinding connects a reference to an instance of a PipelineResource
 // with a PipelineResource dependency that the Pipeline has declared
+//
+// Deprecated: Unused, preserved only for backwards compatibility
 #PipelineResourceBinding: {
 	// Name is the name of the PipelineResource in the Pipeline's declaration
 	name?: string @go(Name)
@@ -111,25 +139,79 @@ import (
 	resourceSpec?: null | resource.#PipelineResourceSpec @go(ResourceSpec,*resource.PipelineResourceSpec)
 }
 
-// PipelineResourceResult used to export the image name and digest as json
-#PipelineResourceResult: {
-	key:           string      @go(Key)
-	value:         string      @go(Value)
-	resourceName?: string      @go(ResourceName)
-	type?:         #ResultType @go(ResultType)
+// PipelineTaskResources allows a Pipeline to declare how its DeclaredPipelineResources
+// should be provided to a Task as its inputs and outputs.
+//
+// Deprecated: Unused, preserved only for backwards compatibility
+#PipelineTaskResources: {
+	// Inputs holds the mapping from the PipelineResources declared in
+	// DeclaredPipelineResources to the input PipelineResources required by the Task.
+	// +listType=atomic
+	inputs?: [...#PipelineTaskInputResource] @go(Inputs,[]PipelineTaskInputResource)
+
+	// Outputs holds the mapping from the PipelineResources declared in
+	// DeclaredPipelineResources to the input PipelineResources required by the Task.
+	// +listType=atomic
+	outputs?: [...#PipelineTaskOutputResource] @go(Outputs,[]PipelineTaskOutputResource)
 }
 
-// ResultType used to find out whether a PipelineResourceResult is from a task result or not
-// Note that ResultsType is another type which is used to define the data type
-// (e.g. string, array, etc) we used for Results
-#ResultType: _ // #enumResultType
+// PipelineTaskInputResource maps the name of a declared PipelineResource input
+// dependency in a Task to the resource in the Pipeline's DeclaredPipelineResources
+// that should be used. This input may come from a previous task.
+//
+// Deprecated: Unused, preserved only for backwards compatibility
+#PipelineTaskInputResource: {
+	// Name is the name of the PipelineResource as declared by the Task.
+	name: string @go(Name)
 
-#enumResultType:
-	#TaskRunResultType
+	// Resource is the name of the DeclaredPipelineResource to use.
+	resource: string @go(Resource)
 
-#values_ResultType: TaskRunResultType: #TaskRunResultType
+	// From is the list of PipelineTask names that the resource has to come from.
+	// (Implies an ordering in the execution graph.)
+	// +optional
+	// +listType=atomic
+	from?: [...string] @go(From,[]string)
+}
+
+// PipelineTaskOutputResource maps the name of a declared PipelineResource output
+// dependency in a Task to the resource in the Pipeline's DeclaredPipelineResources
+// that should be used.
+//
+// Deprecated: Unused, preserved only for backwards compatibility
+#PipelineTaskOutputResource: {
+	// Name is the name of the PipelineResource as declared by the Task.
+	name: string @go(Name)
+
+	// Resource is the name of the DeclaredPipelineResource to use.
+	resource: string @go(Resource)
+}
+
+// TaskRunInputs holds the input values that this task was invoked with.
+//
+// Deprecated: Unused, preserved only for backwards compatibility
+#TaskRunInputs: {
+	// +optional
+	// +listType=atomic
+	resources?: [...#TaskResourceBinding] @go(Resources,[]TaskResourceBinding)
+
+	// +optional
+	// +listType=atomic
+	params?: [...#Param] @go(Params,[]Param)
+}
+
+// TaskRunOutputs holds the output values that this task was invoked with.
+//
+// Deprecated: Unused, preserved only for backwards compatibility
+#TaskRunOutputs: {
+	// +optional
+	// +listType=atomic
+	resources?: [...#TaskResourceBinding] @go(Resources,[]TaskResourceBinding)
+}
 
 // PipelineResourceRef can be used to refer to a specific instance of a Resource
+//
+// Deprecated: Unused, preserved only for backwards compatibility
 #PipelineResourceRef: {
 	// Name of the referent; More info: http://kubernetes.io/docs/user-guide/identifiers#names
 	name?: string @go(Name)
@@ -140,12 +222,18 @@ import (
 }
 
 // PipelineResourceInterface interface to be implemented by different PipelineResource types
+//
+// Deprecated: Unused, preserved only for backwards compatibility
 #PipelineResourceInterface: _
 
 // TaskModifier is an interface to be implemented by different PipelineResources
+//
+// Deprecated: Unused, preserved only for backwards compatibility
 #TaskModifier: _
 
 // InternalTaskModifier implements TaskModifier for resources that are built-in to Tekton Pipelines.
+//
+// Deprecated: Unused, preserved only for backwards compatibility
 #InternalTaskModifier: {
 	// +listType=atomic
 	stepsToPrepend: [...#Step] @go(StepsToPrepend,[]Step)

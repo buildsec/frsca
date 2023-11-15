@@ -34,10 +34,10 @@ kubectl create secret generic regcred --type=kubernetes.io/dockerconfigjson --fr
 
 echo -e "${C_GREEN}Patching Kyverno deployment...${C_RESET_ALL}"
 kubectl patch \
-  deployment kyverno \
+  deployment kyverno-admission-controller \
   -n kyverno \
   --type json --patch-file "${GIT_ROOT}"/platform/components/kyverno/patch_container_args.json
-kubectl rollout status -n kyverno deployment/kyverno
+kubectl rollout status -n kyverno deployment/kyverno-admission-controller
 
 echo -e "${C_GREEN}Creating verify-image admission control policy...${C_RESET_ALL}"
 pushd "$GIT_ROOT"/resources/kyverno/admission-control-policy

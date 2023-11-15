@@ -4,4 +4,20 @@
 
 package v1beta1
 
-_#resourcesAnnotationKey: "tekton.dev/v1beta1Resources"
+#TaskDeprecationsAnnotationKey: "tekton.dev/v1beta1.task-deprecations"
+
+// taskDeprecation contains deprecated fields of a Task
+// +k8s:openapi-gen=false
+_#taskDeprecation: {
+	// DeprecatedSteps contains Steps of a Task that with deprecated fields defined.
+	// +listType=atomic
+	deprecatedSteps?: [...#Step] @go(DeprecatedSteps,[]Step)
+
+	// DeprecatedStepTemplate contains stepTemplate of a Task that with deprecated fields defined.
+	deprecatedStepTemplate?: null | #StepTemplate @go(DeprecatedStepTemplate,*StepTemplate)
+}
+
+// taskDeprecations contains deprecated fields of Tasks that belong to the same Pipeline or PipelineRun
+// the key is Task name
+// +k8s:openapi-gen=false
+_#taskDeprecations: {[string]: _#taskDeprecation}

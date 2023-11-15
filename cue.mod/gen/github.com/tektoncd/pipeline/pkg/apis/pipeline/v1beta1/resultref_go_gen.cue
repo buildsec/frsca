@@ -39,5 +39,5 @@ _#exactVariableSubstitutionFormat: "^\\$\\([_a-zA-Z0-9.-]+(\\.[_a-zA-Z0-9.-]+)*(
 // arrayIndexing will match all `[int]` and `[*]` for parseExpression
 _#arrayIndexing: "\\[([0-9])*\\*?\\]" // `\[([0-9])*\*?\]`
 
-// ResultNameFormat Constant used to define the the regex Result.Name should follow
+// ResultNameFormat Constant used to define the regex Result.Name should follow
 #ResultNameFormat: "^([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9]$" // `^([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9]$`

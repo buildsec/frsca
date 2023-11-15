@@ -7,9 +7,9 @@ package v1beta1
 import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"github.com/tektoncd/pipeline/pkg/apis/pipeline/pod"
-	duckv1beta1 "knative.dev/pkg/apis/duck/v1beta1"
+	duckv1 "knative.dev/pkg/apis/duck/v1"
 	"k8s.io/apimachinery/pkg/runtime"
-	runv1alpha1 "github.com/tektoncd/pipeline/pkg/apis/run/v1alpha1"
+	"github.com/tektoncd/pipeline/pkg/apis/run/v1beta1"
 	corev1 "k8s.io/api/core/v1"
 )
 
@@ -19,7 +19,7 @@ import (
 // Tasks execution such as service account and tolerations. Creating a
 // PipelineRun creates TaskRuns for Tasks in the referenced Pipeline.
 //
-// +k8s:openapi-gen=true
+// Deprecated: Please use v1.PipelineRun instead.
 #PipelineRun: {
 	metav1.#TypeMeta
 
@@ -44,12 +44,14 @@ import (
 	// Resources is a list of bindings specifying which actual instances of
 	// PipelineResources to use for the resources the Pipeline has declared
 	// it needs.
+	//
+	// Deprecated: Unused, preserved only for backwards compatibility
 	// +listType=atomic
 	resources?: [...#PipelineResourceBinding] @go(Resources,[]PipelineResourceBinding)
 
 	// Params is a list of parameter names and values.
 	// +listType=atomic
-	params?: [...#Param] @go(Params,[]Param)
+	params?: #Params @go(Params)
 
 	// +optional
 	serviceAccountName?: string @go(ServiceAccountName)
@@ -65,9 +67,12 @@ import (
 	// +optional
 	timeouts?: null | #TimeoutFields @go(Timeouts,*TimeoutFields)
 
-	// Timeout Deprecated: use pipelineRunSpec.Timeouts.Pipeline instead
-	// Time after which the Pipeline times out. Defaults to never.
+	// Timeout is the Time after which the Pipeline times out.
+	// Defaults to never.
 	// Refer to Go's ParseDuration documentation for expected format: https://golang.org/pkg/time/#ParseDuration
+	//
+	// Deprecated: use pipelineRunSpec.Timeouts.Pipeline instead
+	//
 	// +optional
 	timeout?: null | metav1.#Duration @go(Timeout,*metav1.Duration)
 
@@ -120,7 +125,7 @@ import (
 
 // PipelineRunStatus defines the observed state of PipelineRun
 #PipelineRunStatus: {
-	duckv1beta1.#Status
+	duckv1.#Status
 
 	#PipelineRunStatusFields
 }
@@ -200,20 +205,24 @@ import (
 // consume these fields via duck typing.
 #PipelineRunStatusFields: {
 	// StartTime is the time the PipelineRun is actually started.
-	// +optional
 	startTime?: null | metav1.#Time @go(StartTime,*metav1.Time)
 
 	// CompletionTime is the time the PipelineRun completed.
-	// +optional
 	completionTime?: null | metav1.#Time @go(CompletionTime,*metav1.Time)
 
-	// Deprecated - use ChildReferences instead.
-	// map of PipelineRunTaskRunStatus with the taskRun name as the key
+	// TaskRuns is a map of PipelineRunTaskRunStatus with the taskRun name as the key.
+	//
+	// Deprecated: use ChildReferences instead. As of v0.45.0, this field is no
+	// longer populated and is only included for backwards compatibility with
+	// older server versions.
 	// +optional
 	taskRuns?: {[string]: null | #PipelineRunTaskRunStatus} @go(TaskRuns,map[string]*PipelineRunTaskRunStatus)
 
-	// Deprecated - use ChildReferences instead.
-	// map of PipelineRunRunStatus with the run name as the key
+	// Runs is a map of PipelineRunRunStatus with the run name as the key
+	//
+	// Deprecated: use ChildReferences instead. As of v0.45.0, this field is no
+	// longer populated and is only included for backwards compatibility with
+	// older server versions.
 	// +optional
 	runs?: {[string]: null | #PipelineRunRunStatus} @go(Runs,map[string]*PipelineRunRunStatus)
 
@@ -240,7 +249,11 @@ import (
 	finallyStartTime?: null | metav1.#Time @go(FinallyStartTime,*metav1.Time)
 
 	// Provenance contains some key authenticated metadata about how a software artifact was built (what sources, what inputs/outputs, etc.).
+	// +optional
 	provenance?: null | #Provenance @go(Provenance,*Provenance)
+
+	// SpanContext contains tracing span context fields
+	spanContext?: {[string]: string} @go(SpanContext,map[string]string)
 }
 
 // SkippedTask is used to describe the Tasks that were skipped due to their When Expressions
@@ -272,6 +285,7 @@ import (
 	#PipelineTimedOutSkip |
 	#TasksTimedOutSkip |
 	#FinallyTimedOutSkip |
+	#EmptyArrayInMatrixParams |
 	#None
 
 // WhenExpressionsSkip means the task was skipped due to at least one of its when expressions evaluating to false
@@ -301,6 +315,9 @@ import (
 // FinallyTimedOutSkip means the task was skipped because the PipelineRun has passed its Timeouts.Finally.
 #FinallyTimedOutSkip: #SkippingReason & "PipelineRun Finally timeout has been reached"
 
+// EmptyArrayInMatrixParams means the task was skipped because Matrix parameters contain empty array.
+#EmptyArrayInMatrixParams: #SkippingReason & "Matrix Parameters have an empty array"
+
 // None means the task was not skipped
 #None: #SkippingReason & "None"
 
@@ -328,14 +345,14 @@ import (
 	whenExpressions?: [...#WhenExpression] @go(WhenExpressions,[]WhenExpression)
 }
 
-// PipelineRunRunStatus contains the name of the PipelineTask for this Run and the Run's Status
+// PipelineRunRunStatus contains the name of the PipelineTask for this CustomRun or Run and the CustomRun or Run's Status
 #PipelineRunRunStatus: {
 	// PipelineTaskName is the name of the PipelineTask.
 	pipelineTaskName?: string @go(PipelineTaskName)
 
-	// Status is the RunStatus for the corresponding Run
+	// Status is the CustomRunStatus for the corresponding CustomRun or Run
 	// +optional
-	status?: null | runv1alpha1.#RunStatus @go(Status,*runv1alpha1.RunStatus)
+	status?: null | v1beta1.#CustomRunStatus @go(Status,*github.com/tektoncd/pipeline/pkg/apis/run/v1beta1.CustomRunStatus)
 
 	// WhenExpressions is the list of checks guarding the execution of the PipelineTask
 	// +optional

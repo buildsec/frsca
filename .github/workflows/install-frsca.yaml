@@ -55,8 +55,28 @@ jobs:
           REGISTRY: "registry.registry"
         run: |
           make registry-proxy >/dev/null &
-          make example-buildpacks
-          sleep 15
+          # wait for PipelineRun to be created
+          WAIT_CNT=0
+          RETRIES=0
+          while [ -z $(tkn pr ls -o jsonpath='{.items[?(@.metadata.generateName == "example-buildpacks-")].metadata.name}') ]; do
+            if [ $WAIT_CNT -eq 0 ]; then
+              if [ $RETRIES -lt 2 ]; then
+                RETRIES=$(expr $RETRIES + 1)
+                make example-buildpacks
+              else
+                exit 1
+              fi
+            fi
+            if [ $WAIT_CNT -gt 50 ]; then
+              echo "Retrying example-buildpacks-"
+              WAIT_CNT=0
+            else
+              WAIT_CNT=$(expr $WAIT_CNT + 1)
+              echo "Waiting for PipelineRun example-buildpacks-"
+              sleep 1
+            fi
+          done
+          # tail PipelineRun logs
           tkn pr logs --last -f
           if [ "$(tkn pr describe --last -o jsonpath='{.status.conditions[?(@.type == "Succeeded")].status}')" != "True" ]; then
             tkn pr describe --last
@@ -89,8 +109,28 @@ jobs:
           REGISTRY: "registry.registry"
         run: |
           make registry-proxy >/dev/null &
-          make example-sample-pipeline
-          sleep 15
+          # wait for PipelineRun to be created
+          WAIT_CNT=0
+          RETRIES=0
+          while [ -z $(tkn pr ls -o jsonpath='{.items[?(@.metadata.generateName == "example-sample-pipeline-")].metadata.name}') ]; do
+            if [ $WAIT_CNT -eq 0 ]; then
+              if [ $RETRIES -lt 2 ]; then
+                RETRIES=$(expr $RETRIES + 1)
+                make example-sample-pipeline
+              else
+                exit 1
+              fi
+            fi
+            if [ $WAIT_CNT -gt 50 ]; then
+              echo "Retrying example-sample-pipeline-"
+              WAIT_CNT=0
+            else
+              WAIT_CNT=$(expr $WAIT_CNT + 1)
+              echo "Waiting for PipelineRun example-sample-pipeline-"
+              sleep 1
+            fi
+          done
+          # tail PipelineRun logs
           tkn pr logs --last -f
           if [ "$(tkn pr describe --last -o jsonpath='{.status.conditions[?(@.type == "Succeeded")].status}')" != "True" ]; then
             tkn pr describe --last

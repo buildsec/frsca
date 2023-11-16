@@ -1,9 +1,6 @@
 base64_*
 docs/public/
 hello.txt
-kubernetes/scripts/*.json
-kubernetes/scripts/payload
-kubernetes/scripts/signature
 result
 target/
 *.pub

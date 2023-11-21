@@ -199,7 +199,7 @@ frsca: task: "grype-vulnerability-scan": {
 				"--config",
 				"/var/grype-config/.grype.yaml"
 			]
-			image: "anchore/grype:v0.46.0@sha256:6ccf6ac23f90fde7ea202ce2b18d6ad98d3e8992c73455841167afa27a71d93d"
+			image: "anchore/grype:v0.73.3@sha256:1b3fd815111272e044398f7ac421c0d9e19907accfb0f4854925368b1e6fffb3"
 			name:  "grype-scanner"
 		}]
 		workspaces: [{

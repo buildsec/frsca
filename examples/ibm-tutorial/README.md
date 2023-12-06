@@ -26,7 +26,7 @@ tkn pr logs --last -f
 # Export the value of IMAGE_URL from the last pipeline run and the associated taskrun name:
 TASK_RUNS=($(tkn pr describe --last -o jsonpath='{.status.childReferences}' | jq -r '.[] | select(.kind | match("TaskRun")) | .name'))
 TASK_RUN="none" IMAGE_URL="none"; for tr in "${TASK_RUNS[@]}"; do
-  image=$(tkn tr describe "${tr}" -o jsonpath='{.status.results}' | jq -r '.[] | select(.name == IMAGE_URL") | .value')
+  image=$(tkn tr describe "${tr}" -o jsonpath='{.status.results}' | jq -r '.[] | select(.name == "IMAGE_URL") | .value')
   if [ -n "${image}" ]; then
     TASK_RUN="${tr}"
     IMAGE_URL="${image}"

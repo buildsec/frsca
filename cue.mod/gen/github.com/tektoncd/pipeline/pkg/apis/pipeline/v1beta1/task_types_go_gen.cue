@@ -31,11 +31,11 @@ import (
 	metav1.#TypeMeta
 
 	// +optional
-	metadata: metav1.#ObjectMeta @go(ObjectMeta)
+	metadata?: metav1.#ObjectMeta @go(ObjectMeta)
 
 	// Spec holds the desired state of the Task from the client
 	// +optional
-	spec: #TaskSpec @go(Spec)
+	spec?: #TaskSpec @go(Spec)
 }
 
 // TaskSpec defines the desired state of Task.

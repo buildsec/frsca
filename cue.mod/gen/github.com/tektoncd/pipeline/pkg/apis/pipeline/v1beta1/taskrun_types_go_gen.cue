@@ -24,7 +24,7 @@ import (
 	resources?: null | #TaskRunResources @go(Resources,*TaskRunResources)
 
 	// +optional
-	serviceAccountName: string @go(ServiceAccountName)
+	serviceAccountName?: string @go(ServiceAccountName)
 
 	// no more than one of the TaskRef and TaskSpec may be specified.
 	// +optional

@@ -23,7 +23,7 @@ import (
 
 	// Spec holds the desired state of the EventListener from the client
 	// +optional
-	spec: #EventListenerSpec @go(Spec)
+	spec?: #EventListenerSpec @go(Spec)
 
 	// +optional
 	status?: #EventListenerStatus @go(Status)

@@ -14,7 +14,7 @@ package v1
 
 	// Message specifies violation message.
 	// +optional
-	message: string @go(Message)
+	message?: string @go(Message)
 
 	// Status shows the rule response status
 	status: string @go(Status)

@@ -46,5 +46,5 @@ package apis
 
 	// Details contains an optional longer payload.
 	// +optional
-	Details: string
+	Details?: string
 }

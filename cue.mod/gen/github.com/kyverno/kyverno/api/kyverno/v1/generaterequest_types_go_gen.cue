@@ -31,7 +31,7 @@ import (
 
 	// Status contains statistics related to generate request.
 	// +optional
-	status: #GenerateRequestStatus @go(Status)
+	status?: #GenerateRequestStatus @go(Status)
 }
 
 // GenerateRequestSpec stores the request specification.
@@ -69,16 +69,16 @@ import (
 	// Roles is a list of possible role send the request.
 	// +nullable
 	// +optional
-	roles: [...string] @go(Roles,[]string)
+	roles?: [...string] @go(Roles,[]string)
 
 	// ClusterRoles is a list of possible clusterRoles send the request.
 	// +nullable
 	// +optional
-	clusterRoles: [...string] @go(ClusterRoles,[]string)
+	clusterRoles?: [...string] @go(ClusterRoles,[]string)
 
 	// UserInfo is the userInfo carried in the admission request.
 	// +optional
-	userInfo: authenticationv1.#UserInfo @go(AdmissionUserInfo)
+	userInfo?: authenticationv1.#UserInfo @go(AdmissionUserInfo)
 }
 
 // GenerateRequestStatus stores the status of generated request.

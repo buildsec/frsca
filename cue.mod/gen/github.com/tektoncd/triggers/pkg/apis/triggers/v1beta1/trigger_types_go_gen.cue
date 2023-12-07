@@ -72,7 +72,7 @@ import (
 
 	// Spec holds the desired state of the Trigger
 	// +optional
-	spec: #TriggerSpec @go(Spec)
+	spec?: #TriggerSpec @go(Spec)
 }
 
 // TriggerInterceptor provides a hook to intercept and pre-process events

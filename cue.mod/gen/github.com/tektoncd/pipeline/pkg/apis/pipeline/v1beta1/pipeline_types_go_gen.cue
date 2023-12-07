@@ -29,7 +29,7 @@ import (
 
 	// Spec holds the desired state of the Pipeline from the client
 	// +optional
-	spec: #PipelineSpec @go(Spec)
+	spec?: #PipelineSpec @go(Spec)
 }
 
 // PipelineSpec defines the desired state of Pipeline.
@@ -83,7 +83,7 @@ import (
 
 	// Description is a human-readable description of the result
 	// +optional
-	description: string @go(Description)
+	description?: string @go(Description)
 
 	// Value the expression used to retrieve the value
 	value: #ParamValue @go(Value)

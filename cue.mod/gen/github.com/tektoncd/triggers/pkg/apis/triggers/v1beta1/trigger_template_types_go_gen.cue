@@ -35,7 +35,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 	// Spec holds the desired state of the TriggerTemplate from the client
 	// +optional
-	spec: #TriggerTemplateSpec @go(Spec)
+	spec?: #TriggerTemplateSpec @go(Spec)
 
 	// +optional
 	status?: #TriggerTemplateStatus @go(Status)

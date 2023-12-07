@@ -29,7 +29,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 	// Spec holds the desired state of the TriggerBinding
 	// +optional
-	spec: #TriggerBindingSpec @go(Spec)
+	spec?: #TriggerBindingSpec @go(Spec)
 
 	// +optional
 	status?: #TriggerBindingStatus @go(Status)

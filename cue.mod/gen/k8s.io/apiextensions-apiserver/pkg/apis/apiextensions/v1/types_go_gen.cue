@@ -357,12 +357,12 @@ import (
 	// +optional
 	// +listType=map
 	// +listMapKey=type
-	conditions: [...#CustomResourceDefinitionCondition] @go(Conditions,[]CustomResourceDefinitionCondition) @protobuf(1,bytes,opt)
+	conditions?: [...#CustomResourceDefinitionCondition] @go(Conditions,[]CustomResourceDefinitionCondition) @protobuf(1,bytes,opt)
 
 	// acceptedNames are the names that are actually being used to serve discovery.
 	// They may be different than the names in spec.
 	// +optional
-	acceptedNames: #CustomResourceDefinitionNames @go(AcceptedNames) @protobuf(2,bytes,opt)
+	acceptedNames?: #CustomResourceDefinitionNames @go(AcceptedNames) @protobuf(2,bytes,opt)
 
 	// storedVersions lists all versions of CustomResources that were ever persisted. Tracking these
 	// versions allows a migration path for stored versions in etcd. The field is mutable
@@ -371,7 +371,7 @@ import (
 	// versions from this list.
 	// Versions may not be removed from `spec.versions` while they exist in this list.
 	// +optional
-	storedVersions: [...string] @go(StoredVersions,[]string) @protobuf(3,bytes,rep)
+	storedVersions?: [...string] @go(StoredVersions,[]string) @protobuf(3,bytes,rep)
 }
 
 #CustomResourceCleanupFinalizer: "customresourcecleanup.apiextensions.k8s.io"

@@ -48,7 +48,7 @@ import (
 	retries?: int @go(Retries)
 
 	// +optional
-	serviceAccountName: string @go(ServiceAccountName)
+	serviceAccountName?: string @go(ServiceAccountName)
 
 	// Time after which the custom-task times out.
 	// Refer Go's ParseDuration documentation for expected format: https://golang.org/pkg/time/#ParseDuration

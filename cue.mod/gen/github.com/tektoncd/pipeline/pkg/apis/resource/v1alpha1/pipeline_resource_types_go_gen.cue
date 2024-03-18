@@ -2,6 +2,7 @@
 
 //cue:generate cue get go github.com/tektoncd/pipeline/pkg/apis/resource/v1alpha1
 
+// The contents of this package are deprecated and unused. Preserved for backwards compatibility.
 package v1alpha1
 
 import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -9,41 +10,14 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 // PipelineResourceType represents the type of endpoint the pipelineResource is, so that the
 // controller will know this pipelineResource shouldx be fetched and optionally what
 // additional metatdata should be provided for it.
-#PipelineResourceType: string // #enumPipelineResourceType
-
-#enumPipelineResourceType:
-	#PipelineResourceTypeGit |
-	#PipelineResourceTypeStorage |
-	#PipelineResourceTypeImage |
-	#PipelineResourceTypeCluster |
-	#PipelineResourceTypePullRequest |
-	#PipelineResourceTypeCloudEvent |
-	#PipelineResourceTypeGCS
-
-// PipelineResourceTypeGit indicates that this source is a GitHub repo.
-#PipelineResourceTypeGit: "git"
-
-// PipelineResourceTypeStorage indicates that this source is a storage blob resource.
-#PipelineResourceTypeStorage: "storage"
-
-// PipelineResourceTypeImage indicates that this source is a docker Image.
-#PipelineResourceTypeImage: "image"
-
-// PipelineResourceTypeCluster indicates that this source is a k8s cluster Image.
-#PipelineResourceTypeCluster: "cluster"
-
-// PipelineResourceTypePullRequest indicates that this source is a SCM Pull Request.
-#PipelineResourceTypePullRequest: "pullRequest"
-
-// PipelineResourceTypeCloudEvent indicates that this source is a cloud event URI
-#PipelineResourceTypeCloudEvent: "cloudEvent"
-
-// PipelineResourceTypeGCS is the subtype for the GCSResources, which is backed by a GCS blob/directory.
-#PipelineResourceTypeGCS: "gcs"
+//
+// Deprecated: Unused, preserved only for backwards compatibility
+#PipelineResourceType: string
 
 // PipelineResource describes a resource that is an input to or output from a
 // Task.
 //
+// Deprecated: Unused, preserved only for backwards compatibility
 // +k8s:openapi-gen=true
 #PipelineResource: {
 	metav1.#TypeMeta
@@ -54,20 +28,23 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// Spec holds the desired state of the PipelineResource from the client
 	spec?: #PipelineResourceSpec @go(Spec)
 
-	// Status is deprecated.
-	// It usually is used to communicate the observed state of the PipelineResource from
+	// Status is used to communicate the observed state of the PipelineResource from
 	// the controller, but was unused as there is no controller for PipelineResource.
+	//
 	// +optional
 	status?: null | #PipelineResourceStatus @go(Status,*PipelineResourceStatus)
 }
 
 // PipelineResourceStatus does not contain anything because PipelineResources on their own
 // do not have a status
-// Deprecated
+//
+// Deprecated: Unused, preserved only for backwards compatibility
 #PipelineResourceStatus: {
 }
 
-// PipelineResourceSpec defines  an individual resources used in the pipeline.
+// PipelineResourceSpec defines an individual resources used in the pipeline.
+//
+// Deprecated: Unused, preserved only for backwards compatibility
 #PipelineResourceSpec: {
 	// Description is a user-facing description of the resource that may be
 	// used to populate a UI.
@@ -85,6 +62,8 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 }
 
 // SecretParam indicates which secret can be used to populate a field of the resource
+//
+// Deprecated: Unused, preserved only for backwards compatibility
 #SecretParam: {
 	fieldName:  string @go(FieldName)
 	secretKey:  string @go(SecretKey)
@@ -93,6 +72,8 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 // ResourceParam declares a string value to use for the parameter called Name, and is used in
 // the specific context of PipelineResources.
+//
+// Deprecated: Unused, preserved only for backwards compatibility
 #ResourceParam: {
 	name:  string @go(Name)
 	value: string @go(Value)
@@ -103,6 +84,8 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 // PipelineResources within the type's definition, and when provided as an Input, the Name will be the
 // path to the volume mounted containing this PipelineResource as an input (e.g.
 // an input Resource named `workspace` will be mounted at `/workspace`).
+//
+// Deprecated: Unused, preserved only for backwards compatibility
 #ResourceDeclaration: {
 	// Name declares the name by which a resource is referenced in the
 	// definition. Resources may be referenced by name in the definition of a
@@ -130,6 +113,8 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 }
 
 // PipelineResourceList contains a list of PipelineResources
+//
+// Deprecated: Unused, preserved only for backwards compatibility
 #PipelineResourceList: {
 	metav1.#TypeMeta
 

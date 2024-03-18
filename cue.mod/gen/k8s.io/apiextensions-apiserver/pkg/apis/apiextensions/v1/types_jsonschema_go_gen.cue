@@ -4,6 +4,33 @@
 
 package v1
 
+// FieldValueErrorReason is a machine-readable value providing more detail about why a field failed the validation.
+// +enum
+#FieldValueErrorReason: string // #enumFieldValueErrorReason
+
+#enumFieldValueErrorReason:
+	#FieldValueRequired |
+	#FieldValueDuplicate |
+	#FieldValueInvalid |
+	#FieldValueForbidden
+
+// FieldValueRequired is used to report required values that are not
+// provided (e.g. empty strings, null values, or empty arrays).
+#FieldValueRequired: #FieldValueErrorReason & "FieldValueRequired"
+
+// FieldValueDuplicate is used to report collisions of values that must be
+// unique (e.g. unique IDs).
+#FieldValueDuplicate: #FieldValueErrorReason & "FieldValueDuplicate"
+
+// FieldValueInvalid is used to report malformed values (e.g. failed regex
+// match, too long, out of bounds).
+#FieldValueInvalid: #FieldValueErrorReason & "FieldValueInvalid"
+
+// FieldValueForbidden is used to report valid (as per formatting rules)
+// values which would be accepted under some conditions, but which are not
+// permitted by the current conditions (such as security policy).
+#FieldValueForbidden: #FieldValueErrorReason & "FieldValueForbidden"
+
 // JSONSchemaProps is a JSON-Schema following Specification Draft 4 (http://json-schema.org/).
 #JSONSchemaProps: {
 	id?:          string         @go(ID) @protobuf(1,bytes,opt)
@@ -224,6 +251,39 @@ package v1
 	// If unset, the message is "failed rule: {Rule}".
 	// e.g. "must be a URL with the host matching spec.host"
 	message?: string @go(Message) @protobuf(2,bytes,opt)
+
+	// MessageExpression declares a CEL expression that evaluates to the validation failure message that is returned when this rule fails.
+	// Since messageExpression is used as a failure message, it must evaluate to a string.
+	// If both message and messageExpression are present on a rule, then messageExpression will be used if validation
+	// fails. If messageExpression results in a runtime error, the runtime error is logged, and the validation failure message is produced
+	// as if the messageExpression field were unset. If messageExpression evaluates to an empty string, a string with only spaces, or a string
+	// that contains line breaks, then the validation failure message will also be produced as if the messageExpression field were unset, and
+	// the fact that messageExpression produced an empty string/string with only spaces/string with line breaks will be logged.
+	// messageExpression has access to all the same variables as the rule; the only difference is the return type.
+	// Example:
+	// "x must be less than max ("+string(self.max)+")"
+	// +optional
+	messageExpression?: string @go(MessageExpression) @protobuf(3,bytes,opt)
+
+	// reason provides a machine-readable validation failure reason that is returned to the caller when a request fails this validation rule.
+	// The HTTP status code returned to the caller will match the reason of the reason of the first failed validation rule.
+	// The currently supported reasons are: "FieldValueInvalid", "FieldValueForbidden", "FieldValueRequired", "FieldValueDuplicate".
+	// If not set, default to use "FieldValueInvalid".
+	// All future added reasons must be accepted by clients when reading this value and unknown reasons should be treated as FieldValueInvalid.
+	// +optional
+	reason?: null | #FieldValueErrorReason @go(Reason,*FieldValueErrorReason) @protobuf(4,bytes,opt)
+
+	// fieldPath represents the field path returned when the validation fails.
+	// It must be a relative JSON path (i.e. with array notation) scoped to the location of this x-kubernetes-validations extension in the schema and refer to an existing field.
+	// e.g. when validation checks if a specific attribute `foo` under a map `testMap`, the fieldPath could be set to `.testMap.foo`
+	// If the validation checks two lists must have unique attributes, the fieldPath could be set to either of the list: e.g. `.testList`
+	// It does not support list numeric index.
+	// It supports child operation to refer to an existing field currently. Refer to [JSONPath support in Kubernetes](https://kubernetes.io/docs/reference/kubectl/jsonpath/) for more info.
+	// Numeric index of array is not supported.
+	// For field name which contains special characters, use `['specialName']` to refer the field name.
+	// e.g. for attribute `foo.34$` appears in a list `testList`, the fieldPath could be set to `.testList['foo.34$']`
+	// +optional
+	fieldPath?: string @go(FieldPath) @protobuf(5,bytes,opt)
 }
 
 // JSON represents any valid JSON value.

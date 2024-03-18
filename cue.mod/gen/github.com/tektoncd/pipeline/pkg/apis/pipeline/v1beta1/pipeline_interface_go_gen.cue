@@ -4,5 +4,5 @@
 
 package v1beta1
 
-// PipelineObject is implemented by Pipeline and ClusterPipeline
+// PipelineObject is implemented by Pipeline
 #PipelineObject: _

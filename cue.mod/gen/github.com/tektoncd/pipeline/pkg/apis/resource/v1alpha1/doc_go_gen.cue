@@ -3,7 +3,6 @@
 //cue:generate cue get go github.com/tektoncd/pipeline/pkg/apis/resource/v1alpha1
 
 // Package v1alpha1 contains API Schema definitions for the pipeline v1alpha1 API group
-// +k8s:openapi-gen=true
 // +k8s:deepcopy-gen=package,register
 // +k8s:conversion-gen=github.com/tektoncd/pipeline/pkg/apis/resource
 // +k8s:defaulter-gen=TypeMeta

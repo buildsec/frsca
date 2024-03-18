@@ -9,24 +9,12 @@ import (
 	corev1 "k8s.io/api/core/v1"
 )
 
-// TaskRunResultType default task run result value
-#TaskRunResultType: #ResultType & 1
-
-// PipelineResourceResultType default pipeline result value
-#PipelineResourceResultType: 2
-
-// InternalTektonResultType default internal tekton result value
-#InternalTektonResultType: 3
-
-// UnknownResultType default unknown result type value
-#UnknownResultType: 10
-
 // Task represents a collection of sequential steps that are run as part of a
 // Pipeline using a set of inputs and producing a set of outputs. Tasks execute
 // when TaskRuns are created that provide the input parameters and resources and
 // output resources the Task requires.
 //
-// +k8s:openapi-gen=true
+// Deprecated: Please use v1.Task instead.
 #Task: {
 	metav1.#TypeMeta
 
@@ -43,6 +31,8 @@ import (
 	// Resources is a list input and output resource to run the task
 	// Resources are represented in TaskRuns as bindings to instances of
 	// PipelineResources.
+	//
+	// Deprecated: Unused, preserved only for backwards compatibility
 	// +optional
 	resources?: null | #TaskResources @go(Resources,*TaskResources)
 
@@ -51,7 +41,12 @@ import (
 	// value.
 	// +optional
 	// +listType=atomic
-	params?: [...#ParamSpec] @go(Params,[]ParamSpec)
+	params?: #ParamSpecs @go(Params)
+
+	// DisplayName is a user-facing name of the task that may be
+	// used to populate a UI.
+	// +optional
+	displayName?: string @go(DisplayName)
 
 	// Description is a user-facing description of the task that may be
 	// used to populate a UI.

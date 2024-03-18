@@ -33,7 +33,7 @@ COSIGN_RELEASE_URL="https://github.com/sigstore/cosign/releases/download/${COSIG
 COSIGN_CHECKSUMS="cosign_checksums.txt"
 COSIGN_ASSET="${COSIGN_BIN}-${COSIGN_OS}-${COSIGN_ARCH}"
 
-CUE_VERSION=v0.7.0
+CUE_VERSION=v0.8.0
 CUE_FILE_NAME=cue_${CUE_VERSION}_linux_amd64.tar.gz
 CUE_URL=https://github.com/cue-lang/cue/releases/download/${CUE_VERSION}
 CUE_CHECKSUMS=checksums.txt
@@ -169,7 +169,7 @@ case "${PLATFORM}" in
       rm ${CUE_CHECKSUMS}
       rm ${CUE_FILE_NAME}
       rm ${CHECKSUM_FILE}
-      rm -rf doc LICENSE README.md cue
+      rm -rf doc LICENSE README.md cue cuepls
       popd
       rmdir "$TMP"
     )

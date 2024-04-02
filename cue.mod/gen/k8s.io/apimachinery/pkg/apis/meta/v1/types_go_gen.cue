@@ -92,7 +92,7 @@ import (
 	// automatically. Name is primarily intended for creation idempotence and configuration
 	// definition.
 	// Cannot be updated.
-	// More info: http://kubernetes.io/docs/user-guide/identifiers#names
+	// More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names#names
 	// +optional
 	name?: string @go(Name) @protobuf(1,bytes,opt)
 
@@ -118,7 +118,7 @@ import (
 	//
 	// Must be a DNS_LABEL.
 	// Cannot be updated.
-	// More info: http://kubernetes.io/docs/user-guide/namespaces
+	// More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces
 	// +optional
 	namespace?: string @go(Namespace) @protobuf(3,bytes,opt)
 
@@ -132,7 +132,7 @@ import (
 	//
 	// Populated by the system.
 	// Read-only.
-	// More info: http://kubernetes.io/docs/user-guide/identifiers#uids
+	// More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names#uids
 	// +optional
 	uid?: types.#UID @go(UID) @protobuf(5,bytes,opt,casttype=k8s.io/kubernetes/pkg/types.UID)
 
@@ -196,14 +196,14 @@ import (
 	// Map of string keys and values that can be used to organize and categorize
 	// (scope and select) objects. May match selectors of replication controllers
 	// and services.
-	// More info: http://kubernetes.io/docs/user-guide/labels
+	// More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels
 	// +optional
 	labels?: {[string]: string} @go(Labels,map[string]string) @protobuf(11,bytes,rep)
 
 	// Annotations is an unstructured key value map stored with a resource that may be
 	// set by external tools to store and retrieve arbitrary metadata. They are not
 	// queryable and should be preserved when modifying objects.
-	// More info: http://kubernetes.io/docs/user-guide/annotations
+	// More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations
 	// +optional
 	annotations?: {[string]: string} @go(Annotations,map[string]string) @protobuf(12,bytes,rep)
 
@@ -273,11 +273,11 @@ import (
 	kind: string @go(Kind) @protobuf(1,bytes,opt)
 
 	// Name of the referent.
-	// More info: http://kubernetes.io/docs/user-guide/identifiers#names
+	// More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names#names
 	name: string @go(Name) @protobuf(3,bytes,opt)
 
 	// UID of the referent.
-	// More info: http://kubernetes.io/docs/user-guide/identifiers#uids
+	// More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names#uids
 	uid: types.#UID @go(UID) @protobuf(4,bytes,opt,casttype=k8s.io/apimachinery/pkg/types.UID)
 
 	// If true, this reference points to the managing controller.
@@ -380,6 +380,32 @@ import (
 	// This field is not supported when watch is true. Clients may start a watch from the last
 	// resourceVersion value returned by the server and not miss any modifications.
 	continue?: string @go(Continue) @protobuf(8,bytes,opt)
+
+	// `sendInitialEvents=true` may be set together with `watch=true`.
+	// In that case, the watch stream will begin with synthetic events to
+	// produce the current state of objects in the collection. Once all such
+	// events have been sent, a synthetic "Bookmark" event  will be sent.
+	// The bookmark will report the ResourceVersion (RV) corresponding to the
+	// set of objects, and be marked with `"k8s.io/initial-events-end": "true"` annotation.
+	// Afterwards, the watch stream will proceed as usual, sending watch events
+	// corresponding to changes (subsequent to the RV) to objects watched.
+	//
+	// When `sendInitialEvents` option is set, we require `resourceVersionMatch`
+	// option to also be set. The semantic of the watch request is as following:
+	// - `resourceVersionMatch` = NotOlderThan
+	//   is interpreted as "data at least as new as the provided `resourceVersion`"
+	//   and the bookmark event is send when the state is synced
+	//   to a `resourceVersion` at least as fresh as the one provided by the ListOptions.
+	//   If `resourceVersion` is unset, this is interpreted as "consistent read" and the
+	//   bookmark event is send when the state is synced at least to the moment
+	//   when request started being processed.
+	// - `resourceVersionMatch` set to any other value or unset
+	//   Invalid error is returned.
+	//
+	// Defaults to true if `resourceVersion=""` or `resourceVersion="0"` (for backward
+	// compatibility reasons) and to false otherwise.
+	// +optional
+	sendInitialEvents?: null | bool @go(SendInitialEvents,*bool) @protobuf(11,varint,opt)
 }
 
 // resourceVersionMatch specifies how the resourceVersion parameter is applied. resourceVersionMatch
@@ -518,19 +544,16 @@ import (
 
 	// fieldValidation instructs the server on how to handle
 	// objects in the request (POST/PUT/PATCH) containing unknown
-	// or duplicate fields, provided that the `ServerSideFieldValidation`
-	// feature gate is also enabled. Valid values are:
+	// or duplicate fields. Valid values are:
 	// - Ignore: This will ignore any unknown fields that are silently
 	// dropped from the object, and will ignore all but the last duplicate
 	// field that the decoder encounters. This is the default behavior
-	// prior to v1.23 and is the default behavior when the
-	// `ServerSideFieldValidation` feature gate is disabled.
+	// prior to v1.23.
 	// - Warn: This will send a warning via the standard warning response
 	// header for each unknown field that is dropped from the object, and
 	// for each duplicate field that is encountered. The request will
 	// still succeed if there are no other errors, and will only persist
-	// the last of any duplicate fields. This is the default when the
-	// `ServerSideFieldValidation` feature gate is enabled.
+	// the last of any duplicate fields. This is the default in v1.23+
 	// - Strict: This will fail the request with a BadRequest error if
 	// any unknown fields would be dropped from the object, or if any
 	// duplicate fields are present. The error returned from the server
@@ -570,19 +593,16 @@ import (
 
 	// fieldValidation instructs the server on how to handle
 	// objects in the request (POST/PUT/PATCH) containing unknown
-	// or duplicate fields, provided that the `ServerSideFieldValidation`
-	// feature gate is also enabled. Valid values are:
+	// or duplicate fields. Valid values are:
 	// - Ignore: This will ignore any unknown fields that are silently
 	// dropped from the object, and will ignore all but the last duplicate
 	// field that the decoder encounters. This is the default behavior
-	// prior to v1.23 and is the default behavior when the
-	// `ServerSideFieldValidation` feature gate is disabled.
+	// prior to v1.23.
 	// - Warn: This will send a warning via the standard warning response
 	// header for each unknown field that is dropped from the object, and
 	// for each duplicate field that is encountered. The request will
 	// still succeed if there are no other errors, and will only persist
-	// the last of any duplicate fields. This is the default when the
-	// `ServerSideFieldValidation` feature gate is enabled.
+	// the last of any duplicate fields. This is the default in v1.23+
 	// - Strict: This will fail the request with a BadRequest error if
 	// any unknown fields would be dropped from the object, or if any
 	// duplicate fields are present. The error returned from the server
@@ -640,19 +660,16 @@ import (
 
 	// fieldValidation instructs the server on how to handle
 	// objects in the request (POST/PUT/PATCH) containing unknown
-	// or duplicate fields, provided that the `ServerSideFieldValidation`
-	// feature gate is also enabled. Valid values are:
+	// or duplicate fields. Valid values are:
 	// - Ignore: This will ignore any unknown fields that are silently
 	// dropped from the object, and will ignore all but the last duplicate
 	// field that the decoder encounters. This is the default behavior
-	// prior to v1.23 and is the default behavior when the
-	// `ServerSideFieldValidation` feature gate is disabled.
+	// prior to v1.23.
 	// - Warn: This will send a warning via the standard warning response
 	// header for each unknown field that is dropped from the object, and
 	// for each duplicate field that is encountered. The request will
 	// still succeed if there are no other errors, and will only persist
-	// the last of any duplicate fields. This is the default when the
-	// `ServerSideFieldValidation` feature gate is enabled.
+	// the last of any duplicate fields. This is the default in v1.23+
 	// - Strict: This will fail the request with a BadRequest error if
 	// any unknown fields would be dropped from the object, or if any
 	// duplicate fields are present. The error returned from the server
@@ -734,7 +751,7 @@ import (
 
 	// UID of the resource.
 	// (when there is a single resource which can be described).
-	// More info: http://kubernetes.io/docs/user-guide/identifiers#uids
+	// More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names#uids
 	// +optional
 	uid?: types.#UID @go(UID) @protobuf(6,bytes,opt,casttype=k8s.io/apimachinery/pkg/types.UID)
 
@@ -961,6 +978,11 @@ import (
 	#CauseTypeFieldValueDuplicate |
 	#CauseTypeFieldValueInvalid |
 	#CauseTypeFieldValueNotSupported |
+	#CauseTypeForbidden |
+	#CauseTypeTooLong |
+	#CauseTypeTooMany |
+	#CauseTypeInternal |
+	#CauseTypeTypeInvalid |
 	#CauseTypeUnexpectedServerResponse |
 	#CauseTypeFieldManagerConflict |
 	#CauseTypeResourceVersionTooLarge
@@ -984,6 +1006,29 @@ import (
 // CauseTypeFieldValueNotSupported is used to report valid (as per formatting rules)
 // values that can not be handled (e.g. an enumerated string).
 #CauseTypeFieldValueNotSupported: #CauseType & "FieldValueNotSupported"
+
+// CauseTypeForbidden is used to report valid (as per formatting rules)
+// values which would be accepted under some conditions, but which are not
+// permitted by the current conditions (such as security policy).  See
+// Forbidden().
+#CauseTypeForbidden: #CauseType & "FieldValueForbidden"
+
+// CauseTypeTooLong is used to report that the given value is too long.
+// This is similar to ErrorTypeInvalid, but the error will not include the
+// too-long value.  See TooLong().
+#CauseTypeTooLong: #CauseType & "FieldValueTooLong"
+
+// CauseTypeTooMany is used to report "too many". This is used to
+// report that a given list has too many items. This is similar to FieldValueTooLong,
+// but the error indicates quantity instead of length.
+#CauseTypeTooMany: #CauseType & "FieldValueTooMany"
+
+// CauseTypeInternal is used to report other errors that are not related
+// to user input.  See InternalError().
+#CauseTypeInternal: #CauseType & "InternalError"
+
+// CauseTypeTypeInvalid is for the value did not match the schema type for that field
+#CauseTypeTypeInvalid: #CauseType & "FieldValueTypeInvalid"
 
 // CauseTypeUnexpectedServerResponse is used to report when the server responded to the client
 // without the expected return type. The presence of this cause indicates the error may be
@@ -1184,8 +1229,6 @@ import (
 // relates the key and values.
 #LabelSelectorRequirement: {
 	// key is the label key that the selector applies to.
-	// +patchMergeKey=key
-	// +patchStrategy=merge
 	key: string @go(Key) @protobuf(1,bytes,opt)
 
 	// operator represents a key's relationship to a set of values.

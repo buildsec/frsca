@@ -9,8 +9,19 @@ frsca: clusterPolicy: "verify-image": {
 			image: "gcr.io/projectsigstore/*"
 			key:   "{{ keys.data.projectsigstore }}"
 		}, {
-			image: "ttl.sh/*"
-			key:   "{{ keys.data.ttlsh }}"
+			image: #public.repo
+      attestors: [{
+        entries: [{
+          keys: {
+            publicKeys: "{{ keys.data.ttlsh }}"
+            ctlog: ignoreSCT: true
+            rekor: {
+              ignoreTlog: true
+              url: "https://rekor.sigstore.dev"
+            }
+          }
+        }]
+      }]
 		}, {
 			image:   "ghcr.io/google/ko"
 			subject: "https://github.com/google/ko/*"

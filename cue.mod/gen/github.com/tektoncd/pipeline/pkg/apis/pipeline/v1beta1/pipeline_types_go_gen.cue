@@ -20,7 +20,8 @@ import (
 
 // Pipeline describes a list of Tasks to execute. It expresses how outputs
 // of tasks feed into inputs of subsequent tasks.
-// +k8s:openapi-gen=true
+//
+// Deprecated: Please use v1.Pipeline instead.
 #Pipeline: {
 	metav1.#TypeMeta
 
@@ -34,13 +35,17 @@ import (
 
 // PipelineSpec defines the desired state of Pipeline.
 #PipelineSpec: {
+	// DisplayName is a user-facing name of the pipeline that may be
+	// used to populate a UI.
+	// +optional
+	displayName?: string @go(DisplayName)
+
 	// Description is a user-facing description of the pipeline that may be
 	// used to populate a UI.
 	// +optional
 	description?: string @go(Description)
 
-	// Resources declares the names and types of the resources given to the
-	// Pipeline's tasks as inputs and outputs.
+	// Deprecated: Unused, preserved only for backwards compatibility
 	// +listType=atomic
 	resources?: [...#PipelineDeclaredResource] @go(Resources,[]PipelineDeclaredResource)
 
@@ -51,7 +56,7 @@ import (
 	// Params declares a list of input parameters that must be supplied when
 	// this Pipeline is run.
 	// +listType=atomic
-	params?: [...#ParamSpec] @go(Params,[]ParamSpec)
+	params?: #ParamSpecs @go(Params)
 
 	// Workspaces declares a set of named workspaces that are expected to be
 	// provided by a PipelineRun.
@@ -120,6 +125,16 @@ import (
 	// the execution order of tasks relative to one another.
 	name?: string @go(Name)
 
+	// DisplayName is the display name of this task within the context of a Pipeline.
+	// This display name may be used to populate a UI.
+	// +optional
+	displayName?: string @go(DisplayName)
+
+	// Description is the description of this task within the context of a Pipeline.
+	// This description may be used to populate a UI.
+	// +optional
+	description?: string @go(Description)
+
 	// TaskRef is a reference to a task definition.
 	// +optional
 	taskRef?: null | #TaskRef @go(TaskRef,*TaskRef)
@@ -142,15 +157,14 @@ import (
 	// +listType=atomic
 	runAfter?: [...string] @go(RunAfter,[]string)
 
-	// Resources declares the resources given to this task as inputs and
-	// outputs.
+	// Deprecated: Unused, preserved only for backwards compatibility
 	// +optional
 	resources?: null | #PipelineTaskResources @go(Resources,*PipelineTaskResources)
 
 	// Parameters declares parameters passed to this task.
 	// +optional
 	// +listType=atomic
-	params?: [...#Param] @go(Params,[]Param)
+	params?: #Params @go(Params)
 
 	// Matrix declares parameters used to fan out this task.
 	// +optional
@@ -163,20 +177,19 @@ import (
 	workspaces?: [...#WorkspacePipelineTaskBinding] @go(Workspaces,[]WorkspacePipelineTaskBinding)
 
 	// Time after which the TaskRun times out. Defaults to 1 hour.
-	// Specified TaskRun timeout should be less than 24h.
 	// Refer Go's ParseDuration documentation for expected format: https://golang.org/pkg/time/#ParseDuration
 	// +optional
 	timeout?: null | metav1.#Duration @go(Timeout,*metav1.Duration)
-}
 
-// Matrix is used to fan out Tasks in a Pipeline
-#Matrix: {
-	// Params is a list of parameters used to fan out the pipelineTask
-	// Params takes only `Parameters` of type `"array"`
-	// Each array element is supplied to the `PipelineTask` by substituting `params` of type `"string"` in the underlying `Task`.
-	// The names of the `params` in the `Matrix` must match the names of the `params` in the underlying `Task` that they will be substituting.
-	// +listType=atomic
-	params?: [...#Param] @go(Params,[]Param)
+	// PipelineRef is a reference to a pipeline definition
+	// Note: PipelineRef is in preview mode and not yet supported
+	// +optional
+	pipelineRef?: null | #PipelineRef @go(PipelineRef,*PipelineRef)
+
+	// PipelineSpec is a specification of a pipeline
+	// Note: PipelineSpec is in preview mode and not yet supported
+	// +optional
+	pipelineSpec?: null | #PipelineSpec @go(PipelineSpec,*PipelineSpec)
 }
 
 // PipelineTaskList is a list of PipelineTasks
@@ -186,67 +199,6 @@ import (
 #PipelineTaskParam: {
 	name:  string @go(Name)
 	value: string @go(Value)
-}
-
-// PipelineDeclaredResource is used by a Pipeline to declare the types of the
-// PipelineResources that it will required to run and names which can be used to
-// refer to these PipelineResources in PipelineTaskResourceBindings.
-#PipelineDeclaredResource: {
-	// Name is the name that will be used by the Pipeline to refer to this resource.
-	// It does not directly correspond to the name of any PipelineResources Task
-	// inputs or outputs, and it does not correspond to the actual names of the
-	// PipelineResources that will be bound in the PipelineRun.
-	name: string @go(Name)
-
-	// Type is the type of the PipelineResource.
-	type: string @go(Type)
-
-	// Optional declares the resource as optional.
-	// optional: true - the resource is considered optional
-	// optional: false - the resource is considered required (default/equivalent of not specifying it)
-	optional?: bool @go(Optional)
-}
-
-// PipelineTaskResources allows a Pipeline to declare how its DeclaredPipelineResources
-// should be provided to a Task as its inputs and outputs.
-#PipelineTaskResources: {
-	// Inputs holds the mapping from the PipelineResources declared in
-	// DeclaredPipelineResources to the input PipelineResources required by the Task.
-	// +listType=atomic
-	inputs?: [...#PipelineTaskInputResource] @go(Inputs,[]PipelineTaskInputResource)
-
-	// Outputs holds the mapping from the PipelineResources declared in
-	// DeclaredPipelineResources to the input PipelineResources required by the Task.
-	// +listType=atomic
-	outputs?: [...#PipelineTaskOutputResource] @go(Outputs,[]PipelineTaskOutputResource)
-}
-
-// PipelineTaskInputResource maps the name of a declared PipelineResource input
-// dependency in a Task to the resource in the Pipeline's DeclaredPipelineResources
-// that should be used. This input may come from a previous task.
-#PipelineTaskInputResource: {
-	// Name is the name of the PipelineResource as declared by the Task.
-	name: string @go(Name)
-
-	// Resource is the name of the DeclaredPipelineResource to use.
-	resource: string @go(Resource)
-
-	// From is the list of PipelineTask names that the resource has to come from.
-	// (Implies an ordering in the execution graph.)
-	// +optional
-	// +listType=atomic
-	from?: [...string] @go(From,[]string)
-}
-
-// PipelineTaskOutputResource maps the name of a declared PipelineResource output
-// dependency in a Task to the resource in the Pipeline's DeclaredPipelineResources
-// that should be used.
-#PipelineTaskOutputResource: {
-	// Name is the name of the PipelineResource as declared by the Task.
-	name: string @go(Name)
-
-	// Resource is the name of the DeclaredPipelineResource to use.
-	resource: string @go(Resource)
 }
 
 // PipelineList contains a list of Pipeline

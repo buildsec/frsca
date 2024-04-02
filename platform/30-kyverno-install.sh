@@ -15,4 +15,4 @@ C_RESET_ALL='\033[0m'
 echo -e "${C_GREEN}Installing Kyverno...${C_RESET_ALL}"
 kubectl apply --server-side=true --force-conflicts -f "$KYVERNO_INSTALL_DIR"/install.yaml
 # Wait for kyverno deployment to complete
-kubectl rollout status -n kyverno deployment/kyverno
+kubectl rollout status -n kyverno deployment/kyverno-admission-controller deployment/kyverno-background-controller deployment/kyverno-cleanup-controller deployment/kyverno-reports-controller

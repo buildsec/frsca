@@ -29,6 +29,10 @@ package v1
 	// Note: This API is EXPERIMENTAL and might break anytime. For more details: https://github.com/knative/eventing/issues/5086
 	// +optional
 	group?: string @go(Group)
+
+	// Address points to a specific Address Name.
+	// +optional
+	address?: null | string @go(Address,*string)
 }
 
 _#isGroupAllowed: {

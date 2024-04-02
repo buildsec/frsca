@@ -108,6 +108,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 	// RoleRef can reference a Role in the current namespace or a ClusterRole in the global namespace.
 	// If the RoleRef cannot be resolved, the Authorizer must return an error.
+	// This field is immutable.
 	roleRef: #RoleRef @go(RoleRef) @protobuf(3,bytes,opt)
 }
 
@@ -177,6 +178,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 	// RoleRef can only reference a ClusterRole in the global namespace.
 	// If the RoleRef cannot be resolved, the Authorizer must return an error.
+	// This field is immutable.
 	roleRef: #RoleRef @go(RoleRef) @protobuf(3,bytes,opt)
 }
 

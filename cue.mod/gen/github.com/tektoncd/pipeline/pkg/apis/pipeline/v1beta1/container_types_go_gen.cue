@@ -51,7 +51,6 @@ import (
 	// +optional
 	workingDir?: string @go(WorkingDir) @protobuf(5,bytes,opt)
 
-	// Deprecated. This field will be removed in a future release.
 	// List of ports to expose from the Step's container. Exposing a port here gives
 	// the system additional information about the network connections a
 	// container uses, but is primarily informational. Not specifying a port here
@@ -59,6 +58,9 @@ import (
 	// listening on the default "0.0.0.0" address inside a container will be
 	// accessible from the network.
 	// Cannot be updated.
+	//
+	// Deprecated: This field will be removed in a future release.
+	//
 	// +optional
 	// +patchMergeKey=containerPort
 	// +patchStrategy=merge
@@ -106,23 +108,26 @@ import (
 	// +listType=atomic
 	volumeDevices?: [...corev1.#VolumeDevice] @go(VolumeDevices,[]corev1.VolumeDevice) @protobuf(21,bytes,rep)
 
-	// Deprecated. This field will be removed in a future release.
 	// Periodic probe of container liveness.
 	// Step will be restarted if the probe fails.
 	// Cannot be updated.
 	// More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+	//
+	// Deprecated: This field will be removed in a future release.
+	//
 	// +optional
 	livenessProbe?: null | corev1.#Probe @go(DeprecatedLivenessProbe,*corev1.Probe) @protobuf(10,bytes,opt)
 
-	// Deprecated. This field will be removed in a future release.
 	// Periodic probe of container service readiness.
 	// Step will be removed from service endpoints if the probe fails.
 	// Cannot be updated.
 	// More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+	//
+	// Deprecated: This field will be removed in a future release.
+	//
 	// +optional
 	readinessProbe?: null | corev1.#Probe @go(DeprecatedReadinessProbe,*corev1.Probe) @protobuf(11,bytes,opt)
 
-	// Deprecated. This field will be removed in a future release.
 	// DeprecatedStartupProbe indicates that the Pod this Step runs in has successfully initialized.
 	// If specified, no other probes are executed until this completes successfully.
 	// If this probe fails, the Pod will be restarted, just as if the livenessProbe failed.
@@ -130,20 +135,25 @@ import (
 	// when it might take a long time to load data or warm a cache, than during steady-state operation.
 	// This cannot be updated.
 	// More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+	//
+	// Deprecated: This field will be removed in a future release.
+	//
 	// +optional
 	startupProbe?: null | corev1.#Probe @go(DeprecatedStartupProbe,*corev1.Probe) @protobuf(22,bytes,opt)
 
-	// Deprecated. This field will be removed in a future release.
 	// Actions that the management system should take in response to container lifecycle events.
 	// Cannot be updated.
+	//
+	// Deprecated: This field will be removed in a future release.
+	//
 	// +optional
 	lifecycle?: null | corev1.#Lifecycle @go(DeprecatedLifecycle,*corev1.Lifecycle) @protobuf(12,bytes,opt)
 
-	// Deprecated. This field will be removed in a future release and can't be meaningfully used.
+	// Deprecated: This field will be removed in a future release and can't be meaningfully used.
 	// +optional
 	terminationMessagePath?: string @go(DeprecatedTerminationMessagePath) @protobuf(13,bytes,opt)
 
-	// Deprecated. This field will be removed in a future release and can't be meaningfully used.
+	// Deprecated: This field will be removed in a future release and can't be meaningfully used.
 	// +optional
 	terminationMessagePolicy?: corev1.#TerminationMessagePolicy @go(DeprecatedTerminationMessagePolicy) @protobuf(20,bytes,opt,casttype=TerminationMessagePolicy)
 
@@ -161,14 +171,15 @@ import (
 	// +optional
 	securityContext?: null | corev1.#SecurityContext @go(SecurityContext,*corev1.SecurityContext) @protobuf(15,bytes,opt)
 
-	// Deprecated. This field will be removed in a future release.
 	// Whether this container should allocate a buffer for stdin in the container runtime. If this
 	// is not set, reads from stdin in the container will always result in EOF.
 	// Default is false.
+	//
+	// Deprecated: This field will be removed in a future release.
+	//
 	// +optional
 	stdin?: bool @go(DeprecatedStdin) @protobuf(16,varint,opt)
 
-	// Deprecated. This field will be removed in a future release.
 	// Whether the container runtime should close the stdin channel after it has been opened by
 	// a single attach. When stdin is true the stdin stream will remain open across multiple attach
 	// sessions. If stdinOnce is set to true, stdin is opened on container start, is empty until the
@@ -176,12 +187,17 @@ import (
 	// at which time stdin is closed and remains closed until the container is restarted. If this
 	// flag is false, a container processes that reads from stdin will never receive an EOF.
 	// Default is false
+	//
+	// Deprecated: This field will be removed in a future release.
+	//
 	// +optional
 	stdinOnce?: bool @go(DeprecatedStdinOnce) @protobuf(17,varint,opt)
 
-	// Deprecated. This field will be removed in a future release.
 	// Whether this container should allocate a DeprecatedTTY for itself, also requires 'stdin' to be true.
 	// Default is false.
+	//
+	// Deprecated: This field will be removed in a future release.
+	//
 	// +optional
 	tty?: bool @go(DeprecatedTTY) @protobuf(18,varint,opt)
 
@@ -242,10 +258,12 @@ import (
 
 // StepTemplate is a template for a Step
 #StepTemplate: {
-	// Deprecated. This field will be removed in a future release.
 	// Default name for each Step specified as a DNS_LABEL.
 	// Each Step in a Task must have a unique name.
 	// Cannot be updated.
+	//
+	// Deprecated: This field will be removed in a future release.
+	//
 	name: string @go(DeprecatedName) @protobuf(1,bytes,opt)
 
 	// Default image name to use for each Step.
@@ -286,7 +304,6 @@ import (
 	// +optional
 	workingDir?: string @go(WorkingDir) @protobuf(5,bytes,opt)
 
-	// Deprecated. This field will be removed in a future release.
 	// List of ports to expose from the Step's container. Exposing a port here gives
 	// the system additional information about the network connections a
 	// container uses, but is primarily informational. Not specifying a port here
@@ -294,6 +311,9 @@ import (
 	// listening on the default "0.0.0.0" address inside a container will be
 	// accessible from the network.
 	// Cannot be updated.
+	//
+	// Deprecated: This field will be removed in a future release.
+	//
 	// +optional
 	// +patchMergeKey=containerPort
 	// +patchStrategy=merge
@@ -341,23 +361,26 @@ import (
 	// +listType=atomic
 	volumeDevices?: [...corev1.#VolumeDevice] @go(VolumeDevices,[]corev1.VolumeDevice) @protobuf(21,bytes,rep)
 
-	// Deprecated. This field will be removed in a future release.
 	// Periodic probe of container liveness.
 	// Container will be restarted if the probe fails.
 	// Cannot be updated.
 	// More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+	//
+	// Deprecated: This field will be removed in a future release.
+	//
 	// +optional
 	livenessProbe?: null | corev1.#Probe @go(DeprecatedLivenessProbe,*corev1.Probe) @protobuf(10,bytes,opt)
 
-	// Deprecated. This field will be removed in a future release.
 	// Periodic probe of container service readiness.
 	// Container will be removed from service endpoints if the probe fails.
 	// Cannot be updated.
 	// More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+	//
+	// Deprecated: This field will be removed in a future release.
+	//
 	// +optional
 	readinessProbe?: null | corev1.#Probe @go(DeprecatedReadinessProbe,*corev1.Probe) @protobuf(11,bytes,opt)
 
-	// Deprecated. This field will be removed in a future release.
 	// DeprecatedStartupProbe indicates that the Pod has successfully initialized.
 	// If specified, no other probes are executed until this completes successfully.
 	// If this probe fails, the Pod will be restarted, just as if the livenessProbe failed.
@@ -365,20 +388,25 @@ import (
 	// when it might take a long time to load data or warm a cache, than during steady-state operation.
 	// This cannot be updated.
 	// More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+	//
+	// Deprecated: This field will be removed in a future release.
+	//
 	// +optional
 	startupProbe?: null | corev1.#Probe @go(DeprecatedStartupProbe,*corev1.Probe) @protobuf(22,bytes,opt)
 
-	// Deprecated. This field will be removed in a future release.
 	// Actions that the management system should take in response to container lifecycle events.
 	// Cannot be updated.
+	//
+	// Deprecated: This field will be removed in a future release.
+	//
 	// +optional
 	lifecycle?: null | corev1.#Lifecycle @go(DeprecatedLifecycle,*corev1.Lifecycle) @protobuf(12,bytes,opt)
 
-	// Deprecated. This field will be removed in a future release and cannot be meaningfully used.
+	// Deprecated: This field will be removed in a future release and cannot be meaningfully used.
 	// +optional
 	terminationMessagePath?: string @go(DeprecatedTerminationMessagePath) @protobuf(13,bytes,opt)
 
-	// Deprecated. This field will be removed in a future release and cannot be meaningfully used.
+	// Deprecated: This field will be removed in a future release and cannot be meaningfully used.
 	// +optional
 	terminationMessagePolicy?: corev1.#TerminationMessagePolicy @go(DeprecatedTerminationMessagePolicy) @protobuf(20,bytes,opt,casttype=TerminationMessagePolicy)
 
@@ -396,14 +424,15 @@ import (
 	// +optional
 	securityContext?: null | corev1.#SecurityContext @go(SecurityContext,*corev1.SecurityContext) @protobuf(15,bytes,opt)
 
-	// Deprecated. This field will be removed in a future release.
 	// Whether this Step should allocate a buffer for stdin in the container runtime. If this
 	// is not set, reads from stdin in the Step will always result in EOF.
 	// Default is false.
+	//
+	// Deprecated: This field will be removed in a future release.
+	//
 	// +optional
 	stdin?: bool @go(DeprecatedStdin) @protobuf(16,varint,opt)
 
-	// Deprecated. This field will be removed in a future release.
 	// Whether the container runtime should close the stdin channel after it has been opened by
 	// a single attach. When stdin is true the stdin stream will remain open across multiple attach
 	// sessions. If stdinOnce is set to true, stdin is opened on container start, is empty until the
@@ -411,12 +440,17 @@ import (
 	// at which time stdin is closed and remains closed until the container is restarted. If this
 	// flag is false, a container processes that reads from stdin will never receive an EOF.
 	// Default is false
+	//
+	// Deprecated: This field will be removed in a future release.
+	//
 	// +optional
 	stdinOnce?: bool @go(DeprecatedStdinOnce) @protobuf(17,varint,opt)
 
-	// Deprecated. This field will be removed in a future release.
 	// Whether this Step should allocate a DeprecatedTTY for itself, also requires 'stdin' to be true.
 	// Default is false.
+	//
+	// Deprecated: This field will be removed in a future release.
+	//
 	// +optional
 	tty?: bool @go(DeprecatedTTY) @protobuf(18,varint,opt)
 }

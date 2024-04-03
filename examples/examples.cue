@@ -89,54 +89,54 @@ frsca: configMap: "syft-config-map": {
 	check-for-app-update: true
 
 	rekor-cataloger:
-	cataloger:
-		enabled: true
+	  cataloger:
+	    enabled: true
 
 	package:
-	search-indexed-archives: true
-	search-unindexed-archives: false
+	  search-indexed-archives: true
+	  search-unindexed-archives: false
 
-	cataloger:
-		enabled: true
-		scope: "squashed"
+	  cataloger:
+	    enabled: true
+	    scope: "squashed"
 
 	file-classification:
-	cataloger:
-		enabled: true
-		scope: "squashed"
+	  cataloger:
+	    enabled: true
+	    scope: "squashed"
 
 	file-contents:
-	cataloger:
-		enabled: false
-		scope: "squashed"
+	  cataloger:
+	    enabled: false
+	    scope: "squashed"
 
-	skip-files-above-size: 1048576
+	  skip-files-above-size: 1048576
 
-	globs: ["**/**"]
+	  globs: ["**/**"]
 
 	file-metadata:
-	cataloger:
-		enabled: true
-		scope: "squashed"
+	  cataloger:
+	    enabled: true
+	    scope: "squashed"
 
-	digests: ["sha256"]
+	  digests: ["sha256"]
 
 	secrets:
-	cataloger:
-		enabled: true
-		scope: "all-layers"
+	  cataloger:
+	    enabled: true
+	    scope: "all-layers"
 
-	reveal-values: false
-	skip-files-above-size: 1048576
+	  reveal-values: false
+	  skip-files-above-size: 1048576
 
 	registry:
-	insecure-skip-tls-verify: false
-	insecure-use-http: false
+	  insecure-skip-tls-verify: false
+	  insecure-use-http: false
 
 	log:
-	structured: false
-	level: "error"
-	file: ""
+	  structured: false
+	  level: "error"
+	  file: ""
 
 	"""
 }

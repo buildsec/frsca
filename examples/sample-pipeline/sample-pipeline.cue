@@ -268,14 +268,12 @@ frsca: task: "syft-bom-generator": {
 		steps: [{
 			args: [
 				"-o",
-				"spdx-json",
+				"spdx-json=$(workspaces.source.path)/$(params.sbom-filepath)",
 				"--config",
 				"/var/syft-config/.syft.yaml",
-				"--file",
-				"$(workspaces.source.path)/$(params.sbom-filepath)",
 				"$(params.image-ref)",
 			]
-			image: "anchore/syft:v0.58.0@sha256:b764278a9a45f3493b78b8708a4d68447807397fe8c8f59bf21f18c9bee4be94"
+			image: "anchore/syft:v1.1.0@sha256:878a95c76e139fdcdf58aa14ba7594ad41971dfc834245501347276b600aa81e"
 			name:  "syft-bom-generator"
 		}, {
 			image: "gcr.io/projectsigstore/cosign:v2.2.3@sha256:8fc9cad121611e8479f65f79f2e5bea58949e8a87ffac2a42cb99cf0ff079ba7"
@@ -318,7 +316,7 @@ frsca: task: "syft-bom-generator": {
 			name: "source"
 		}, {
 			name: "syft-config"
-			mountPath: "/var/syft-config/.syft.yaml"
+			mountPath: "/var/syft-config"
 		}]
 	}
 }

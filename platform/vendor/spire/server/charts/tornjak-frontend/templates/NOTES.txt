@@ -1,0 +1,30 @@
+Installed {{ .Chart.Name }}…
+
+Name: {{ include "tornjak-frontend.name" . }}
+Fullname: {{ include "tornjak-frontend.fullname" . }}
+Your release is named: {{ .Release.Name }}
+Namespace: {{ include "tornjak-frontend.namespace" . }}
+
+Tornjak UI (Frontend)
+  image: {{ template "spire-lib.image" (dict "appVersion" $.Chart.AppVersion "image" .Values.image "global" .Values.global) }}
+  pull policy: {{ .Values.image.pullPolicy }}
+  Tornjak API (Backend): {{ include "tornjak-frontend.apiURL" . }}
+  SPIRE health check enabled:  "{{ .Values.spireHealthCheck.enabled }}"
+
+### WARNING ###
+
+Tornjak runs without authentication and is therefore NOT suitable to run in production environments.
+Only use in test environments!
+
+Access Tornjak:
+
+  kubectl -n {{ include "tornjak-frontend.namespace" . }} port-forward service/{{ include "tornjak-frontend.fullname" . }} {{ .Values.service.port }}:3000
+
+Ensure you have port-forwarding for tornjak-backend as well.
+
+Open browser to: http://localhost:{{ .Values.service.port }}
+
+To learn more about the release, try:
+
+  $ helm status {{ .Release.Name }}
+  $ helm get all {{ .Release.Name }}

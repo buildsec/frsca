@@ -1,0 +1,61 @@
+{{- if and .Values.global.openshift .Values.restrictedScc.enabled }}
+{{- $name := default (printf "restricted-%scsi" (eq (.Values.restrictedScc.version | toString) "2" | ternary "v2-" "")) .Values.restrictedScc.name -}}
+{{- $v2Description := "This is the most restrictive SCC and it is used by default for authenticated users. On top of the legacy 'restricted' SCC, it also requires to drop ALL capabilities and does not allow privilege escalation binaries. It will also default the seccomp profile to runtime/default if unset, otherwise this seccomp profile is required." -}}
+apiVersion: security.openshift.io/v1
+kind: SecurityContextConstraints
+allowHostPorts: false
+priority: null
+requiredDropCapabilities:
+{{- if eq (.Values.restrictedScc.version | toString) "2" }}
+  - ALL
+{{- else }}
+  - KILL
+  - MKNOD
+  - SETUID
+  - SETGID
+{{- end }}
+allowPrivilegedContainer: false
+runAsUser:
+  type: MustRunAsRange
+users: []
+allowHostDirVolumePlugin: false
+{{- if eq (.Values.restrictedScc.version | toString) "2" }}
+seccompProfiles:
+  - runtime/default
+{{- end }}
+allowHostIPC: false
+seLinuxContext:
+  type: MustRunAs
+readOnlyRootFilesystem: false
+metadata:
+  name: {{ $name }}
+  annotations:
+    kubernetes.io/description: >-
+      {{ $name }} denies access to all host features and requires pods to be
+      run with a UID, and SELinux context that are allocated to the namespace.
+      {{ eq (.Values.restrictedScc.version | toString) "2" | ternary $v2Description "" }}
+fsGroup:
+  type: MustRunAs
+groups: []
+defaultAddCapabilities: null
+supplementalGroups:
+  type: RunAsAny
+volumes:
+  - configMap
+  - csi
+  - downwardAPI
+  - emptyDir
+  - ephemeral
+  - persistentVolumeClaim
+  - projected
+  - secret
+allowHostPID: false
+allowHostNetwork: false
+allowPrivilegeEscalation: {{ eq (.Values.restrictedScc.version | toString) "2" | ternary false true }}
+{{- if eq (.Values.restrictedScc.version | toString) "2" }}
+allowedCapabilities:
+  - NET_BIND_SERVICE
+{{ else}}
+allowedCapabilities: null
+{{- end }}
+{{- end }}

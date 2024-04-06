@@ -1,0 +1,56 @@
+{{- with .Values.upstreamAuthority.certManager }}
+{{ if and .enabled .ca.create }}
+{{ $issuerName := printf "%s-selfsigned" (default (include "spire-server.fullname" $) .issuer_name)  }}
+{{/*
+Configuring CA Issuer: https://cert-manager.io/docs/configuration/ca/
+*/}}
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: {{ $issuerName }}
+  namespace: {{ include "spire-server.namespace" $ }}
+  labels:
+    {{- include "spire-server.labels" $ | nindent 4}}
+spec:
+  selfSigned: {}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ include "spire-server.fullname" $ }}
+  namespace: {{ include "spire-server.namespace" $ }}
+spec:
+  isCA: true
+  commonName: {{ $.Values.ca_subject.common_name }}
+  secretName: {{ include "spire-server.fullname" $ }}-ca-keys
+  duration: {{ $.Values.upstreamAuthority.certManager.ca.duration }}
+  subject:
+    countries:
+      - {{ $.Values.ca_subject.country }}
+    organizations:
+      - {{ $.Values.ca_subject.organization }}
+  privateKey:
+    algorithm: {{ $.Values.upstreamAuthority.certManager.ca.privateKey.algorithm }}
+    size: {{ $.Values.upstreamAuthority.certManager.ca.privateKey.size }}
+    {{- with $.Values.upstreamAuthority.certManager.ca.privateKey.rotationPolicy }}
+    rotationPolicy: {{ . }}
+    {{- end }}
+  {{- with $.Values.upstreamAuthority.certManager.ca.renewBefore }}
+  renewBefore: {{ . }}
+  {{- end }}
+  issuerRef:
+    name: {{ $issuerName }}
+    kind: Issuer
+    group: cert-manager.io
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: {{ include "spire-server.fullname" $ }}-ca
+  namespace: {{ include "spire-server.namespace" $ }}
+spec:
+  ca:
+    secretName: {{ include "spire-server.fullname" $ }}-ca-keys
+---
+{{- end }}
+{{- end }}

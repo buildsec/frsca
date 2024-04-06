@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "spire-server.fullname" . }}
+  namespace: {{ include "spire-server.namespace" . }}
+  {{- with .Values.service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  labels:
+    {{- include "spire-server.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - name: grpc
+      port: {{ .Values.service.port }}
+      targetPort: grpc
+      protocol: TCP
+    {{- with .Values.federation }}
+    {{- if eq (.enabled | toString) "true" }}
+    - name: federation
+      port: {{ .bundleEndpoint.port }}
+      targetPort: federation
+      protocol: TCP
+    {{- end }}
+    {{- end }}
+  selector:
+    {{- include "spire-server.selectorLabels" . | nindent 4 }}

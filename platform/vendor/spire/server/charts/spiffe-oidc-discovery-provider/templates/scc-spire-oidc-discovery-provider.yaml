@@ -1,0 +1,38 @@
+{{- if eq (.Values.global.openshift | toString) "true" }}
+apiVersion: security.openshift.io/v1
+kind: SecurityContextConstraints
+metadata:
+  name: {{ include "spiffe-oidc-discovery-provider.fullname" . }}
+readOnlyRootFilesystem: true
+runAsUser:
+  type: RunAsAny
+seLinuxContext:
+  type: RunAsAny
+supplementalGroups:
+  type: RunAsAny
+users:
+  - system:serviceaccount:{{ include "spiffe-oidc-discovery-provider.namespace" . }}:{{ include "spiffe-oidc-discovery-provider.serviceAccountName" . }}
+  - system:serviceaccount:{{ include "spiffe-oidc-discovery-provider.namespace" . }}:{{ include "spiffe-oidc-discovery-provider.serviceAccountName" . }}-pre-delete
+volumes:
+  - configMap
+  - csi
+  - downwardAPI
+  - emptyDir
+  - ephemeral
+  - hostPath
+  - projected
+  - secret
+allowHostDirVolumePlugin: true
+allowHostIPC: true
+allowHostNetwork: true
+allowHostPID: true
+allowHostPorts: true
+allowPrivilegeEscalation: true
+allowPrivilegedContainer: true
+fsGroup:
+  type: RunAsAny
+groups: []
+seccompProfiles:
+  - '*'
+
+{{ end }}

@@ -1,0 +1,10 @@
+{{- if ne .Values.keyManager.awsKMS.keyPolicy.policy "" }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "spire-server.fullname" . }}-aws-kms
+  namespace: {{ include "spire-server.namespace" . }}
+data:
+  policy.json: |
+    {{ .Values.keyManager.awsKMS.keyPolicy.policy | nindent 4 }}
+{{- end }}

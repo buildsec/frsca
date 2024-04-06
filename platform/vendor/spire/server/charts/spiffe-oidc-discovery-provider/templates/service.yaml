@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "spiffe-oidc-discovery-provider.fullname" . }}
+  namespace: {{ include "spiffe-oidc-discovery-provider.namespace" . }}
+  {{- with .Values.service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    {{- if eq (include "spiffe-oidc-discovery-provider.tls-enabled" .) "false" }}
+    - name: http
+      port: {{ .Values.service.ports.http }}
+      targetPort: http
+      protocol: TCP
+    {{- else }}
+    - name: https
+      port: {{ .Values.service.ports.https }}
+      targetPort: https
+      protocol: TCP
+    {{- end }}
+  selector:
+    {{- include "spiffe-oidc-discovery-provider.selectorLabels" . | nindent 4 }}

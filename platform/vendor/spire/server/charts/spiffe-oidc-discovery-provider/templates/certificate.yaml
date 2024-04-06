@@ -1,0 +1,26 @@
+{{- define "spiffe-oidc-discovery-provider.cert-manager-default-cert" }}
+{{-   $fullName := include "spiffe-oidc-discovery-provider.fullname" . }}
+dnsNames:
+  {{- if ne (len .Values.tls.certManager.certificate.dnsNames) 0 }}
+  {{-   toYaml .Values.tls.certManager.certificate.dnsNames | nindent 4 }}
+  {{- else }}
+  - {{ include "spire-lib.ingress-calculated-name" (dict "ingress" .Values.ingress "Values" .Values) }}
+  {{- end }}
+issuerRef:
+  {{- with .Values.tls.certManager.certificate.issuerRef.group }}
+  group: {{ . }}
+  {{- end }}
+  kind: {{ default "Issuer" .Values.tls.certManager.certificate.issuerRef.kind }}
+  name: {{ default $fullName .Values.tls.certManager.certificate.issuerRef.name }}
+secretName: {{ $fullName }}-cert
+{{- end }}
+{{- if .Values.tls.certManager.enabled }}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ include "spiffe-oidc-discovery-provider.fullname" . }}
+  namespace: {{ include "spiffe-oidc-discovery-provider.namespace" . }}
+spec:
+  {{ merge (include "spiffe-oidc-discovery-provider.cert-manager-default-cert" . | fromYaml) .Values.tls.certManager.certificate | toYaml | nindent 2 }}
+{{- end }}

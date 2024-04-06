@@ -1,0 +1,104 @@
+{{- $protocol := "https" }}
+{{- $port := .Values.service.ports.https }}
+{{- if eq (include "spiffe-oidc-discovery-provider.tls-enabled" .) "false" }}
+{{- $protocol = "http" }}
+{{- $port = .Values.service.ports.http }}
+{{- end }}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "spiffe-oidc-discovery-provider.fullname" . }}-test-keys"
+  namespace: {{ include "spiffe-oidc-discovery-provider.namespace" . }}
+  labels:
+    {{- include "spiffe-oidc-discovery-provider.labels" . | nindent 4 }}
+    release: {{ .Release.Name }}
+    release-namespace: {{ .Release.Namespace }}
+    component: test-keys
+  annotations:
+    "helm.sh/hook": test
+spec:
+  securityContext:
+    {{- include "spire-lib.podsecuritycontext" . | nindent 4 }}
+  serviceAccountName: {{ include "spiffe-oidc-discovery-provider.serviceAccountName" . }}
+  initContainers:
+    - name: static-busybox
+      image: {{ template "spire-lib.image" (dict "image" .Values.tests.busybox.image "global" .Values.global) }}
+      command:
+        - sh
+        - -c
+        - |
+          cp /bin/busybox /data/busybox
+          chmod +x /data/busybox
+      securityContext:
+        {{- include "spire-lib.securitycontext" . | nindent 8 }}
+      volumeMounts:
+        - name: data-volume
+          mountPath: /data
+    - name: install-step
+      image: {{ template "spire-lib.image" (dict "image" .Values.tests.step.image "global" .Values.global) }}
+      workingDir: /data
+      command:
+        - sh
+        - -c
+        - |
+          cp /usr/local/bin/step /data/step
+      securityContext:
+        {{- include "spire-lib.securitycontext" . | nindent 8 }}
+      volumeMounts:
+        - name: data-volume
+          mountPath: /data
+    - name: gettoken
+      image: {{ template "spire-lib.image" (dict "appVersion" $.Chart.AppVersion "image" .Values.tools.kubectl.image "global" .Values.global "KubeVersion" .Capabilities.KubeVersion.Version "image" .Values.tests.agent.image) }}
+      command:
+        - /data/busybox
+        - sh
+        - -c
+        - |
+          while true; do
+            /opt/spire/bin/spire-agent api fetch jwt -audience foo -format json -socketPath /spire-agent/spire-agent.sock -timeout 5s > /data/token.svid
+            [ $? -eq 0 ] && break
+            sleep 1
+          done
+      securityContext:
+        {{- include "spire-lib.securitycontext" . | nindent 8 }}
+      volumeMounts:
+        - name: data-volume
+          mountPath: /data
+        - name: spire-api
+          mountPath: /spire-agent
+          readOnly: true
+  containers:
+    - name: verify-keys
+      image: {{ template "spire-lib.image" (dict "image" .Values.tests.toolkit.image "global" .Values.global) }}
+      command:
+        - bash
+      workingDir: /data
+      env:
+      - name: TMPDIR
+        value: /data
+      args:
+        - -cx
+        - |
+          URL={{ $protocol }}://{{ include "spiffe-oidc-discovery-provider.fullname" . }}.{{ include "spiffe-oidc-discovery-provider.namespace" . }}.svc.{{ include "spire-lib.cluster-domain" . }}:{{ $port }}
+
+          cat /data/token.svid
+          JWT=$(cat /data/token.svid | jq -r '.[] | select(.svids) | .svids[0].svid' | xargs)
+          KID=$(echo $JWT | base64 -d 2>/dev/null | jq -r '.kid')
+          # Retrieve public key from JWK set, match kid from JWT to locate the correct one
+          curl -k -s --fail-with-body "${URL}"/keys | jq '.keys[] | select(.kid == "'${KID}'")' > public.pem
+          # Verify JWT with public pem
+          echo $JWT | /data/step crypto jwt verify --key=public.pem --alg=RS256 --subtle
+      securityContext:
+        {{- include "spire-lib.securitycontext" . | nindent 8 }}
+      volumeMounts:
+      - mountPath: /data
+        name: data-volume
+  restartPolicy: Never
+  volumes:
+  - csi:
+      driver: csi.spiffe.io
+      readOnly: true
+    name: spire-api
+  - name: data-volume
+    emptyDir: {}
+---

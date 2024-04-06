@@ -1,0 +1,356 @@
+# Default configuration for Spire Agent
+# SPDX-License-Identifier: APACHE-2.0
+
+## @skip global
+global: {}
+
+## @section Chart parameters
+##
+## @param image.registry The OCI registry to pull the image from
+## @param image.repository The repository within the registry
+## @param image.pullPolicy The image pull policy
+## @param image.tag Overrides the image tag whose default is the chart appVersion
+##
+image:
+  registry: ghcr.io
+  repository: spiffe/spire-agent
+  pullPolicy: IfNotPresent
+  tag: ""
+
+## @param imagePullSecrets [array] Pull secrets for images
+imagePullSecrets: []
+
+## @param nameOverride Name override
+nameOverride: ""
+
+## @param namespaceOverride Namespace override
+namespaceOverride: ""
+
+## @param fullnameOverride Fullname override
+fullnameOverride: ""
+
+serviceAccount:
+  ## @param serviceAccount.create Specifies whether a service account should be created
+  create: true
+  ## @param serviceAccount.annotations [object] Annotations to add to the service account
+  annotations: {}
+  ## @param serviceAccount.name The name of the service account to use.
+  ## If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+configMap:
+  ## @param configMap.annotations [object] Annotations to add to the SPIRE Agent ConfigMap
+  annotations: {}
+
+## @param podAnnotations [object] Annotations to add to pods
+podAnnotations: {}
+
+## @param podLabels [object] Labels to add to pods
+podLabels: {}
+
+## @param podSecurityContext [object] Pod security context
+podSecurityContext: {}
+  # fsGroup: 2000
+
+## @param securityContext [object] Security context
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+## @param resources [object] Resource requests and limits
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # requests:
+  #   cpu: 50m
+  #   memory: 64Mi
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+## @param nodeSelector [object] Node selector
+nodeSelector: {}
+
+## @param tolerations [array] List of tolerations
+tolerations: []
+
+## @param affinity [object] Node affinity
+affinity: {}
+
+## @param authorizedDelegates A list of the authorized delegates SPIFFE IDs. See Delegated Identity API for more information.
+authorizedDelegates: []
+## @param logLevel The log level, valid values are "debug", "info", "warn", and "error"
+logLevel: info
+## @param clusterName The name of the Kubernetes cluster (`kubeadm init --service-dns-domain`)
+clusterName: example-cluster
+## @param trustDomain The trust domain to be used for the SPIFFE identifiers
+trustDomain: example.org
+## @param trustBundleURL If set, obtain trust bundle from url instead of Kubernetes ConfigMap
+trustBundleURL: ""
+## @param trustBundleFormat If using trustBundleURL, what format is the url. Choices are "pem" and "spiffe"
+trustBundleFormat: pem
+## @param bundleConfigMap Configmap name for Spire bundle
+bundleConfigMap: spire-bundle
+## @param availabilityTarget The minimum amount of time desired to gracefully handle SPIRE Server or Agent downtime. This configurable influences how aggressively X509 SVIDs should be rotated. If set, must be at least 24h.
+availabilityTarget: ""
+
+## @param disableReattestToRenew Deprecated: Allow agent to renew certificate when it expires rather than reattest
+disableReattestToRenew: false
+
+## @skip upstream
+upstream: false
+
+## @param server.address Address for Spire server
+## @param server.port Port number for Spire server
+## @param server.namespaceOverride Override the namespace for Spire server
+## @param server.nameOverride Override the name for Spire server. Should only be changed when building your own nested chart to ensure names align.
+##
+server:
+  address: ""
+  port: 8081
+  namespaceOverride: ""
+  nameOverride: ""
+
+healthChecks:
+  ## @param healthChecks.port override the host port used for health checking
+  port: 9982
+
+## @param updateStrategy.type The update strategy to use to replace existing DaemonSet pods with new pods. Can be RollingUpdate or OnDelete.
+## @param updateStrategy.rollingUpdate.maxUnavailable Max unavailable pods during update. Can be a number or a percentage.
+updateStrategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxUnavailable: 1
+
+## @param livenessProbe.initialDelaySeconds Initial delay seconds for probe
+## @param livenessProbe.periodSeconds Period seconds for probe
+##
+livenessProbe:
+  initialDelaySeconds: 15
+  periodSeconds: 60
+
+## @param readinessProbe.initialDelaySeconds Initial delay seconds for probe
+## @param readinessProbe.periodSeconds Period seconds for probe
+##
+readinessProbe:
+  initialDelaySeconds: 10
+  periodSeconds: 30
+
+# When running as non root, needed to ensure the socket path has the correct permissions.
+# Set runAsUser to a non-zero value in podSecurityContext to run as non-root user.
+fsGroupFix:
+  ## @param fsGroupFix.image.registry The OCI registry to pull the image from
+  ## @param fsGroupFix.image.repository The repository within the registry
+  ## @param fsGroupFix.image.pullPolicy The image pull policy
+  ## @param fsGroupFix.image.tag Overrides the image tag whose default is the chart appVersion
+  ##
+  image:
+    registry: cgr.dev
+    repository: chainguard/bash
+    pullPolicy: Always
+    tag: latest@sha256:5921884408efe50b77796675dc109ad2126f54476fe7403c37d8898a5ceb2e76
+
+  ## @param fsGroupFix.resources Specify resource needs as per https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+  resources: {}
+
+keyManager:
+  memory:
+    ## @param keyManager.memory.enabled Enable the memory based Key Manager
+    enabled: true
+
+nodeAttestor:
+  k8sPsat:
+    ## @param nodeAttestor.k8sPsat.enabled Enable Psat k8s Node Attestor
+    enabled: true
+  tpmDirect:
+    ## @param nodeAttestor.tpmDirect.enabled Enable the direct TPM node attestor, a 3rd party plugin by Boxboat. This plugin is experimental.
+    enabled: false
+    plugin:
+      ## @param nodeAttestor.tpmDirect.plugin.image.registry The OCI registry to pull the image from
+      ## @param nodeAttestor.tpmDirect.plugin.image.repository The repository within the registry
+      ## @param nodeAttestor.tpmDirect.plugin.image.pullPolicy The image pull policy
+      ## @param nodeAttestor.tpmDirect.plugin.image.tag Overrides the image tag
+      ##
+      image:
+        registry: docker.io
+        repository: boxboat/spire-tpm-plugin-tpm-attestor-agent
+        pullPolicy: IfNotPresent
+        tag: "v1.8.7"
+      ## @param nodeAttestor.tpmDirect.plugin.checksum The sha256 checksum of the plugin binary
+      checksum: 1d7c73ccac948ee86cbd78ddde2d30128a1838b403f7bb2100d38d916a252244
+      ## @param nodeAttestor.tpmDirect.plugin.path The filename in the container of the plugin
+      path: /app/tpm_attestor_agent
+    pubHash:
+      ## @param nodeAttestor.tpmDirect.pubHash.enabled Enable Psat k8s nodeattestor
+      enabled: true
+      ## @param nodeAttestor.tpmDirect.pubHash.image.registry The OCI registry to pull the image from
+      ## @param nodeAttestor.tpmDirect.pubHash.image.repository The repository within the registry
+      ## @param nodeAttestor.tpmDirect.pubHash.image.pullPolicy The image pull policy
+      ## @param nodeAttestor.tpmDirect.pubHash.image.tag Overrides the image tag
+      ##
+      image:
+        registry: docker.io
+        repository: boxboat/spire-tpm-plugin-get-tpm-pubhash
+        pullPolicy: IfNotPresent
+        tag: "v1.8.7"
+
+# workloadAttestors determine a workload's properties and then generate a set of selectors associated with it.
+workloadAttestors:
+  # unix is a workload attestor which generates unix-based selectors like 'uid' and 'gid'.
+  unix:
+    ## @param workloadAttestors.unix.enabled Enables the Unix workload attestor
+    enabled: false
+  k8s:
+    ## @param workloadAttestors.k8s.enabled Enables the Kubernetes workload attestor
+    enabled: true
+    ## @param workloadAttestors.k8s.skipKubeletVerification If true, kubelet certificate verification is skipped
+    skipKubeletVerification: true
+    ## @param workloadAttestors.k8s.disableContainerSelectors Set to true if using holdApplicationUntilProxyStarts in Istio
+    disableContainerSelectors: false
+
+sds:
+  ## @param sds.enabled Enables Envoy SDS configuration
+  enabled: false
+  ## @param sds.defaultSvidName The TLS Certificate resource name to use for the default X509-SVID with Envoy SDS
+  defaultSvidName: "default"
+  ## @param sds.defaultBundleName The Validation Context resource name to use for the default X.509 bundle with Envoy SDS
+  defaultBundleName: "ROOTCA"
+  ## @param sds.defaultAllBundlesName The Validation Context resource name to use for all bundles (including federated) with Envoy SDS
+  defaultAllBundlesName: "ALL"
+  ## @param sds.disableSpiffeCertValidation Disable Envoy SDS custom validation
+  disableSpiffeCertValidation: false
+
+telemetry:
+  prometheus:
+    ## @param telemetry.prometheus.enabled Flag to enable prometheus monitoring
+    enabled: false
+    ## @param telemetry.prometheus.port Port for prometheus metrics
+    port: 9988
+    podMonitor:
+      ## @param telemetry.prometheus.podMonitor.enabled Enable podMonitor for prometheus
+      enabled: false
+      ## @param telemetry.prometheus.podMonitor.namespace Override where to install the podMonitor, if not set will use the same namespace as the spire-agent
+      namespace: ""
+      ## @param telemetry.prometheus.podMonitor.labels [object] Pod labels to filter for prometheus monitoring
+      labels: {}
+
+## @param kubeletConnectByHostname If true, connect to kubelet using the nodes hostname. If false, uses localhost. If unset, defaults to true on OpenShift and false otherwise.
+kubeletConnectByHostname: ""
+
+## @param socketPath The unix socket path to the spire-agent
+socketPath: /run/spire/agent-sockets/spire-agent.sock
+
+socketAlternate:
+  ## @param socketAlternate.names List of alternate names for the socket that workloads might expect to be able to access in the driver mount.
+  names:
+    - socket
+    - spire-agent.sock
+    - api.sock
+
+  ## @param socketAlternate.image.registry The OCI registry to pull the image from
+  ## @param socketAlternate.image.repository The repository within the registry
+  ## @param socketAlternate.image.pullPolicy The image pull policy
+  ## @param socketAlternate.image.tag Overrides the image tag whose default is the chart appVersion
+  ##
+  image:
+    registry: cgr.dev
+    repository: chainguard/bash
+    pullPolicy: Always
+    tag: latest@sha256:5921884408efe50b77796675dc109ad2126f54476fe7403c37d8898a5ceb2e76
+
+  ## @param socketAlternate.resources Specify resource needs as per https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+  resources: {}
+
+## @param priorityClassName Priority class assigned to daemonset pods. Can be auto set with global.recommendations.priorityClassName.
+priorityClassName: ""
+
+## @param extraEnvVars [array] Extra environment variables to be added to the Spire Agent container
+extraEnvVars: []
+
+## @param extraVolumes [array] Extra volumes to be mounted on Spire Agent pods
+extraVolumes: []
+
+## @param extraVolumeMounts [array] Extra volume mounts for Spire Agent pods
+extraVolumeMounts: []
+
+## @param extraContainers [array] Additional containers to create with Spire Agent pods
+extraContainers: []
+
+## @param initContainers [array] Additional init containers to create with Spire Agent pods
+initContainers: []
+## @param hostAliases [array] Customize /etc/hosts file as described here https://kubernetes.io/docs/tasks/network/customize-hosts-file-for-pods/
+hostAliases: []
+
+# NOTE: This is unsupported and only to configure currently supported spire built in plugins but plugins unsupported by the chart.
+# Upgrades wont be tested for anything under this config. If you need this, please let the chart developers know your needs so we
+# can prioritize proper support.
+## @skip unsupportedBuiltInPlugins
+unsupportedBuiltInPlugins:
+  keyManager: {}
+  nodeAttestor: {}
+  svidStore: {}
+  workloadAttestor: {}
+
+## @param customPlugins.keyManager Custom plugins of type KeyManager are configured here
+## @param customPlugins.nodeAttestor Custom plugins of type NodeAttestor are configured here
+## @param customPlugins.svidStore Custom plugins of type SVIDStore are configured here
+## @param customPlugins.workloadAttestor Custom plugins of type WorkloadAttestor are configured here
+customPlugins:
+  keyManager: {}
+  nodeAttestor: {}
+  svidStore: {}
+  workloadAttestor: {}
+
+experimental:
+  ## @param experimental.enabled Allow configuration of experimental features
+  enabled: false
+  ## @param experimental.syncInterval Sync interval with SPIRE server with exponential backoff
+  syncInterval: 5s
+  ## @param experimental.featureFlags [array] List of developer feature flags
+  featureFlags: []
+
+## @param agents Configure multiple agent DaemonSets. Useful when you have different node types and nodeAttestors
+agents: {}
+#  default:
+#   nodeSelector:
+#     tpm: without
+#  tpm:
+#    nodeSelector:
+#      tpm: with
+#    nodeAttestor:
+#      k8sPsat:
+#        enabled: false
+#      tpmDirect:
+#        enabled: true
+
+installAndUpgradeHook:
+  ## @param installAndUpgradeHook.enabled Enable Helm hook to autofix common install/upgrade issues (should be disabled when using `helm template`)
+  enabled: true
+
+tools:
+  kubectl:
+    ## @param tools.kubectl.image.registry The OCI registry to pull the image from
+    ## @param tools.kubectl.image.repository The repository within the registry
+    ## @param tools.kubectl.image.pullPolicy The image pull policy
+    ## @param tools.kubectl.image.tag Overrides the image tag whose default is the chart appVersion
+    ##
+    image:
+      registry: docker.io
+      repository: rancher/kubectl
+      pullPolicy: IfNotPresent
+      tag: ""
+
+sockets:
+  ## @param sockets.hostBasePath Path on which the agent socket is made available when admin.mountOnHost is true
+  hostBasePath: /run/spire/agent/sockets
+  ## @param sockets.admin.enabled Enable the admin socket. Useful for admin tasks or the Delegated Identity API.
+  ## @param sockets.admin.mountOnHost Enable the admin socket to be visible on the host.
+  admin:
+    enabled: false
+    mountOnHost: false

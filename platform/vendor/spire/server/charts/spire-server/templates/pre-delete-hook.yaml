@@ -1,0 +1,92 @@
+{{- if eq ((dig "deleteHooks" "enabled" .Values.controllerManager.deleteHook.enabled .Values.global) | toString) "true" }}
+{{- if .Values.upstreamAuthority.spire.enabled }}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ include "spire-server.serviceAccountName" . }}-pre-delete
+  namespace: {{ include "spire-server.namespace" . }}
+  labels:
+    {{- include "spire-server.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": pre-delete
+    "helm.sh/hook-delete-policy": before-hook-creation, hook-succeeded, hook-failed
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "spire-server.fullname" . }}-pre-delete
+  namespace: {{ include "spire-server.namespace" . }}
+  annotations:
+    "helm.sh/hook": pre-delete
+    "helm.sh/hook-delete-policy": before-hook-creation, hook-succeeded, hook-failed
+rules:
+  - apiGroups: ["apps"]
+    resources: ["{{ include "spire-server.kind" . }}s"]
+    resourceNames: [{{ include "spire-server.fullname" . | quote }}]
+    verbs: ["get", "delete"]
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "list", "watch"]
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: {{ include "spire-server.fullname" . }}-pre-delete
+  namespace: {{ include "spire-server.namespace" . }}
+  annotations:
+    "helm.sh/hook": pre-delete
+    "helm.sh/hook-delete-policy": before-hook-creation, hook-succeeded, hook-failed
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "spire-server.serviceAccountName" . }}-pre-delete
+    namespace: {{ include "spire-server.namespace" . }}
+roleRef:
+  kind: Role
+  name: {{ include "spire-server.fullname" . }}-pre-delete
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "spire-server.fullname" . }}-pre-delete
+  namespace: {{ include "spire-server.namespace" . }}
+  labels:
+    {{- include "spire-server.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": pre-delete
+    "helm.sh/hook-delete-policy": before-hook-creation, hook-succeeded, hook-failed
+spec:
+  template:
+    metadata:
+      name: {{ include "spire-server.fullname" . }}-pre-delete
+    spec:
+      restartPolicy: Never
+      serviceAccountName: {{ include "spire-server.serviceAccountName" . }}-pre-delete
+      securityContext:
+        {{- include "spire-lib.podsecuritycontext" . | nindent 8 }}
+      containers:
+      - name: pre-delete-job
+        securityContext:
+          {{- include "spire-lib.securitycontext" . | nindent 10 }}
+        image: {{ template "spire-lib.kubectl-image" (dict "appVersion" $.Chart.AppVersion "image" .Values.tools.kubectl.image "global" .Values.global "KubeVersion" .Capabilities.KubeVersion.Version) }}
+        args:
+          - delete
+          - -n
+          - {{ include "spire-server.namespace" . }}
+          - {{ include "spire-server.kind" . }}
+          - {{ include "spire-server.fullname" . }}
+          - --wait
+      - name: pre-delete-check
+        securityContext:
+          {{- include "spire-lib.securitycontext" . | nindent 10 }}
+        image: {{ template "spire-lib.kubectl-image" (dict "appVersion" $.Chart.AppVersion "image" .Values.tools.kubectl.image "global" .Values.global "KubeVersion" .Capabilities.KubeVersion.Version) }}
+        args:
+          - wait
+          - --for=delete
+          - pod
+          - -l
+          - app.kubernetes.io/instance={{ include "spire-server.name" . }},app.kubernetes.io/name={{ .Release.Name }},app.kubernetes.io/component=server
+          - -n
+          - {{ include "spire-server.namespace" . }}
+{{- end }}
+{{- end }}

@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "tornjak-frontend.fullname" . }}-test-connection"
+  namespace: {{ include "tornjak-frontend.namespace" . }}
+  labels:
+    {{- include "tornjak-frontend.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  securityContext:
+    {{- include "spire-lib.podsecuritycontext" . | nindent 4 }}
+  containers:
+    - name: curl-tornjak-frontend
+      image: {{ template "spire-lib.image" (dict "image" .Values.tests.bash.image "global" .Values.global) }}
+      command: ['curl']
+      args: ['-k', '-s', '-f', 'http://{{ include "tornjak-frontend.fullname" . }}.{{ include "tornjak-frontend.namespace" . }}.svc.{{ include "spire-lib.cluster-domain" . }}:{{ .Values.service.port }}/tornjak/serverinfo']
+      securityContext:
+        {{- include "spire-lib.securitycontext" . | nindent 8 }}
+  restartPolicy: Never
+

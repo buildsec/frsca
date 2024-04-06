@@ -1,0 +1,49 @@
+{{- if .Values.federation.enabled }}
+{{- if .Values.federation.ingress.enabled -}}
+{{- $svcName := include "spire-server.fullname" . }}
+{{- $path := "/"}}
+{{- $pathType := "Prefix" }}
+{{- $tlsSection := true }}
+{{/* Until https://github.com/spiffe/spire/issues/2202 is resolved, use ingress to implement cert-manager and externalSecret support. */}}
+{{- $federationIngress := deepCopy .Values.federation.ingress }}
+{{- if .Values.federation.tls.certManager.enabled }}
+{{-   $secret := printf "%s-federation-cert" $svcName }}
+{{-   $_ := set $federationIngress "tlsSecret" $secret }}
+{{- end }}
+{{- if .Values.federation.tls.externalSecret.enabled }}
+{{-   $_ := set $federationIngress "tlsSecret" .Values.federation.tls.externalSecret.secretName }}
+{{- end }}
+{{- $ingressControllerType := include "spire-lib.ingress-controller-type" (dict "global" .Values.global "ingress" .Values.federation.ingress) }}
+{{- $annotations := deepCopy .Values.federation.ingress.annotations }}
+{{- if eq $ingressControllerType "ingress-nginx" }}
+{{-   $_ := set $annotations "nginx.ingress.kubernetes.io/ssl-redirect" "true" }}
+{{-   $_ := set $annotations "nginx.ingress.kubernetes.io/force-ssl-redirect" "true" }}
+{{-   $_ := set $annotations "nginx.ingress.kubernetes.io/backend-protocol" "HTTPS" }}
+{{-   if not .Values.federation.ingress.tlsSecret }}
+{{-     $_ := set $annotations "nginx.ingress.kubernetes.io/ssl-passthrough" "true" }}
+{{-   end }}
+{{- else if eq $ingressControllerType "openshift" }}
+{{-   if $federationIngress.tlsSecret }}
+{{-     $_ := set $annotations "route.openshift.io/termination" "reencrypt" }}
+{{-   else }}
+{{-     $_ := set $annotations "route.openshift.io/termination" "passthrough" }}
+{{-   $path = "" }}
+{{-   $pathType = "ImplementationSpecific" }}
+{{-   $tlsSection = false }}
+{{-   end }}
+{{- end }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ printf "%s-federation" $svcName }}
+  namespace: {{ include "spire-server.namespace" . }}
+  labels:
+    {{ include "spire-server.labels" . | nindent 4 }}
+  {{- with $annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{ include "spire-lib.ingress-spec" (dict "ingress" $federationIngress "svcName" $svcName "port" .Values.federation.bundleEndpoint.port "path" $path "pathType" $pathType "tlsSection" $tlsSection "Values" .Values) | nindent 2 }}
+{{- end }}
+{{- end }}

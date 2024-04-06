@@ -1,0 +1,49 @@
+{{- if .Values.ingress.enabled -}}
+{{- $tlsEnabled := eq (include "spiffe-oidc-discovery-provider.tls-enabled" .) "true" }}
+{{- $port := .Values.service.ports.https }}
+{{- if not $tlsEnabled }}
+{{- $port = .Values.service.ports.http }}
+{{- end }}
+{{- $ingressControllerType := include "spire-lib.ingress-controller-type" (dict "global" .Values.global "ingress" .Values.ingress) }}
+{{- $fullName := include "spiffe-oidc-discovery-provider.fullname" . }}
+{{- $path := "/" }}
+{{- $pathType := "Prefix" }}
+{{- $tlsSection := true }}
+{{- $annotations := deepCopy .Values.ingress.annotations }}
+{{- if eq $ingressControllerType "ingress-nginx" }}
+{{-   $_ := set $annotations "nginx.ingress.kubernetes.io/ssl-redirect" "true" }}
+{{-   $_ := set $annotations "nginx.ingress.kubernetes.io/force-ssl-redirect" "true" }}
+{{-   if $tlsEnabled }}
+{{-     $_ := set $annotations "nginx.ingress.kubernetes.io/backend-protocol" "HTTPS" }}
+{{-     if not (and .Values.ingress.enabled .Values.ingress.tlsSecret) }}
+{{-       $_ := set $annotations "nginx.ingress.kubernetes.io/ssl-passthrough" "true" }}
+{{-     end }}
+{{-   end }}
+{{- else if eq $ingressControllerType "openshift" }}
+{{-   if not $tlsEnabled }}
+{{-     $_ := set $annotations "route.openshift.io/termination" "edge" }}
+{{-   else }}
+{{-     if and .Values.ingress.enabled .Values.ingress.tlsSecret }}
+{{-       $_ := set $annotations "route.openshift.io/termination" "reencrypt" }}
+{{-     else }}
+{{-       $_ := set $annotations "route.openshift.io/termination" "passthrough" }}
+{{-     end }}
+{{-   end }}
+{{-   $path = "" }}
+{{-   $pathType = "ImplementationSpecific" }}
+{{-   $tlsSection = false }}
+{{- end }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ $fullName }}
+  namespace: {{ include "spiffe-oidc-discovery-provider.namespace" . }}
+  labels:
+    {{ include "spiffe-oidc-discovery-provider.labels" . | nindent 4 }}
+  {{- with $annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{ include "spire-lib.ingress-spec" (dict "ingress" .Values.ingress "svcName" $fullName "port" $port "path" $path "pathType" $pathType "tlsSection" $tlsSection "Values" .Values) | nindent 2 }}
+{{- end }}

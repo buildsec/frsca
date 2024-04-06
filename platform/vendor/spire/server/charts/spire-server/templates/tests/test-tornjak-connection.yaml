@@ -1,0 +1,31 @@
+{{- if eq (.Values.tornjak.enabled | toString) "true" }}
+{{- if eq (include "spire-tornjak.connectionType" .) "http" }}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "spire-tornjak.fullname" . }}-test-connection"
+  namespace: {{ include "spire-server.namespace" . }}
+  labels:
+    {{- include "spire-server.labels" . | nindent 4 }}
+    app.kubernetes.io/component: test
+  annotations:
+    "helm.sh/hook": test
+spec:
+  securityContext:
+    {{- include "spire-lib.podsecuritycontext" . | nindent 4 }}
+  containers:
+    - name: curl-tornjak-backend
+      image: {{ template "spire-lib.image" (dict "image" .Values.tests.bash.image "global" .Values.global) }}
+      command: ['curl']
+      args: ['-k', '-s', '-f', 'http://{{ include "spire-tornjak.servicename" . }}.{{ include "spire-server.namespace" . }}.svc.{{ include "spire-lib.cluster-domain" . }}:{{ .Values.tornjak.service.ports.http }}/api/tornjak/serverinfo']
+      securityContext:
+        {{- include "spire-lib.securitycontext" . | nindent 8 }}
+    - name: curl-tornjak-backend-and-spire
+      image: {{ template "spire-lib.image" (dict "image" .Values.tests.bash.image "global" .Values.global) }}
+      command: ['curl']
+      args: ['-k', '-s', '-f', 'http://{{ include "spire-tornjak.servicename" . }}.{{ include "spire-server.namespace" . }}.svc.{{ include "spire-lib.cluster-domain" . }}:{{ .Values.tornjak.service.ports.http }}/api/healthcheck']
+      securityContext:
+        {{- include "spire-lib.securitycontext" . | nindent 8 }}
+  restartPolicy: Never
+{{- end }}
+{{- end }}

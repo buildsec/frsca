@@ -1,0 +1,27 @@
+{{- define "spire.namespace.default_system_labels" }}
+"pod-security.kubernetes.io/warn": privileged
+"pod-security.kubernetes.io/audit": privileged
+"pod-security.kubernetes.io/enforce": privileged
+{{- end }}
+{{- if or .Values.global.spire.namespaces.create .Values.global.spire.namespaces.system.create }}
+{{-   $labels := dict }}
+{{-   if and (dig "spire" "recommendations" "enabled" false .Values.global) (dig "spire" "recommendations" "namespacePSS" true .Values.global) }}
+{{-     $labels = mergeOverwrite $labels (include "spire.namespace.default_system_labels" . | fromYaml) }}
+{{-     if (dig "openshift" false .Values.global) }}
+{{-       $_ := set $labels "security.openshift.io/scc.podSecurityLabelSync" "false" }}
+{{-     end }}
+{{-   end }}
+{{-   $labels = mergeOverwrite $labels .Values.global.spire.namespaces.server.labels }}
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ .Values.global.spire.namespaces.system.name }}
+  {{- with $labels }}
+  labels:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.global.spire.namespaces.system.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- end }}

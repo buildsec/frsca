@@ -1,0 +1,294 @@
+{{- $configSum := (include (print $.Template.BasePath "/configmap.yaml") . | sha256sum) }}
+{{- $root := . }}
+{{- range $name := (concat (list "default") (keys .Values.agents)) | uniq }}
+{{- with (dict "Release" $root.Release "Chart" $root.Chart "Values" (deepCopy $root.Values)) }}
+{{- $nameSuffix := "" }}
+{{- if ne $name "default" }}
+{{-   $nameSuffix = printf "-%s" $name }}
+{{- end }}
+{{- if hasKey $root.Values.agents $name }}
+{{-   $_ := set . "Values" (mergeOverwrite .Values (index $root.Values.agents $name)) }}
+{{- end }}
+{{- $podSecurityContext := fromYaml (include "spire-lib.podsecuritycontext" .) }}
+{{- $mainSecurityContext := deepCopy .Values.securityContext }}
+{{- if .Values.nodeAttestor.tpmDirect.enabled }}
+{{-   $podSecurityContext =  mergeOverwrite (dict "runAsUser" 0 "runAsGroup" 0) .Values.podSecurityContext }}
+{{-   $_ := set $mainSecurityContext "privileged" true }}
+{{- end }}
+{{- $cbh := eq (include "spire-agent.connect-by-hostname" .) "true" }}
+{{- $socketAlternateNames := index (include "spire-agent.socket-alternate-names" . | fromYaml) "names" }}
+{{- $socketPath := include "spire-agent.socket-path" . }}
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: {{ include "spire-agent.fullname" . }}{{ $nameSuffix }}
+  namespace: {{ include "spire-agent.namespace" . }}
+  labels:
+    {{- include "spire-agent.labels" . | nindent 4 }}
+    app.kubernetes.io/component: {{ $name }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "spire-agent.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: {{ $name }}
+  {{- with .Values.updateStrategy }}
+  updateStrategy:
+    {{- if not (has .type (list "RollingUpdate" "OnDelete")) }}
+    {{- fail "updateStrategy.type can only be RollingUpdate or OnDelete"}}
+    {{- end }}
+    type: {{ .type }}
+    {{- if eq .type "RollingUpdate" }}
+    rollingUpdate:
+      maxUnavailable: {{ .rollingUpdate.maxUnavailable }}
+    {{- end }}
+  {{- end }}
+  template:
+    metadata:
+      annotations:
+        kubectl.kubernetes.io/default-container: spire-agent
+        checksum/config: {{ $configSum }}
+        {{- with .Values.podAnnotations }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+      labels:
+        {{- include "spire-agent.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: {{ $name }}
+        {{- with .Values.podLabels }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      hostPID: true
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      serviceAccountName: {{ include "spire-agent.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml $podSecurityContext | nindent 8 }}
+      {{- include "spire-lib.default_node_priority_class_name" . | nindent 6 }}
+      {{- if ne (len .Values.hostAliases) 0 }}
+      hostAliases:
+        {{- toYaml .Values.hostAliases | nindent 8 }}
+      {{- end }}
+      initContainers:
+        {{- if .Values.nodeAttestor.tpmDirect.enabled }}
+        {{- if .Values.nodeAttestor.tpmDirect.pubHash.enabled }}
+        - name: fingerprint-tpm
+          securityContext:
+            {{- $mainSecurityContext | toYaml | nindent 12 }}
+          image: {{ template "spire-lib.image" (dict "appVersion" $.Chart.AppVersion "image" .Values.nodeAttestor.tpmDirect.pubHash.image "global" .Values.global) }}
+          command:
+            - sh
+            - -c
+            - |
+              # Fetch the TPM's fingerprint from the TPM and output it on the Computers Console. This enables secure bootstrapping of the Node with the Server.
+              TPM=`/app/get_tpm_pubhash 2> /dev/null`
+              if [ $? -eq 0 ]; then
+                echo "TPM Fingerprint: $TPM"
+                (echo -n '<1>'; echo "TPM Fingerprint: $TPM") | tee /dev/kmsg
+              else
+                /app/get_tpm_pubhash
+              fi
+          volumeMounts:
+            - name: tpm
+              mountPath: /dev/tpmrm0
+              readOnly: true
+            - name: kmsg
+              mountPath: /dev/kmsg
+          imagePullPolicy: {{ .Values.nodeAttestor.tpmDirect.pubHash.image.pullPolicy }}
+        {{- end }}
+        - name: init-tpm-direct
+          securityContext:
+            {{- .Values.securityContext | toYaml | nindent 12 }}
+          image: {{ template "spire-lib.image" (dict "appVersion" $.Chart.AppVersion "image" .Values.nodeAttestor.tpmDirect.plugin.image "global" .Values.global) }}
+          command:
+            - sh
+            - -ec
+            - |
+              # SPIRE must be able to fork the plugin directly within its container. Copy the plugin into a volume that can be mounted where SPIRE can execute it.
+              cp -a {{ .Values.nodeAttestor.tpmDirect.plugin.path }} /tpm/tpm_attestor_agent
+          volumeMounts:
+            - name: tpm-direct
+              mountPath: /tpm
+          imagePullPolicy: {{ .Values.nodeAttestor.tpmDirect.plugin.image.pullPolicy }}
+        {{- end }}
+        {{- if gt (len $socketAlternateNames) 0 }}
+        - name: ensure-alternate-names
+          image: {{ template "spire-lib.image" (dict "image" .Values.socketAlternate.image "global" .Values.global) }}
+          imagePullPolicy: {{ .Values.socketAlternate.image.pullPolicy }}
+          command: ["bash", "-xc"]
+          {{- /* 1. Look for symlinks pointing at the wrong place and remove them. 2. Make symlinks that don't exist. 3. If new socket is pointing at an existing symlink, remove old symlink. */}}
+          args:
+            - |
+              cd {{ $socketPath | dir }}
+              {{- range $socketAlternateNames }}
+              L=`readlink {{ . }}`
+              [ "x$L" != "x{{ $socketPath | base}}" ] && rm -f {{ . }}
+              [ ! -L {{ . }} ] && ln -s {{ $socketPath | base }} {{ . }}
+              {{- end }}
+              [ -L {{ $socketPath | base }} ] && rm -f {{ $socketPath | base }}
+              exit 0
+          resources:
+            {{- toYaml .Values.socketAlternate.resources | nindent 12 }}
+          volumeMounts:
+            - name: spire-agent-socket-dir
+              mountPath: {{ $socketPath | dir }}
+          securityContext:
+            runAsUser: 0
+            runAsGroup: 0
+        {{- end }}
+        {{- if gt (int (dig "fsGroup" 0 $podSecurityContext)) 0 }}
+        - name: fsgroupfix
+          image: {{ template "spire-lib.image" (dict "image" .Values.fsGroupFix.image "global" .Values.global) }}
+          imagePullPolicy: {{ .Values.fsGroupFix.image.pullPolicy }}
+          command: ["bash", "-c"]
+          args:
+            - "chown -R {{ $podSecurityContext.runAsUser }}:{{ $podSecurityContext.fsGroup }} {{ $socketPath | dir }} /tmp/spire-agent/private"
+          resources:
+            {{- toYaml .Values.fsGroupFix.resources | nindent 12 }}
+          volumeMounts:
+            - name: spire-agent-socket-dir
+              mountPath: {{ $socketPath | dir }}
+            - name: spire-agent-admin-socket-dir
+              mountPath: /tmp/spire-agent/private
+          securityContext:
+            runAsUser: 0
+            runAsGroup: 0
+        {{- end }}
+        {{- if gt (len .Values.initContainers) 0 }}
+        {{- toYaml .Values.initContainers | nindent 8 }}
+        {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: {{ template "spire-lib.image" (dict "appVersion" $.Chart.AppVersion "image" .Values.image "global" .Values.global) }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args: ["-config", "/opt/spire/conf/agent/agent.conf"]
+          securityContext:
+            {{- $mainSecurityContext | toYaml | nindent 12 }}
+          env:
+            - name: PATH
+              value: "/opt/spire/bin:/bin"
+          {{- if $cbh }}
+            - name: MY_NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+          {{- end }}
+          {{- with .Values.extraEnvVars }}
+          {{- toYaml . | nindent 12 }}
+          {{- end }}
+          ports:
+            - containerPort: {{ .Values.healthChecks.port }}
+              name: healthz
+            {{- if or (dig "telemetry" "prometheus" "enabled" .Values.telemetry.prometheus.enabled .Values.global) (and (dig "spire" "recommendations" "enabled" false .Values.global) (dig "spire" "recommendations" "prometheus" true .Values.global)) }}
+            - containerPort: {{ .Values.telemetry.prometheus.port }}
+              name: prom
+            {{- end }}
+          volumeMounts:
+            - name: spire-config
+              mountPath: /opt/spire/conf/agent
+              readOnly: true
+            {{- if .Values.sockets.admin.enabled }}
+            - name: spire-agent-admin-socket-dir
+              mountPath: /tmp/spire-agent/private
+              readOnly: false
+            {{- end }}
+            {{- if eq (len .Values.trustBundleURL) 0 }}
+            - name: spire-bundle
+              mountPath: /run/spire/bundle
+              readOnly: true
+            {{- end }}
+            {{- if .Values.nodeAttestor.tpmDirect.enabled }}
+            - name: tpm-direct
+              mountPath: /tpm
+              readOnly: true
+            - name: tpm
+              mountPath: /dev/tpmrm0
+              readOnly: true
+            {{- end }}
+            - name: spire-agent-socket-dir
+              mountPath: /tmp/spire-agent/public
+              readOnly: false
+            - name: spire-token
+              mountPath: /var/run/secrets/tokens
+            {{- if gt (len .Values.extraVolumeMounts) 0 }}
+            {{- toYaml .Values.extraVolumeMounts | nindent 12 }}
+            {{- end }}
+          livenessProbe:
+            httpGet:
+              path: /live
+              port: healthz
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: healthz
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+        {{- if gt (len .Values.extraContainers) 0 }}
+        {{- toYaml .Values.extraContainers | nindent 8 }}
+        {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      volumes:
+        - name: spire-config
+          configMap:
+            name: {{ include "spire-agent.fullname" . }}
+        {{- if .Values.sockets.admin.mountOnHost }}
+        - name: spire-agent-admin-socket-dir
+          hostPath:
+            hostPath: {{ .Values.sockets.hostBasePath }}/{{ if .Values.upstream }}upstream.csi.spiffe.io{{ else }}csi.spiffe.io{{ end }}/admin
+            type: DirectoryOrCreate
+        {{- else }}
+        - name: spire-agent-admin-socket-dir
+          emptyDir: {}
+        {{- end }}
+        {{- if eq (len .Values.trustBundleURL) 0 }}
+        - name: spire-bundle
+          configMap:
+            name: {{ include "spire-lib.bundle-configmap" . }}{{ $nameSuffix }}
+        {{- end }}
+        {{- if .Values.nodeAttestor.tpmDirect.enabled }}
+        - name: tpm-direct
+          emptyDir: {}
+        {{- end }}
+        - name: spire-token
+          projected:
+            sources:
+            - serviceAccountToken:
+                path: spire-agent
+                expirationSeconds: 7200
+                audience: spire-server
+        - name: spire-agent-socket-dir
+          hostPath:
+            path: {{ $socketPath | dir }}
+            type: DirectoryOrCreate
+        {{- if .Values.nodeAttestor.tpmDirect.enabled }}
+        - name: tpm
+          hostPath:
+            path: /dev/tpmrm0
+            type: CharDevice
+        - name: kmsg
+          hostPath:
+            path: /dev/kmsg
+            type: CharDevice
+        {{- end }}
+        {{- if gt (len .Values.extraVolumes) 0 }}
+        {{- toYaml .Values.extraVolumes | nindent 8 }}
+        {{- end }}
+{{- end }}
+{{- end }}

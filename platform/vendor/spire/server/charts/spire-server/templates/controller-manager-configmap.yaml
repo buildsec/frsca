@@ -1,0 +1,49 @@
+{{- if eq (.Values.controllerManager.enabled | toString) "true" }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "spire-controller-manager.fullname" . }}
+  namespace: {{ include "spire-server.namespace" . }}
+  {{- with .Values.controllerManager.configMap.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+data:
+  controller-manager-config.yaml: |
+    apiVersion: spire.spiffe.io/v1alpha1
+    kind: ControllerManagerConfig
+    metadata:
+      name: {{ include "spire-controller-manager.fullname" . }}
+      namespace: {{ include "spire-server.namespace" . }}
+      labels:
+        {{- include "spire-server.labels" . | nindent 8 }}
+    metrics:
+      bindAddress: 0.0.0.0:8082
+    health:
+      healthProbeBindAddress: 0.0.0.0:8083
+    leaderElection:
+      leaderElect: true
+      resourceName: {{ printf "%s-%s" .Release.Namespace (default .Release.Name .Values.crNameOverride) | sha256sum | trunc 8 }}.spiffe.io
+      resourceNamespace: {{ include "spire-server.namespace" . }}
+    {{- with .Values.controllerManager.cacheNamespaces }}
+    cacheNamespaces:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+    {{- if .Values.controllerManager.validatingWebhookConfiguration.enabled }}
+    validatingWebhookConfigurationName: {{ .Release.Namespace }}-{{ include "spire-controller-manager.fullname" . }}-webhook
+    {{- end }}
+    clusterName: {{ include "spire-lib.cluster-name" . }}
+    trustDomain: {{ include "spire-lib.trust-domain" . }}
+    ignoreNamespaces:
+      {{- with .Values.controllerManager.ignoreNamespaces }}
+      {{- toYaml . | nindent 6 }}
+      {{- end }}
+    spireServerSocketPath: "/tmp/spire-server/private/api.sock"
+    className: {{ include "spire-server.controller-manager-class-name" . | quote}}
+    watchClassless: {{ .Values.controllerManager.watchClassless | toYaml }}
+    parentIDTemplate: {{ .Values.controllerManager.parentIDTemplate | quote }}
+  {{- with .Values.reconcile }}
+  reconcile:
+    {{- toYaml . | nindent 6 }}
+  {{- end }}
+{{- end }}

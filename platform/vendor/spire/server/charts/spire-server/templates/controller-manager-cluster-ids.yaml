@@ -1,0 +1,105 @@
+{{- define "spire-controller-manager-identity-nsselector" }}
+key: "kubernetes.io/metadata.name"
+{{-   if eq .type "base" }}
+operator: NotIn
+{{-   else }}
+operator: In
+{{-  end }}
+values:
+  {{ .namespaces | toYaml | nindent 2 }}
+{{- end }}
+{{- define "spire-controller-manager-identity-podselector" }}
+{{-   if eq .type "oidc-discovery-provider" }}
+matchLabels:
+  release: {{ .Release.Name }}
+  release-namespace: {{ .Release.Namespace }}
+  component: oidc-discovery-provider
+{{-   else if eq .type "test-keys" }}
+matchLabels:
+  release: {{ .Release.Name }}
+  release-namespace: {{ .Release.Namespace }}
+  component: test-keys
+{{-   else }}
+{}
+{{-   end }}
+{{- end }}
+{{- $root := . }}
+{{  $namespaces := list .Release.Namespace .Values.namespaceOverride (dig "spire" "namespaces" "server" "name" "" .Values.global) (dig "spire" "namespaces" "system" "name" "" .Values.global) | compact | uniq }}
+{{- range $key, $value := .Values.controllerManager.identities.clusterSPIFFEIDs }}
+{{-   range $skey, $svalue := $value }}
+{{-     if not (has $skey (list "name" "annotations" "labels" "enabled" "type" "admin" "dnsNameTemplates" "downstream" "federatesWith" "jwtTTL" "namespaceSelector" "podSelector" "spiffeIDTemplate" "ttl" "workloadSelectorTemplates" "autoPopulateDNSNames")) }}
+{{-       fail (printf "Unsupported property specified: %s" $skey) }}
+{{-     end }}
+{{-   end }}
+{{-   if eq ($root.Values.controllerManager.enabled | toString) "true" }}
+{{-     if or (not (hasKey $value "enabled")) (eq ($value.enabled | toString) "true") }}
+{{-       $type := dig "type" "base" $value }}
+{{-       if not (has $type (list "base" "raw" "oidc-discovery-provider" "test-keys")) }}
+{{-         fail (printf "Type given: %s, must be one of [base, raw, oidc-discovery-provider, test-keys]" $type) }}
+{{-       end }}
+{{-       $namespaceSelector := deepCopy (dig "namespaceSelector" (dict) $value) }}
+{{-       if ne $type "raw" }}
+{{-         $namespaceSelector := merge $namespaceSelector (dict "matchExpressions" (list)) }}
+{{-         $namespaceSelectorToAdd := include "spire-controller-manager-identity-nsselector" (dict "type" $type "namespaces" $namespaces) | fromYaml }}
+{{-         $_ := set $namespaceSelector "matchExpressions" (append $namespaceSelector.matchExpressions $namespaceSelectorToAdd) }}
+{{-       end }}
+{{-       $podSelector := deepCopy (dig "podSelector" (dict) $value) }}
+{{-       $podSelector := merge $podSelector (include "spire-controller-manager-identity-podselector" (dict "type" $type "Release" $root.Release) | fromYaml ) }}
+---
+apiVersion: spire.spiffe.io/v1alpha1
+kind: ClusterSPIFFEID
+metadata:
+  name: {{ $root.Release.Namespace }}-{{ default $root.Release.Name $root.Values.crNameOverride }}-{{ $key }}
+  {{- with $value.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $value.labels }}
+  labels:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  className: {{ include "spire-server.controller-manager-class-name" $root | quote }}
+  {{- if and (hasKey $value "spiffeIDTemplate") (ne (len $value.spiffeIDTemplate) 0) }}
+  spiffeIDTemplate: {{ $value.spiffeIDTemplate | quote }}
+  {{- else }}
+  spiffeIDTemplate: {{ $root.Values.controllerManager.identities.clusterSPIFFEIDs.default.spiffeIDTemplate | quote }}
+  {{- end }}
+  {{- with $value.federatesWith }}
+  federatesWith:
+  {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $podSelector }}
+  podSelector:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $namespaceSelector }}
+  namespaceSelector:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $value.dnsNameTemplates }}
+  dnsNameTemplates:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $value.workloadSelectorTemplates }}
+  workloadSelectorTemplates:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $value.ttl }}
+  ttl: {{ . | quote }}
+  {{- end }}
+  {{- with $value.jwtTTL }}
+  jwtTtl: {{ . | quote }}
+  {{- end }}
+  {{- with $value.admin }}
+  admin: {{ . }}
+  {{- end }}
+  {{- with $value.downstream }}
+  downstream: {{ . }}
+  {{- end }}
+  {{- with $value.autoPopulateDNSNames }}
+  autoPopulateDNSNames: {{ . }}
+  {{- end }}
+{{-     end }}
+{{-   end }}
+{{- end }}

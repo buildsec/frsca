@@ -1,0 +1,89 @@
+{{- $tlsCount := 0 }}
+{{- if and .Values.enabled .Values.tls.spire.enabled }}
+{{-   $tlsCount = add $tlsCount 1 }}
+{{- end }}
+{{- if and .Values.enabled .Values.tls.externalSecret.enabled }}
+{{-   $tlsCount = add $tlsCount 1 }}
+{{- end }}
+{{- if and .Values.enabled .Values.tls.certManager.enabled }}
+{{-   $tlsCount = add $tlsCount 1 }}
+{{- end }}
+{{- if gt $tlsCount 1 }}
+{{-   fail "You can only have one TLS configuration enabled" }}
+{{- end }}
+{{- include "spire-lib.check-strict-mode" (list . "trustDomain must be set" (eq (include "spire-lib.trust-domain" .) "example.org"))}}
+{{- include "spire-lib.check-strict-mode" (list . "jwtIssuer must be set" (eq (include "spire-lib.jwt-issuer" .) "https://oidc-discovery.example.org"))}}
+{{- $oidcSocket := "/run/spire/oidc-sockets/spire-oidc-server.sock" }}
+{{- define "spiffe-oidc-discovery-provider.yaml-config" -}}
+{{- $oidcSocket := .oidcSocket }}
+{{- with .root }}
+log_level: {{ .Values.config.logLevel | quote }}
+
+domains:
+  - "{{ include "spiffe-oidc-discovery-provider.fullname" . }}"
+  - "{{ include "spiffe-oidc-discovery-provider.fullname" . }}.{{ include "spiffe-oidc-discovery-provider.namespace" . }}"
+  - "{{ include "spiffe-oidc-discovery-provider.fullname" . }}.{{ include "spiffe-oidc-discovery-provider.namespace" . }}.svc.{{ include "spire-lib.cluster-domain" . }}"
+  {{- $uri := urlParse (include "spire-lib.jwt-issuer" .) }}
+  {{- $jwtIssuer := (default $uri.path $uri.host) }}
+  {{- uniq (concat (list $jwtIssuer) .Values.config.additionalDomains) | toYaml | nindent 2 }}
+
+{{- if eq (include "spiffe-oidc-discovery-provider.tls-enabled" .) "false" }}
+allow_insecure_scheme: true
+listen_socket_path: {{ $oidcSocket | quote }}
+{{- else }}
+serving_cert_file:
+  cert_file_path: /certs/tls.crt
+  key_file_path: /certs/tls.key
+  addr: ':8443'
+{{- end }}
+
+workload_api:
+  socket_path: {{ include "spiffe-oidc-discovery-provider.workload-api-socket-path" . | quote }}
+  trust_domain: {{ include "spire-lib.trust-domain" . | quote }}
+
+health_checks:
+  bind_port: "8008"
+  ready_path: "/ready"
+  live_path: "/live"
+{{- end }}
+{{- end }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "spiffe-oidc-discovery-provider.fullname" . }}
+  namespace: {{ include "spiffe-oidc-discovery-provider.namespace" . }}
+  {{- with .Values.configMap.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+data:
+  oidc-discovery-provider.conf: |
+    {{- include "spiffe-oidc-discovery-provider.yaml-config" (dict "oidcSocket" $oidcSocket "root" .) | fromYaml | toPrettyJson | nindent 4 }}
+  {{- if eq (include "spiffe-oidc-discovery-provider.tls-enabled" .) "false" }}
+  default.conf: |
+    upstream oidc {
+      server unix:{{ $oidcSocket }};
+    }
+
+    server {
+      listen            8080;
+      listen       [::]:8080;
+
+      location / {
+        proxy_pass http://oidc;
+        proxy_set_header Host $host;
+      }
+
+      location /stub_status {
+        allow 127.0.0.1/32;
+        deny  all;
+        stub_status on;
+      }
+    }
+  {{- end }}
+  spiffe-helper.conf: |
+    agent_address = {{ include "spiffe-oidc-discovery-provider.workload-api-socket-path" . | quote }}
+    cert_dir = "/certs"
+    svid_file_name = "tls.crt"
+    svid_key_file_name = "tls.key"
+    svid_bundle_file_name = "ca.pem"

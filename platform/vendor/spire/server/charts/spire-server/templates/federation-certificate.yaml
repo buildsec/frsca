@@ -1,0 +1,27 @@
+{{- define "spire-server.federation-cert-manager-default-cert" }}
+{{-   $fullName := include "spire-server.fullname" . }}
+{{-   $issuerFullName := printf "%s-federation" $fullName }}
+dnsNames:
+  {{- if ne (len .Values.federation.tls.certManager.certificate.dnsNames) 0 }}
+  {{-   toYaml .Values.federation.tls.certManager.certificate.dnsNames | nindent 4 }}
+  {{- else }}
+  - {{ include "spire-lib.ingress-calculated-name" (dict "ingress" .Values.federation.ingress "Values" .Values) }}
+  {{- end }}
+issuerRef:
+  {{- with .Values.federation.tls.certManager.certificate.issuerRef.group }}
+  group: {{ . }}
+  {{- end }}
+  kind: {{ default "Issuer" .Values.federation.tls.certManager.certificate.issuerRef.kind }}
+  name: {{ default $issuerFullName .Values.federation.tls.certManager.certificate.issuerRef.name }}
+secretName: {{ $issuerFullName }}-cert
+{{- end }}
+{{- if .Values.federation.tls.certManager.enabled }}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ include "spire-server.fullname" . }}
+  namespace: {{ include "spire-server.namespace" . }}
+spec:
+  {{ merge (include "spire-server.federation-cert-manager-default-cert" . | fromYaml) .Values.federation.tls.certManager.certificate | toYaml | nindent 2 }}
+{{- end }}

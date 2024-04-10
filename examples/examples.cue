@@ -43,7 +43,7 @@ for pr in frsca.pipelineRun {
 	frsca: persistentVolumeClaim: "\(pr.metadata.generateName)source-ws-pvc": {
 		spec: {
 			accessModes: ["ReadWriteOnce"]
-			resources: requests: storage: "500Mi"
+			resources: requests: storage: "750Mi"
 		}
 	}
 }
@@ -62,7 +62,7 @@ for name, tt in frsca.triggerTemplate {
 	frsca: persistentVolumeClaim: "\(name)-source-ws-pvc": {
 		spec: {
 			accessModes: ["ReadWriteOnce"]
-			resources: requests: storage: "500Mi"
+			resources: requests: storage: "750Mi"
 		}
 	}
 }

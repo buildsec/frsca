@@ -1,0 +1,22 @@
+{{- if eq (.Values.controllerManager.enabled | toString) "true" }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "spire-controller-manager.fullname" . }}-webhook
+  namespace: {{ include "spire-server.namespace" . }}
+  labels:
+    {{- include "spire-server.labels" . | nindent 4 }}
+  {{- with .Values.controllerManager.service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 8 }}
+  {{- end }}
+spec:
+  type: {{ .Values.controllerManager.service.type }}
+  ports:
+    - name: https
+      port: {{ .Values.controllerManager.service.port }}
+      targetPort: https
+      protocol: TCP
+  selector:
+    {{- include "spire-server.selectorLabels" . | nindent 4 }}
+{{- end }}

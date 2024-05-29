@@ -1,0 +1,14 @@
+apiVersion: v2
+appVersion: v1.4.2
+description: A Helm chart to deploy Tornjak frontend
+home: https://github.com/spiffe/helm-charts-hardened/tree/main/charts/spire
+icon: https://raw.githubusercontent.com/spiffe/tornjak/main/logos/logo%2Btornjak.2132x1291.png
+maintainers:
+- email: mrsabath@gmail.com
+  name: mrsabath
+  url: https://mrsabath.github.io
+name: tornjak-frontend
+sources:
+- https://github.com/spiffe/tornjak
+type: application
+version: 0.1.0

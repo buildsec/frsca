@@ -1,0 +1,30 @@
+{{- if eq (.Values.global.openshift | toString) "true" }}
+apiVersion: security.openshift.io/v1
+kind: SecurityContextConstraints
+metadata:
+  name: {{ include "spiffe-csi-driver.fullname" . }}
+readOnlyRootFilesystem: true
+runAsUser:
+  type: RunAsAny
+seLinuxContext:
+  type: RunAsAny
+supplementalGroups:
+  type: RunAsAny
+users:
+  - system:serviceaccount:{{ include "spiffe-csi-driver.namespace" . }}:{{ include "spiffe-csi-driver.serviceAccountName" . }}
+volumes:
+  - configmap
+  - hostPath
+  - secret
+allowHostDirVolumePlugin: true
+allowHostIPC: false
+allowHostNetwork: false
+allowHostPID: false
+allowHostPorts: false
+allowPrivilegeEscalation: true
+allowPrivilegedContainer: true
+fsGroup:
+  type: RunAsAny
+groups: []
+
+{{ end }}

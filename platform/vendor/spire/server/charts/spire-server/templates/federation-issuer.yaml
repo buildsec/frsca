@@ -1,0 +1,22 @@
+{{- define "spire-server.federation-cert-manager-default-issuer" }}
+{{-   if not .Values.federation.tls.certManager.issuer.acme.email }}
+{{-     fail "You must specify an email address via certManager.issuer.acme.email" }}
+{{-   end }}
+email: {{ .Values.federation.tls.certManager.issuer.acme.email | quote}}
+server: {{ .Values.federation.tls.certManager.issuer.acme.server | quote}}
+privateKeySecretRef:
+  name: {{ include "spire-server.fullname" . }}-federation-issuer
+solvers:
+- http01:
+    ingress: {}
+{{- end }}
+{{- if and .Values.federation.tls.certManager.enabled .Values.federation.tls.certManager.issuer.create }}
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: {{ include "spire-server.fullname" . }}-federation
+  namespace: {{ include "spire-server.namespace" . }}
+spec:
+  acme:
+    {{ mergeOverwrite (include "spire-server.federation-cert-manager-default-issuer" . | fromYaml) .Values.federation.tls.certManager.issuer.acme | toYaml | nindent 4 }}
+{{- end }}

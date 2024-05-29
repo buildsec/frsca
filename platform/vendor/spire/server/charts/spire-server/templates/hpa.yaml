@@ -1,0 +1,40 @@
+{{- if .Values.autoscaling.enabled }}
+apiVersion: {{ include "spire-lib.autoscalingVersion" . }}
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "spire-server.fullname" . }}
+  namespace: {{ include "spire-server.namespace" . }}
+  labels:
+    {{- include "spire-server.labels" . | nindent 4 }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    {{- if eq .Values.kind "statefulset" }}
+    kind: StatefulSet
+    {{- else if eq .Values.kind "deployment" }}
+    kind: Deployment
+    {{- end }}
+    name: {{ include "spire-server.fullname" . }}
+  minReplicas: {{ .Values.autoscaling.minReplicas }}
+  {{- if and (eq .Values.dataStore.sql.databaseType "sqlite3") .Values.autoscaling.enabled (gt (int .Values.autoscaling.maxReplicas) 1) }}
+  {{- fail "When running with sqlite3 database, you can't scale up to more then one instance. 'autoscaling.maxReplicas' MUST be 1" }}
+  {{- end }}
+  maxReplicas: {{ .Values.autoscaling.maxReplicas }}
+  metrics:
+    {{- if .Values.autoscaling.targetMemoryUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.autoscaling.targetMemoryUtilizationPercentage }}
+    {{- end }}
+    {{- if .Values.autoscaling.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.autoscaling.targetCPUUtilizationPercentage }}
+    {{- end }}
+{{- end }}

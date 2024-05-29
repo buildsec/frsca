@@ -12,9 +12,12 @@ C_RESET_ALL='\033[0m'
 
 kubectl create namespace spire --dry-run=client -o yaml | kubectl apply -f -
 
-helm upgrade --install spire "${GIT_ROOT}/platform/vendor/spire/chart" \
-  --values "${GIT_ROOT}/platform/components/spire/values.yaml" \
-  --namespace spire --wait
+helm upgrade --install -n spire spire-crds "${GIT_ROOT}/platform/vendor/spire/crd" --wait
+helm upgrade --install -n spire spire "${GIT_ROOT}/platform/vendor/spire/server" \
+  --values "${GIT_ROOT}/platform/components/spire/values.yaml" --wait
 
 kubectl rollout status -n spire statefulset/spire-server
 kubectl rollout status -n spire daemonset/spire-agent
+kubectl rollout status -n spire daemonset/spire-spiffe-csi-driver
+kubectl rollout status -n spire deploy/spire-spiffe-oidc-discovery-provider
+

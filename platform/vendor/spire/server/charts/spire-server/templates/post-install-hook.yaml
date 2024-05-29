@@ -1,0 +1,89 @@
+{{- if eq ((dig "installAndUpgradeHooks" "enabled" .Values.controllerManager.installAndUpgradeHook.enabled .Values.global) | toString) "true" }}
+{{- if and (eq (.Values.controllerManager.enabled | toString) "true") .Values.controllerManager.validatingWebhookConfiguration.enabled }}
+{{- if eq .Values.controllerManager.validatingWebhookConfiguration.failurePolicy "Fail" }}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ include "spire-server.serviceAccountName" . }}-post-install
+  namespace: {{ include "spire-server.namespace" . }}
+  labels:
+    {{- include "spire-server.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": post-install
+    "helm.sh/hook-delete-policy": before-hook-creation, hook-succeeded, hook-failed
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "spire-server.fullname" . }}-post-install
+  annotations:
+    "helm.sh/hook": post-install
+    "helm.sh/hook-delete-policy": before-hook-creation, hook-succeeded, hook-failed
+rules:
+  - apiGroups: ["admissionregistration.k8s.io"]
+    resources: ["validatingwebhookconfigurations"]
+    resourceNames: [{{ printf "%s-%s-webhook" .Release.Namespace (include "spire-controller-manager.fullname" .) | quote }}]
+    verbs: ["get", "patch"]
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: {{ include "spire-server.fullname" . }}-post-install
+  annotations:
+    "helm.sh/hook": post-install
+    "helm.sh/hook-delete-policy": before-hook-creation, hook-succeeded, hook-failed
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "spire-server.serviceAccountName" . }}-post-install
+    namespace: {{ include "spire-server.namespace" . }}
+roleRef:
+  kind: ClusterRole
+  name: {{ include "spire-server.fullname" . }}-post-install
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "spire-server.fullname" . }}-post-install
+  namespace: {{ include "spire-server.namespace" . }}
+  labels:
+    {{- include "spire-server.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": post-install
+    "helm.sh/hook-delete-policy": before-hook-creation, hook-succeeded, hook-failed
+spec:
+  template:
+    metadata:
+      name: {{ include "spire-server.fullname" . }}-post-install
+    spec:
+      restartPolicy: Never
+      serviceAccountName: {{ include "spire-server.serviceAccountName" . }}-post-install
+      securityContext:
+        {{- include "spire-lib.podsecuritycontext" . | nindent 8 }}
+      containers:
+      - name: post-install-job
+        securityContext:
+          {{- include "spire-lib.securitycontext" . | nindent 10 }}
+        image: {{ template "spire-lib.kubectl-image" (dict "appVersion" $.Chart.AppVersion "image" .Values.tools.kubectl.image "global" .Values.global "KubeVersion" .Capabilities.KubeVersion.Version) }}
+        args:
+          - patch
+          - validatingwebhookconfiguration
+          - {{ .Release.Namespace }}-{{ include "spire-controller-manager.fullname" . }}-webhook
+          - --type=strategic
+          - -p
+          - |
+            {
+              "webhooks":[
+                {
+                  "name":"vclusterspiffeid.kb.io",
+                  "failurePolicy":"{{ .Values.controllerManager.validatingWebhookConfiguration.failurePolicy }}"
+                },
+                {
+                  "name":"vclusterfederatedtrustdomain.kb.io",
+                  "failurePolicy":"{{ .Values.controllerManager.validatingWebhookConfiguration.failurePolicy }}"
+                }
+              ]
+            }
+{{- end }}
+{{- end }}
+{{- end }}

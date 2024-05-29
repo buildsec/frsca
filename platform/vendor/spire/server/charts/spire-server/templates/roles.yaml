@@ -1,0 +1,100 @@
+{{- $namespace := include "spire-server.namespace" . }}
+{{- $bundleNamespace := include "spire-server.bundle-namespace" . }}
+# Role to be able to push certificate bundles to a configmap
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: {{ include "spire-lib.bundle-configmap" . }}
+  namespace: {{ $bundleNamespace }}
+rules:
+  - apiGroups: [""]
+    resources: [configmaps]
+    resourceNames: [{{ include "spire-lib.bundle-configmap" . }}]
+    verbs:
+      - get
+      - patch
+{{- if and .Values.upstreamAuthority.certManager.enabled .Values.upstreamAuthority.certManager.rbac.create }}
+---
+# Role to be able to manage cert requests with Cert-Manager
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: {{ include "spire-server.fullname" . }}-cm
+  namespace: {{ $namespace }}
+rules:
+  - apiGroups: ["cert-manager.io"]
+    resources:
+      - certificaterequests
+      - issuers
+    verbs:
+      - list
+      - get
+      - create
+      - delete
+      - patch
+      - update
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: {{ include "spire-server.fullname" . }}-cm
+  namespace: {{ $namespace }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "spire-server.serviceAccountName" . }}
+    namespace: {{ $namespace }}
+roleRef:
+  kind: Role
+  name: {{ include "spire-server.fullname" . }}-cm
+  apiGroup: rbac.authorization.k8s.io
+{{- end }}
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: {{ include "spire-lib.bundle-configmap" . }}
+  namespace: {{ $bundleNamespace }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "spire-server.serviceAccountName" . }}
+    namespace: {{ $namespace }}
+roleRef:
+  kind: Role
+  name: {{ include "spire-lib.bundle-configmap" . }}
+  apiGroup: rbac.authorization.k8s.io
+
+{{- if and .Values.nodeAttestor.k8sPsat.enabled }}
+---
+# ClusterRole to allow spire-server node attestor to query Token Review API
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: {{ .Release.Namespace}}-{{ include "spire-server.fullname" . }}
+rules:
+  - apiGroups: [authentication.k8s.io]
+    resources: [tokenreviews]
+    verbs:
+      - get
+      - watch
+      - list
+      - create
+  - apiGroups: [""]
+    resources: [nodes, pods]
+    verbs:
+      - get
+      - list
+---
+# Binds above cluster role to spire-server service account
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: {{ .Release.Namespace}}-{{ include "spire-server.fullname" . }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "spire-server.serviceAccountName" . }}
+    namespace: {{ $namespace }}
+roleRef:
+  kind: ClusterRole
+  name: {{ .Release.Namespace}}-{{ include "spire-server.fullname" . }}
+  apiGroup: rbac.authorization.k8s.io
+{{- end }}

@@ -45,7 +45,7 @@ fi
 
 vault_exec read auth/jwt/config >/dev/null 2>&1 || \
 vault_exec write auth/jwt/config \
-  oidc_discovery_url=https://spire-oidc.spire.svc.cluster.local \
+  oidc_discovery_url=https://spire-spiffe-oidc-discovery-provider.spire.svc.cluster.local \
   default_role="spire-chains-controller"
 
 vault_exec policy read spire-transit >/dev/null 2>&1 || \

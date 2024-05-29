@@ -1,0 +1,37 @@
+Installed {{ .Chart.Name }}…
+
+1. Get the currently registered SPIFFE entries from the server:
+
+  kubectl exec -n {{ .Release.Namespace }} {{ include "spire-server.fullname" . }}-0 -c spire-server -- \
+    spire-server entry show
+
+{{- if eq (.Values.tornjak.enabled | toString) "true" }}
+
+Installed {{ include "spire-tornjak.fullname" . }}…
+
+### WARNING ###
+
+Tornjak runs without authentication and is therefore NOT suitable to run in production environments.
+Only use in test environments!
+
+Access Tornjak:
+   kubectl -n {{ include "spire-server.namespace" . }} port-forward service/{{ include "spire-tornjak.servicename" . }} {{ .Values.tornjak.service.ports.http }}:10000
+{{- if eq (include "spire-tornjak.connectionType" .) "http" }}
+  Open browser to: http://localhost:{{ .Values.tornjak.service.ports.http }}
+{{- else if eq (include "spire-tornjak.connectionType" .) "tls" }}
+  Open browser to: https://localhost:{{ .Values.tornjak.service.ports.https }}
+
+  *** NOTE: You might get a security warning if using self-signed certificate
+  or use curl:
+
+    curl --cacert certs/ca.crt https://localhost:{{ .Values.tornjak.service.ports.https }}
+  {{- if eq (include "spire-tornjak.connectionType" .) "mtls" }}
+
+  Or provide a client certificate and key to use mTLS authentication:
+
+    curl --cacert certs/ca.crt --key client.key --cert client.crt https://localhost:{{ .Values.tornjak.service.ports.https }}
+  {{- end }}
+{{- else }}
+  ERROR! Incorrect value selected for "Values.tornjak.config.connectionType"
+{{- end }}
+{{- end }}

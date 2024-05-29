@@ -1,0 +1,3 @@
+annotations:
+  ## @param annotations.helm.sh/resource-policy keep the crds after chart deletion
+  helm.sh/resource-policy: keep

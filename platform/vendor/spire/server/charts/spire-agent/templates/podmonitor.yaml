@@ -1,0 +1,27 @@
+{{- if (dig "telemetry" "prometheus" "podMonitor" "enabled" .Values.telemetry.prometheus.podMonitor.enabled .Values.global) }}
+{{- $namespace := include "spire-agent.podMonitor.namespace" . }}
+{{- $podNamespace := ( include "spire-agent.namespace" . ) }}
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: {{ include "spire-agent.fullname" . }}
+  namespace: {{ $namespace }}
+  labels:
+    {{- include "spire-agent.labels" . | nindent 4 }}
+    {{- if ne (len (dig "telemetry" "prometheus" "podMonitor" "labels" (dict) .Values.global)) 0 }}
+    {{- .Values.global.telemetry.prometheus.podMonitor.labels | toYaml | nindent 4 }}
+    {{- end }}
+    {{- with .Values.telemetry.prometheus.podMonitor.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "spire-agent.selectorLabels" . | nindent 6 }}
+  podMetricsEndpoints:
+    - port: prom
+  {{- if ne $namespace $podNamespace }}
+  namespaceSelector:
+    kubernetes.io/metadata.name: {{ $podNamespace }}
+  {{- end }}  
+{{- end }}

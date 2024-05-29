@@ -1,0 +1,63 @@
+{{- $root := . }}
+{{- range $key, $value := .Values.controllerManager.identities.clusterStaticEntries }}
+{{-   range $skey, $svalue := $value }}
+{{-     if not (has $skey (list "name" "annotations" "labels" "enabled" "admin" "dnsNames" "downstream" "federatesWith" "hint" "jwtSVIDTTL" "parentID" "selectors" "spiffeID" "x509SVIDTTL")) }}
+{{-       fail (printf "Unsupported property specified: %s" $skey) }}
+{{-     end }}
+{{-   end }}
+{{-   range $rprop := list "spiffeID" "selectors" "parentID" }}
+{{-     if not (hasKey $value $rprop) }}
+{{-       fail (printf "Required property %s was not specified" $rprop) }}
+{{-     end }}
+{{-   end }}
+{{-   if eq ($root.Values.controllerManager.enabled | toString) "true" }}
+{{-     if or (not (hasKey $value "enabled")) (eq ($value.enabled | toString) "true") }}
+---
+apiVersion: spire.spiffe.io/v1alpha1
+kind: ClusterStaticEntry
+metadata:
+  name: {{ $root.Release.Namespace }}-{{ default $root.Release.Name $root.Values.crNameOverride }}-{{ $key }}
+  {{- with $value.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $value.labels }}
+  labels:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  className: {{ include "spire-server.controller-manager-class-name" $root | quote }}
+  spiffeID: {{ $value.spiffeID | quote }}
+  {{- with $value.federatesWith }}
+  federatesWith:
+  {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $value.selectors }}
+  selectors:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $value.parentID }}
+  parentID: {{ . | quote }}
+  {{- end }}
+  {{- with $value.dnsNames }}
+  dnsNames:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $value.hint }}
+  hint: {{ . | quote }}
+  {{- end }}
+  {{- with $value.x509SVIDTTL }}
+  x509SVIDTTL: {{ . | quote }}
+  {{- end }}
+  {{- with $value.jwtSVIDTTL }}
+  jwtSVIDTTL: {{ . | quote }}
+  {{- end }}
+  {{- with $value.admin }}
+  admin: {{ . }}
+  {{- end }}
+  {{- with $value.downstream }}
+  downstream: {{ . }}
+  {{- end }}
+{{-     end }}
+{{-   end }}
+{{- end }}

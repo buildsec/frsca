@@ -1,0 +1,164 @@
+# Default configuration for SPIFFE CSI Driver chart
+# SPDX-License-Identifier: APACHE-2.0
+
+## @skip global
+global: {}
+
+## @section SPIFFE CSI Driver Chart parameters
+##
+## @param pluginName Set the csi driver name deployed to Kubernetes.
+pluginName: csi.spiffe.io
+
+## @param image.registry The OCI registry to pull the image from
+## @param image.repository The repository within the registry
+## @param image.pullPolicy The image pull policy
+## @param image.tag Overrides the image tag whose default is the chart appVersion
+##
+image:
+  registry: ghcr.io
+  repository: spiffe/spiffe-csi-driver
+  pullPolicy: IfNotPresent
+  tag: ""
+
+## @param resources [object] Resource requests and limits for spiffe-csi-driver
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # requests:
+  #   cpu: 50m
+  #   memory: 32Mi
+  # limits:
+  #   cpu: 100m
+  #   memory: 64Mi
+
+healthChecks:
+  ## @param healthChecks.port The healthcheck port for spiffe-csi-driver
+  port: 9809
+
+## @param updateStrategy.type The update strategy to use to replace existing DaemonSet pods with new pods. Can be RollingUpdate or OnDelete.
+## @param updateStrategy.rollingUpdate.maxUnavailable Max unavailable pods during update. Can be a number or a percentage.
+updateStrategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxUnavailable: 1
+
+## @param livenessProbe.initialDelaySeconds Initial delay seconds for livenessProbe
+## @param livenessProbe.timeoutSeconds Timeout value in seconds for livenessProbe
+##
+livenessProbe:
+  initialDelaySeconds: 5
+  timeoutSeconds: 5
+
+## @param imagePullSecrets Image pull secret details for spiffe-csi-driver
+imagePullSecrets: []
+
+## @param nameOverride Name override for spiffe-csi-driver
+nameOverride: ""
+
+## @param namespaceOverride Namespace to install spiffe-csi-driver
+namespaceOverride: ""
+
+## @param fullnameOverride Full name override for spiffe-csi-driver
+fullnameOverride: ""
+
+## @param csiDriverLabels Labels to apply to the CSIDriver
+csiDriverLabels: {}
+
+## @param initContainers Init Containers to apply to the CSI Driver DaemonSet
+initContainers: []
+
+## @param serviceAccount.create Specifies whether a service account should be created
+## @param serviceAccount.annotations Annotations to add to the service account
+## @param serviceAccount.name The name of the service account to use. If not set and create is true, a name is generated.
+##
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+## @param podAnnotations [object] Pod annotations for spiffe-csi-driver
+podAnnotations: {}
+
+## @param podSecurityContext [object] Security context for CSI driver pods
+podSecurityContext: {}
+  # fsGroup: 2000
+
+## @param securityContext.readOnlyRootFilesystem Flag for read only root filesystem
+## @param securityContext.privileged Flag for specifying privileged mode
+##
+securityContext:
+  readOnlyRootFilesystem: true
+  privileged: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+  # capabilities:
+  #   drop:
+  #   - ALL
+
+## @param nodeSelector [object] Node selector for CSI driver pods
+nodeSelector: {}
+
+## @param tolerations [array] Tolerations for CSI driver pods
+tolerations: []
+
+## @param affinity [object] Node affinity
+affinity: {}
+
+nodeDriverRegistrar:
+  ## @param nodeDriverRegistrar.image.registry The OCI registry to pull the image from
+  ## @param nodeDriverRegistrar.image.repository The repository within the registry
+  ## @param nodeDriverRegistrar.image.pullPolicy The image pull policy
+  ## @param nodeDriverRegistrar.image.tag Overrides the image tag
+  ##
+  image:
+    registry: registry.k8s.io
+    repository: sig-storage/csi-node-driver-registrar
+    pullPolicy: IfNotPresent
+    tag: v2.9.4
+  ## @param nodeDriverRegistrar.resources Resource requests and limits for CSI driver pods
+  resources: {}
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    # requests:
+    #   cpu: 50m
+    #   memory: 32Mi
+    # limits:
+    #   cpu: 100m
+    #   memory: 64Mi
+
+## @param agentSocketPath The unix socket path to the spire-agent
+agentSocketPath: /run/spire/agent-sockets/spire-agent.sock
+
+## @param kubeletPath Path to kubelet file
+kubeletPath: /var/lib/kubelet
+
+## @param priorityClassName Priority class assigned to daemonset pods. Can be auto set with global.recommendations.priorityClassName.
+priorityClassName: ""
+
+restrictedScc:
+  ## @param restrictedScc.enabled Enables the creation of a SecurityContextConstraint based on the restricted SCC with CSI volume support
+  enabled: false
+
+  ## @param restrictedScc.name Set the name of the restricted SCC with CSI support
+  name: ""
+  ## @param restrictedScc.version Version of the restricted SCC
+  version: 2
+
+selinux:
+  ## @param selinux.enabled Enable selinux support
+  enabled: false
+  ## @param selinux.context Which selinux context to use
+  context: container_file_t
+  ## @param selinux.image.registry The OCI registry to pull the image from
+  ## @param selinux.image.repository The repository within the registry
+  ## @param selinux.image.pullPolicy The image pull policy
+  ## @param selinux.image.tag Overrides the image tag whose default is the chart appVersion
+  image:
+    registry: registry.access.redhat.com
+    repository: ubi9
+    pullPolicy: Always
+    tag: latest

@@ -1,0 +1,32 @@
+{{- if eq (.Values.global.openshift | toString) "true" }}
+apiVersion: security.openshift.io/v1
+kind: SecurityContextConstraints
+metadata:
+  name: {{ include "spire-agent.fullname" . }}
+readOnlyRootFilesystem: true
+runAsUser:
+  type: RunAsAny
+seLinuxContext:
+  type: RunAsAny
+supplementalGroups:
+  type: RunAsAny
+users:
+  - system:serviceaccount:{{ include "spire-agent.namespace" . }}:{{ include "spire-agent.serviceAccountName" . }}
+volumes:
+  - configMap
+  - hostPath
+  - projected
+  - secret
+  - emptyDir
+allowHostDirVolumePlugin: true
+allowHostIPC: true
+allowHostNetwork: true
+allowHostPID: true
+allowHostPorts: true
+allowPrivilegeEscalation: true
+allowPrivilegedContainer: true
+fsGroup:
+  type: RunAsAny
+groups: []
+
+{{ end }}

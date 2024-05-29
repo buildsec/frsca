@@ -1,0 +1,35 @@
+Installed {{ .Chart.Name }}…
+{{- $s := 0 }}
+{{- if (index .Values "spire-server").enabled }}
+{{-   $up := (index .Values "spire-server").unsupportedBuiltInPlugins }}
+{{-   $s = add (len $up.keyManager) (len $up.nodeAttestor) (len $up.upstreamAuthority) (len $up.notifier) $s }}
+{{- end }}
+{{- if (index .Values "spire-agent").enabled }}
+{{-   $up := (index .Values "spire-agent").unsupportedBuiltInPlugins }}
+{{-   $s = add (len $up.keyManager) (len $up.nodeAttestor) (len $up.svidStore) (len $up.workloadAttestor) $s }}
+{{- end }}
+{{- if (index .Values "upstream-spire-agent").enabled }}
+{{-   $up := (index .Values "upstream-spire-agent").unsupportedBuiltInPlugins }}
+{{-   $s = add (len $up.keyManager) (len $up.nodeAttestor) (len $up.svidStore) (len $up.workloadAttestor) $s }}
+{{- end }}
+{{- if gt $s 0 }}
+
+Warning: You're using an unsupported plugin. Functionality of this release and future upgrades aren't guaranteed to work smoothly.
+{{- end }}
+
+{{- if or (eq (((index .Values "spire-server").experimental).enabled | toString) "true") (eq (((index .Values "spire-agent").experimental).enabled | toString) "true") }}
+
+Warning: You're using an experimental config. Functionality of this release and future upgrades aren't guaranteed to work smoothly.
+{{- end }}
+{{- if (index .Values "spire-server").enabled }}
+{{-   $className := include "spire-server.controller-manager-class-name" (dict "Values" (index .Values "spire-server") "Release" .Release) }}
+{{-   if (index .Values "spire-server").controllerManager.enabled }}
+{{-     if (index .Values "spire-server").controllerManager.watchClassless }}
+
+Spire CR's will be handled if no className is specified or if className is set to "{{ $className }}"
+{{-     else }}
+
+Spire CR's will be handled only if className is set to "{{ $className }}"
+{{-     end }}
+{{-   end }}
+{{- end }}

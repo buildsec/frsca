@@ -10,10 +10,10 @@ MINIKUBE_VERSION=v1.30.1
 MINIKUBE_FILE_NAME=minikube-linux-amd64
 MINIKUBE_URL=https://github.com/kubernetes/minikube/releases/download/$MINIKUBE_VERSION/$MINIKUBE_FILE_NAME
 
-HELM_VERSION=v3.7.1
-HELM_FILE_NAME=helm-v3.7.1-linux-amd64.tar.gz
+HELM_VERSION=v3.14.3
+HELM_FILE_NAME=helm-v3.14.3-linux-amd64.tar.gz
 HELM_URL=https://get.helm.sh/$HELM_FILE_NAME
-HELM_SHA256="6cd6cad4b97e10c33c978ff3ac97bb42b68f79766f1d2284cfd62ec04cd177f4"
+HELM_SHA256="3c90f24e180f8c207b8a18e5ec82cb0fa49858a7a0a86e4ed52a98398681e00b"
 
 TKN_VERSION=v0.33.0
 TKN_FILE_NAME=tkn_0.33.0_Linux_x86_64.tar.gz

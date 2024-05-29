@@ -1,0 +1,199 @@
+{{- $tlsEnabled := eq (include "spiffe-oidc-discovery-provider.tls-enabled" .) "true" }}
+{{- $configSum := (include (print $.Template.BasePath "/configmap.yaml") . | sha256sum) }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "spiffe-oidc-discovery-provider.fullname" . }}
+  namespace: {{ include "spiffe-oidc-discovery-provider.namespace" . }}
+  labels:
+    {{- include "spiffe-oidc-discovery-provider.labels" . | nindent 4 }}
+  {{- with .Values.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "spiffe-oidc-discovery-provider.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ $configSum }}
+        {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      labels:
+        {{- include "spiffe-oidc-discovery-provider.selectorLabels" . | nindent 8 }}
+        release: {{ .Release.Name }}
+        release-namespace: {{ .Release.Namespace }}
+        component: oidc-discovery-provider
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "spiffe-oidc-discovery-provider.serviceAccountName" . }}
+      securityContext:
+        {{- include "spire-lib.podsecuritycontext" . | nindent 8 }}
+      initContainers:
+        {{- if .Values.tls.spire.enabled }}
+        - name: init
+          securityContext:
+            {{- include "spire-lib.securitycontext" . | nindent 12 }}
+          resources:
+            {{- toYaml .Values.spiffeHelper.resources | nindent 12 }}
+          image: {{ template "spire-lib.image" (dict "image" .Values.spiffeHelper.image "global" .Values.global) }}
+          imagePullPolicy: {{ .Values.spiffeHelper.image.pullPolicy }}
+          args:
+            - -config
+            - /etc/spiffe-helper.conf
+            - -exitWhenReady
+          volumeMounts:
+            - name: spiffe-workload-api
+              mountPath: {{ include "spiffe-oidc-discovery-provider.workload-api-socket-path" . | dir }}
+              readOnly: true
+            - name: spire-oidc-config
+              mountPath: /etc/spiffe-helper.conf
+              subPath: spiffe-helper.conf
+              readOnly: true
+            - name: certdir
+              mountPath: /certs
+        {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- include "spire-lib.securitycontext" . | nindent 12 }}
+          image: {{ template "spire-lib.image" (dict "appVersion" $.Chart.AppVersion "image" .Values.image "global" .Values.global) }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - -config
+            - /run/spire/oidc/config/oidc-discovery-provider.conf
+          ports:
+            - containerPort: 8008
+              name: healthz
+          {{- if $tlsEnabled }}
+            - containerPort: 8443
+              name: https
+          {{- end }}
+          volumeMounts:
+            - name: spiffe-workload-api
+              mountPath: {{ include "spiffe-oidc-discovery-provider.workload-api-socket-path" . | dir }}
+              readOnly: true
+            - name: spire-oidc-sockets
+              mountPath: /run/spire/oidc-sockets
+              readOnly: false
+            - name: spire-oidc-config
+              mountPath: /run/spire/oidc/config/oidc-discovery-provider.conf
+              subPath: oidc-discovery-provider.conf
+              readOnly: true
+            - name: certdir
+              mountPath: /certs
+              readOnly: true
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: healthz
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
+          livenessProbe:
+            httpGet:
+              path: /live
+              port: healthz
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+        {{- if .Values.tls.spire.enabled }}
+        - name: spiffe-helper
+          resources:
+            {{- toYaml .Values.spiffeHelper.resources | nindent 12 }}
+          securityContext:
+            {{- include "spire-lib.securitycontext" . | nindent 12 }}
+          image: {{ template "spire-lib.image" (dict "image" .Values.spiffeHelper.image "global" .Values.global) }}
+          imagePullPolicy: {{ .Values.spiffeHelper.image.pullPolicy }}
+          args:
+            - -config
+            - /etc/spiffe-helper.conf
+          volumeMounts:
+            - name: spiffe-workload-api
+              mountPath: {{ include "spiffe-oidc-discovery-provider.workload-api-socket-path" . | dir }}
+              readOnly: true
+            - name: spire-oidc-config
+              mountPath: /etc/spiffe-helper.conf
+              subPath: spiffe-helper.conf
+              readOnly: true
+            - name: certdir
+              mountPath: /certs
+        {{- end }}
+        {{- if not $tlsEnabled }}
+        - name: nginx
+          securityContext:
+            {{- include "spire-lib.securitycontext" . | nindent 12 }}
+          image: {{ template "spire-lib.image" (dict "image" .Values.insecureScheme.nginx.image "global" .Values.global) }}
+          imagePullPolicy: {{ .Values.insecureScheme.nginx.image.pullPolicy }}
+          ports:
+            - containerPort: 8080
+              name: http
+          volumeMounts:
+            - name: spire-oidc-sockets
+              mountPath: /run/spire/oidc-sockets
+              readOnly: true
+            - name: spire-oidc-config
+              mountPath: /etc/nginx/conf.d/default.conf
+              subPath: default.conf
+              readOnly: true
+            - name: nginx-tmp
+              mountPath: /tmp
+              readOnly: false
+          resources:
+            {{- toYaml .Values.insecureScheme.nginx.resources | nindent 12 }}
+        {{- if or (dig "telemetry" "prometheus" "enabled" .Values.telemetry.prometheus.enabled .Values.global) (and (dig "spire" "recommendations" "enabled" false .Values.global) (dig "spire" "recommendations" "prometheus" true .Values.global)) }}
+        - name: nginx-exporter
+          securityContext:
+            {{- include "spire-lib.securitycontext" . | nindent 12 }}
+          image: {{ template "spire-lib.image" (dict "image" .Values.telemetry.prometheus.nginxExporter.image "global" .Values.global) }}
+          imagePullPolicy: {{ .Values.telemetry.prometheus.nginxExporter.image.pullPolicy }}
+          args:
+          - -nginx.scrape-uri=http://127.0.0.1:8080/stub_status
+          resources:
+            {{- toYaml .Values.telemetry.prometheus.nginxExporter.resources | nindent 12 }}
+          ports:
+            - containerPort: 9113
+              name: prom
+        {{- end }}
+        {{- end }}
+      volumes:
+        - name: spiffe-workload-api
+          csi:
+            driver: "{{ .Values.csiDriverName }}"
+            readOnly: true
+        - name: spire-oidc-sockets
+          emptyDir: {}
+        - name: spire-oidc-config
+          configMap:
+            name: {{ include "spiffe-oidc-discovery-provider.fullname" . }}
+        - name: nginx-tmp
+          emptyDir: {}
+        - name: certdir
+          {{- if .Values.tls.externalSecret.enabled }}
+          secret:
+            secretName: {{ .Values.tls.externalSecret.secretName }}
+          {{- else if .Values.tls.certManager.enabled }}
+          secret:
+            secretName: {{ include "spiffe-oidc-discovery-provider.fullname" . }}-cert
+          {{- else }}
+          emptyDir: {}
+          {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

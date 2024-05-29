@@ -9,7 +9,7 @@ spec:
   duration: 336h     # 14 days
   renewBefore: 168h  #  7 days
   dnsNames:
-    - spire-oidc.spire.svc.cluster.local
+    - spire-spiffe-oidc-discovery-provider.spire.svc.cluster.local
     - oidc.example.org
     - oidc
   privateKey:

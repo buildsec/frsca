@@ -1,0 +1,366 @@
+{{- include "spire-lib.check-strict-mode" (list . "clusterName must be set" (eq (include "spire-lib.cluster-name" .) "example-cluster"))}}
+{{- include "spire-lib.check-strict-mode" (list . "trustDomain must be set" (eq (include "spire-lib.trust-domain" .) "example.org"))}}
+{{- include "spire-lib.check-strict-mode" (list . "jwtIssuer must be set" (eq (include "spire-lib.jwt-issuer" .) "https://oidc-discovery.example.org"))}}
+{{- include "spire-lib.check-strict-mode" (list . "ca_subject.country must be set" (eq (include "spire-server.ca-subject-country" .) "ARPA"))}}
+{{- include "spire-lib.check-strict-mode" (list . "ca_subject.organization must be set" (eq (include "spire-server.ca-subject-organization" .) "Example"))}}
+{{- include "spire-lib.check-strict-mode" (list . "ca_subject.common_name must be set" (eq (include "spire-server.ca-subject-common-name" .) "example.org"))}}
+{{- range $type, $tvals := .Values.customPlugins }}
+{{-   if not (has $type (list "bundlePublisher" "credentialComposer" "keyManager" "nodeAttestor" "upstreamAuthority" "notifier")) }}
+{{-     fail (printf "Unknown plugin type specified: %s" $type) }}
+{{-   end }}
+{{-   range $name, $nval := $tvals }}
+{{-     if not (hasKey $nval "plugin_cmd") }}
+{{-       fail (printf "plugin_cmd is a required field. %s" $name) }}
+{{-     end }}
+{{-     if not (hasKey $nval "plugin_checksum") }}
+{{-       fail (printf "plugin_checksum is a required field.") }}
+{{-     end }}
+{{-     range $sname, $svals := $nval }}
+{{-       if not (has $sname (list "plugin_cmd" "plugin_checksum" "plugin_data")) }}
+{{-         fail (printf "Unknown plugin setting specified: %s" $sname) }}
+{{-       end }}
+{{-     end }}
+{{-   end }}
+{{- end }}
+{{- $tlsFederationCount := 0 }}
+{{- if .Values.federation.tls.spire.enabled }}
+{{-   $tlsFederationCount = add $tlsFederationCount 1 }}
+{{- end }}
+{{- if .Values.federation.tls.externalSecret.enabled }}
+{{-   $tlsFederationCount = add $tlsFederationCount 1 }}
+{{- end }}
+{{- if .Values.federation.tls.certManager.enabled }}
+{{-   $tlsFederationCount = add $tlsFederationCount 1 }}
+{{- end }}
+{{- if ne $tlsFederationCount 1 }}
+{{-   fail "You must enable one and only one federation TLS configuration" }}
+{{- end }}
+{{- define "spire-server.yaml-config" -}}
+{{- $upstreamAuthorityUsed := 0 }}
+{{- $keyManagerUsed := 0 }}
+{{- $root := . }}
+server:
+{{- with .Values.adminIDs }}
+  admin_ids:
+    {{- toYaml . | nindent 4}}
+{{- end }}
+  bind_address: "0.0.0.0"
+  bind_port: "8081"
+  trust_domain: {{ include "spire-lib.trust-domain" . | quote }}
+  data_dir: "/run/spire/data"
+  log_level: {{ .Values.logLevel | quote }}
+  jwt_issuer: {{ include "spire-lib.jwt-issuer" . | quote }}
+  audit_log_enabled: {{ .Values.auditLogEnabled }}
+
+  ca_key_type: {{ .Values.caKeyType | quote }}
+  ca_ttl: {{ .Values.caTTL | quote }}
+
+  default_x509_svid_ttl: {{ .Values.defaultX509SvidTTL | quote }}
+  default_jwt_svid_ttl: {{ .Values.defaultJwtSvidTTL | quote }}
+
+  ca_subject:
+    - country: [{{ include "spire-server.ca-subject-country" . | quote }}]
+      organization: [{{ include "spire-server.ca-subject-organization" . | quote }}]
+      common_name: {{ include "spire-server.ca-subject-common-name" . | quote }}
+
+  {{- with .Values.federation }}
+  {{- if eq (.enabled | toString) "true" }}
+  federation:
+    bundle_endpoint:
+      - {{ .bundleEndpoint | toYaml | nindent 8 }}
+  {{- end }}
+  {{- end }}
+
+  {{- with .Values.experimental }}
+  {{- if eq (.enabled | toString) "true" }}
+  experimental:
+    cache_reload_interval: {{ .cacheReloadInterval | quote }}
+    events_based_cache: {{ .eventsBasedCache }}
+    prune_events_older_than: {{ .pruneEventsOlderThan | quote }}
+    {{- if gt (len .featureFlags) 0 }}
+    feature_flags:
+      {{- range .featureFlags }}
+        - {{ . | quote }}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+  {{- end }}
+
+plugins:
+  {{- if .Values.credentialComposer.uniqueID.enabled }}
+  CredentialComposer:
+    uniqueid: {}
+  {{- end }}
+
+  DataStore:
+    sql:
+      plugin_data:
+        {{ include "spire-server.datastore-config" . | nindent 10 }}
+
+  {{- if or .Values.nodeAttestor.k8sPsat.enabled .Values.nodeAttestor.externalK8sPsat.enabled .Values.nodeAttestor.joinToken.enabled .Values.nodeAttestor.tpmDirect.enabled }}
+  NodeAttestor:
+  {{- $clusters := default .Values.kubeConfigs .Values.nodeAttestor.externalK8sPsat.clusters }}
+  {{- if or (eq (.Values.nodeAttestor.k8sPsat.enabled | toString) "true") (and (eq (.Values.nodeAttestor.externalK8sPsat.enabled | toString) "true") (gt (len $clusters) 0)) }}
+    k8s_psat:
+      plugin_data:
+        clusters:
+          {{- with .Values.nodeAttestor.k8sPsat }}
+          {{- if eq (.enabled | toString) "true" }}
+        - {{ include "spire-lib.cluster-name" $root }}:
+            service_account_allow_list: {{ include "spire-server.serviceAccountAllowedList" $root | trim }}
+            audience: {{ .audience }}
+            allowed_node_label_keys:
+              {{ toYaml .allowedNodeLabelKeys | nindent 14 }}
+            allowed_pod_label_keys:
+              {{ toYaml .allowedPodLabelKeys | nindent 14 }}
+          {{- end }}
+          {{- end }}
+          {{- if eq (.Values.nodeAttestor.externalK8sPsat.enabled | toString) "true" }}
+          {{- $clusterDefaults := .Values.nodeAttestor.externalK8sPsat.defaults }}
+          {{- range $name, $_ := $clusters }}
+          {{- $clusterSettings := dict }}
+          {{- if hasKey $root.Values.nodeAttestor.externalK8sPsat.clusters $name }}
+          {{- $clusterSettings = index $root.Values.nodeAttestor.externalK8sPsat.clusters $name }}
+          {{- end }}
+        - {{ $name }}:
+            {{- if hasKey $clusterSettings "kubeConfigName" }}
+            kube_config_file: /kubeconfigs/{{ $clusterSettings.kubeConfigName }}
+            {{- else }}
+            kube_config_file: /kubeconfigs/{{ $name }}
+            {{- end }}
+            service_account_allow_list:
+              {{ if hasKey $clusterSettings "serviceAccountAllowList" }}{{ toYaml $clusterSettings.serviceAccountAllowList | nindent 14 }}{{ else }}{{ toYaml $clusterDefaults.serviceAccountAllowList | nindent 14 }}{{ end }}
+            audience: {{ if hasKey $clusterSettings "audience" }}{{ $clusterSettings.audience }}{{ else }}{{ $clusterDefaults.audience }}{{ end }}
+            allowed_node_label_keys:
+              {{ if hasKey $clusterSettings "allowedNodeLabelKeys" }}{{ toYaml $clusterSettings.allowedNodeLabelKeys | nindent 14 }}{{ else }}{{ toYaml $clusterDefaults.allowedNodeLabelKeys | nindent 14 }}{{ end }}
+            allowed_pod_label_keys:
+              {{ if hasKey $clusterSettings "allowedPodLabelKeys" }}{{ toYaml $clusterSettings.allowedPodLabelKeys | nindent 14 }}{{ else }}{{ toYaml $clusterDefaults.allowedPodLabelKeys | nindent 14 }}{{ end }}
+          {{- end }}
+          {{- end }}
+  {{- end }}
+  {{- with .Values.nodeAttestor.joinToken }}
+  {{- if eq (.enabled | toString) "true" }}
+    join_token:
+      plugin_data: {}
+  {{- end }}
+  {{- end }}
+  {{- with .Values.nodeAttestor.tpmDirect }}
+  {{- if eq (.enabled | toString) "true" }}
+    tpm:
+      plugin_cmd: "/tpm/tpm_attestor_server"
+      plugin_checksum: {{ .checksum }}
+      plugin_data:
+        {{- if ne (len .cas) 0 }}
+        ca_path: /tpm-direct-cas
+        {{- else }}
+        ca_path: /run/spire/data/tpm-direct/certs
+        {{- end }}
+        {{- if ne (len .hashes) 0 }}
+        hash_path: /tmp-direct-hashes
+        {{- else }}
+        hash_path: /run/spire/data/tpm-direct/hashes
+        {{- end }}
+  {{- end }}
+  {{- end }}
+  {{- end }}
+
+  {{- with .Values.keyManager.disk }}
+  {{- if eq (.enabled | toString) "true" }}
+  {{- $keyManagerUsed = add1 $keyManagerUsed }}
+  KeyManager:
+    disk:
+      plugin_data:
+        keys_path: "/run/spire/data/keys.json"
+  {{- end }}
+  {{- end }}
+
+  {{- with .Values.keyManager.memory }}
+  {{- if eq (.enabled | toString) "true" }}
+  {{- $keyManagerUsed = add1 $keyManagerUsed }}
+  KeyManager:
+    memory:
+      plugin_data:
+  {{- end }}
+  {{- end }}
+
+  {{- with .Values.keyManager.awsKMS }}
+  {{- if eq (.enabled | toString) "true" }}
+  {{- $keyManagerUsed = add1 $keyManagerUsed }}
+  KeyManager:
+    aws_kms:
+      plugin_data:
+        region: {{ .region | quote }}
+        key_metadata_file: "/run/spire/data/aws-kms-key-metadata"
+        {{- if ne .accessKeyID "" }}
+        access_key_id: "${AWS_KMS_ACCESS_KEY_ID}"
+        {{- end }}
+        {{- if ne .secretAccessKey "" }}
+        secret_access_key: "${AWS_KMS_SECRET_ACCESS_KEY}"
+        {{- end }}
+        {{- if or (ne .keyPolicy.policy "") (ne .keyPolicy.existingConfigMap "") }}
+        key_policy_file: "/run/spire/data/aws-kms-key-policy.json"
+        {{- end }}
+  {{- end }}
+  {{- end }}
+
+{{- if ne $keyManagerUsed 1 }}
+{{- fail (printf "You have to enable exactly one Key Manager. There are %d enabled." $keyManagerUsed) }}
+{{- end }}
+
+  {{- $externalK8sBundleClusters := default .Values.kubeConfigs .Values.notifier.externalK8sBundle.clusters }}
+  {{- if or .Values.notifier.k8sbundle.enabled (and .Values.notifier.externalK8sBundle.enabled (ne (len $externalK8sBundleClusters) 0)) }}
+  Notifier:
+    k8sbundle:
+      plugin_data:
+        {{- if eq (.Values.notifier.k8sbundle.enabled | toString) "true" }}
+        namespace: {{ include "spire-server.bundle-namespace" . | quote }}
+        config_map: {{ include "spire-lib.bundle-configmap" . | quote }}
+        {{- end }}
+        {{- if and (eq (.Values.notifier.externalK8sBundle.enabled | toString) "true") (ne (len $externalK8sBundleClusters) 0) }}
+        clusters:
+          - "":
+          {{- $clusterDefaults := .Values.notifier.externalK8sBundle.defaults }}
+          {{- range $name, $_ := $externalK8sBundleClusters }}
+            {{- $clusterSettings := dict }}
+            {{- if hasKey $root.Values.notifier.externalK8sBundle.clusters $name }}
+            {{- $clusterSettings = index $root.Values.notifier.externalK8sBundle.clusters $name }}
+            {{- end }}
+            {{- if hasKey $clusterSettings "kubeConfigName" }}
+            - kube_config_file_path: /kubeconfigs/{{ $clusterSettings.kubeConfigName }}
+            {{- else }}
+            - kube_config_file_path: /kubeconfigs/{{ $name }}
+            {{- end }}
+              namespace: {{ if hasKey $clusterSettings "namespace" }}{{ $clusterSettings.namespace }}{{ else }}{{ $clusterDefaults.namespace }}{{ end }}
+              config_map: {{ if hasKey $clusterSettings "configMap" }}{{ $clusterSettings.configMap }}{{ else }}{{ $clusterDefaults.configMap }}{{ end }}
+              config_map_key: {{ if hasKey $clusterSettings "configMapKey" }}{{ $clusterSettings.configMapKey }}{{ else }}{{ $clusterDefaults.configMapKey }}{{ end }}
+          {{- end }}
+        {{- end }}
+  {{- end }}
+
+  {{- with .Values.upstreamAuthority.disk }}
+  {{- if eq (.enabled | toString) "true" }}
+  {{- $upstreamAuthorityUsed = add1 $upstreamAuthorityUsed }}
+  UpstreamAuthority:
+    disk:
+      plugin_data:
+        cert_file_path: "/run/spire/upstream_ca/tls.crt"
+        key_file_path: "/run/spire/upstream_ca/tls.key"
+        {{- if ne .secret.data.bundle "" }}
+        bundle_file_path: "/run/spire/upstream_ca/bundle.crt"
+        {{- end }}
+  {{- end }}
+  {{- end }}
+
+  {{- with .Values.upstreamAuthority.certManager }}
+  {{- if eq (.enabled | toString) "true" }}
+  {{- $upstreamAuthorityUsed = add1 $upstreamAuthorityUsed }}
+  UpstreamAuthority:
+    cert-manager:
+      plugin_data:
+        issuer_name: {{ default (include "spire-server.fullname" $root) .issuer_name }}-ca
+        issuer_kind: {{ .issuer_kind | quote }}
+        issuer_group: {{ .issuer_group | quote }}
+        namespace: {{ default $root.Release.Namespace .namespace | quote }}
+        {{- if ne .kube_config_file "" }}
+        kube_config_file: {{ .kube_config_file | quote }}
+        {{- end }}
+  {{- end }}
+  {{- end }}
+
+  {{- with .Values.upstreamAuthority.spire }}
+  {{- if eq (.enabled | toString) "true" }}
+  {{- $upstreamAuthorityUsed = add1 $upstreamAuthorityUsed }}
+  UpstreamAuthority:
+    spire:
+      plugin_data:
+        server_address: {{ include "spire-server.upstream-spire-address" $root | quote }}
+        server_port: {{ .server.port }}
+        workload_api_socket: "/run/spire/upstream_agent/spire-agent.sock"
+  {{- end }}
+  {{- end }}
+
+  {{- with .Values.upstreamAuthority.vault }}
+  {{- if eq (.enabled | toString) "true" }}
+  {{- $upstreamAuthorityUsed = add1 $upstreamAuthorityUsed }}
+  UpstreamAuthority:
+    vault:
+      plugin_data:
+        vault_addr: {{ .vaultAddr | quote }}
+        pki_mount_point: {{ .pkiMountPoint | quote }}
+        insecure_skip_verify: {{ .insecureSkipVerify }}
+        {{- if ne (.insecureSkipVerify | toString) "true" }}
+        ca_cert_path: "/run/spire/vault-upstream/ca.crt"
+        {{- end }}
+        {{- if ne .namespace "" }}
+        namespace: {{ .namespace | quote }}
+        {{- end }}
+
+        {{- $vaultAuthMethodUsed := 0 }}
+        {{- with .k8sAuth }}
+        {{- if eq (.enabled | toString) "true" }}
+        {{- $vaultAuthMethodUsed = add1 $vaultAuthMethodUsed }}
+        k8s_auth:
+          k8s_auth_mount_point: {{ .k8sAuthMountPoint | quote }}
+          k8s_auth_role_name: {{ .k8sAuthRoleName | quote }}
+          token_path: "/var/run/secrets/tokens/spire-server"
+        {{- end }}
+        {{- end }}
+        {{- if gt $vaultAuthMethodUsed 1 }}
+        {{- fail "You can only enable a single authentication mechanism to an upstream Vault." }}
+        {{- end }}
+  {{- end }}
+  {{- end }}
+
+  {{- with .Values.upstreamAuthority.awsPCA }}
+  {{- if eq (.enabled | toString) "true" }}
+  {{- $upstreamAuthorityUsed = add1 $upstreamAuthorityUsed }}
+  UpstreamAuthority:
+    aws_pca:
+      plugin_data:
+        region: {{ .region | quote }}
+        certificate_authority_arn: {{ .certificateAuthorityARN | quote }}
+        ca_signing_template_arn: {{ .caSigningTemplateARN | default "arn:aws:acm-pca:::template/SubordinateCACertificate_PathLen0/V1" | quote }}
+        {{- if ne .signingAlgorithm "" }}
+        signing_algorithm: {{ .signingAlgorithm | quote }}
+        {{- end }}
+        {{- if ne .assumeRoleARN "" }}
+        assume_role_arn: {{ .assumeRoleARN | quote }}
+        {{- end }}
+        {{- if ne .endpoint "" }}
+        endpoint: {{ .endpoint | quote }}
+        {{- end }}
+        {{- if ne .supplementalBundlePath "" }}
+        supplemental_bundle_path: {{ .supplementalBundlePath  | quote }}
+        {{- end }}
+  {{- end }}
+  {{- end }}
+{{- if gt $upstreamAuthorityUsed 1 }}
+{{- fail "You can only enable a single Upstream Authority." }}
+{{- end }}
+
+health_checks:
+  listener_enabled: true
+  bind_address: "0.0.0.0"
+  bind_port: "8080"
+  live_path: "/live"
+  ready_path: "/ready"
+
+{{- if or (dig "telemetry" "prometheus" "enabled" .Values.telemetry.prometheus.enabled .Values.global) (and (dig "spire" "recommendations" "enabled" false .Values.global) (dig "spire" "recommendations" "prometheus" true .Values.global)) }}
+telemetry:
+  - Prometheus:
+      - host: "0.0.0.0"
+        port: 9988
+{{- end }}
+{{- end }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "spire-server.fullname" . }}
+  namespace: {{ include "spire-server.namespace" . }}
+  {{- with .Values.configMap.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+data:
+  server.conf: |
+    {{- include "spire-lib.reformat-and-yaml2json" (dict "config" (include "spire-server.yaml-config" .) "root" .) | nindent 4 }}

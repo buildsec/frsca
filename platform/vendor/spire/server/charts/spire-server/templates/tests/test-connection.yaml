@@ -1,0 +1,66 @@
+{{ $values := merge .Values }}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "spire-server.fullname" . }}-test-connection"
+  namespace: {{ include "spire-server.namespace" . }}
+  labels:
+    {{- include "spire-server.labels" . | nindent 4 }}
+    app.kubernetes.io/component: test
+  annotations:
+    "helm.sh/hook": test
+spec:
+  securityContext:
+    {{- include "spire-lib.podsecuritycontext" . | nindent 4 }}
+  containers:
+    - name: curl
+      image: {{ template "spire-lib.image" (dict "image" .Values.tests.bash.image "global" .Values.global) }}
+      command: ['bash']
+      args:
+        - -c
+        - |
+          curl -f -s 'https://{{ include "spire-server.fullname" . }}:{{ .Values.service.port }}'
+          NOCA=$?
+          curl -k -f -s 'https://{{ include "spire-server.fullname" . }}:{{ .Values.service.port }}'
+          IGNORECA=$?
+          echo $NOCA $IGNORECA
+          if [ $NOCA -eq 60 -a $IGNORECA -eq 22 ]; then
+            # We were able to connect to the server but didn't recognize the ca (60) and the page not found (22) because we're not using grpc
+            exit 0
+          fi
+          exit 1
+      securityContext:
+        {{- include "spire-lib.securitycontext" . | nindent 8 }}
+    {{- if eq (.Values.federation.enabled | toString) "true" }}
+    - name: curl-federation-bundle-endpoint
+      image: {{ template "spire-lib.image" (dict "image" .Values.tests.bash.image "global" .Values.global) }}
+      command: ['curl']
+      args: ['-k', '-s', '-f', 'https://{{ include "spire-server.fullname" . }}.{{ include "spire-server.namespace" . }}.svc.{{ include "spire-lib.cluster-domain" . }}:{{ .Values.federation.bundleEndpoint.port }}']
+      securityContext:
+        {{- include "spire-lib.securitycontext" . | nindent 8 }}
+    {{- end }}
+    {{- if .Values.federation.ingress.enabled }}
+    - name: federation-ingress
+      image: {{ template "spire-lib.image" (dict "image" .Values.tests.bash.image "global" .Values.global) }}
+      command: ['curl']
+      args:
+        {{ include "spire-server.test.federation-ingress-args" (dict "Values" $values) | nindent 8 }}
+      {{- if ne (len (dig "tests" "tls" "customCA" "" $values)) 0 }}
+      volumeMounts:
+        - name: custom-ca
+          mountPath: /ca
+      {{- end }}
+      securityContext:
+        {{- include "spire-lib.securitycontext" . | nindent 8 }}
+    {{- end }}
+  {{- if ne (len (dig "tests" "hostAliases" "" $values)) 0 }}
+  hostAliases:
+    {{- toYaml .Values.tests.hostAliases | nindent 4 }}
+  {{- end }}
+  {{- if ne (len (dig "tests" "tls" "customCA" "" $values)) 0 }}
+  volumes:
+    - name: custom-ca
+      secret:
+        secretName: {{ .Values.tests.tls.customCA }}
+  {{- end }}
+  restartPolicy: Never

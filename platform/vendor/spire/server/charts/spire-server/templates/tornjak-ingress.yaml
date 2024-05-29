@@ -1,0 +1,42 @@
+{{- if .Values.tornjak.ingress.enabled -}}
+{{- $ingressControllerType := include "spire-lib.ingress-controller-type" (dict "global" .Values.global "ingress" .Values.tornjak.ingress) }}
+{{- $fullName := include "spire-tornjak.fullname" . -}}
+{{- $path := "/" }}
+{{- $pathType := "Prefix" }}
+{{- $tlsSection := true }}
+{{- $annotations := deepCopy .Values.tornjak.ingress.annotations }}
+{{- if eq $ingressControllerType "ingress-nginx" }}
+{{-   $_ := set $annotations "nginx.ingress.kubernetes.io/ssl-redirect" "true" }}
+{{-   $_ := set $annotations "nginx.ingress.kubernetes.io/force-ssl-redirect" "true" }}
+{{-   if ne (include "spire-tornjak.connectionType" .) "http" }}
+{{-     $_ := set $annotations "nginx.ingress.kubernetes.io/backend-protocol" "HTTPS" }}
+{{-     $_ := set $annotations "nginx.ingress.kubernetes.io/ssl-passthrough" "true" }}
+{{-   end }}
+{{- else if eq $ingressControllerType "openshift" }}
+{{-   $tlsSection = false }}
+{{-   if ne (include "spire-tornjak.connectionType" .) "http" }}
+{{-     $_ := set $annotations "route.openshift.io/termination" "passthrough" }}
+{{-     $path = "" }}
+{{-     $pathType = "ImplementationSpecific" }}
+{{-   else }}
+{{-     $_ := set $annotations "route.openshift.io/termination" "edge" }}
+{{-   end }}
+{{- end }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ $fullName }}
+  namespace: {{ include "spire-server.namespace" . }}
+  labels:
+    {{ include "spire-server.labels" . | nindent 4}}
+  {{- with $annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- if eq (include "spire-tornjak.connectionType" .) "http" }}
+  {{ include "spire-lib.ingress-spec" (dict "ingress" .Values.tornjak.ingress "svcName" (include "spire-tornjak.servicename" .) "port" .Values.tornjak.service.ports.http "path" $path "pathType" $pathType "tlsSection" $tlsSection "Values" .Values) | nindent 2 }}
+  {{- else -}}
+  {{ include "spire-lib.ingress-spec" (dict "ingress" .Values.tornjak.ingress "svcName" (include "spire-tornjak.servicename" .) "port" .Values.tornjak.service.ports.https "path" $path "pathType" $pathType "tlsSection" $tlsSection "Values" .Values) | nindent 2 }}
+  {{- end -}}
+{{- end }}

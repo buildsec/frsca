@@ -1,0 +1,164 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: {{ include "spiffe-csi-driver.fullname" . }}
+  namespace: {{ include "spiffe-csi-driver.namespace" . }}
+  labels:
+    {{- include "spiffe-csi-driver.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "spiffe-csi-driver.selectorLabels" . | nindent 6 }}
+  {{- with .Values.updateStrategy }}
+  updateStrategy:
+    {{- if not (has .type (list "RollingUpdate" "OnDelete")) }}
+    {{- fail "updateStrategy.type can only be RollingUpdate or OnDelete"}}
+    {{- end }}
+    type: {{ .type }}
+    {{- if eq .type "RollingUpdate" }}
+    rollingUpdate:
+      maxUnavailable: {{ .rollingUpdate.maxUnavailable }}
+    {{- end }}
+  {{- end }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "spiffe-csi-driver.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "spiffe-csi-driver.serviceAccountName" . }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- include "spire-lib.default_node_priority_class_name" . | nindent 6 }}
+      {{- if or (gt (len .Values.initContainers) 0) (dig "openshift" false .Values.global) (dig "selinux" false .Values.global) .Values.selinux.enabled }}
+      initContainers:
+      {{- if or (dig "openshift" false .Values.global) (dig "selinux" false .Values.global) .Values.selinux.enabled }}
+        - name: set-context
+          command:
+            - chcon
+            - '-Rvt'
+            - {{ .Values.selinux.context }}
+            - spire-agent-socket/
+          image: {{ template "spire-lib.image" (dict "appVersion" $.Chart.AppVersion "image" .Values.selinux.image "global" .Values.global) }}
+          imagePullPolicy: {{ .Values.selinux.image.pullPolicy }}
+          securityContext:
+            capabilities:
+              drop:
+                - all
+            privileged: true
+          volumeMounts:
+            - name: spire-agent-socket-dir
+              mountPath: /spire-agent-socket
+          terminationMessagePolicy: File
+          terminationMessagePath: /dev/termination-log
+      {{- end }}
+      {{- if gt (len .Values.initContainers) 0 }}
+        {{- toYaml .Values.initContainers | nindent 8 }}
+      {{- end }}
+      {{- end }}
+      containers:
+        # This is the container which runs the SPIFFE CSI driver.
+        - name: {{ .Chart.Name }}
+          image: {{ template "spire-lib.image" (dict "appVersion" $.Chart.AppVersion "image" .Values.image "global" .Values.global) }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args: [
+            "-workload-api-socket-dir", "/spire-agent-socket",
+            "-plugin-name", "{{ .Values.pluginName }}",
+            "-csi-socket-path", "/spiffe-csi/csi.sock",
+          ]
+          env:
+            # The CSI driver needs a unique node ID. The node name can be
+            # used for this purpose.
+            - name: MY_NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+          volumeMounts:
+            # The volume containing the SPIRE agent socket. The SPIFFE CSI
+            # driver will mount this directory into containers.
+            - mountPath: /spire-agent-socket
+              name: spire-agent-socket-dir
+              readOnly: true
+            # The volume that will contain the CSI driver socket shared
+            # with the kubelet and the driver registrar.
+            - mountPath: /spiffe-csi
+              name: spiffe-csi-socket-dir
+            # The volume containing mount points for containers.
+            - mountPath: {{ .Values.kubeletPath }}/pods
+              mountPropagation: Bidirectional
+              name: mountpoint-dir
+          securityContext:
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - all
+            privileged: true
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+        # This container runs the CSI Node Driver Registrar which takes care
+        # of all the little details required to register a CSI driver with
+        # the kubelet.
+        - name: node-driver-registrar
+          image: {{ template "spire-lib.image" (dict "image" .Values.nodeDriverRegistrar.image "global" .Values.global) }}
+          imagePullPolicy: {{ .Values.nodeDriverRegistrar.image.pullPolicy }}
+          args: [
+            "-csi-address", "/spiffe-csi/csi.sock",
+            "-kubelet-registration-path", "{{ .Values.kubeletPath }}/plugins/{{ .Values.pluginName }}/csi.sock",
+            "-health-port", "{{ .Values.healthChecks.port }}"
+          ]
+          volumeMounts:
+            # The registrar needs access to the SPIFFE CSI driver socket
+            - mountPath: /spiffe-csi
+              name: spiffe-csi-socket-dir
+            # The registrar needs access to the Kubelet plugin registration
+            # directory
+            - name: kubelet-plugin-registration-dir
+              mountPath: /registration
+          ports:
+            - containerPort: {{ .Values.healthChecks.port }}
+              name: healthz
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: healthz
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.nodeDriverRegistrar.resources | nindent 12 }}
+      volumes:
+        - name: spire-agent-socket-dir
+          hostPath:
+            path: {{ include "spiffe-csi-driver.agent-socket-path" . | dir }}
+            type: DirectoryOrCreate
+        # This volume is where the socket for kubelet->driver communication lives
+        - name: spiffe-csi-socket-dir
+          hostPath:
+            path: {{ .Values.kubeletPath }}/plugins/{{ .Values.pluginName }}
+            type: DirectoryOrCreate
+        # This volume is where the SPIFFE CSI driver mounts volumes
+        - name: mountpoint-dir
+          hostPath:
+            path: {{ .Values.kubeletPath }}/pods
+            type: Directory
+        # This volume is where the node-driver-registrar registers the plugin
+        # with kubelet
+        - name: kubelet-plugin-registration-dir
+          hostPath:
+            path: {{ .Values.kubeletPath }}/plugins_registry
+            type: Directory

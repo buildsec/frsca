@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "tornjak-frontend.fullname" . }}
+  namespace: {{ include "tornjak-frontend.namespace" . }}
+  labels:
+    {{- include "tornjak-frontend.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "tornjak-frontend.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "tornjak-frontend.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "tornjak-frontend.serviceAccountName" . }}
+      securityContext:
+        {{- include "spire-lib.podsecuritycontext" . | nindent 8 }}
+      containers:
+        - name:  {{ include "tornjak-frontend.fullname" . }}
+          image: {{ template "spire-lib.image" (dict "appVersion" $.Chart.AppVersion "image" .Values.image "global" .Values.global "ubi" true) }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          securityContext:
+            {{- include "spire-lib.securitycontext" . | nindent 12 }}
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+          env:
+            - name: REACT_APP_API_SERVER_URI
+              value: {{ include "tornjak-frontend.apiURL" . }}
+            {{- if eq (.Values.spireHealthCheck.enabled | toString) "true" }}
+            - name: REACT_APP_SPIRE_HEALTH_CHECK_ENABLE
+              value: "{{ .Values.spireHealthCheck.enabled }}"
+            {{- end }}
+          {{- if .Values.startupProbe.enabled }}
+          startupProbe:
+            httpGet:
+              scheme: HTTP
+              path: /tornjak/serverinfo
+              port: {{ .Values.service.port }}
+            failureThreshold: {{ .Values.startupProbe.failureThreshold }}
+            initialDelaySeconds: {{ .Values.startupProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.startupProbe.periodSeconds }}
+            successThreshold: {{ .Values.startupProbe.successThreshold }}
+            timeoutSeconds: {{ .Values.startupProbe.timeoutSeconds }}
+          {{- end }}
+          volumeMounts:
+            - name: cache
+              mountPath: {{ include "tornjak-frontend.workingDir" . }}/node_modules/.cache
+            - name: env
+              mountPath: {{ include "tornjak-frontend.workingDir" . }}/build/tmp
+            - name: logs
+              mountPath: /opt/app-root/src/.npm/
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.topologySpreadConstraints }}
+      topologySpreadConstraints:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      volumes:
+        - name: cache
+          emptyDir: {}
+        - name: env
+          emptyDir: {}
+        - name: logs
+          emptyDir: {}

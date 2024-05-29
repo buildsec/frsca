@@ -1,0 +1,10 @@
+{{- $namespace := include "spire-server.bundle-namespace" . }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "spire-lib.bundle-configmap" . }}
+  namespace: {{ $namespace }}
+  {{- with .Values.configMap.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}

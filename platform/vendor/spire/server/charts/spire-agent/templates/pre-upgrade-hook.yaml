@@ -1,0 +1,77 @@
+{{- if eq ((dig "installAndUpgradeHooks" "enabled" .Values.installAndUpgradeHook.enabled .Values.global) | toString) "true" }}
+{{- $ds := lookup "apps/v1" "DaemonSet" (include "spire-agent.namespace" .) (include "spire-agent.fullname" .) }}
+{{- if and $ds (not (hasKey $ds.metadata.labels "app.kubernetes.io/component")) }}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ include "spire-agent.serviceAccountName" . }}-pre-upgrade
+  namespace: {{ include "spire-agent.namespace" . }}
+  labels:
+    {{- include "spire-agent.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": pre-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation, hook-succeeded, hook-failed
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "spire-agent.fullname" . }}-pre-upgrade
+  namespace: {{ include "spire-agent.namespace" . }}
+  annotations:
+    "helm.sh/hook": pre-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation, hook-succeeded, hook-failed
+rules:
+  - apiGroups: ["apps"]
+    resources: ["daemonsets"]
+    resourceNames: [{{ include "spire-agent.fullname" . | quote }}]
+    verbs: ["get", "delete"]
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: {{ include "spire-agent.fullname" . }}-pre-upgrade
+  namespace: {{ include "spire-agent.namespace" . }}
+  annotations:
+    "helm.sh/hook": pre-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation, hook-succeeded, hook-failed
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "spire-agent.serviceAccountName" . }}-pre-upgrade
+    namespace: {{ include "spire-agent.namespace" . }}
+roleRef:
+  kind: Role
+  name: {{ include "spire-agent.fullname" . }}-pre-upgrade
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "spire-agent.fullname" . }}-pre-upgrade
+  namespace: {{ include "spire-agent.namespace" . }}
+  labels:
+    {{- include "spire-agent.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": pre-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation, hook-succeeded, hook-failed
+spec:
+  template:
+    metadata:
+      name: {{ include "spire-agent.fullname" . }}-pre-upgrade
+    spec:
+      restartPolicy: Never
+      serviceAccountName: {{ include "spire-agent.serviceAccountName" . }}-pre-upgrade
+      securityContext:
+        {{- include "spire-lib.podsecuritycontext" . | nindent 8 }}
+      containers:
+      - name: pre-upgrade
+        securityContext:
+          {{- include "spire-lib.securitycontext" . | nindent 10 }}
+        image: {{ template "spire-lib.kubectl-image" (dict "appVersion" $.Chart.AppVersion "image" .Values.tools.kubectl.image "global" .Values.global "KubeVersion" .Capabilities.KubeVersion.Version) }}
+        args:
+          - delete
+          - daemonset
+          - {{ include "spire-agent.fullname" . }}
+          - -n
+          - {{ include "spire-agent.namespace" . }}
+{{- end }}
+{{- end }}

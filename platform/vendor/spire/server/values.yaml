@@ -1,0 +1,191 @@
+# Default configuration for Spire chart
+# SPDX-License-Identifier: APACHE-2.0
+
+## @section Global parameters
+## Note: the parameter values specified here will override the chart level values for these parameters.
+##
+global:
+  k8s:
+    ## @param global.k8s.clusterDomain Cluster domain name configured for Spire install
+    clusterDomain: cluster.local
+
+  spire:
+    ## @param global.spire.bundleConfigMap A configmap containing the Spire bundle
+    bundleConfigMap: ""
+    ## @param global.spire.clusterName The name of the k8s cluster for Spire install
+    clusterName: example-cluster
+    ## @param global.spire.jwtIssuer The issuer for Spire JWT tokens. Defaults to oidc-discovery.$trustDomain if unset
+    jwtIssuer: ""
+    ## @param global.spire.trustDomain The trust domain for Spire install
+    trustDomain: example.org
+    ## @param global.spire.upstreamServerAddress Set what address to use for the upstream server when using nested spire
+    upstreamServerAddress: ""
+
+    ## @param global.spire.caSubject.country Country for Spire server CA
+    ## @param global.spire.caSubject.organization Organization for Spire server CA
+    ## @param global.spire.caSubject.commonName Common Name for Spire server CA
+    caSubject:
+      country: ""
+      organization: ""
+      commonName: ""
+
+    persistence:
+      ## @param global.spire.persistence.storageClass What storage class to use for persistence
+      storageClass: null
+
+    ## @param global.spire.recommendations.enabled Use recommended settings for production deployments. Default is off.
+    ## @param global.spire.recommendations.namespaceLayout Set to true to use recommended values for installing across namespaces
+    ## @param global.spire.recommendations.namespacePSS When chart namespace creation is enabled, label them with preffered Pod Security Standard labels
+    ## @param global.spire.recommendations.priorityClassName Set to true to use recommended values for Pod Priority Class Names
+    ## @param global.spire.recommendations.strictMode Check values, such as trustDomain, are overridden with a suitable value for production.
+    ## @param global.spire.recommendations.securityContexts Set to true to use recommended values for Pod and Container Security Contexts
+    ## @param global.spire.recommendations.prometheus Enable prometheus exporters for monitoring
+    recommendations:
+      enabled: false
+      namespaceLayout: true
+      namespacePSS: true
+      priorityClassName: true
+      strictMode: true
+      securityContexts: true
+      prometheus: true
+
+    image:
+      ## @param global.spire.image.registry Override all Spire image registries at once
+      registry: ""
+
+    namespaces:
+      ## @param global.spire.namespaces.create Set to true to Create all namespaces. If this or either of the namespace specific create flags is set, the namespace will be created.
+      create: false
+      system:
+        ## @param global.spire.namespaces.system.name Name of the Spire system Namespace.
+        name: "spire-system"
+        ## @param global.spire.namespaces.system.create Create a Namespace for Spire system resources.
+        create: false
+        ## @param global.spire.namespaces.system.annotations [object] Annotations to apply to the Spire system Namespace.
+        annotations: {}
+        ## @param global.spire.namespaces.system.labels [object] Labels to apply to the Spire system Namespace.
+        labels: {}
+      server:
+        ## @param global.spire.namespaces.server.name Name of the Spire server Namespace.
+        name: "spire-server"
+        ## @param global.spire.namespaces.server.create Create a Namespace for Spire server resources.
+        create: false
+        ## @param global.spire.namespaces.server.annotations [object] Annotations to apply to the Spire server Namespace.
+        annotations: {}
+        ## @param global.spire.namespaces.server.labels [object] Labels to apply to the Spire server Namespace.
+        labels: {}
+
+    ## @param global.spire.strictMode Check values, such as trustDomain, are overridden with a suitable value for production.
+    strictMode: false
+
+    ## @param global.spire.ingressControllerType Specify what type of ingress controller you're using to add the necessary annotations accordingly. If blank, autodetection is attempted. If other, no annotations will be added. Must be one of [ingress-nginx, openshift, other, ""].
+    ingressControllerType: ""
+
+    tools:
+      kubectl:
+        ## @param global.spire.tools.kubectl.tag Set to force the tag to use for all kubectl instances
+        tag: ""
+
+  installAndUpgradeHooks:
+    ## @param global.installAndUpgradeHooks.enabled Enable Helm hooks to autofix common install/upgrade issues (should be disabled when using `helm template`)
+    enabled: true
+  deleteHooks:
+    ## @param global.deleteHooks.enabled Enable Helm hooks to autofix common delete issues (should be disabled when using `helm template`)
+    enabled: true
+
+#  telemetry:
+#    prometheus:
+#      enabled: true
+#      podMonitor:
+#        enabled: true
+#        # -- Allows to install the PodMonitor in another namespace then the spire components are installed into.
+#        namespace: "kube-prometheus-system"
+#        labels: {}
+
+## subcharts
+
+## @section Spire server parameters
+## Parameter values for Spire server
+##
+spire-server:
+  ## @param spire-server.enabled Flag to enable Spire server
+  enabled: true
+  ## @param spire-server.nameOverride Overrides the name of Spire server pods
+  nameOverride: server
+  ## @param spire-server.kind Run spire server as deployment/statefulset. This feature is experimental.
+  kind: statefulset
+  controllerManager:
+    ## @param spire-server.controllerManager.enabled Enable controller manager and provision CRD's
+    enabled: true
+
+## @section Spire agent parameters
+## Parameter values for Spire agent
+##
+spire-agent:
+  ## @param spire-agent.enabled Flag to enable Spire agent
+  enabled: true
+  ## @param spire-agent.nameOverride Overrides the name of Spire agent pods
+  nameOverride: agent
+
+## @section Upstream Spire agent and CSI driver configuration
+## Parameter values enabling upstream spire agent and CSI driver
+##
+upstream:
+  ## @param upstream.enabled Enable upstream agent and driver for use with nested spire
+  enabled: false
+
+## @section Upstream Spire agent parameters
+## Parameter values for upstream Spire agent
+##
+upstream-spire-agent:
+  ## @param upstream-spire-agent.upstream Flag for enabling upstream Spire agent
+  upstream: true
+  ## @param upstream-spire-agent.nameOverride Name override for upstream Spire agent
+  nameOverride: agent-upstream
+  ## @param upstream-spire-agent.bundleConfigMap The configmap name for upstream Spire agent bundle
+  bundleConfigMap: spire-bundle-upstream
+  ## @param upstream-spire-agent.socketPath Socket path where Spire agent socket is mounted
+  socketPath: /run/spire/agent-sockets-upstream/spire-agent.sock
+  serviceAccount:
+    ## @param upstream-spire-agent.serviceAccount.name Service account name for upstream Spire agent
+    name: spire-agent-upstream
+  healthChecks:
+    ## @param upstream-spire-agent.healthChecks.port Health check port number for upstream Spire agent
+    port: 9981
+  telemetry:
+    prometheus:
+      ## @param upstream-spire-agent.telemetry.prometheus.port The port where prometheus metrics are available
+      port: 9989
+
+## @section SPIFFE CSI Driver parameters
+## Parameter values for spiffe-csi-driver
+##
+spiffe-csi-driver:
+  ## @param spiffe-csi-driver.enabled Flag to enable spiffe-csi-driver for the cluster
+  enabled: true
+
+## @section Upstream SPIFFE CSI Driver parameters
+## Parameter values for upstream spiffe-csi-driver
+##
+upstream-spiffe-csi-driver:
+  ## @param upstream-spiffe-csi-driver.pluginName The plugin name for configuring upstream Spiffe CSI driver
+  pluginName: upstream.csi.spiffe.io
+  ## @param upstream-spiffe-csi-driver.agentSocketPath The socket path where Spiffe CSI driver mounts agent socket
+  agentSocketPath: /run/spire/agent-sockets-upstream/spire-agent.sock
+  healthChecks:
+    ## @param upstream-spiffe-csi-driver.healthChecks.port The port where Spiffe CSI driver health checks are exposed
+    port: 9810
+
+## @section SPIFFE oidc discovery provider parameters
+## Parameter values for spiffe-oidc-discovery-provider
+##
+spiffe-oidc-discovery-provider:
+  ## @param spiffe-oidc-discovery-provider.enabled Flag to enable spiffe-oidc-discovery-provider for the cluster
+  enabled: true
+
+## @section Tornjak frontend parameters
+## Parameter values for Tornjak frontend
+##
+tornjak-frontend:
+  ## @param tornjak-frontend.enabled Enables deployment of Tornjak frontend/UI (Not for production)
+  enabled: false

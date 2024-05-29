@@ -1,0 +1,46 @@
+{{- if eq (.Values.tornjak.enabled | toString) "true" }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "spire-tornjak.config" . }}
+  namespace: {{ include "spire-server.namespace" . }}
+data:
+  server.conf: |
+    server {
+      spire_socket_path = "unix:///tmp/spire-server/private/api.sock" # socket to communicate with SPIRE server
+      {{- if eq (include "spire-tornjak.connectionType" .) "http" }}
+      http {
+        enabled = true # if true, opens HTTP server
+        port = "10000" # if HTTP enabled, opens HTTP listen port at specified container port
+      }
+      {{- end }}
+      {{- if eq (include "spire-tornjak.connectionType" .) "tls" }}
+      tls {
+        enabled = true
+        port = "10443" # container port for TLS connection
+        cert = "/opt/spire/server/tls.crt" # TLS server cert
+        key  = "/opt/spire/server/tls.key"  # TLS server key
+      }
+      {{- end }}
+      {{- if eq (include "spire-tornjak.connectionType" .) "mtls" }}
+      mtls {
+        enabled = true
+        port = "10443" # container port for mTLS connection
+        cert = "/opt/spire/server/tls.crt" # mTLS server cert
+        key  = "/opt/spire/server/tls.key"  # mTLS server key
+        ca   = "/opt/spire/user/ca.crt"  # mTLS user CA
+      }
+      {{- end }}
+    }
+
+    plugins {
+    {{- if .Values.tornjak.config.dataStore }}
+      DataStore "sql" {
+        plugin_data {
+          drivername = "{{ .Values.tornjak.config.dataStore.driver }}"
+          filename = "{{ .Values.tornjak.config.dataStore.file }}"
+        }
+      }
+    {{- end }}
+    }
+{{- end }}

@@ -1,20 +1,12 @@
-server:
-  trustDomain: "example.org"
-  clusterName: frsca
+global:
+  spire:
+    clusterName: frsca
+    trustDomain: example.org
 
-agent:
-  kubeletSkipVerification: true
-
-csi:
-  enabled: true
-
-client:
-  enabled: false
-
-oidc:
-  enabled: true
-  discoveryDomain: "spire-oidc.spire.svc.cluster.local"
-  # discoveryDomain: "oidc.example.org"
-  acme:
-    enabled: false
-  certsSecret: oidc-cert
+spiffe-oidc-discovery-provider:
+  tls:
+    spire:
+      enabled: false
+    externalSecret:
+      enabled: true
+      secretName: oidc-cert

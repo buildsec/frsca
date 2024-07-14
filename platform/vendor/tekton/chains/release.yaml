@@ -64,7 +64,7 @@ metadata:
     app.kubernetes.io/instance: default
     app.kubernetes.io/part-of: tekton-chains
     pipeline.tekton.dev/release: "devel"
-    version: "v0.18.1"
+    version: "v0.21.1"
 spec:
   replicas: 1
   selector:
@@ -85,12 +85,12 @@ spec:
         app.kubernetes.io/part-of: tekton-chains
         # # tekton.dev/release value replaced with inputs.params.versionTag in pipeline/tekton/publish.yaml
         pipeline.tekton.dev/release: "devel"
-        version: "v0.18.1"
+        version: "v0.21.1"
     spec:
       serviceAccountName: tekton-chains-controller
       containers:
         - name: tekton-chains-controller
-          image: gcr.io/tekton-releases/github.com/tektoncd/chains/cmd/controller:v0.18.1@sha256:32925b5903606e2d544c1bfc940c53347b77566a4967214f4b3781c2260cc4ea
+          image: gcr.io/tekton-releases/github.com/tektoncd/chains/cmd/controller:v0.21.1@sha256:327709227dee2207013623532c62f2975b5bbea0de5d4042b4ba82d7ff1ccffd
           volumeMounts:
             - name: signing-secrets
               mountPath: /etc/signing-secrets
@@ -105,11 +105,14 @@ spec:
               value: tekton.dev/chains
             - name: CONFIG_OBSERVABILITY_NAME
               value: tekton-chains-config-observability
+            - name: CONFIG_LEADERELECTION_NAME
+              value: tekton-chains-config-leader-election
           ports:
             - name: metrics
               containerPort: 9090
           securityContext:
             allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
             # User 65532 is the distroless nonroot user ID
             runAsUser: 65532
             runAsGroup: 65532
@@ -339,7 +342,61 @@ data:
   # this ConfigMap such that even if we don't have access to
   # other resources in the namespace, we can still access
   # this ConfigMap.
-  version: "v0.18.1"
+  version: "v0.21.1"
+
+---
+# Copyright 2023 Tekton Authors LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tekton-chains-config-leader-election
+  namespace: tekton-chains
+  labels:
+    app.kubernetes.io/instance: default
+    app.kubernetes.io/part-of: tekton-chains
+data:
+  _example: |
+    ################################
+    #                              #
+    #    EXAMPLE CONFIGURATION     #
+    #                              #
+    ################################
+    # This block is not actually functional configuration,
+    # but serves to illustrate the available configuration
+    # options and document them in a way that is accessible
+    # to users that `kubectl edit` this config map.
+    #
+    # These sample configuration options may be copied out of
+    # this example block and unindented to be in the data block
+    # to actually change the configuration.
+    # lease-duration is how long non-leaders will wait to try to acquire the
+    # lock; 15 seconds is the value used by core kubernetes controllers.
+    lease-duration: "60s"
+    # renew-deadline is how long a leader will try to renew the lease before
+    # giving up; 10 seconds is the value used by core kubernetes controllers.
+    renew-deadline: "40s"
+    # retry-period is how long the leader election client waits between tries of
+    # actions; 2 seconds is the value used by core kubernetes controllers.
+    retry-period: "10s"
+    # buckets is the number of buckets used to partition key space of each
+    # Reconciler. If this number is M and the replica number of the controller
+    # is N, the N replicas will compete for the M buckets. The owner of a
+    # bucket will take care of the reconciling for the keys partitioned into
+    # that bucket.
+    buckets: "1"
 
 ---
 # Copyright 2019 Tekton Authors LLC

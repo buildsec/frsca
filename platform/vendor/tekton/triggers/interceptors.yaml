@@ -22,7 +22,7 @@ metadata:
     app.kubernetes.io/component: interceptors
     app.kubernetes.io/instance: default
     app.kubernetes.io/part-of: tekton-triggers
-    triggers.tekton.dev/release: "v0.22.2"
+    triggers.tekton.dev/release: "v0.28.0"
 # The data is populated at install time.
 
 ---
@@ -49,10 +49,10 @@ metadata:
     app.kubernetes.io/name: core-interceptors
     app.kubernetes.io/component: interceptors
     app.kubernetes.io/instance: default
-    app.kubernetes.io/version: "v0.22.2"
+    app.kubernetes.io/version: "v0.28.0"
     app.kubernetes.io/part-of: tekton-triggers
     # tekton.dev/release value replaced with inputs.params.versionTag in triggers/tekton/publish.yaml
-    triggers.tekton.dev/release: "v0.22.2"
+    triggers.tekton.dev/release: "v0.28.0"
 spec:
   replicas: 1
   selector:
@@ -67,17 +67,17 @@ spec:
         app.kubernetes.io/name: core-interceptors
         app.kubernetes.io/component: interceptors
         app.kubernetes.io/instance: default
-        app.kubernetes.io/version: "v0.22.2"
+        app.kubernetes.io/version: "v0.28.0"
         app.kubernetes.io/part-of: tekton-triggers
         app: tekton-triggers-core-interceptors
-        triggers.tekton.dev/release: "v0.22.2"
+        triggers.tekton.dev/release: "v0.28.0"
         # version value replaced with inputs.params.versionTag in triggers/tekton/publish.yaml
-        version: "v0.22.2"
+        version: "v0.28.0"
     spec:
       serviceAccountName: tekton-triggers-core-interceptors
       containers:
         - name: tekton-triggers-core-interceptors
-          image: "gcr.io/tekton-releases/github.com/tektoncd/triggers/cmd/interceptors:v0.22.2@sha256:852f5a7a8c3d91c1bc15ebdddf3bc5e5e68341fe79205ddc7af4b96b9b6bedf9"
+          image: "gcr.io/tekton-releases/github.com/tektoncd/triggers/cmd/interceptors:v0.28.0@sha256:6e664b0b03956790ccf3ab71c8732f84631c9fa727e0165330df08def5dec997"
           ports:
             - containerPort: 8443
           args: ["-logtostderr", "-stderrthreshold", "INFO"]
@@ -124,11 +124,11 @@ metadata:
     app.kubernetes.io/name: tekton-triggers-core-interceptors
     app.kubernetes.io/component: interceptors
     app.kubernetes.io/instance: default
-    app.kubernetes.io/version: "v0.22.2"
+    app.kubernetes.io/version: "v0.28.0"
     app.kubernetes.io/part-of: tekton-triggers
-    triggers.tekton.dev/release: "v0.22.2"
+    triggers.tekton.dev/release: "v0.28.0"
     app: tekton-triggers-core-interceptors
-    version: "v0.22.2"
+    version: "v0.28.0"
   name: tekton-triggers-core-interceptors
   namespace: tekton-pipelines
 spec:
@@ -182,6 +182,20 @@ spec:
       name: tekton-triggers-core-interceptors
       namespace: tekton-pipelines
       path: "bitbucket"
+      port: 8443
+---
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: ClusterInterceptor
+metadata:
+  name: slack
+  labels:
+    server/type: https
+spec:
+  clientConfig:
+    service:
+      name: tekton-triggers-core-interceptors
+      namespace: tekton-pipelines
+      path: "slack"
       port: 8443
 ---
 apiVersion: triggers.tekton.dev/v1alpha1

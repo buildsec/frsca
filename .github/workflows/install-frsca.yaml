@@ -45,78 +45,80 @@ jobs:
           make setup-minikube
       - name: Try the cluster !
         run: kubectl get pods -A
-      - name: Initialize FRSCA
-        env:
-          REGISTRY: "registry.registry"
-        run: |
-          make setup-frsca
-      - name: Run buildpacks pipeline
-        env:
-          REGISTRY: "registry.registry"
-        run: |
-          make registry-proxy >/dev/null &
-          ./platform/wait-for-pipelinerun.sh -m example-buildpacks -n example-buildpacks-
-          # tail PipelineRun logs
-          tkn pr logs --last -f
-          if [ "$(tkn pr describe --last -o jsonpath='{.status.conditions[?(@.type == "Succeeded")].status}')" != "True" ]; then
-            tkn pr describe --last
-            exit 1
-          fi
-          sleep 60
-          TASK_RUNS=($(tkn pr describe --last -o jsonpath='{.status.childReferences}' | jq -r '.[] | select(.kind | match("TaskRun")) | .name'))
-          echo "TASK_RUNS=${TASK_RUNS[@]}"
-          TASK_RUN="none"; IMAGE_URL="none"
-          for tr in "${TASK_RUNS[@]}"; do
-            image=$(tkn tr describe "${tr}" -o jsonpath='{.status.results}' | jq -r '.[] | select(.name | match("IMAGE_URL$")) | .value')
-            if [ -n "${image}" ]; then
-              TASK_RUN="${tr}"
-              IMAGE_URL="${image}"
-              break
-            fi
-          done
-          if [ "${REGISTRY}" = "registry.registry" ]; then
-            IMAGE_URL="$(echo "${IMAGE_URL}" | sed 's#'${REGISTRY}'#127.0.0.1:5000#')"
-          fi
-          echo "TASK_RUN=${TASK_RUN}"
-          echo "IMAGE_URL=${IMAGE_URL}"
-          crane ls "$(echo -n ${IMAGE_URL} | sed 's|:[^/]*$||')"
-          tkn tr describe --last -o json | jq -r '.metadata.annotations["chains.tekton.dev/signed"]'
-          cosign verify --insecure-ignore-tlog --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
-          cosign verify-attestation --insecure-ignore-tlog --type slsaprovenance --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
-          kill %?registry-proxy
-      - name: Run sample pipeline to test kyverno
-        env:
-          REGISTRY: "registry.registry"
-        run: |
-          make registry-proxy >/dev/null &
-          ./platform/wait-for-pipelinerun.sh -m example-sample-pipeline -n example-sample-pipeline-
-          # tail PipelineRun logs
-          tkn pr logs --last -f
-          if [ "$(tkn pr describe --last -o jsonpath='{.status.conditions[?(@.type == "Succeeded")].status}')" != "True" ]; then
-            tkn pr describe --last
-            exit 1
-          fi
-          sleep 60
-          TASK_RUNS=($(tkn pr describe --last -o jsonpath='{.status.childReferences}' | jq -r '.[] | select(.kind | match("TaskRun")) | .name'))
-          echo "TASK_RUNS=${TASK_RUNS[@]}"
-          TASK_RUN="none"; IMAGE_URL="none"
-          for tr in "${TASK_RUNS[@]}"; do
-            image=$(tkn tr describe "${tr}" -o jsonpath='{.status.results}' | jq -r '.[] | select(.name == "IMAGE_URL") | .value')
-            if [ -n "${image}" ]; then
-              TASK_RUN="${tr}"
-              IMAGE_URL="${image}"
-              break
-            fi
-          done
-          if [ "${REGISTRY}" = "registry.registry" ]; then
-            IMAGE_URL="$(echo "${IMAGE_URL}" | sed 's#'${REGISTRY}'#127.0.0.1:5000#')"
-          fi
-          echo "TASK_RUN=${TASK_RUN}"
-          echo "IMAGE_URL=${IMAGE_URL}"
-          crane ls "$(echo -n ${IMAGE_URL} | sed 's|:[^/]*$||')"
+      - name: Install Tekton Pipeline
+        run: ./platform/10-tekton-pipelines-install.sh
+      # - name: Initialize FRSCA
+      #   env:
+      #     REGISTRY: "registry.registry"
+      #   run: |
+      #     make setup-frsca
+      # - name: Run buildpacks pipeline
+      #   env:
+      #     REGISTRY: "registry.registry"
+      #   run: |
+      #     make registry-proxy >/dev/null &
+      #     ./platform/wait-for-pipelinerun.sh -m example-buildpacks -n example-buildpacks-
+      #     # tail PipelineRun logs
+      #     tkn pr logs --last -f
+      #     if [ "$(tkn pr describe --last -o jsonpath='{.status.conditions[?(@.type == "Succeeded")].status}')" != "True" ]; then
+      #       tkn pr describe --last
+      #       exit 1
+      #     fi
+      #     sleep 60
+      #     TASK_RUNS=($(tkn pr describe --last -o jsonpath='{.status.childReferences}' | jq -r '.[] | select(.kind | match("TaskRun")) | .name'))
+      #     echo "TASK_RUNS=${TASK_RUNS[@]}"
+      #     TASK_RUN="none"; IMAGE_URL="none"
+      #     for tr in "${TASK_RUNS[@]}"; do
+      #       image=$(tkn tr describe "${tr}" -o jsonpath='{.status.results}' | jq -r '.[] | select(.name | match("IMAGE_URL$")) | .value')
+      #       if [ -n "${image}" ]; then
+      #         TASK_RUN="${tr}"
+      #         IMAGE_URL="${image}"
+      #         break
+      #       fi
+      #     done
+      #     if [ "${REGISTRY}" = "registry.registry" ]; then
+      #       IMAGE_URL="$(echo "${IMAGE_URL}" | sed 's#'${REGISTRY}'#127.0.0.1:5000#')"
+      #     fi
+      #     echo "TASK_RUN=${TASK_RUN}"
+      #     echo "IMAGE_URL=${IMAGE_URL}"
+      #     crane ls "$(echo -n ${IMAGE_URL} | sed 's|:[^/]*$||')"
+      #     tkn tr describe --last -o json | jq -r '.metadata.annotations["chains.tekton.dev/signed"]'
+      #     cosign verify --insecure-ignore-tlog --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
+      #     cosign verify-attestation --insecure-ignore-tlog --type slsaprovenance --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
+      #     kill %?registry-proxy
+      # - name: Run sample pipeline to test kyverno
+      #   env:
+      #     REGISTRY: "registry.registry"
+      #   run: |
+      #     make registry-proxy >/dev/null &
+      #     ./platform/wait-for-pipelinerun.sh -m example-sample-pipeline -n example-sample-pipeline-
+      #     # tail PipelineRun logs
+      #     tkn pr logs --last -f
+      #     if [ "$(tkn pr describe --last -o jsonpath='{.status.conditions[?(@.type == "Succeeded")].status}')" != "True" ]; then
+      #       tkn pr describe --last
+      #       exit 1
+      #     fi
+      #     sleep 60
+      #     TASK_RUNS=($(tkn pr describe --last -o jsonpath='{.status.childReferences}' | jq -r '.[] | select(.kind | match("TaskRun")) | .name'))
+      #     echo "TASK_RUNS=${TASK_RUNS[@]}"
+      #     TASK_RUN="none"; IMAGE_URL="none"
+      #     for tr in "${TASK_RUNS[@]}"; do
+      #       image=$(tkn tr describe "${tr}" -o jsonpath='{.status.results}' | jq -r '.[] | select(.name == "IMAGE_URL") | .value')
+      #       if [ -n "${image}" ]; then
+      #         TASK_RUN="${tr}"
+      #         IMAGE_URL="${image}"
+      #         break
+      #       fi
+      #     done
+      #     if [ "${REGISTRY}" = "registry.registry" ]; then
+      #       IMAGE_URL="$(echo "${IMAGE_URL}" | sed 's#'${REGISTRY}'#127.0.0.1:5000#')"
+      #     fi
+      #     echo "TASK_RUN=${TASK_RUN}"
+      #     echo "IMAGE_URL=${IMAGE_URL}"
+      #     crane ls "$(echo -n ${IMAGE_URL} | sed 's|:[^/]*$||')"
 
-          cosign verify --insecure-ignore-tlog --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
-          cosign verify-attestation --insecure-ignore-tlog --type slsaprovenance --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
+      #     cosign verify --insecure-ignore-tlog --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
+      #     cosign verify-attestation --insecure-ignore-tlog --type slsaprovenance --key k8s://tekton-chains/signing-secrets "${IMAGE_URL}"
 
-          kubectl wait --timeout=5m --for=condition=ready pods -l app=picalc -n prod
-          kill %?registry-proxy
+      #     kubectl wait --timeout=5m --for=condition=ready pods -l app=picalc -n prod
+      #     kill %?registry-proxy

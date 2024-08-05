@@ -19,3 +19,5 @@ kubectl apply --filename "${GIT_ROOT}/platform/components/tekton/triggers/rbac.y
 for deployment in tekton-pipelines-webhook tekton-pipelines-controller tekton-triggers-controller tekton-triggers-core-interceptors tekton-triggers-webhook; do
   kubectl rollout status -n tekton-pipelines "deployment/${deployment}"
 done
+
+kubectl rollout status -n tekton-pipelines-resolvers deployment/tekton-pipelines-remote-resolvers

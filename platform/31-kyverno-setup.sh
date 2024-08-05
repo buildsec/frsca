@@ -38,6 +38,7 @@ kubectl patch \
   -n kyverno \
   --type json --patch-file "${GIT_ROOT}"/platform/components/kyverno/patch_container_args.json
 kubectl rollout status -n kyverno deployment/kyverno-admission-controller
+sleep 10
 
 echo -e "${C_GREEN}Creating verify-image admission control policy...${C_RESET_ALL}"
 pushd "$GIT_ROOT"/resources/kyverno/admission-control-policy

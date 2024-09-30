@@ -18,7 +18,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332  # v4.1.7
+      - uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938  # v4.2.0
       - uses: mfinelli/setup-shfmt@031e887e39d899d773a7e9b6dd6472c2c23ff50d  # v3.0.1
       - name: Lint all
         run: make lint
@@ -29,7 +29,7 @@ jobs:
       lint
     name: Test FRSCA Installation
     steps:
-      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332  # v4.1.7
+      - uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938  # v4.2.0
       - name: Setup go
         uses: actions/setup-go@0a12ed9d6a96ab950c8f026ed9f722fe0da7ef32  # v5.0.2
         with:

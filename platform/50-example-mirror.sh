@@ -58,7 +58,7 @@ EOF
 
 gitea_copy_repo https://github.com/buildsec/example-buildpacks example-buildpacks main
 gitea_copy_repo https://github.com/buildsec/example-golang example-golang master
-gitea_copy_repo https://github.com/buildsec/example-gradle example-gradle master
+gitea_copy_repo https://github.com/buildsec/example-gradle example-gradle update-build.gradle
 gitea_copy_repo https://github.com/buildsec/example-ibm-tutorial example-ibm-tutorial master
 gitea_copy_repo https://github.com/buildsec/example-maven example-maven master
 gitea_copy_repo https://github.com/buildsec/example-sample-pipeline example-sample-pipeline wolfi

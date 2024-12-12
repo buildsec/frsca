@@ -3,7 +3,7 @@ set -euo pipefail
 
 GIT_ROOT=$(git rev-parse --show-toplevel)
 
-go install github.com/buildsec/vendorme@eb12f64b0f166a7ccc7fad4cec4d1ee6c92d3e41
+go install github.com/buildsec/vendorme@cee93cf3a994e0cf1f8b1e3d69fc4aaa144f2173
 
 pushd "$GIT_ROOT/platform/vendor"
 vendorme pull

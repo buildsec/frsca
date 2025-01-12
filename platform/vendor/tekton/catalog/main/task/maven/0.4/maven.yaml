@@ -1,17 +1,17 @@
-apiVersion: tekton.dev/v1beta1
+apiVersion: tekton.dev/v1
 kind: Task
 metadata:
   name: maven
   labels:
-    app.kubernetes.io/version: "0.2"
+    app.kubernetes.io/version: "0.4"
   annotations:
-    tekton.dev/pipelines.minVersion: "0.12.1"
+    tekton.dev/pipelines.minVersion: "0.50.0"
     tekton.dev/categories: Build Tools
     tekton.dev/tags: build-tool
     tekton.dev/platforms: "linux/amd64,linux/s390x,linux/ppc64le"
 spec:
   description: >-
-    This Task can be used to run a Maven build.
+    This Task can be used to run a Maven build. It uses a workspace to store m2 local repo.
 
   workspaces:
     - name: source
@@ -20,6 +20,9 @@ spec:
       description: >-
         The workspace consisting of the custom maven settings
         provided by the user.
+    - name: maven-local-repo
+      description: Local repo (m2) workspace
+      optional: true
   params:
     - name: MAVEN_IMAGE
       type: string
@@ -72,6 +75,16 @@ spec:
         The context directory within the repository for sources on
         which we want to execute maven goals.
       default: "."
+  results:
+    - description: Maven project group id
+      name: group-id
+      type: string
+    - description: Maven project artifact id
+      name: artifact-id
+      type: string
+    - description: version
+      name: version
+      type: string
   steps:
     - name: mvn-settings
       image: registry.access.redhat.com/ubi8/ubi-minimal:8.2
@@ -79,9 +92,9 @@ spec:
         #!/usr/bin/env bash
 
         [[ -f $(workspaces.maven-settings.path)/settings.xml ]] && \
-        echo 'using existing $(workspaces.maven-settings.path)/settings.xml' && exit 0
+        echo "using existing $(workspaces.maven-settings.path)/settings.xml" && exit 0
 
-        cat > $(workspaces.maven-settings.path)/settings.xml <<EOF
+        cat > "$(workspaces.maven-settings.path)/settings.xml" <<EOF
         <settings>
           <servers>
             <!-- The servers added here are generated from environment variables. Don't change. -->
@@ -99,14 +112,14 @@ spec:
         EOF
 
         xml=""
-        if [ -n "$(params.PROXY_HOST)" -a -n "$(params.PROXY_PORT)" ]; then
+        if [ -n "$(params.PROXY_HOST)" ] && [ -n "$(params.PROXY_PORT)" ]; then
           xml="<proxy>\
             <id>genproxy</id>\
             <active>true</active>\
             <protocol>$(params.PROXY_PROTOCOL)</protocol>\
             <host>$(params.PROXY_HOST)</host>\
             <port>$(params.PROXY_PORT)</port>"
-          if [ -n "$(params.PROXY_USER)" -a -n "$(params.PROXY_PASSWORD)" ]; then
+          if [ -n "$(params.PROXY_USER)" ] && [ -n "$(params.PROXY_PASSWORD)" ]; then
             xml="$xml\
                 <username>$(params.PROXY_USER)</username>\
                 <password>$(params.PROXY_PASSWORD)</password>"
@@ -117,10 +130,10 @@ spec:
           fi
           xml="$xml\
               </proxy>"
-          sed -i "s|<!-- ### HTTP proxy from ENV ### -->|$xml|" $(workspaces.maven-settings.path)/settings.xml
+          sed -i "s|<!-- ### HTTP proxy from ENV ### -->|$xml|" "$(workspaces.maven-settings.path)/settings.xml"
         fi
 
-        if [ -n "$(params.SERVER_USER)" -a -n "$(params.SERVER_PASSWORD)" ]; then
+        if [ -n "$(params.SERVER_USER)" ] && [ -n "$(params.SERVER_PASSWORD)" ]; then
           xml="<server>\
             <id>serverid</id>"
           xml="$xml\
@@ -128,7 +141,7 @@ spec:
                 <password>$(params.SERVER_PASSWORD)</password>"
           xml="$xml\
               </server>"
-          sed -i "s|<!-- ### SERVER's USER INFO from ENV ### -->|$xml|" $(workspaces.maven-settings.path)/settings.xml
+          sed -i "s|<!-- ### SERVER's USER INFO from ENV ### -->|$xml|" "$(workspaces.maven-settings.path)/settings.xml"
         fi
 
         if [ -n "$(params.MAVEN_MIRROR_URL)" ]; then
@@ -137,14 +150,21 @@ spec:
             <url>$(params.MAVEN_MIRROR_URL)</url>\
             <mirrorOf>central</mirrorOf>\
           </mirror>"
-          sed -i "s|<!-- ### mirrors from ENV ### -->|$xml|" $(workspaces.maven-settings.path)/settings.xml
+          sed -i "s|<!-- ### mirrors from ENV ### -->|$xml|" "$(workspaces.maven-settings.path)/settings.xml"
         fi
 
     - name: mvn-goals
       image: $(params.MAVEN_IMAGE)
       workingDir: $(workspaces.source.path)/$(params.CONTEXT_DIR)
-      command: ["/usr/bin/mvn"]
-      args:
-        - -s
-        - $(workspaces.maven-settings.path)/settings.xml
-        - "$(params.GOALS)"
+      args: ["$(params.GOALS[*])"]
+      script: |
+        #!/usr/bin/env bash
+
+        /usr/bin/mvn -s $(workspaces.maven-settings.path)/settings.xml "$@" '-Dmaven.repo.local=$(workspaces.maven-local-repo.path)/.m2'
+
+        GROUPID=$(/usr/bin/mvn -s $(workspaces.maven-settings.path)/settings.xml '-Dmaven.repo.local=$(workspaces.maven-local-repo.path)/.m2' -q -Dexec.executable=echo -Dexec.args='${project.groupId}' --non-recursive exec:exec)
+        echo -n $GROUPID | tee $(results.group-id.path)
+        ARTIFACTID=$(/usr/bin/mvn -s $(workspaces.maven-settings.path)/settings.xml '-Dmaven.repo.local=$(workspaces.maven-local-repo.path)/.m2' -q -Dexec.executable=echo -Dexec.args='${project.artifactId}' --non-recursive exec:exec)
+        echo -n $ARTIFACTID | tee $(results.artifact-id.path)
+        VERSION=$(/usr/bin/mvn -s $(workspaces.maven-settings.path)/settings.xml '-Dmaven.repo.local=$(workspaces.maven-local-repo.path)/.m2' -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
+        echo -n $VERSION | tee $(results.version.path)

@@ -12,7 +12,7 @@ kubectl apply -f "${GIT_ROOT}"/platform/vendor/tekton/catalog/main/task/golang-t
 kubectl apply -f "${GIT_ROOT}"/platform/vendor/tekton/catalog/main/task/jib-gradle/0.4/jib-gradle.yaml
 kubectl apply -f "${GIT_ROOT}"/platform/vendor/tekton/catalog/main/task/kaniko/0.6/kaniko.yaml
 kubectl apply -f "${GIT_ROOT}"/platform/vendor/tekton/catalog/main/task/maven/0.2/maven.yaml
-kubectl apply -f "${GIT_ROOT}"/platform/vendor/tekton/catalog/main/task/trivy-scanner/0.1/trivy-scanner.yaml
+kubectl apply -f "${GIT_ROOT}"/platform/vendor/tekton/catalog/main/task/trivy-scanner/0.2/trivy-scanner.yaml
 
 # Setup tekton pipelines
 kubectl apply -f "${GIT_ROOT}"/platform/vendor/tekton/catalog/main/pipeline/buildpacks/0.2/buildpacks.yaml

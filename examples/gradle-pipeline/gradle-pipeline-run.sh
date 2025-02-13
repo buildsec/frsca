@@ -12,7 +12,7 @@ mkdir /tmp/example-gradle
 cd /tmp/example-gradle
 git clone https://frsca:demo1234@gitea-http:3000/frsca/example-gradle .
 git commit -m 'Trigger Build' --allow-empty
-git push origin master
+git push
 cd -
 rm -rf /tmp/example-gradle
 EOF

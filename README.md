@@ -1,5 +1,6 @@
 # FRSCA
 
+[![Build status](https://github.com/buildsec/frsca/workflows/CI/badge.svg)](https://github.com/buildsec/frsca/actions)
 [![OpenSSF
 -Scorecard](https://api.securityscorecards.dev/projects/github.com/buildsec/frsca/badge)](https://api.securityscorecards.dev/projects/github.com/buildsec/frsca)
 

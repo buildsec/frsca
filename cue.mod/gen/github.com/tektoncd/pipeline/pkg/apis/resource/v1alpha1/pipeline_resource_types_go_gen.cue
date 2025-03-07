@@ -39,8 +39,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 // do not have a status
 //
 // Deprecated: Unused, preserved only for backwards compatibility
-#PipelineResourceStatus: {
-}
+#PipelineResourceStatus: {}
 
 // PipelineResourceSpec defines an individual resources used in the pipeline.
 //
@@ -50,7 +49,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// used to populate a UI.
 	// +optional
 	description?: string @go(Description)
-	type:         string @go(Type)
+	type:         string @go(Type,PipelineResourceType)
 
 	// +listType=atomic
 	params: [...#ResourceParam] @go(Params,[]ResourceParam)
@@ -93,7 +92,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	name: string @go(Name)
 
 	// Type is the type of this resource;
-	type: string @go(Type)
+	type: string @go(Type,PipelineResourceType)
 
 	// Description is a user-facing description of the declared resource that may be
 	// used to populate a UI.

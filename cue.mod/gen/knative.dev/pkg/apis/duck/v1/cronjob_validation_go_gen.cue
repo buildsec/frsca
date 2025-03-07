@@ -5,5 +5,4 @@
 package v1
 
 // cvKey is used for associating a CronJobValidator with a context.Context
-_#cvKey: {
-}
+_#cvKey: {}

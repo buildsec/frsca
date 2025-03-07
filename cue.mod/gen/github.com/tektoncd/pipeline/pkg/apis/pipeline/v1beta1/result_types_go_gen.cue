@@ -34,7 +34,7 @@ package v1beta1
 	type?: #ResultsType @go(Type)
 
 	// Value the given value of the result
-	value: #ParamValue @go(Value)
+	value: #ParamValue @go(Value,ResultValue)
 }
 
 // ResultValue is a type alias of ParamValue

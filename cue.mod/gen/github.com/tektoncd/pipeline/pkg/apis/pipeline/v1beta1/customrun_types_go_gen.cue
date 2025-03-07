@@ -143,7 +143,7 @@ import (
 	spec?: #CustomRunSpec @go(Spec)
 
 	// +optional
-	status?: runv1beta1.#CustomRunStatus @go(Status)
+	status?: runv1beta1.#CustomRunStatus @go(Status,CustomRunStatus)
 }
 
 // CustomRunList contains a list of CustomRun

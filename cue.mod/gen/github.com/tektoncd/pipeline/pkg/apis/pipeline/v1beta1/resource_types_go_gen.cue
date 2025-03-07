@@ -48,7 +48,7 @@ import (
 	name: string @go(Name)
 
 	// Type is the type of the PipelineResource.
-	type: string @go(Type)
+	type: string @go(Type,PipelineResourceType)
 
 	// Optional declares the resource as optional.
 	// optional: true - the resource is considered optional

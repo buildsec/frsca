@@ -53,7 +53,7 @@ import (
 	timeout?: null | metav1.#Duration @go(Timeout,*metav1.Duration)
 
 	// PodTemplate holds pod specific configuration
-	podTemplate?: null | pod.#Template @go(PodTemplate,*pod.Template)
+	podTemplate?: null | pod.#Template @go(PodTemplate,*pod.PodTemplate)
 
 	// Workspaces is a list of WorkspaceBindings from volumes to workspaces.
 	// +optional
@@ -225,7 +225,7 @@ import (
 	// Deprecated: this field is not populated and is preserved only for backwards compatibility
 	// +optional
 	// +listType=atomic
-	resourcesResult?: [...result.#RunResult] @go(ResourcesResult,[]github.com/tektoncd/pipeline/pkg/result.RunResult)
+	resourcesResult?: [...result.#RunResult] @go(ResourcesResult,[]PipelineResourceResult)
 
 	// TaskRunResults are the list of results written out by the task's containers
 	// +optional

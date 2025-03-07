@@ -66,15 +66,15 @@ import (
 // provided instead of TriggerBinding, Interceptors and TriggerTemplate
 #EventListenerTrigger: {
 	// +listType=atomic
-	bindings?: [...null | #TriggerSpecBinding] @go(Bindings,[]*TriggerSpecBinding)
-	template?:   null | #TriggerSpecTemplate @go(Template,*TriggerSpecTemplate)
+	bindings?: [...null | #TriggerSpecBinding] @go(Bindings,[]*EventListenerBinding)
+	template?:   null | #TriggerSpecTemplate @go(Template,*EventListenerTemplate)
 	triggerRef?: string                      @go(TriggerRef)
 
 	// +optional
 	name?: string @go(Name)
 
 	// +listType=atomic
-	interceptors?: [...null | #TriggerInterceptor] @go(Interceptors,[]*TriggerInterceptor)
+	interceptors?: [...null | #TriggerInterceptor] @go(Interceptors,[]*EventInterceptor)
 
 	// ServiceAccountName optionally associates credentials with each trigger;
 	// more granular authorization for

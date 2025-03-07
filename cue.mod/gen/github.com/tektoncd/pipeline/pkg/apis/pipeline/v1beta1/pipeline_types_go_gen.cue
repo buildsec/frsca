@@ -91,7 +91,7 @@ import (
 	description?: string @go(Description)
 
 	// Value the expression used to retrieve the value
-	value: #ParamValue @go(Value)
+	value: #ParamValue @go(Value,ResultValue)
 }
 
 // PipelineTaskMetadata contains the labels or annotations for an EmbeddedTask

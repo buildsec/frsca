@@ -5,9 +5,7 @@
 package v1
 
 // psdKey is used for associating a PodSpecDefaulter with a context.Context
-_#psdKey: {
-}
+_#psdKey: {}
 
 // pdKey is used for associating a PodDefaulter with a context.Context
-_#pdKey: {
-}
+_#pdKey: {}

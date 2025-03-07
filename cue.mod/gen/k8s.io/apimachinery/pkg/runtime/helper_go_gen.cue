@@ -7,8 +7,7 @@ package runtime
 // MultiObjectTyper returns the types of objects across multiple schemes in order.
 #MultiObjectTyper: [...#ObjectTyper]
 
-_#defaultFramer: {
-}
+_#defaultFramer: {}
 
 // WithVersionEncoder serializes an object and ensures the GVK is set.
 #WithVersionEncoder: {

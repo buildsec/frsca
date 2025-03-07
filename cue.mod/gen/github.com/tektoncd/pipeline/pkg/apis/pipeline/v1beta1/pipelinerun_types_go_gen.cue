@@ -77,7 +77,7 @@ import (
 	timeout?: null | metav1.#Duration @go(Timeout,*metav1.Duration)
 
 	// PodTemplate holds pod specific configuration
-	podTemplate?: null | pod.#Template @go(PodTemplate,*pod.Template)
+	podTemplate?: null | pod.#Template @go(PodTemplate,*pod.PodTemplate)
 
 	// Workspaces holds a set of workspace bindings that must match names
 	// with those declared in the pipeline.
@@ -327,7 +327,7 @@ import (
 	name: string @go(Name)
 
 	// Value is the result returned from the execution of this PipelineRun
-	value: #ParamValue @go(Value)
+	value: #ParamValue @go(Value,ResultValue)
 }
 
 // PipelineRunTaskRunStatus contains the name of the PipelineTask for this TaskRun and the TaskRun's Status
@@ -352,7 +352,7 @@ import (
 
 	// Status is the CustomRunStatus for the corresponding CustomRun or Run
 	// +optional
-	status?: null | v1beta1.#CustomRunStatus @go(Status,*github.com/tektoncd/pipeline/pkg/apis/run/v1beta1.CustomRunStatus)
+	status?: null | v1beta1.#CustomRunStatus @go(Status,*CustomRunStatus)
 
 	// WhenExpressions is the list of checks guarding the execution of the PipelineTask
 	// +optional
@@ -381,7 +381,7 @@ import (
 #PipelineTaskRunSpec: {
 	pipelineTaskName?:       string               @go(PipelineTaskName)
 	taskServiceAccountName?: string               @go(TaskServiceAccountName)
-	taskPodTemplate?:        null | pod.#Template @go(TaskPodTemplate,*pod.Template)
+	taskPodTemplate?:        null | pod.#Template @go(TaskPodTemplate,*pod.PodTemplate)
 
 	// +listType=atomic
 	stepOverrides?: [...#TaskRunStepOverride] @go(StepOverrides,[]TaskRunStepOverride)

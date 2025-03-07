@@ -26,5 +26,4 @@ _#sinkKey:    "sink"
 	#FormatTektonV1
 
 // EventFormats is a set of event formats
-#EventFormats: {[string]: {
-}}
+#EventFormats: {[string]: {}}

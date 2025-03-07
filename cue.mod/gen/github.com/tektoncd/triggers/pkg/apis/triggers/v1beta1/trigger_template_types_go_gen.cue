@@ -19,8 +19,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 #TriggerResourceTemplate: _
 
 // TriggerTemplateStatus describes the desired state of TriggerTemplate
-#TriggerTemplateStatus: {
-}
+#TriggerTemplateStatus: {}
 
 // TriggerTemplate takes parameters and uses them to create CRDs
 //

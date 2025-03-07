@@ -14,8 +14,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 }
 
 // TriggerBindingStatus defines the observed state of TriggerBinding.
-#TriggerBindingStatus: {
-}
+#TriggerBindingStatus: {}
 
 // TriggerBinding defines a mapping of an input event to parameters. This is used
 // to extract information from events to be passed to TriggerTemplates within a

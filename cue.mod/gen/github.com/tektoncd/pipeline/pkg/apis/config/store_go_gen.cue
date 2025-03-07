@@ -6,8 +6,7 @@ package config
 
 import sc "github.com/tektoncd/pipeline/pkg/spire/config"
 
-_#cfgKey: {
-}
+_#cfgKey: {}
 
 // Config holds the collection of configurations that we attach to contexts.
 // +k8s:deepcopy-gen=false

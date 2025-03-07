@@ -4,16 +4,13 @@
 
 package config
 
-import (
-	"time"
-	"github.com/tektoncd/pipeline/pkg/apis/pipeline/pod"
-)
+import "github.com/tektoncd/pipeline/pkg/apis/pipeline/pod"
 
 // DefaultTimeoutMinutes is used when no timeout is specified.
 #DefaultTimeoutMinutes: 60
 
 // NoTimeoutDuration is used when a pipeline or task should never time out.
-#NoTimeoutDuration: time.#Duration & 0
+#NoTimeoutDuration: int & 0
 
 // DefaultServiceAccountValue is the SA used when one is not specified.
 #DefaultServiceAccountValue: "default"

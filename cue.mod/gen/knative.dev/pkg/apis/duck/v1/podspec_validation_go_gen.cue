@@ -5,9 +5,7 @@
 package v1
 
 // psvKey is used for associating a PodSpecValidator with a context.Context
-_#psvKey: {
-}
+_#psvKey: {}
 
 // pvKey is used for associating a PodValidator with a context.Context
-_#pvKey: {
-}
+_#pvKey: {}

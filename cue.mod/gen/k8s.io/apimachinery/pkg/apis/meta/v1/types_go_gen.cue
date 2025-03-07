@@ -1206,8 +1206,7 @@ import (
 }
 
 // Patch is provided to give a concrete name and type to the Kubernetes PATCH request body.
-#Patch: {
-}
+#Patch: {}
 
 // A label selector is a label query over a set of resources. The result of matchLabels and
 // matchExpressions are ANDed. An empty label selector matches all objects. A null

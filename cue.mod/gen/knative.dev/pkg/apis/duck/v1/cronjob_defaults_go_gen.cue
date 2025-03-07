@@ -5,5 +5,4 @@
 package v1
 
 // cdKey is used for associating a CronJobDefaulter with a context.Context
-_#cdKey: {
-}
+_#cdKey: {}

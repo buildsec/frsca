@@ -35,5 +35,4 @@ package v1
 	address?: null | string @go(Address,*string)
 }
 
-_#isGroupAllowed: {
-}
+_#isGroupAllowed: {}

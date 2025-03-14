@@ -54,10 +54,11 @@ import (
 #CustomResource: _
 
 #KubernetesResource: {
-	replicas?:    null | int32        @go(Replicas,*int32)
-	serviceType?: corev1.#ServiceType @go(ServiceType)
-	servicePort?: null | int32        @go(ServicePort,*int32)
-	spec?:        duckv1.#WithPodSpec @go(WithPodSpec)
+	replicas?:                 null | int32        @go(Replicas,*int32)
+	serviceType?:              corev1.#ServiceType @go(ServiceType)
+	servicePort?:              null | int32        @go(ServicePort,*int32)
+	serviceLoadBalancerClass?: null | string       @go(ServiceLoadBalancerClass,*string)
+	spec?:                     duckv1.#WithPodSpec @go(WithPodSpec)
 }
 
 // EventListenerTrigger represents a connection between TriggerBinding, Params,

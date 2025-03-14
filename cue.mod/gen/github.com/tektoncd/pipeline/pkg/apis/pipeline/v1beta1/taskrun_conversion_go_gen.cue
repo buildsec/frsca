@@ -6,3 +6,4 @@ package v1beta1
 
 _#cloudEventsAnnotationKey:     "tekton.dev/v1beta1CloudEvents"
 _#resourcesResultAnnotationKey: "tekton.dev/v1beta1ResourcesResult"
+_#resourcesStatusAnnotationKey: "tekton.dev/v1beta1ResourcesStatus"

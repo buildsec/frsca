@@ -10,12 +10,16 @@ _#tracingEnabledKey: "enabled"
 // tracingEndpintKey is the configmap key for tracing api endpoint
 _#tracingEndpointKey: "endpoint"
 
+// tracingCredentialsSecretKey is the name of the secret which contains credentials for tracing endpoint
+_#tracingCredentialsSecretKey: "credentialsSecret"
+
 // DefaultEndpoint is the default destination for sending traces
 #DefaultEndpoint: "http://jaeger-collector.jaeger.svc.cluster.local:14268/api/traces"
 
 // Tracing holds the configurations for tracing
 // +k8s:deepcopy-gen=true
 #Tracing: {
-	Enabled:  bool
-	Endpoint: string
+	Enabled:           bool
+	Endpoint:          string
+	CredentialsSecret: string
 }

@@ -61,6 +61,15 @@ import (
 	// according to https://www.rfc-editor.org/rfc/rfc7468.
 	// +optional
 	sinkCACerts?: null | string @go(SinkCACerts,*string)
+
+	// SinkAudience is the OIDC audience of the sink.
+	// +optional
+	sinkAudience?: null | string @go(SinkAudience,*string)
+
+	// Auth defines the attributes that provide the generated service account
+	// name in the resource status.
+	// +optional
+	auth?: null | #AuthStatus @go(Auth,*AuthStatus)
 }
 
 // CloudEventAttributes specifies the attributes that a Source

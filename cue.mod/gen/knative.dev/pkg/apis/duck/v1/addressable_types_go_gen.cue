@@ -25,6 +25,10 @@ import (
 	// according to https://www.rfc-editor.org/rfc/rfc7468.
 	// +optional
 	CACerts?: null | string @go(,*string)
+
+	// Audience is the OIDC audience for this address.
+	// +optional
+	audience?: null | string @go(Audience,*string)
 }
 
 // AddressableType is a skeleton type wrapping Addressable in the manner we expect

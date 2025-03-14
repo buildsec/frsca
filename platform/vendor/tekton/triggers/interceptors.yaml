@@ -22,7 +22,7 @@ metadata:
     app.kubernetes.io/component: interceptors
     app.kubernetes.io/instance: default
     app.kubernetes.io/part-of: tekton-triggers
-    triggers.tekton.dev/release: "v0.28.0"
+    triggers.tekton.dev/release: "v0.31.0"
 # The data is populated at install time.
 
 ---
@@ -49,10 +49,10 @@ metadata:
     app.kubernetes.io/name: core-interceptors
     app.kubernetes.io/component: interceptors
     app.kubernetes.io/instance: default
-    app.kubernetes.io/version: "v0.28.0"
+    app.kubernetes.io/version: "v0.31.0"
     app.kubernetes.io/part-of: tekton-triggers
     # tekton.dev/release value replaced with inputs.params.versionTag in triggers/tekton/publish.yaml
-    triggers.tekton.dev/release: "v0.28.0"
+    triggers.tekton.dev/release: "v0.31.0"
 spec:
   replicas: 1
   selector:
@@ -67,17 +67,17 @@ spec:
         app.kubernetes.io/name: core-interceptors
         app.kubernetes.io/component: interceptors
         app.kubernetes.io/instance: default
-        app.kubernetes.io/version: "v0.28.0"
+        app.kubernetes.io/version: "v0.31.0"
         app.kubernetes.io/part-of: tekton-triggers
         app: tekton-triggers-core-interceptors
-        triggers.tekton.dev/release: "v0.28.0"
+        triggers.tekton.dev/release: "v0.31.0"
         # version value replaced with inputs.params.versionTag in triggers/tekton/publish.yaml
-        version: "v0.28.0"
+        version: "v0.31.0"
     spec:
       serviceAccountName: tekton-triggers-core-interceptors
       containers:
         - name: tekton-triggers-core-interceptors
-          image: "gcr.io/tekton-releases/github.com/tektoncd/triggers/cmd/interceptors:v0.28.0@sha256:6e664b0b03956790ccf3ab71c8732f84631c9fa727e0165330df08def5dec997"
+          image: "ghcr.io/tektoncd/triggers/interceptors-3176d6a3f314c3655b30bfd36e421dd5:v0.31.0@sha256:7662d66b3b471fce5d7510592c744d87701a3c5c424d50b22c4f45146e0aa10d"
           ports:
             - containerPort: 8443
           args: ["-logtostderr", "-stderrthreshold", "INFO"]
@@ -107,6 +107,7 @@ spec:
             timeoutSeconds: 5
           securityContext:
             allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
             # User 65532 is the distroless nonroot user ID
             runAsUser: 65532
             runAsGroup: 65532
@@ -124,11 +125,11 @@ metadata:
     app.kubernetes.io/name: tekton-triggers-core-interceptors
     app.kubernetes.io/component: interceptors
     app.kubernetes.io/instance: default
-    app.kubernetes.io/version: "v0.28.0"
+    app.kubernetes.io/version: "v0.31.0"
     app.kubernetes.io/part-of: tekton-triggers
-    triggers.tekton.dev/release: "v0.28.0"
+    triggers.tekton.dev/release: "v0.31.0"
     app: tekton-triggers-core-interceptors
-    version: "v0.28.0"
+    version: "v0.31.0"
   name: tekton-triggers-core-interceptors
   namespace: tekton-pipelines
 spec:

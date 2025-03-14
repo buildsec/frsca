@@ -22,9 +22,6 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 #TriggerTemplateStatus: {}
 
 // TriggerTemplate takes parameters and uses them to create CRDs
-//
-// +genclient
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +k8s:openapi-gen=true
 #TriggerTemplate: {
 	metav1.#TypeMeta

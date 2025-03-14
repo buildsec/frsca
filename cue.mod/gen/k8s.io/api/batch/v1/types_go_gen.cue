@@ -118,6 +118,7 @@ _#labelPrefix: "batch.kubernetes.io/"
 // This is an action which might be taken on a pod failure - mark the
 // Job's index as failed to avoid restarts within this index. This action
 // can only be used when backoffLimitPerIndex is set.
+// This value is beta-level.
 #PodFailurePolicyActionFailIndex: #PodFailurePolicyAction & "FailIndex"
 
 // This is an action which might be taken on a pod failure - the counter towards
@@ -216,8 +217,8 @@ _#labelPrefix: "batch.kubernetes.io/"
 	//   running pods are terminated.
 	// - FailIndex: indicates that the pod's index is marked as Failed and will
 	//   not be restarted.
-	//   This value is alpha-level. It can be used when the
-	//   `JobBackoffLimitPerIndex` feature gate is enabled (disabled by default).
+	//   This value is beta-level. It can be used when the
+	//   `JobBackoffLimitPerIndex` feature gate is enabled (enabled by default).
 	// - Ignore: indicates that the counter towards the .backoffLimit is not
 	//   incremented and a replacement pod is created.
 	// - Count: indicates that the pod is handled in the default way - the
@@ -300,8 +301,8 @@ _#labelPrefix: "batch.kubernetes.io/"
 	// batch.kubernetes.io/job-index-failure-count annotation. It can only
 	// be set when Job's completionMode=Indexed, and the Pod's restart
 	// policy is Never. The field is immutable.
-	// This field is alpha-level. It can be used when the `JobBackoffLimitPerIndex`
-	// feature gate is enabled (disabled by default).
+	// This field is beta-level. It can be used when the `JobBackoffLimitPerIndex`
+	// feature gate is enabled (enabled by default).
 	// +optional
 	backoffLimitPerIndex?: null | int32 @go(BackoffLimitPerIndex,*int32) @protobuf(12,varint,opt)
 
@@ -313,8 +314,8 @@ _#labelPrefix: "batch.kubernetes.io/"
 	// It can only be specified when backoffLimitPerIndex is set.
 	// It can be null or up to completions. It is required and must be
 	// less than or equal to 10^4 when is completions greater than 10^5.
-	// This field is alpha-level. It can be used when the `JobBackoffLimitPerIndex`
-	// feature gate is enabled (disabled by default).
+	// This field is beta-level. It can be used when the `JobBackoffLimitPerIndex`
+	// feature gate is enabled (enabled by default).
 	// +optional
 	maxFailedIndexes?: null | int32 @go(MaxFailedIndexes,*int32) @protobuf(13,varint,opt)
 
@@ -397,7 +398,8 @@ _#labelPrefix: "batch.kubernetes.io/"
 	//
 	// When using podFailurePolicy, Failed is the the only allowed value.
 	// TerminatingOrFailed and Failed are allowed values when podFailurePolicy is not in use.
-	// This is an alpha field. Enable JobPodReplacementPolicy to be able to use this field.
+	// This is an beta field. To use this, enable the JobPodReplacementPolicy feature toggle.
+	// This is on by default.
 	// +optional
 	podReplacementPolicy?: null | #PodReplacementPolicy @go(PodReplacementPolicy,*PodReplacementPolicy) @protobuf(14,bytes,opt,casttype=podReplacementPolicy)
 }
@@ -446,8 +448,8 @@ _#labelPrefix: "batch.kubernetes.io/"
 	// The number of pods which are terminating (in phase Pending or Running
 	// and have a deletionTimestamp).
 	//
-	// This field is alpha-level. The job controller populates the field when
-	// the feature gate JobPodReplacementPolicy is enabled (disabled by default).
+	// This field is beta-level. The job controller populates the field when
+	// the feature gate JobPodReplacementPolicy is enabled (enabled by default).
 	// +optional
 	terminating?: null | int32 @go(Terminating,*int32) @protobuf(11,varint,opt)
 
@@ -469,8 +471,8 @@ _#labelPrefix: "batch.kubernetes.io/"
 	// last element of the series, separated by a hyphen.
 	// For example, if the failed indexes are 1, 3, 4, 5 and 7, they are
 	// represented as "1,3-5,7".
-	// This field is alpha-level. It can be used when the `JobBackoffLimitPerIndex`
-	// feature gate is enabled (disabled by default).
+	// This field is beta-level. It can be used when the `JobBackoffLimitPerIndex`
+	// feature gate is enabled (enabled by default).
 	// +optional
 	failedIndexes?: null | string @go(FailedIndexes,*string) @protobuf(10,bytes,opt)
 
@@ -492,9 +494,6 @@ _#labelPrefix: "batch.kubernetes.io/"
 	uncountedTerminatedPods?: null | #UncountedTerminatedPods @go(UncountedTerminatedPods,*UncountedTerminatedPods) @protobuf(8,bytes,opt)
 
 	// The number of pods which have a Ready condition.
-	//
-	// This field is beta-level. The job controller populates the field when
-	// the feature gate JobReadyPods is enabled (enabled by default).
 	// +optional
 	ready?: null | int32 @go(Ready,*int32) @protobuf(9,varint,opt)
 }
@@ -532,6 +531,27 @@ _#labelPrefix: "batch.kubernetes.io/"
 
 // FailureTarget means the job is about to fail its execution.
 #JobFailureTarget: #JobConditionType & "FailureTarget"
+
+// JobReasonPodFailurePolicy reason indicates a job failure condition is added due to
+// a failed pod matching a pod failure policy rule
+// https://kep.k8s.io/3329
+// This is currently a beta field.
+#JobReasonPodFailurePolicy: "PodFailurePolicy"
+
+// JobReasonBackOffLimitExceeded reason indicates that pods within a job have failed a number of
+// times higher than backOffLimit times.
+#JobReasonBackoffLimitExceeded: "BackoffLimitExceeded"
+
+// JobReasponDeadlineExceeded means job duration is past ActiveDeadline
+#JobReasonDeadlineExceeded: "DeadlineExceeded"
+
+// JobReasonMaxFailedIndexesExceeded indicates that an indexed of a job failed
+// This const is used in beta-level feature: https://kep.k8s.io/3850.
+#JobReasonMaxFailedIndexesExceeded: "MaxFailedIndexesExceeded"
+
+// JobReasonFailedIndexes means Job has failed indexes.
+// This const is used in beta-level feature: https://kep.k8s.io/3850.
+#JobReasonFailedIndexes: "FailedIndexes"
 
 // JobCondition describes current state of a job.
 #JobCondition: {

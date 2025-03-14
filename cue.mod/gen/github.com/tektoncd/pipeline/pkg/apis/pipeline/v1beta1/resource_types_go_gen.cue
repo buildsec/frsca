@@ -33,7 +33,19 @@ import (
 // additional metatdata should be provided for it.
 //
 // Deprecated: Unused, preserved only for backwards compatibility
-#PipelineResourceType: string
+#PipelineResourceType: string // #enumPipelineResourceType
+
+#enumPipelineResourceType:
+	#PipelineResourceTypeGit |
+	#PipelineResourceTypeStorage
+
+// PipelineResourceTypeGit indicates that this source is a GitHub repo.
+// Deprecated: Unused, preserved only for backwards compatibility
+#PipelineResourceTypeGit: string & "git"
+
+// PipelineResourceTypeStorage indicates that this source is a storage blob resource.
+// Deprecated: Unused, preserved only for backwards compatibility
+#PipelineResourceTypeStorage: string & "storage"
 
 // PipelineDeclaredResource is used by a Pipeline to declare the types of the
 // PipelineResources that it will required to run and names which can be used to

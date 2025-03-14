@@ -4,7 +4,10 @@
 
 package config
 
-import "github.com/tektoncd/pipeline/pkg/apis/pipeline/pod"
+import (
+	"github.com/tektoncd/pipeline/pkg/apis/pipeline/pod"
+	corev1 "k8s.io/api/core/v1"
+)
 
 // DefaultTimeoutMinutes is used when no timeout is specified.
 #DefaultTimeoutMinutes: 60
@@ -25,17 +28,27 @@ import "github.com/tektoncd/pipeline/pkg/apis/pipeline/pod"
 #DefaultMaxMatrixCombinationsCount: 256
 
 // DefaultResolverTypeValue is used when no default resolver type is specified
-#DefaultResolverTypeValue:              ""
-_#defaultTimeoutMinutesKey:             "default-timeout-minutes"
-_#defaultServiceAccountKey:             "default-service-account"
-_#defaultManagedByLabelValueKey:        "default-managed-by-label-value"
-_#defaultPodTemplateKey:                "default-pod-template"
-_#defaultAAPodTemplateKey:              "default-affinity-assistant-pod-template"
-_#defaultCloudEventsSinkKey:            "default-cloud-events-sink"
-_#defaultTaskRunWorkspaceBinding:       "default-task-run-workspace-binding"
-_#defaultMaxMatrixCombinationsCountKey: "default-max-matrix-combinations-count"
-_#defaultForbiddenEnv:                  "default-forbidden-env"
-_#defaultResolverTypeKey:               "default-resolver-type"
+#DefaultResolverTypeValue: ""
+
+// default resource requirements, will be applied to all the containers, which has empty resource requirements
+#ResourceRequirementDefaultContainerKey: "default"
+#DefaultImagePullBackOffTimeout:         int & 0
+
+// Default maximum resolution timeout used by the resolution controller before timing out when exceeded
+#DefaultMaximumResolutionTimeout:          int & 60000000000
+_#defaultTimeoutMinutesKey:                "default-timeout-minutes"
+_#defaultServiceAccountKey:                "default-service-account"
+_#defaultManagedByLabelValueKey:           "default-managed-by-label-value"
+_#defaultPodTemplateKey:                   "default-pod-template"
+_#defaultAAPodTemplateKey:                 "default-affinity-assistant-pod-template"
+_#defaultCloudEventsSinkKey:               "default-cloud-events-sink"
+_#defaultTaskRunWorkspaceBinding:          "default-task-run-workspace-binding"
+_#defaultMaxMatrixCombinationsCountKey:    "default-max-matrix-combinations-count"
+_#defaultForbiddenEnv:                     "default-forbidden-env"
+_#defaultResolverTypeKey:                  "default-resolver-type"
+_#defaultContainerResourceRequirementsKey: "default-container-resource-requirements"
+_#defaultImagePullBackOffTimeout:          "default-imagepullbackoff-timeout"
+_#defaultMaximumResolutionTimeout:         "default-maximum-resolution-timeout"
 
 // Defaults holds the default configurations
 // +k8s:deepcopy-gen=true
@@ -50,4 +63,7 @@ _#defaultResolverTypeKey:               "default-resolver-type"
 	DefaultMaxMatrixCombinationsCount: int
 	DefaultForbiddenEnv: [...string] @go(,[]string)
 	DefaultResolverType: string
+	DefaultContainerResourceRequirements: {[string]: corev1.#ResourceRequirements} @go(,map[string]corev1.ResourceRequirements)
+	DefaultImagePullBackOffTimeout:  int @go(,time.Duration)
+	DefaultMaximumResolutionTimeout: int @go(,time.Duration)
 }

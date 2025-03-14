@@ -5,6 +5,7 @@
 package v1beta1
 
 #TaskDeprecationsAnnotationKey: "tekton.dev/v1beta1.task-deprecations"
+_#resourcesAnnotationKey:       "tekton.dev/v1beta1Resources"
 
 // taskDeprecation contains deprecated fields of a Task
 // +k8s:openapi-gen=false

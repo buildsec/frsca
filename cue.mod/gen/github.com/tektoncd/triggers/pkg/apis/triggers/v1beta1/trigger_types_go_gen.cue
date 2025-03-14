@@ -141,44 +141,6 @@ import (
 	header?: [...v1beta1.#Param] @go(Header,[]v1beta1.Param)
 }
 
-// BitbucketInterceptor provides a webhook to intercept and pre-process events
-#BitbucketInterceptor: {
-	secretRef?: null | #SecretRef @go(SecretRef,*SecretRef)
-
-	// +listType=atomic
-	eventTypes?: [...string] @go(EventTypes,[]string)
-}
-
-// GitHubInterceptor provides a webhook to intercept and pre-process events
-#GitHubInterceptor: {
-	secretRef?: null | #SecretRef @go(SecretRef,*SecretRef)
-
-	// +listType=atomic
-	eventTypes?: [...string] @go(EventTypes,[]string)
-}
-
-// GitLabInterceptor provides a webhook to intercept and pre-process events
-#GitLabInterceptor: {
-	secretRef?: null | #SecretRef @go(SecretRef,*SecretRef)
-
-	// +listType=atomic
-	eventTypes?: [...string] @go(EventTypes,[]string)
-}
-
-// CELInterceptor provides a webhook to intercept and pre-process events
-#CELInterceptor: {
-	filter?: string @go(Filter)
-
-	// +listType=atomic
-	overlays?: [...#CELOverlay] @go(Overlays,[]CELOverlay)
-}
-
-// CELOverlay provides a way to modify the request body using CEL expressions
-#CELOverlay: {
-	key?:        string @go(Key)
-	expression?: string @go(Expression)
-}
-
 // TriggerList contains a list of Triggers.
 // We don't use this but it's required for certain codegen features.
 #TriggerList: {

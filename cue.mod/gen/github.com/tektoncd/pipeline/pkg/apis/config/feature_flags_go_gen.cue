@@ -4,14 +4,23 @@
 
 package config
 
-// StableAPIFields is the value used for "enable-api-fields" when only stable APIs should be usable.
+// StableAPIFields is the value used for API-driven features of stable stability level.
 #StableAPIFields: "stable"
 
-// AlphaAPIFields is the value used for "enable-api-fields" when alpha APIs should be usable as well.
+// AlphaAPIFields is the value used for API-driven features of alpha stability level.
 #AlphaAPIFields: "alpha"
 
-// BetaAPIFields is the value used for "enable-api-fields" when beta APIs should be usable as well.
+// BetaAPIFields is the value used for API-driven features of beta stability level.
 #BetaAPIFields: "beta"
+
+// Features of "alpha" stability level are disabled by default
+#DefaultAlphaFeatureEnabled: false
+
+// Features of "beta" stability level are disabled by default
+#DefaultBetaFeatureEnabled: false
+
+// Features of "stable" stability level are enabled by default
+#DefaultStableFeatureEnabled: true
 
 // FailNoMatchPolicy is the value used for "trusted-resources-verification-no-match-policy" to fail TaskRun or PipelineRun
 // when no matching policies are found
@@ -55,6 +64,9 @@ package config
 // DefaultAwaitSidecarReadiness is the default value for "await-sidecar-readiness".
 #DefaultAwaitSidecarReadiness: true
 
+// DefaultDisableInlineSpec is the default value of "disable-inline-spec"
+#DefaultDisableInlineSpec: ""
+
 // DefaultRequireGitSSHSecretKnownHosts is the default value for "require-git-ssh-secret-known-hosts".
 #DefaultRequireGitSSHSecretKnownHosts: false
 
@@ -92,48 +104,100 @@ package config
 #DefaultSetSecurityContext: false
 
 // DefaultCoschedule is the default value for coschedule
-#DefaultCoschedule:                    "workspaces"
+#DefaultCoschedule: "workspaces"
+
+// KeepPodOnCancel is the flag used to enable cancelling a pod using the entrypoint, and keep pod on cancel
+#KeepPodOnCancel: "keep-pod-on-cancel"
+
+// EnableCELInWhenExpression is the flag to enabled CEL in WhenExpression
+#EnableCELInWhenExpression: "enable-cel-in-whenexpression"
+
+// EnableStepActions is the flag to enable the use of StepActions in Steps
+#EnableStepActions: "enable-step-actions"
+
+// EnableArtifacts is the flag to enable the use of Artifacts in Steps
+#EnableArtifacts: "enable-artifacts"
+
+// EnableParamEnum is the flag to enabled enum in params
+#EnableParamEnum: "enable-param-enum"
+
+// EnableConciseResolverSyntax is the flag to enable concise resolver syntax
+#EnableConciseResolverSyntax: "enable-concise-resolver-syntax"
+
+// EnableKubernetesSidecar is the flag to enable kubernetes sidecar support
+#EnableKubernetesSidecar: "enable-kubernetes-sidecar"
+
+// DefaultEnableKubernetesSidecar is the default value for EnableKubernetesSidecar
+#DefaultEnableKubernetesSidecar: false
+
+// DisableInlineSpec is the flag to disable embedded spec
+// in Taskrun or Pipelinerun
+#DisableInlineSpec:                    "disable-inline-spec"
 _#disableAffinityAssistantKey:         "disable-affinity-assistant"
 _#disableCredsInitKey:                 "disable-creds-init"
 _#runningInEnvWithInjectedSidecarsKey: "running-in-environment-with-injected-sidecars"
 _#awaitSidecarReadinessKey:            "await-sidecar-readiness"
 _#requireGitSSHSecretKnownHostsKey:    "require-git-ssh-secret-known-hosts"
-_#enableTektonOCIBundles:              "enable-tekton-oci-bundles"
-_#enableAPIFields:                     "enable-api-fields"
-_#sendCloudEventsForRuns:              "send-cloudevents-for-runs"
-_#enforceNonfalsifiability:            "enforce-nonfalsifiability"
-_#verificationNoMatchPolicy:           "trusted-resources-verification-no-match-policy"
-_#enableProvenanceInStatus:            "enable-provenance-in-status"
-_#resultExtractionMethod:              "results-from"
-_#maxResultSize:                       "max-result-size"
-_#setSecurityContextKey:               "set-security-context"
-_#coscheduleKey:                       "coschedule"
+
+// enableTektonOCIBundles              = "enable-tekton-oci-bundles"
+_#enableAPIFields:           "enable-api-fields"
+_#sendCloudEventsForRuns:    "send-cloudevents-for-runs"
+_#enforceNonfalsifiability:  "enforce-nonfalsifiability"
+_#verificationNoMatchPolicy: "trusted-resources-verification-no-match-policy"
+_#enableProvenanceInStatus:  "enable-provenance-in-status"
+_#resultExtractionMethod:    "results-from"
+_#maxResultSize:             "max-result-size"
+_#setSecurityContextKey:     "set-security-context"
+_#coscheduleKey:             "coschedule"
 
 // FeatureFlags holds the features configurations
 // +k8s:deepcopy-gen=true
-//
-//nolint:musttag
 #FeatureFlags: {
 	DisableAffinityAssistant:         bool
 	DisableCredsInit:                 bool
 	RunningInEnvWithInjectedSidecars: bool
 	RequireGitSSHSecretKnownHosts:    bool
-	EnableTektonOCIBundles:           bool
-	ScopeWhenExpressionsToTask:       bool
-	EnableAPIFields:                  string
-	SendCloudEventsForRuns:           bool
-	AwaitSidecarReadiness:            bool
-	EnforceNonfalsifiability:         string
+
+	// EnableTektonOCIBundles           bool // Deprecated: this is now ignored
+	// ScopeWhenExpressionsToTask       bool // Deprecated: this is now ignored
+	EnableAPIFields:          string
+	SendCloudEventsForRuns:   bool
+	AwaitSidecarReadiness:    bool
+	EnforceNonfalsifiability: string
+	EnableKeepPodOnCancel:    bool
 
 	// VerificationNoMatchPolicy is the feature flag for "trusted-resources-verification-no-match-policy"
 	// VerificationNoMatchPolicy can be set to "ignore", "warn" and "fail" values.
 	// ignore: skip trusted resources verification when no matching verification policies found
 	// warn: skip trusted resources verification when no matching verification policies found and log a warning
 	// fail: fail the taskrun or pipelines run if no matching verification policies found
-	VerificationNoMatchPolicy: string
-	EnableProvenanceInStatus:  bool
-	ResultExtractionMethod:    string
-	MaxResultSize:             int
-	SetSecurityContext:        bool
-	Coschedule:                string
+	VerificationNoMatchPolicy:   string
+	EnableProvenanceInStatus:    bool
+	ResultExtractionMethod:      string
+	MaxResultSize:               int
+	SetSecurityContext:          bool
+	Coschedule:                  string
+	EnableCELInWhenExpression:   bool
+	EnableStepActions:           bool
+	EnableParamEnum:             bool
+	EnableArtifacts:             bool
+	DisableInlineSpec:           string
+	EnableConciseResolverSyntax: bool
+	EnableKubernetesSidecar:     bool
+}
+
+#PerFeatureFlag: {
+	// Name of the feature flag
+	Name: string
+
+	// Stability level of the feature, one of StableAPIFields, BetaAPIFields or AlphaAPIFields
+	Stability: string
+
+	// Enabled is whether the feature is turned on
+	Enabled: bool
+
+	// Deprecated indicates whether the feature is deprecated
+	// +optional
+	//nolint:gocritic
+	Deprecated?: bool
 }

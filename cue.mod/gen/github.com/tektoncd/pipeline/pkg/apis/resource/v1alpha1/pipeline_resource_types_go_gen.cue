@@ -12,7 +12,24 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 // additional metatdata should be provided for it.
 //
 // Deprecated: Unused, preserved only for backwards compatibility
-#PipelineResourceType: string
+#PipelineResourceType: string // #enumPipelineResourceType
+
+#enumPipelineResourceType:
+	#PipelineResourceTypeGit |
+	#PipelineResourceTypeStorage |
+	#PipelineResourceTypeGCS
+
+// PipelineResourceTypeGit indicates that this source is a GitHub repo.
+// Deprecated: Unused, preserved only for backwards compatibility
+#PipelineResourceTypeGit: string & "git"
+
+// PipelineResourceTypeStorage indicates that this source is a storage blob resource.
+// Deprecated: Unused, preserved only for backwards compatibility
+#PipelineResourceTypeStorage: string & "storage"
+
+// PipelineResourceTypeGCS is the subtype for the GCSResources, which is backed by a GCS blob/directory.
+// Deprecated: Unused, preserved only for backwards compatibility
+#PipelineResourceTypeGCS: string & "gcs"
 
 // PipelineResource describes a resource that is an input to or output from a
 // Task.

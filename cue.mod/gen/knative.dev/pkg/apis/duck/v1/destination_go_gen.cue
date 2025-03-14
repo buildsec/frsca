@@ -22,4 +22,12 @@ import "knative.dev/pkg/apis"
 	// by the Addressable target, if any.
 	// +optional
 	CACerts?: null | string @go(,*string)
+
+	// Audience is the OIDC audience.
+	// This need only be set, if the target is not an Addressable
+	// and thus the Audience can't be received from the Addressable itself.
+	// In case the Addressable specifies an Audience too, the Destinations
+	// Audience takes preference.
+	// +optional
+	audience?: null | string @go(Audience,*string)
 }

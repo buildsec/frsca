@@ -12,6 +12,10 @@ _#metricsTaskrunLevelKey: "metrics.taskrun.level"
 // for pipelinerun
 _#metricsPipelinerunLevelKey: "metrics.pipelinerun.level"
 
+// metricsRunningPipelinerunLevelKey determines to what level to aggregate metrics
+// for running pipelineruns
+_#metricsRunningPipelinerunLevelKey: "metrics.running-pipelinerun.level"
+
 // metricsDurationTaskrunType determines what type of
 // metrics to use for aggregating duration for taskrun
 _#metricsDurationTaskrunType: "metrics.taskrun.duration-type"
@@ -19,6 +23,12 @@ _#metricsDurationTaskrunType: "metrics.taskrun.duration-type"
 // metricsDurationPipelinerunType determines what type of
 // metrics to use for aggregating duration for pipelinerun
 _#metricsDurationPipelinerunType: "metrics.pipelinerun.duration-type"
+
+// countWithReasonKey sets if the reason label should be included on count metrics
+_#countWithReasonKey: "metrics.count.enable-reason"
+
+// throttledWithNamespaceKey sets if the namespace label should be included on the taskrun throttled metrics
+_#throttledWithNamespaceKey: "metrics.taskrun.throttle.enable-namespace"
 
 // DefaultTaskrunLevel determines to what level to aggregate metrics
 // when it isn't specified in configmap
@@ -37,6 +47,10 @@ _#metricsDurationPipelinerunType: "metrics.pipelinerun.duration-type"
 // DefaultPipelinerunLevel determines to what level to aggregate metrics
 // when it isn't specified in configmap
 #DefaultPipelinerunLevel: "pipeline"
+
+// DefaultRunningPipelinerunLevel determines to what level to aggregate metrics
+// when it isn't specified in configmap
+#DefaultRunningPipelinerunLevel: ""
 
 // PipelinerunLevelAtPipelinerun specify that aggregation will be done at
 // pipelinerun level
@@ -81,6 +95,9 @@ _#metricsDurationPipelinerunType: "metrics.pipelinerun.duration-type"
 #Metrics: {
 	TaskrunLevel:            string
 	PipelinerunLevel:        string
+	RunningPipelinerunLevel: string
 	DurationTaskrunType:     string
 	DurationPipelinerunType: string
+	CountWithReason:         bool
+	ThrottleWithNamespace:   bool
 }

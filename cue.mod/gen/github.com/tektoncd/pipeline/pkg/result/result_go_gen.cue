@@ -13,6 +13,15 @@ package result
 // UnknownResultType default unknown result type value
 #UnknownResultType: 10
 
+// StepResultType default step result value
+#StepResultType: #ResultType & 4
+
+// StepArtifactsResultType default step artifacts result value
+#StepArtifactsResultType: #ResultType & 5
+
+// TaskRunArtifactsResultType default taskRun artifacts result value
+#TaskRunArtifactsResultType: #ResultType & 6
+
 // RunResult is used to write key/value pairs to TaskRun pod termination messages.
 // The key/value pairs may come from the entrypoint binary, or represent a TaskRunResult.
 // If they represent a TaskRunResult, the key is the name of the result and the value is the
@@ -35,6 +44,14 @@ package result
 #ResultType: _ // #enumResultType
 
 #enumResultType:
-	#TaskRunResultType
+	#TaskRunResultType |
+	#StepResultType |
+	#StepArtifactsResultType |
+	#TaskRunArtifactsResultType
 
-#values_ResultType: TaskRunResultType: #TaskRunResultType
+#values_ResultType: {
+	TaskRunResultType:          #TaskRunResultType
+	StepResultType:             #StepResultType
+	StepArtifactsResultType:    #StepArtifactsResultType
+	TaskRunArtifactsResultType: #TaskRunArtifactsResultType
+}

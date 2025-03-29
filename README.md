@@ -38,9 +38,9 @@ See:
 for more info
 
 FRSCA is also an implementation of the CNCF's
-[Secure Software Factory Reference Architecture](https://github.com/cncf/tag-security/blob/main/supply-chain-security/secure-software-factory/Secure_Software_Factory_Whitepaper.pdf)
+[Secure Software Factory Reference Architecture](https://github.com/cncf/tag-security/blob/main/community/working-groups/supply-chain-security/supply-chain-security-paper/CNCF_SSCP_v1.pdf)
 which is based on the CNCF's
-[Software Supply Chain Best Practices White Paper](https://github.com/cncf/tag-security/blob/main/supply-chain-security/supply-chain-security-paper/CNCF_SSCP_v1.pdf).
+[Software Supply Chain Best Practices White Paper](https://github.com/cncf/tag-security/blob/main/community/working-groups/supply-chain-security/supply-chain-security-paper/CNCF_SSCP_v1.pdf).
 It is also intended to follow [SLSA](https://slsa.dev) requirements closely and
 generate in-toto attesttations for SLSA provenance predicates.
 

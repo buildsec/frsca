@@ -1,15 +1,16 @@
-apiVersion: tekton.dev/v1beta1
+apiVersion: tekton.dev/v1
 kind: Task
 metadata:
   name: kaniko
   labels:
-    app.kubernetes.io/version: "0.6"
+    app.kubernetes.io/version: "0.7"
   annotations:
-    tekton.dev/pipelines.minVersion: "0.17.0"
+    tekton.dev/pipelines.minVersion: "0.43.0"
     tekton.dev/categories: Image Build
     tekton.dev/tags: image-build
     tekton.dev/displayName: "Build and upload container image using Kaniko"
     tekton.dev/platforms: "linux/amd64,linux/arm64,linux/ppc64le"
+    tekton.dev/deprecated: "true"
 spec:
   description: >-
     This Task builds a simple Dockerfile with kaniko and pushes to a registry.
@@ -30,6 +31,9 @@ spec:
     - name: BUILDER_IMAGE
       description: The image on which builds will run (default is v1.5.1)
       default: gcr.io/kaniko-project/executor:v1.5.1@sha256:c6166717f7fe0b7da44908c986137ecfeab21f31ec3992f6e128fff8a94be8a5
+    - name: WRITER_IMAGE
+      description: The image on which the write-url step will run (default is docker.io/library/bash:5.1.4@sha256:c523c636b722339f41b6a431b44588ab2f762c5de5ec3bd7964420ff982fb1d9)
+      default: docker.io/library/bash:5.1.4@sha256:c523c636b722339f41b6a431b44588ab2f762c5de5ec3bd7964420ff982fb1d9
   workspaces:
     - name: source
       description: Holds the context and Dockerfile
@@ -58,8 +62,8 @@ spec:
       securityContext:
         runAsUser: 0
     - name: write-url
-      image: docker.io/library/bash:5.1.4@sha256:c523c636b722339f41b6a431b44588ab2f762c5de5ec3bd7964420ff982fb1d9
+      image: $(params.WRITER_IMAGE)
       script: |
         set -e
         image="$(params.IMAGE)"
-        echo -n "${image}" | tee "$(results.IMAGE_URL.path)"
+        printf "%s" "${image}" | tee "$(results.IMAGE_URL.path)"

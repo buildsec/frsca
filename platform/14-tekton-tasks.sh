@@ -6,7 +6,7 @@ GIT_ROOT=$(git rev-parse --show-toplevel)
 # Setup tekton tasks
 kubectl apply -f "${GIT_ROOT}"/platform/vendor/tekton/catalog/main/task/buildpacks/0.5/buildpacks.yaml
 kubectl apply -f "${GIT_ROOT}"/platform/vendor/tekton/catalog/main/task/buildpacks-phases/0.2/buildpacks-phases.yaml
-kubectl apply -f "${GIT_ROOT}"/platform/vendor/tekton/catalog/main/task/git-clone/0.9/git-clone.yaml
+kubectl apply -f "${GIT_ROOT}"/platform/vendor/tekton/catalog/main/task/git-clone/0.10/git-clone.yaml
 kubectl apply -f "${GIT_ROOT}"/platform/vendor/tekton/catalog/main/task/golang-build/0.3/golang-build.yaml
 kubectl apply -f "${GIT_ROOT}"/platform/vendor/tekton/catalog/main/task/golang-test/0.2/golang-test.yaml
 kubectl apply -f "${GIT_ROOT}"/platform/vendor/tekton/catalog/main/task/jib-gradle/0.4/jib-gradle.yaml

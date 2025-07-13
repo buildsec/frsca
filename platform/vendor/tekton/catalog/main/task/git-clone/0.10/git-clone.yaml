@@ -1,9 +1,9 @@
-apiVersion: tekton.dev/v1beta1
+apiVersion: tekton.dev/v1
 kind: Task
 metadata:
   name: git-clone
   labels:
-    app.kubernetes.io/version: "0.9"
+    app.kubernetes.io/version: "0.10"
   annotations:
     tekton.dev/pipelines.minVersion: "0.38.0"
     tekton.dev/categories: Git
@@ -102,7 +102,7 @@ spec:
     - name: gitInitImage
       description: The image providing the git-init binary that this Task runs.
       type: string
-      default: "gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/git-init:v0.40.2"
+      default: "ghcr.io/tektoncd-catalog/git-clone:v1.1.0"
     - name: userHome
       description: |
         Absolute path to the user's home directory.
@@ -168,6 +168,9 @@ spec:
       securityContext:
         runAsNonRoot: true
         runAsUser: 65532
+      volumeMounts:
+        - name: user-home
+          mountPath: $(params.userHome)
       script: |
         #!/usr/bin/env sh
         set -eu
@@ -240,3 +243,6 @@ spec:
         printf "%s" "${RESULT_COMMITTER_DATE}" > "$(results.committer-date.path)"
         printf "%s" "${RESULT_SHA}" > "$(results.commit.path)"
         printf "%s" "${PARAM_URL}" > "$(results.url.path)"
+  volumes:
+    - name: user-home
+      emptyDir: {}

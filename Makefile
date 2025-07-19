@@ -204,5 +204,4 @@ cue.mod:
 	rm -rf cue.mod/gen
 	cue get go github.com/tektoncd/pipeline/pkg/apis/pipeline/v1beta1
 	cue get go github.com/tektoncd/triggers/pkg/apis/triggers/v1beta1
-	cue get go k8s.io/api/core/v1
-	cue get go k8s.io/api/rbac/v1
+	cue mod tidy

@@ -5,7 +5,6 @@ go 1.24.1
 require (
 	github.com/tektoncd/pipeline v0.68.0
 	github.com/tektoncd/triggers v0.31.0
-	k8s.io/api v0.29.13
 )
 
 require (
@@ -72,6 +71,7 @@ require (
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
+	k8s.io/api v0.29.13 // indirect
 	k8s.io/apiextensions-apiserver v0.29.13 // indirect
 	k8s.io/apimachinery v0.29.13 // indirect
 	k8s.io/client-go v0.29.13 // indirect

@@ -1,8 +1,8 @@
 package frsca
 
 import (
-	k8sCoreV1 "k8s.io/api/core/v1"
-	k8sRbacV1 "k8s.io/api/rbac/v1"
+	k8sCoreV1 "cue.dev/x/k8s.io/api/core/v1"
+	k8sRbacV1 "cue.dev/x/k8s.io/api/rbac/v1"
 	pipelineV1Beta1 "github.com/tektoncd/pipeline/pkg/apis/pipeline/v1beta1"
 	triggersV1Beta1 "github.com/tektoncd/triggers/pkg/apis/triggers/v1beta1"
 )

@@ -7,4 +7,8 @@ deps: {
 		v:       "v0.5.0"
 		default: true
 	}
+	"cue.dev/x/kyverno@v0": {
+		v:       "v0.4.0"
+		default: true
+	}
 }

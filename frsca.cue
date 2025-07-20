@@ -3,6 +3,7 @@ package frsca
 import (
 	k8sCoreV1 "cue.dev/x/k8s.io/api/core/v1"
 	k8sRbacV1 "cue.dev/x/k8s.io/api/rbac/v1"
+  kyvernoV1 "cue.dev/x/kyverno/clusterpolicy/v1"
 	pipelineV1Beta1 "github.com/tektoncd/pipeline/pkg/apis/pipeline/v1beta1"
 	triggersV1Beta1 "github.com/tektoncd/triggers/pkg/apis/triggers/v1beta1"
 )
@@ -103,7 +104,7 @@ frsca: persistentVolumeClaim?: [Name=_]: k8sCoreV1.#PersistentVolumeClaim & {
 	metadata: name: *Name | string
 }
 
-frsca: clusterPolicy?: [Name=_]: {
+frsca: clusterPolicy?: [Name=_]: kyvernoV1.#ClusterPolicy & {
 	apiVersion: "kyverno.io/v1"
 	kind:       "ClusterPolicy"
 	metadata: name: *Name | string

@@ -24,7 +24,7 @@ jobs:
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
       - name: build
-        uses: shalzz/zola-deploy-action@c34a7626cd84c9c90499afeb310070ea838a8d1a  # v0.20.0
+        uses: shalzz/zola-deploy-action@90cd842959b82e0c012601be18ae249d6cdb1669  # v0.21.0
         env:
           BUILD_DIR: docs
           BUILD_ONLY: true

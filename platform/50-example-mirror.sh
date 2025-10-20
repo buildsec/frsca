@@ -7,7 +7,7 @@ C_RED='\033[31m'
 C_RESET_ALL='\033[0m'
 
 gitea_exec() {
-  kubectl exec -i -n gitea gitea-0 -c gitea -- su - git
+  kubectl exec -i -n gitea deploy/gitea -c gitea -- su - git
 }
 gitea_copy_repo() {
 gitea_exec <<EOF
@@ -32,6 +32,8 @@ gitea_exec <<EOF
   fi
   cd "\${tmpdir}"
   git clone "${1}" --mirror .
+  # remove any pull refs
+  git show-ref | cut -d' ' -f2 | grep 'refs/pull' | xargs -r git update-ref -d
   git remote add gitea "https://frsca:demo1234@gitea-http:3000/frsca/${2}.git"
   git push gitea "${3:-main}:${3:-main}" --force
   git push gitea --mirror --force

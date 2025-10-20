@@ -3,7 +3,6 @@ replicaCount: 1
 clusterDomain: cluster.local
 
 image:
-  repository: gitea/gitea
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
   pullPolicy: Always

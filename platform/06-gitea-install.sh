@@ -15,4 +15,4 @@ helm upgrade --install gitea "${GIT_ROOT}/platform/vendor/gitea/chart" \
   --values "${GIT_ROOT}/platform/components/gitea/values.yaml" \
   --namespace gitea --wait
 
-kubectl rollout status -n gitea statefulset/gitea
+kubectl rollout status -n gitea statefulset/gitea-valkey-cluster statefulset/gitea-postgresql-ha-postgresql

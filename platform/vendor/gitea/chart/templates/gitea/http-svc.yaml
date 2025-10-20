@@ -2,19 +2,28 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ include "gitea.fullname" . }}-http
+  namespace: {{ .Values.namespace | default .Release.Namespace }}
   labels:
     {{- include "gitea.labels" . | nindent 4 }}
+    {{- if .Values.service.http.labels }}
+    {{- toYaml .Values.service.http.labels  | nindent 4 }}
+    {{- end }}
   annotations:
     {{- toYaml .Values.service.http.annotations | nindent 4 }}
 spec:
   type: {{ .Values.service.http.type }}
-  {{- if and .Values.service.http.loadBalancerIP (eq .Values.service.http.type "LoadBalancer") }}
+  {{- if eq .Values.service.http.type "LoadBalancer" }}
+  {{- if .Values.service.http.loadBalancerClass }}
+  loadBalancerClass: {{ .Values.service.http.loadBalancerClass }}
+  {{- end }}
+  {{- if and .Values.service.http.loadBalancerIP }}
   loadBalancerIP: {{ .Values.service.http.loadBalancerIP  }}
   {{- end }}
   {{- if .Values.service.http.loadBalancerSourceRanges }}
   loadBalancerSourceRanges:
   {{- range .Values.service.http.loadBalancerSourceRanges }}
     - {{ . }}
+  {{- end }}
   {{- end }}
   {{- end }}
   {{- if .Values.service.http.externalIPs }}

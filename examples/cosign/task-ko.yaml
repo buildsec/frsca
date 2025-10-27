@@ -50,8 +50,8 @@ spec:
         export GIT_HASH="test"
         export GIT_VERSION="test"
         export GOFLAGS="-buildvcs=false"
-        export GOTOOLCHAIN=go1.24.4
-        export GOLANG_VERSION=1.24.4
+        export GOTOOLCHAIN=go1.24.6
+        export GOLANG_VERSION=1.24.6
         KO_IMAGE=$(ko build \
           --base-import-paths \
           "$(params.SOURCE_SUBPATH)")

@@ -322,10 +322,10 @@ production ready yet.</p>
 <h2 id="quickstart">Quickstart</h2>
 <p>To quickly provision a Minikube cluster with FRSCA deployed and run an example
 pipeline run:</p>
-<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#65737e;"># Install and setup minikube (run only if need a local k8s)
-</span><span style="color:#bf616a;">make</span><span> setup-minikube
-</span><span style="color:#bf616a;">make</span><span> setup-frsca
-</span></code></pre>
+<pre data-lang="bash" class="language-bash "><code class="language-bash" data-lang="bash"># Install and setup minikube (run only if need a local k8s)
+make setup-minikube
+make setup-frsca
+</code></pre>
 <p>This will perform the following actions:</p>
 <ol>
 <li>Install and setup minikube, and supporting cli tools, like <code>cosign</code> and <code>jq</code>
@@ -351,8 +351,8 @@ includes:
 <p>Once FRSCA has been installed you can follow the various examples under
 <code>/examples</code>.</p>
 <p>Tearing down the Minikube cluster generated in the quickstart, simply run:</p>
-<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">make</span><span> teardown
-</span></code></pre>
+<pre data-lang="bash" class="language-bash "><code class="language-bash" data-lang="bash">make teardown
+</code></pre>
 <h2 id="going-further">Going further</h2>
 <p>The full documentation is available at <a href="https://buildsec.github.io/frsca/">https://buildsec.github.io/frsca/</a></p>
 <h2 id="community">Community</h2>

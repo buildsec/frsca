@@ -308,70 +308,70 @@ detected, but for information they are listed on the introduction page.</p>
 <h3 id="step-1-start-your-cluster-optional">Step 1: start your cluster (optional)</h3>
 <p>If you do not have a Kubernetes cluster ready to use, this command will
 provision and configure <code>minikube</code>:</p>
-<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">make</span><span> setup-minikube
-</span></code></pre>
+<pre data-lang="bash" class="language-bash "><code class="language-bash" data-lang="bash">make setup-minikube
+</code></pre>
 <h3 id="step-2-setup-frsca">Step 2: setup frsca</h3>
 <p>[Tekton Pipelines] and [Tekton Chains] are the foundations of the secure
 software factory. This example sets up local certificates and local registry.</p>
 <p>The next command will deploy and configure them:</p>
-<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">make</span><span> setup-frsca
-</span></code></pre>
+<pre data-lang="bash" class="language-bash "><code class="language-bash" data-lang="bash">make setup-frsca
+</code></pre>
 <h3 id="step-3-use-local-registry-optional">Step 3: use local registry (optional)</h3>
 <p>The examples use the <a href="https://ttl.sh">ttl.sh</a> registry to upload images by
 default. It is possible to change it to another registry of your choice by
 exporting the <code>$REGISTRY</code> variable.</p>
 <p>You may also use the local registry deployed inside the cluster. This requires
 setting the variable to <code>registry.registry</code>:</p>
-<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#b48ead;">export </span><span style="color:#bf616a;">REGISTRY</span><span>=</span><span style="color:#a3be8c;">registry.registry
-</span></code></pre>
+<pre data-lang="bash" class="language-bash "><code class="language-bash" data-lang="bash">export REGISTRY=registry.registry
+</code></pre>
 <p>Then to access the registry outside of minikube, open a separate terminal and
 run the following command to enable port forwarding:</p>
-<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">make</span><span> registry-proxy
-</span></code></pre>
+<pre data-lang="bash" class="language-bash "><code class="language-bash" data-lang="bash">make registry-proxy
+</code></pre>
 <h3 id="step-4-run-a-new-pipeline">Step 4: run a new pipeline</h3>
 <p>Several pipelines are provided as examples, feel free to choose any of them.</p>
 <p>An installer is provided with each example. They can be executed from the root
 of this repository using the following syntax:</p>
-<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">make</span><span> example-&lt;tutorial-name&gt;
-</span></code></pre>
+<pre data-lang="bash" class="language-bash "><code class="language-bash" data-lang="bash">make example-&lt;tutorial-name&gt;
+</code></pre>
 <p>For instance:</p>
-<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">make</span><span> example-ibm-tutorial
-</span></code></pre>
+<pre data-lang="bash" class="language-bash "><code class="language-bash" data-lang="bash">make example-ibm-tutorial
+</code></pre>
 <p>Follow the progression and wait until the pipeline completes to proceed with the
 next steps. The logs can be displayed with:</p>
-<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">tkn</span><span> pr logs</span><span style="color:#bf616a;"> --last -f
-</span></code></pre>
+<pre data-lang="bash" class="language-bash "><code class="language-bash" data-lang="bash">tkn pr logs --last -f
+</code></pre>
 <h3 id="step-5-validations">Step 5: validations</h3>
 <h4 id="first-some-convenience-exports">First some convenience exports</h4>
 <p>We start by defining some variables to simplify the validation commands:</p>
-<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#b48ead;">export </span><span style="color:#bf616a;">IMAGE_URL</span><span>=$</span><span style="color:#a3be8c;">(</span><span style="color:#bf616a;">tkn</span><span style="color:#a3be8c;"> pr describe</span><span style="color:#bf616a;"> --last -o</span><span style="color:#a3be8c;"> jsonpath=</span><span>&#39;</span><span style="color:#a3be8c;">{..taskResults}</span><span>&#39; | </span><span style="color:#bf616a;">jq -r </span><span>&#39;</span><span style="color:#a3be8c;">.[] | select(.name | match(&quot;IMAGE_URL$&quot;)) | .value</span><span>&#39;</span><span style="color:#a3be8c;">)
-</span><span style="color:#b48ead;">export </span><span style="color:#bf616a;">TASK_RUN</span><span>=$</span><span style="color:#a3be8c;">(</span><span style="color:#bf616a;">tkn</span><span style="color:#a3be8c;"> pr describe</span><span style="color:#bf616a;"> --last -o</span><span style="color:#a3be8c;"> json </span><span>| </span><span style="color:#bf616a;">jq -r </span><span>&#39;</span><span style="color:#a3be8c;">.status.taskRuns | keys[] as $k | {&quot;k&quot;: $k, &quot;v&quot;: .[$k]} | select(.v.status.taskResults[]?.name | match(&quot;IMAGE_URL$&quot;)) | .k</span><span>&#39;</span><span style="color:#a3be8c;">)
-</span></code></pre>
+<pre data-lang="bash" class="language-bash "><code class="language-bash" data-lang="bash">export IMAGE_URL=$(tkn pr describe --last -o jsonpath=&#x27;{..taskResults}&#x27; | jq -r &#x27;.[] | select(.name | match(&quot;IMAGE_URL$&quot;)) | .value&#x27;)
+export TASK_RUN=$(tkn pr describe --last -o json | jq -r &#x27;.status.taskRuns | keys[] as $k | {&quot;k&quot;: $k, &quot;v&quot;: .[$k]} | select(.v.status.taskResults[]?.name | match(&quot;IMAGE_URL$&quot;)) | .k&#x27;)
+</code></pre>
 <p>If you are using the local registry, you will also need to change the registry
 name to the port exposed by the registry proxy:</p>
-<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#b48ead;">export </span><span style="color:#bf616a;">IMAGE_URL</span><span>=&quot;$</span><span style="color:#a3be8c;">(</span><span style="color:#96b5b4;">echo </span><span>&quot;$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">IMAGE_URL</span><span style="color:#a3be8c;">}</span><span>&quot; | </span><span style="color:#bf616a;">sed </span><span>&#39;</span><span style="color:#a3be8c;">s#</span><span>&#39;$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">REGISTRY</span><span style="color:#a3be8c;">}</span><span>&#39;</span><span style="color:#a3be8c;">#127.0.0.1:5000#</span><span>&#39;</span><span style="color:#a3be8c;">)</span><span>&quot;
-</span></code></pre>
+<pre data-lang="bash" class="language-bash "><code class="language-bash" data-lang="bash">export IMAGE_URL=&quot;$(echo &quot;${IMAGE_URL}&quot; | sed &#x27;s#&#x27;${REGISTRY}&#x27;#127.0.0.1:5000#&#x27;)&quot;
+</code></pre>
 <h4 id="ensure-the-task-has-been-signed">Ensure the task has been signed</h4>
-<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">tkn</span><span> tr describe</span><span style="color:#bf616a;"> --last -o</span><span> jsonpath=&#39;</span><span style="color:#a3be8c;">{.metadata.annotations.chains\.tekton\.dev/signed}</span><span>&#39;
-</span><span style="color:#65737e;"># Should output &quot;true&quot;
-</span></code></pre>
+<pre data-lang="bash" class="language-bash "><code class="language-bash" data-lang="bash">tkn tr describe --last -o jsonpath=&#x27;{.metadata.annotations.chains\.tekton\.dev&#x2F;signed}&#x27;
+# Should output &quot;true&quot;
+</code></pre>
 <h4 id="ensure-the-attestation-and-the-signature-were-uploaded-to-oci">Ensure the attestation and the signature were uploaded to OCI</h4>
-<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">crane</span><span> ls &quot;$</span><span style="color:#a3be8c;">(</span><span style="color:#96b5b4;">echo </span><span style="color:#bf616a;">-n </span><span>$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">IMAGE_URL</span><span style="color:#a3be8c;">} </span><span>| </span><span style="color:#bf616a;">sed </span><span>&#39;</span><span style="color:#a3be8c;">s|:[^/]*$||</span><span>&#39;</span><span style="color:#a3be8c;">)</span><span>&quot;
-</span></code></pre>
+<pre data-lang="bash" class="language-bash "><code class="language-bash" data-lang="bash">crane ls &quot;$(echo -n ${IMAGE_URL} | sed &#x27;s|:[^&#x2F;]*$||&#x27;)&quot;
+</code></pre>
 <p>The output should look similar to this:</p>
-<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> crane ls ttl.sh/b4527e3a81ef1b77b96d390163ddaad9/slsapoc
-</span><span style="color:#bf616a;">latest
-</span><span style="color:#bf616a;">sha256-f82fe2b635e304c7d8445c0117a4dbe35dd3c840078a39e21c88073a885c5e0f.att
-</span><span style="color:#bf616a;">sha256-f82fe2b635e304c7d8445c0117a4dbe35dd3c840078a39e21c88073a885c5e0f.sig
-</span></code></pre>
+<pre data-lang="bash" class="language-bash "><code class="language-bash" data-lang="bash">$ crane ls ttl.sh&#x2F;b4527e3a81ef1b77b96d390163ddaad9&#x2F;slsapoc
+latest
+sha256-f82fe2b635e304c7d8445c0117a4dbe35dd3c840078a39e21c88073a885c5e0f.att
+sha256-f82fe2b635e304c7d8445c0117a4dbe35dd3c840078a39e21c88073a885c5e0f.sig
+</code></pre>
 <h4 id="verify-the-image-and-the-attestation">Verify the image and the attestation</h4>
-<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">cosign</span><span> verify</span><span style="color:#bf616a;"> --insecure-ignore-tlog --key</span><span> k8s://tekton-chains/signing-secrets &quot;$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">IMAGE_URL</span><span style="color:#a3be8c;">}</span><span>&quot;
-</span><span style="color:#bf616a;">cosign</span><span> verify-attestation</span><span style="color:#bf616a;"> --insecure-ignore-tlog --type</span><span> slsaprovenance</span><span style="color:#bf616a;"> --key</span><span> k8s://tekton-chains/signing-secrets &quot;$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">IMAGE_URL</span><span style="color:#a3be8c;">}</span><span>&quot;
-</span></code></pre>
+<pre data-lang="bash" class="language-bash "><code class="language-bash" data-lang="bash">cosign verify --insecure-ignore-tlog --key k8s:&#x2F;&#x2F;tekton-chains&#x2F;signing-secrets &quot;${IMAGE_URL}&quot;
+cosign verify-attestation --insecure-ignore-tlog --type slsaprovenance --key k8s:&#x2F;&#x2F;tekton-chains&#x2F;signing-secrets &quot;${IMAGE_URL}&quot;
+</code></pre>
 <p>With Tekton CLI (v0.23.0+):</p>
-<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">tkn</span><span> chain signature &quot;$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">TASK_RUN</span><span style="color:#a3be8c;">}</span><span>&quot;
-</span><span style="color:#bf616a;">tkn</span><span> chain payload &quot;$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">TASK_RUN</span><span style="color:#a3be8c;">}</span><span>&quot;
-</span></code></pre>
+<pre data-lang="bash" class="language-bash "><code class="language-bash" data-lang="bash">tkn chain signature &quot;${TASK_RUN}&quot;
+tkn chain payload &quot;${TASK_RUN}&quot;
+</code></pre>
 
         
         

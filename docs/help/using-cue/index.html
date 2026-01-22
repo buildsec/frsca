@@ -316,21 +316,21 @@ been done in the <code>examples/...</code> directories. In the case of <code>exa
 examples. Of particular note is a comprehension that creates a persistent volume
 claim (PVC) for each pipeline run. A reference to the PVC is added to the
 pipeline run definition by default.</p>
-<pre data-lang="txt" style="background-color:#2b303b;color:#c0c5ce;" class="language-txt "><code class="language-txt" data-lang="txt"><span>// generate a PVC for each pipelineRun
-</span><span>persistentVolumeClaim: {
-</span><span> for pr in pipelineRun {
-</span><span>  &quot;\(pr.metadata.generateName)source-ws-pvc&quot;: spec: {
-</span><span>   accessModes: [&quot;ReadWriteOnce&quot;]
-</span><span>   resources: requests: storage: &quot;500Mi&quot;
-</span><span>  }
-</span><span> }
-</span><span>}
-</span><span>
-</span><span>pipelineRun: [Name=_]: spec: workspaces: [{
-</span><span> name: *&quot;\(Name)ws&quot; | string
-</span><span> persistentVolumeClaim: claimName: &quot;\(Name)source-ws-pvc&quot;
-</span><span>}, ...]
-</span></code></pre>
+<pre data-lang="txt" class="language-txt "><code class="language-txt" data-lang="txt">&#x2F;&#x2F; generate a PVC for each pipelineRun
+persistentVolumeClaim: {
+ for pr in pipelineRun {
+  &quot;\(pr.metadata.generateName)source-ws-pvc&quot;: spec: {
+   accessModes: [&quot;ReadWriteOnce&quot;]
+   resources: requests: storage: &quot;500Mi&quot;
+  }
+ }
+}
+
+pipelineRun: [Name=_]: spec: workspaces: [{
+ name: *&quot;\(Name)ws&quot; | string
+ persistentVolumeClaim: claimName: &quot;\(Name)source-ws-pvc&quot;
+}, ...]
+</code></pre>
 <h2 id="using-cue-tool">Using CUE Tool</h2>
 <p>FRSCA uses the <code>cue cmd</code> support (see <code>cue cmd --help</code> and
 <a href="https://blog.patapon.info/cue-tool/">cue tooling layer</a> for more details) for
@@ -338,11 +338,11 @@ selecting and exporting definitions. This can be seen in <code>frsca_tool.cue</c
 defines commands for exporting things that can be used in conjunction with
 <code>kubectl</code>. An example of its usage can be seen in
 <code>examples/buildpacks/buildpacks.sh</code>.</p>
-<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">pushd</span><span> examples/buildpacks
-</span><span style="color:#bf616a;">cue</span><span> cmd</span><span style="color:#bf616a;"> -t </span><span>&quot;</span><span style="color:#a3be8c;">repository=</span><span>$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">REPOSITORY</span><span style="color:#a3be8c;">}</span><span>&quot; apply | </span><span style="color:#bf616a;">kubectl</span><span> apply</span><span style="color:#bf616a;"> -f</span><span> -
-</span><span style="color:#bf616a;">cue</span><span> cmd</span><span style="color:#bf616a;"> -t </span><span>&quot;</span><span style="color:#a3be8c;">repository=</span><span>$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">REPOSITORY</span><span style="color:#a3be8c;">}</span><span>&quot; create | </span><span style="color:#bf616a;">kubectl</span><span> create</span><span style="color:#bf616a;"> -f</span><span> -
-</span><span style="color:#bf616a;">popd
-</span></code></pre>
+<pre data-lang="bash" class="language-bash "><code class="language-bash" data-lang="bash">pushd examples&#x2F;buildpacks
+cue cmd -t &quot;repository=${REPOSITORY}&quot; apply | kubectl apply -f -
+cue cmd -t &quot;repository=${REPOSITORY}&quot; create | kubectl create -f -
+popd
+</code></pre>
 <p>Here we are using the <code>cue apply ...</code> command to export definitions from
 <code>./examples/buildpacks</code> that can be used with <code>kubectl apply ...</code>. And similarly
 <code>cue create ...</code> exports definitions from <code>./examples/buildpacks</code> that can be

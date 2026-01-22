@@ -305,8 +305,8 @@
 <p>The full requirements table can be found here:</p>
 <p><a href="https://slsa.dev/spec/v0.1/requirements#summary-table">Requirements</a></p>
 <h2 id="sample-pipeline">sample-pipeline</h2>
-<pre data-lang="other" style="background-color:#2b303b;color:#c0c5ce;" class="language-other "><code class="language-other" data-lang="other"><span>frsca/examples/sample-pipeline
-</span></code></pre>
+<pre data-lang="other" class="language-other "><code class="language-other" data-lang="other">frsca&#x2F;examples&#x2F;sample-pipeline
+</code></pre>
 <p>For the purposes of this document, we're going to be comparing SLSA requirements
 to what we are deploying via the sample-pipeline. Please read
 <code>frsca/examples/sample-pipeline/README.md</code> for information on setting up FRSCA
@@ -326,13 +326,13 @@ via Tekton Pipelines.</p>
 <p>Because we're using Tekton Chains in conjunction with Tekton Pipelines,
 provenance is created and available, satisfying the last requirement of SLSA 1.</p>
 <p>To prove, once the pipeline completes:</p>
-<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span>&gt; crane </span><span style="color:#bf616a;">ls </span><span>&quot;$</span><span style="color:#a3be8c;">(</span><span style="color:#96b5b4;">echo </span><span style="color:#bf616a;">-n </span><span>$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">IMAGE_URL</span><span style="color:#a3be8c;">} </span><span>| </span><span style="color:#bf616a;">sed </span><span>&#39;</span><span style="color:#a3be8c;">s|:[^/]*$||</span><span>&#39;</span><span style="color:#a3be8c;">)</span><span>&quot;
-</span><span>
-</span><span style="color:#bf616a;">0066d00de427d12b9a14e56f02f302031d9c40f3
-</span><span style="color:#bf616a;">sha256-e6dc8ea1ff666893462b64d997d496af8e69e905f2eeaf2ab7ec1fd565921d46.att
-</span><span style="color:#bf616a;">sha256-e6dc8ea1ff666893462b64d997d496af8e69e905f2eeaf2ab7ec1fd565921d46.sbom
-</span><span style="color:#bf616a;">sha256-e6dc8ea1ff666893462b64d997d496af8e69e905f2eeaf2ab7ec1fd565921d46.sig
-</span></code></pre>
+<pre data-lang="bash" class="language-bash "><code class="language-bash" data-lang="bash">&gt; crane ls &quot;$(echo -n ${IMAGE_URL} | sed &#x27;s|:[^&#x2F;]*$||&#x27;)&quot;
+
+0066d00de427d12b9a14e56f02f302031d9c40f3
+sha256-e6dc8ea1ff666893462b64d997d496af8e69e905f2eeaf2ab7ec1fd565921d46.att
+sha256-e6dc8ea1ff666893462b64d997d496af8e69e905f2eeaf2ab7ec1fd565921d46.sbom
+sha256-e6dc8ea1ff666893462b64d997d496af8e69e905f2eeaf2ab7ec1fd565921d46.sig
+</code></pre>
 <h1 id="slsa-2-requirements">SLSA 2 Requirements</h1>
 <ol>
 <li>Source -
@@ -362,20 +362,20 @@ PipelineRun.</p>
 </li>
 <li>
 <p>Provenance is not ony available, but it is authenticated.</p>
-<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span>&gt; cosign </span><span style="color:#bf616a;">verify --insecure-ignore-tlog --key</span><span> k8s://tekton-chains/signing-secrets &quot;$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">IMAGE_URL</span><span style="color:#a3be8c;">}</span><span>&quot;
-</span><span>
-</span><span style="color:#bf616a;">Verification</span><span> for ttl.sh/6b1d3c200c0fe4005da60bddc63873ef/example-sample:919eef3dd425318e9a65cb79b00ee323210ef070 --
-</span><span style="color:#bf616a;">The</span><span> following checks were performed on each of these signatures:
-</span><span>  </span><span style="color:#bf616a;">-</span><span> The cosign claims were validated
-</span><span>  </span><span style="color:#bf616a;">-</span><span> The signatures were verified against the specified public key
-</span><span>
-</span><span>&gt; cosign </span><span style="color:#bf616a;">verify-attestation --insecure-ignore-tlog --type</span><span> slsaprovenance</span><span style="color:#bf616a;"> --key</span><span> k8s://tekton-chains/signing-secrets &quot;$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">IMAGE_URL</span><span style="color:#a3be8c;">}</span><span>&quot;
-</span><span>
-</span><span style="color:#bf616a;">Verification</span><span> for ttl.sh/6b1d3c200c0fe4005da60bddc63873ef/example-sample:919eef3dd425318e9a65cb79b00ee323210ef070 --
-</span><span style="color:#bf616a;">The</span><span> following checks were performed on each of these signatures:
-</span><span>  </span><span style="color:#bf616a;">-</span><span> The cosign claims were validated
-</span><span>  </span><span style="color:#bf616a;">-</span><span> The signatures were verified against the specified public key
-</span></code></pre>
+<pre data-lang="bash" class="language-bash "><code class="language-bash" data-lang="bash">&gt; cosign verify --insecure-ignore-tlog --key k8s:&#x2F;&#x2F;tekton-chains&#x2F;signing-secrets &quot;${IMAGE_URL}&quot;
+
+Verification for ttl.sh&#x2F;6b1d3c200c0fe4005da60bddc63873ef&#x2F;example-sample:919eef3dd425318e9a65cb79b00ee323210ef070 --
+The following checks were performed on each of these signatures:
+  - The cosign claims were validated
+  - The signatures were verified against the specified public key
+
+&gt; cosign verify-attestation --insecure-ignore-tlog --type slsaprovenance --key k8s:&#x2F;&#x2F;tekton-chains&#x2F;signing-secrets &quot;${IMAGE_URL}&quot;
+
+Verification for ttl.sh&#x2F;6b1d3c200c0fe4005da60bddc63873ef&#x2F;example-sample:919eef3dd425318e9a65cb79b00ee323210ef070 --
+The following checks were performed on each of these signatures:
+  - The cosign claims were validated
+  - The signatures were verified against the specified public key
+</code></pre>
 </li>
 <li>
 <p>Tekton Chains observes Tekton Pipelines TaskRuns outputting an OCI image and
@@ -416,12 +416,12 @@ has around the source code management platforms leveraged by the end user.</p>
 <li>
 <p>Tasks are executed within a Pod that is specifically tied to that particular
 TaskRun, and when the TaskRun is complete, the Pod is not reused.</p>
-<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">example-sample-pipeline-7mvgr-clone-repo-pod</span><span>             0/1     Completed   0          44h
-</span><span style="color:#bf616a;">example-sample-pipeline-7mvgr-build-and-push-image-pod</span><span>   0/2     Completed   0          44h
-</span><span style="color:#bf616a;">example-sample-pipeline-7mvgr-vulnerability-scan-pod</span><span>     0/1     Completed   0          44h
-</span><span style="color:#bf616a;">example-sample-pipeline-7mvgr-generate-bom-pod</span><span>           0/2     Completed   0          44h
-</span><span style="color:#bf616a;">example-sample-pipeline-7mvgr-deploy-to-cluster-pod</span><span>      0/2     Completed   0          44h
-</span></code></pre>
+<pre data-lang="bash" class="language-bash "><code class="language-bash" data-lang="bash">example-sample-pipeline-7mvgr-clone-repo-pod             0&#x2F;1     Completed   0          44h
+example-sample-pipeline-7mvgr-build-and-push-image-pod   0&#x2F;2     Completed   0          44h
+example-sample-pipeline-7mvgr-vulnerability-scan-pod     0&#x2F;1     Completed   0          44h
+example-sample-pipeline-7mvgr-generate-bom-pod           0&#x2F;2     Completed   0          44h
+example-sample-pipeline-7mvgr-deploy-to-cluster-pod      0&#x2F;2     Completed   0          44h
+</code></pre>
 </li>
 <li>
 <p>In the same vein, the build process within a PipelineRun is completely

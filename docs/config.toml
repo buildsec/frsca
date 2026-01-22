@@ -10,11 +10,6 @@ build_search_index = true
 
 theme = "adidoks"
 
-[markdown]
-# Whether to do syntax highlighting
-# Theme can be customized by setting the `highlight_theme` variable to a theme supported by Zola
-highlight_code = true
-
 [extra]
 title_addition = "Factory for Repeatable Secure Creation of Artifacts"
 

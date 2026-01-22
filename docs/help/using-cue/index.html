@@ -292,12 +292,12 @@
         <p class="lead">Working with CUE in Factory for Repeatable Secure Creation of Artifacts.</p>
         <h2 id="cue-module-structure">CUE Module Structure</h2>
 <p>The top level of Factory for Repeatable Secure Creation of Artifacts (FRSCA) is
-structured as a <a href="https://cuelang.org/docs/concepts/packages/">CUE module</a> and
+structured as a <a rel="external" href="https://cuelang.org/docs/concepts/packages/">CUE module</a> and
 follows the
-<a href="https://cuelang.org/docs/concepts/packages/#file-organization">schema/policy/data</a>
+<a rel="external" href="https://cuelang.org/docs/concepts/packages/#file-organization">schema/policy/data</a>
 pattern for organizing the files.</p>
 <p>The
-<a href="https://cuelang.org/docs/concepts/packages/#the-cuemod-directory"><code>cue.mod</code></a>
+<a rel="external" href="https://cuelang.org/docs/concepts/packages/#the-cuemod-directory"><code>cue.mod</code></a>
 directory is predominantly for CUE package management. All of the files in
 <code>cue.mod/gen/...</code> are generated from the <code>cue get go ...</code> command importing go
 modules and converting them to CUE. These can then be imported and used to
@@ -316,7 +316,7 @@ been done in the <code>examples/...</code> directories. In the case of <code>exa
 examples. Of particular note is a comprehension that creates a persistent volume
 claim (PVC) for each pipeline run. A reference to the PVC is added to the
 pipeline run definition by default.</p>
-<pre data-lang="txt" class="language-txt "><code class="language-txt" data-lang="txt">&#x2F;&#x2F; generate a PVC for each pipelineRun
+<pre><code data-lang="txt">// generate a PVC for each pipelineRun
 persistentVolumeClaim: {
  for pr in pipelineRun {
   &quot;\(pr.metadata.generateName)source-ws-pvc&quot;: spec: {
@@ -333,12 +333,12 @@ pipelineRun: [Name=_]: spec: workspaces: [{
 </code></pre>
 <h2 id="using-cue-tool">Using CUE Tool</h2>
 <p>FRSCA uses the <code>cue cmd</code> support (see <code>cue cmd --help</code> and
-<a href="https://blog.patapon.info/cue-tool/">cue tooling layer</a> for more details) for
+<a rel="external" href="https://blog.patapon.info/cue-tool/">cue tooling layer</a> for more details) for
 selecting and exporting definitions. This can be seen in <code>frsca_tool.cue</code> which
 defines commands for exporting things that can be used in conjunction with
 <code>kubectl</code>. An example of its usage can be seen in
 <code>examples/buildpacks/buildpacks.sh</code>.</p>
-<pre data-lang="bash" class="language-bash "><code class="language-bash" data-lang="bash">pushd examples&#x2F;buildpacks
+<pre><code data-lang="bash">pushd examples/buildpacks
 cue cmd -t &quot;repository=${REPOSITORY}&quot; apply | kubectl apply -f -
 cue cmd -t &quot;repository=${REPOSITORY}&quot; create | kubectl create -f -
 popd
@@ -351,9 +351,9 @@ used with <code>kubectl create ...</code>.</p>
 values (<code>repository</code> in this case) into the CUE definitions.</p>
 <h2 id="references">References</h2>
 <ul>
-<li><a href="https://cuelang.org/docs/">https://cuelang.org/docs/</a></li>
-<li><a href="https://cuelang.org/docs/concepts/packages/">https://cuelang.org/docs/concepts/packages/</a></li>
-<li><a href="https://blog.patapon.info/cue-tool/">https://blog.patapon.info/cue-tool/</a></li>
+<li><a rel="external" href="https://cuelang.org/docs/">https://cuelang.org/docs/</a></li>
+<li><a rel="external" href="https://cuelang.org/docs/concepts/packages/">https://cuelang.org/docs/concepts/packages/</a></li>
+<li><a rel="external" href="https://blog.patapon.info/cue-tool/">https://blog.patapon.info/cue-tool/</a></li>
 </ul>
 
         

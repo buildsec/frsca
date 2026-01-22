@@ -271,12 +271,12 @@
          <h1>How to Contribute</h1> 
         
         <p>The FRSCA project welcomes any kind of contributions, from code to documentation
-via fixing typos. Please feel free to raise an <a href="https://github.com/buildsec/frsca/issues/new/choose">issue</a> if you would like to work
+via fixing typos. Please feel free to raise an <a rel="external" href="https://github.com/buildsec/frsca/issues/new/choose">issue</a> if you would like to work
 on something major to ensure efficient collaboration and avoid duplicate effort.</p>
-<p>The code lives in the <a href="https://github.com/buildsec/frsca">frsca repository</a>.</p>
+<p>The code lives in the <a rel="external" href="https://github.com/buildsec/frsca">frsca repository</a>.</p>
 <h2 id="guidelines">Guidelines</h2>
 <ul>
-<li>Use the provided templates to file an <a href="https://github.com/buildsec/frsca/issues/new/choose">issue</a> or a <a href="https://github.com/buildsec/frsca/pulls">pull request</a>.</li>
+<li>Use the provided templates to file an <a rel="external" href="https://github.com/buildsec/frsca/issues/new/choose">issue</a> or a <a rel="external" href="https://github.com/buildsec/frsca/pulls">pull request</a>.</li>
 <li>Create a topic branch from where you want to base your work.</li>
 <li>Format the files properly. Please use the dedicated <code>Makefile</code> targets.</li>
 <li>If applicable, add some tests to validate your changes and ensure nothing else
@@ -287,25 +287,25 @@ explanatory text which is separated from the summary by an empty line.</li>
 <li>Commit messages should follow best practices, including explaining the context
 of the problem and how it was solved, including in caveats or follow up
 changes required. They should tell the story of the change and provide readers
-understanding of what led to it. Please refer to <a href="http://chris.beams.io/posts/git-commit">How to Write a Git Commit
+understanding of what led to it. Please refer to <a rel="external" href="http://chris.beams.io/posts/git-commit">How to Write a Git Commit
 Message</a> for more details.</li>
-<li>If your <a href="https://github.com/buildsec/frsca/pulls">pull request</a> is a work in progress, create it as a <a href="https://github.blog/2019-02-14-introducing-draft-pull-requests/">draft pull
+<li>If your <a rel="external" href="https://github.com/buildsec/frsca/pulls">pull request</a> is a work in progress, create it as a <a rel="external" href="https://github.blog/2019-02-14-introducing-draft-pull-requests/">draft pull
 request</a>.</li>
-<li>Any <a href="https://github.com/buildsec/frsca/pulls">pull request</a> inactive for 28 days will be automatically closed. If you
+<li>Any <a rel="external" href="https://github.com/buildsec/frsca/pulls">pull request</a> inactive for 28 days will be automatically closed. If you
 need more time to work on it, ask maintainers, to add the appropriate label to
 it. Use the <code>@</code> mention in the comments.</li>
-<li>Unless explicitly asked, <a href="https://github.com/buildsec/frsca/pulls">pull request</a> which don't pass all the CI checks
+<li>Unless explicitly asked, <a rel="external" href="https://github.com/buildsec/frsca/pulls">pull request</a> which don't pass all the CI checks
 will not be reviewed. Use the <code>@</code> mention in the comments to ask maintainers
 to help you.</li>
 </ul>
 <h3 id="commit-example">Commit example</h3>
-<pre data-lang="COMMIT_EDITMSG" class="language-COMMIT_EDITMSG "><code class="language-COMMIT_EDITMSG" data-lang="COMMIT_EDITMSG">Enforce shell linting
+<pre><code data-lang="COMMIT_EDITMSG">Enforce shell linting
 
 Uses `shellcheck` and `shfmt` to lint and format shell scripts throughout the
 project. Dedicated `Makefile` targets were created to automate the tasks and
 the GitHub workflow was updated accordingly.
 
-Fixes buildsec&#x2F;frsca#64
+Fixes buildsec/frsca#64
 </code></pre>
 <p>The following commit is a good example as:</p>
 <ol>

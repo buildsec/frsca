@@ -28,6 +28,8 @@ spec:
       default: ""
     - name: KO_DOCKER_REPO
       description: Identifies where the built images should be pushed.
+    - name: GOLANG_VERSION
+      description: The Go language version used for the build.
 
   results:
     - name: IMAGE_DIGEST
@@ -50,8 +52,8 @@ spec:
         export GIT_HASH="test"
         export GIT_VERSION="test"
         export GOFLAGS="-buildvcs=false"
-        export GOTOOLCHAIN=go1.24.6
-        export GOLANG_VERSION=1.24.6
+        export GOLANG_VERSION="$(params.GOLANG_VERSION)"
+        export GOTOOLCHAIN="go$(params.GOLANG_VERSION)"
         KO_IMAGE=$(ko build \
           --base-import-paths \
           "$(params.SOURCE_SUBPATH)")

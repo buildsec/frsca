@@ -17,6 +17,9 @@ frsca: pipelineRun: "ko-pipelinerun-": spec: {
 	},{
 		name: "KO_DOCKER_REPO"
 		value: _REPOSITORY
+	},{
+		name: "GOLANG_VERSION"
+		value: "1.25.7"
 	},]
 	workspaces: [{
 		name:    "source-ws"

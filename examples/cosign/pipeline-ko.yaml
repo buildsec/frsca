@@ -39,6 +39,8 @@ spec:
       default: []
     - name: KO_DOCKER_REPO
       description: Identifies where the built images should be pushed.
+    - name: GOLANG_VERSION
+      description: The Go language version used for the build.
 
   tasks:
     - name: fetch-from-git
@@ -62,6 +64,8 @@ spec:
           value: "$(params.SOURCE_SUBPATH)"
         - name: KO_DOCKER_REPO
           value: "$(params.KO_DOCKER_REPO)"
+        - name: GOLANG_VERSION
+          value: "$(params.GOLANG_VERSION)"
       workspaces:
         - name: source
           workspace: source-ws

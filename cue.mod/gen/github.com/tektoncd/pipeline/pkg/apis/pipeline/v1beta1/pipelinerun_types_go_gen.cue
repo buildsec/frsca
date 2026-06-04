@@ -36,12 +36,15 @@ import (
 // PipelineRunSpec defines the desired state of PipelineRun
 #PipelineRunSpec: {
 	// +optional
-	pipelineRef?: null | #PipelineRef @go(PipelineRef,*PipelineRef)
+	pipelineRef?: #PipelineRef @go(PipelineRef,*PipelineRef)
 
 	// Specifying PipelineSpec can be disabled by setting
-	// `disable-inline-spec` feature flag..
+	// `disable-inline-spec` feature flag.
+	// See Pipeline.spec (API version: tekton.dev/v1beta1)
 	// +optional
-	pipelineSpec?: null | #PipelineSpec @go(PipelineSpec,*PipelineSpec)
+	// +kubebuilder:pruning:PreserveUnknownFields
+	// +kubebuilder:validation:Schemaless
+	pipelineSpec?: #PipelineSpec @go(PipelineSpec,*PipelineSpec)
 
 	// Resources is a list of bindings specifying which actual instances of
 	// PipelineResources to use for the resources the Pipeline has declared
@@ -52,7 +55,6 @@ import (
 	resources?: [...#PipelineResourceBinding] @go(Resources,[]PipelineResourceBinding)
 
 	// Params is a list of parameter names and values.
-	// +listType=atomic
 	params?: #Params @go(Params)
 
 	// +optional
@@ -67,7 +69,7 @@ import (
 	// pipeline, tasks and finally
 	// with Timeouts.pipeline >= Timeouts.tasks + Timeouts.finally
 	// +optional
-	timeouts?: null | #TimeoutFields @go(Timeouts,*TimeoutFields)
+	timeouts?: #TimeoutFields @go(Timeouts,*TimeoutFields)
 
 	// Timeout is the Time after which the Pipeline times out.
 	// Defaults to never.
@@ -76,10 +78,10 @@ import (
 	// Deprecated: use pipelineRunSpec.Timeouts.Pipeline instead
 	//
 	// +optional
-	timeout?: null | metav1.#Duration @go(Timeout,*metav1.Duration)
+	timeout?: metav1.#Duration @go(Timeout,*metav1.Duration)
 
 	// PodTemplate holds pod specific configuration
-	podTemplate?: null | pod.#Template @go(PodTemplate,*pod.PodTemplate)
+	podTemplate?: pod.#Template @go(PodTemplate,*pod.PodTemplate)
 
 	// Workspaces holds a set of workspace bindings that must match names
 	// with those declared in the pipeline.
@@ -96,13 +98,13 @@ import (
 // TimeoutFields allows granular specification of pipeline, task, and finally timeouts
 #TimeoutFields: {
 	// Pipeline sets the maximum allowed duration for execution of the entire pipeline. The sum of individual timeouts for tasks and finally must not exceed this value.
-	pipeline?: null | metav1.#Duration @go(Pipeline,*metav1.Duration)
+	pipeline?: metav1.#Duration @go(Pipeline,*metav1.Duration)
 
 	// Tasks sets the maximum allowed duration of this pipeline's tasks
-	tasks?: null | metav1.#Duration @go(Tasks,*metav1.Duration)
+	tasks?: metav1.#Duration @go(Tasks,*metav1.Duration)
 
 	// Finally sets the maximum allowed duration of this pipeline's finally
-	finally?: null | metav1.#Duration @go(Finally,*metav1.Duration)
+	finally?: metav1.#Duration @go(Finally,*metav1.Duration)
 }
 
 // PipelineRunSpecStatus defines the pipelinerun spec status the user can provide
@@ -211,10 +213,10 @@ import (
 // consume these fields via duck typing.
 #PipelineRunStatusFields: {
 	// StartTime is the time the PipelineRun is actually started.
-	startTime?: null | metav1.#Time @go(StartTime,*metav1.Time)
+	startTime?: metav1.#Time @go(StartTime,*metav1.Time)
 
 	// CompletionTime is the time the PipelineRun completed.
-	completionTime?: null | metav1.#Time @go(CompletionTime,*metav1.Time)
+	completionTime?: metav1.#Time @go(CompletionTime,*metav1.Time)
 
 	// TaskRuns is a map of PipelineRunTaskRunStatus with the taskRun name as the key.
 	//
@@ -222,7 +224,7 @@ import (
 	// longer populated and is only included for backwards compatibility with
 	// older server versions.
 	// +optional
-	taskRuns?: {[string]: null | #PipelineRunTaskRunStatus} @go(TaskRuns,map[string]*PipelineRunTaskRunStatus)
+	taskRuns?: {[string]: #PipelineRunTaskRunStatus} @go(TaskRuns,map[string]*PipelineRunTaskRunStatus)
 
 	// Runs is a map of PipelineRunRunStatus with the run name as the key
 	//
@@ -230,15 +232,18 @@ import (
 	// longer populated and is only included for backwards compatibility with
 	// older server versions.
 	// +optional
-	runs?: {[string]: null | #PipelineRunRunStatus} @go(Runs,map[string]*PipelineRunRunStatus)
+	runs?: {[string]: #PipelineRunRunStatus} @go(Runs,map[string]*PipelineRunRunStatus)
 
 	// PipelineResults are the list of results written out by the pipeline task's containers
 	// +optional
 	// +listType=atomic
 	pipelineResults?: [...#PipelineRunResult] @go(PipelineResults,[]PipelineRunResult)
 
-	// PipelineRunSpec contains the exact spec used to instantiate the run
-	pipelineSpec?: null | #PipelineSpec @go(PipelineSpec,*PipelineSpec)
+	// PipelineSpec contains the exact spec used to instantiate the run.
+	// See Pipeline.spec (API version: tekton.dev/v1beta1)
+	// +kubebuilder:pruning:PreserveUnknownFields
+	// +kubebuilder:validation:Schemaless
+	pipelineSpec?: #PipelineSpec @go(PipelineSpec,*PipelineSpec)
 
 	// list of tasks that were skipped due to when expressions evaluating to false
 	// +optional
@@ -252,11 +257,11 @@ import (
 
 	// FinallyStartTime is when all non-finally tasks have been completed and only finally tasks are being executed.
 	// +optional
-	finallyStartTime?: null | metav1.#Time @go(FinallyStartTime,*metav1.Time)
+	finallyStartTime?: metav1.#Time @go(FinallyStartTime,*metav1.Time)
 
 	// Provenance contains some key authenticated metadata about how a software artifact was built (what sources, what inputs/outputs, etc.).
 	// +optional
-	provenance?: null | #Provenance @go(Provenance,*Provenance)
+	provenance?: #Provenance @go(Provenance,*Provenance)
 
 	// SpanContext contains tracing span context fields
 	spanContext?: {[string]: string} @go(SpanContext,map[string]string)
@@ -333,6 +338,8 @@ import (
 	name: string @go(Name)
 
 	// Value is the result returned from the execution of this PipelineRun
+	// +kubebuilder:pruning:PreserveUnknownFields
+	// +kubebuilder:validation:Schemaless
 	value: #ParamValue @go(Value,ResultValue)
 }
 
@@ -343,7 +350,7 @@ import (
 
 	// Status is the TaskRunStatus for the corresponding TaskRun
 	// +optional
-	status?: null | #TaskRunStatus @go(Status,*TaskRunStatus)
+	status?: #TaskRunStatus @go(Status,*TaskRunStatus)
 
 	// WhenExpressions is the list of checks guarding the execution of the PipelineTask
 	// +optional
@@ -358,7 +365,7 @@ import (
 
 	// Status is the CustomRunStatus for the corresponding CustomRun or Run
 	// +optional
-	status?: null | v1beta1.#CustomRunStatus @go(Status,*CustomRunStatus)
+	status?: v1beta1.#CustomRunStatus @go(Status,*CustomRunStatus)
 
 	// WhenExpressions is the list of checks guarding the execution of the PipelineTask
 	// +optional
@@ -385,9 +392,9 @@ import (
 // PipelineTaskRunSpec  can be used to configure specific
 // specs for a concrete Task
 #PipelineTaskRunSpec: {
-	pipelineTaskName?:       string               @go(PipelineTaskName)
-	taskServiceAccountName?: string               @go(TaskServiceAccountName)
-	taskPodTemplate?:        null | pod.#Template @go(TaskPodTemplate,*pod.PodTemplate)
+	pipelineTaskName?:       string        @go(PipelineTaskName)
+	taskServiceAccountName?: string        @go(TaskServiceAccountName)
+	taskPodTemplate?:        pod.#Template @go(TaskPodTemplate,*pod.PodTemplate)
 
 	// +listType=atomic
 	stepOverrides?: [...#TaskRunStepOverride] @go(StepOverrides,[]TaskRunStepOverride)
@@ -396,8 +403,13 @@ import (
 	sidecarOverrides?: [...#TaskRunSidecarOverride] @go(SidecarOverrides,[]TaskRunSidecarOverride)
 
 	// +optional
-	metadata?: null | #PipelineTaskMetadata @go(Metadata,*PipelineTaskMetadata)
+	metadata?: #PipelineTaskMetadata @go(Metadata,*PipelineTaskMetadata)
 
 	// Compute resources to use for this TaskRun
-	computeResources?: null | corev1.#ResourceRequirements @go(ComputeResources,*corev1.ResourceRequirements)
+	computeResources?: corev1.#ResourceRequirements @go(ComputeResources,*corev1.ResourceRequirements)
+
+	// Duration after which the TaskRun times out.
+	// Refer Go's ParseDuration documentation for expected format: https://golang.org/pkg/time/#ParseDuration
+	// +optional
+	timeout?: metav1.#Duration @go(Timeout,*metav1.Duration)
 }

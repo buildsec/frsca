@@ -49,7 +49,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// the controller, but was unused as there is no controller for PipelineResource.
 	//
 	// +optional
-	status?: null | #PipelineResourceStatus @go(Status,*PipelineResourceStatus)
+	status?: #PipelineResourceStatus @go(Status,*PipelineResourceStatus)
 }
 
 // PipelineResourceStatus does not contain anything because PipelineResources on their own

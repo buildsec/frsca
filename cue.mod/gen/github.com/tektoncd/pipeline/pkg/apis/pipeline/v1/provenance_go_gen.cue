@@ -12,10 +12,10 @@ import "github.com/tektoncd/pipeline/pkg/apis/config"
 // Tekton Chains can capture them in the provenance.
 #Provenance: {
 	// RefSource identifies the source where a remote task/pipeline came from.
-	refSource?: null | #RefSource @go(RefSource,*RefSource)
+	refSource?: #RefSource @go(RefSource,*RefSource)
 
 	// FeatureFlags identifies the feature flags that were used during the task/pipeline run
-	featureFlags?: null | config.#FeatureFlags @go(FeatureFlags,*config.FeatureFlags)
+	featureFlags?: config.#FeatureFlags @go(FeatureFlags,*config.FeatureFlags)
 }
 
 // RefSource contains the information that can uniquely identify where a remote
@@ -32,6 +32,6 @@ import "github.com/tektoncd/pipeline/pkg/apis/config"
 
 	// EntryPoint identifies the entry point into the build. This is often a path to a
 	// build definition file and/or a target label within that file.
-	// Example: "task/git-clone/0.8/git-clone.yaml"
+	// Example: "task/git-clone/0.10/git-clone.yaml"
 	entryPoint?: string @go(EntryPoint)
 }

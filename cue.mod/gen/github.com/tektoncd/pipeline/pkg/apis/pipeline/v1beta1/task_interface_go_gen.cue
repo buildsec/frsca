@@ -4,5 +4,5 @@
 
 package v1beta1
 
-// TaskObject is implemented by Task and ClusterTask
+// TaskObject is implemented by Task
 #TaskObject: _

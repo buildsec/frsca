@@ -28,7 +28,7 @@ import "google.golang.org/grpc/codes"
 	interceptor_params?: {...} @go(InterceptorParams,map[string]interface{})
 
 	// Context contains additional metadata about the event being processed
-	context?: null | #TriggerContext @go(Context,*TriggerContext)
+	context?: #TriggerContext @go(Context,*TriggerContext)
 }
 
 #TriggerContext: {

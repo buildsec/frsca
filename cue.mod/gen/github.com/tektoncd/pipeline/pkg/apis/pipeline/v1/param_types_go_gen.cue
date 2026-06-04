@@ -31,7 +31,9 @@ package v1
 	// default is set, a Task may be executed without a supplied value for the
 	// parameter.
 	// +optional
-	default?: null | #ParamValue @go(Default,*ParamValue)
+	// +kubebuilder:pruning:PreserveUnknownFields
+	// +kubebuilder:validation:Schemaless
+	default?: #ParamValue @go(Default,*ParamValue)
 
 	// Enum declares a set of allowed param input values for tasks/pipelines that can be validated.
 	// If Enum is not set, no input validation is performed for the param.
@@ -40,6 +42,7 @@ package v1
 }
 
 // ParamSpecs is a list of ParamSpec
+// +listType=atomic
 #ParamSpecs: [...#ParamSpec]
 
 // PropertySpec defines the struct for object keys
@@ -49,11 +52,15 @@ package v1
 
 // Param declares an ParamValues to use for the parameter called name.
 #Param: {
-	name:  string      @go(Name)
+	name: string @go(Name)
+
+	// +kubebuilder:pruning:PreserveUnknownFields
+	// +kubebuilder:validation:Schemaless
 	value: #ParamValue @go(Value)
 }
 
 // Params is a list of Param
+// +listType=atomic
 #Params: [...#Param]
 
 // ParamType indicates the type of an input parameter;

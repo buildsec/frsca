@@ -52,9 +52,6 @@ package config
 // ResultExtractionMethodSidecarLogs is the value used for "results-from" as a way to extract results from tasks using sidecar logs.
 #ResultExtractionMethodSidecarLogs: "sidecar-logs"
 
-// DefaultDisableAffinityAssistant is the default value for "disable-affinity-assistant".
-#DefaultDisableAffinityAssistant: false
-
 // DefaultDisableCredsInit is the default value for "disable-creds-init".
 #DefaultDisableCredsInit: false
 
@@ -103,6 +100,9 @@ package config
 // DefaultSetSecurityContext is the default value for "set-security-context"
 #DefaultSetSecurityContext: false
 
+// DefaultSetSecurityContextReadOnlyRootFilesystem is the default value for "set-security-context-read-only-root-filesystem"
+#DefaultSetSecurityContextReadOnlyRootFilesystem: false
+
 // DefaultCoschedule is the default value for coschedule
 #DefaultCoschedule: "workspaces"
 
@@ -111,9 +111,6 @@ package config
 
 // EnableCELInWhenExpression is the flag to enabled CEL in WhenExpression
 #EnableCELInWhenExpression: "enable-cel-in-whenexpression"
-
-// EnableStepActions is the flag to enable the use of StepActions in Steps
-#EnableStepActions: "enable-step-actions"
 
 // EnableArtifacts is the flag to enable the use of Artifacts in Steps
 #EnableArtifacts: "enable-artifacts"
@@ -130,60 +127,67 @@ package config
 // DefaultEnableKubernetesSidecar is the default value for EnableKubernetesSidecar
 #DefaultEnableKubernetesSidecar: false
 
+// EnableWaitExponentialBackoff is the flag to enable exponential backoff strategy
+#EnableWaitExponentialBackoff: "enable-wait-exponential-backoff"
+
+// DefaultEnableWaitExponentialBackoff is the default value for EnableWaitExponentialBackoff
+#DefaultEnableWaitExponentialBackoff: false
+
+// EnableStepActions is the flag to enable step actions (no-op since it's stable)
+#EnableStepActions: "enable-step-actions"
+
 // DisableInlineSpec is the flag to disable embedded spec
 // in Taskrun or Pipelinerun
-#DisableInlineSpec:                    "disable-inline-spec"
-_#disableAffinityAssistantKey:         "disable-affinity-assistant"
-_#disableCredsInitKey:                 "disable-creds-init"
-_#runningInEnvWithInjectedSidecarsKey: "running-in-environment-with-injected-sidecars"
-_#awaitSidecarReadinessKey:            "await-sidecar-readiness"
-_#requireGitSSHSecretKnownHostsKey:    "require-git-ssh-secret-known-hosts"
-
-// enableTektonOCIBundles              = "enable-tekton-oci-bundles"
-_#enableAPIFields:           "enable-api-fields"
-_#sendCloudEventsForRuns:    "send-cloudevents-for-runs"
-_#enforceNonfalsifiability:  "enforce-nonfalsifiability"
-_#verificationNoMatchPolicy: "trusted-resources-verification-no-match-policy"
-_#enableProvenanceInStatus:  "enable-provenance-in-status"
-_#resultExtractionMethod:    "results-from"
-_#maxResultSize:             "max-result-size"
-_#setSecurityContextKey:     "set-security-context"
-_#coscheduleKey:             "coschedule"
+#DisableInlineSpec:                            "disable-inline-spec"
+_#disableCredsInitKey:                         "disable-creds-init"
+_#runningInEnvWithInjectedSidecarsKey:         "running-in-environment-with-injected-sidecars"
+_#awaitSidecarReadinessKey:                    "await-sidecar-readiness"
+_#requireGitSSHSecretKnownHostsKey:            "require-git-ssh-secret-known-hosts"
+_#enableAPIFields:                             "enable-api-fields"
+_#sendCloudEventsForRuns:                      "send-cloudevents-for-runs"
+_#enforceNonfalsifiability:                    "enforce-nonfalsifiability"
+_#verificationNoMatchPolicy:                   "trusted-resources-verification-no-match-policy"
+_#enableProvenanceInStatus:                    "enable-provenance-in-status"
+_#resultExtractionMethod:                      "results-from"
+_#maxResultSize:                               "max-result-size"
+_#setSecurityContextKey:                       "set-security-context"
+_#setSecurityContextReadOnlyRootFilesystemKey: "set-security-context-read-only-root-filesystem"
+_#coscheduleKey:                               "coschedule"
 
 // FeatureFlags holds the features configurations
 // +k8s:deepcopy-gen=true
 #FeatureFlags: {
-	DisableAffinityAssistant:         bool
-	DisableCredsInit:                 bool
-	RunningInEnvWithInjectedSidecars: bool
-	RequireGitSSHSecretKnownHosts:    bool
-
-	// EnableTektonOCIBundles           bool // Deprecated: this is now ignored
-	// ScopeWhenExpressionsToTask       bool // Deprecated: this is now ignored
-	EnableAPIFields:          string
-	SendCloudEventsForRuns:   bool
-	AwaitSidecarReadiness:    bool
-	EnforceNonfalsifiability: string
-	EnableKeepPodOnCancel:    bool
+	disableCredsInit?:                 bool   @go(DisableCredsInit)
+	runningInEnvWithInjectedSidecars?: bool   @go(RunningInEnvWithInjectedSidecars)
+	requireGitSSHSecretKnownHosts?:    bool   @go(RequireGitSSHSecretKnownHosts)
+	enableAPIFields?:                  string @go(EnableAPIFields)
+	sendCloudEventsForRuns?:           bool   @go(SendCloudEventsForRuns)
+	awaitSidecarReadiness?:            bool   @go(AwaitSidecarReadiness)
+	enforceNonfalsifiability?:         string @go(EnforceNonfalsifiability)
+	enableKeepPodOnCancel?:            bool   @go(EnableKeepPodOnCancel)
 
 	// VerificationNoMatchPolicy is the feature flag for "trusted-resources-verification-no-match-policy"
 	// VerificationNoMatchPolicy can be set to "ignore", "warn" and "fail" values.
 	// ignore: skip trusted resources verification when no matching verification policies found
 	// warn: skip trusted resources verification when no matching verification policies found and log a warning
 	// fail: fail the taskrun or pipelines run if no matching verification policies found
-	VerificationNoMatchPolicy:   string
-	EnableProvenanceInStatus:    bool
-	ResultExtractionMethod:      string
-	MaxResultSize:               int
-	SetSecurityContext:          bool
-	Coschedule:                  string
-	EnableCELInWhenExpression:   bool
-	EnableStepActions:           bool
-	EnableParamEnum:             bool
-	EnableArtifacts:             bool
-	DisableInlineSpec:           string
-	EnableConciseResolverSyntax: bool
-	EnableKubernetesSidecar:     bool
+	verificationNoMatchPolicy?:                string @go(VerificationNoMatchPolicy)
+	enableProvenanceInStatus?:                 bool   @go(EnableProvenanceInStatus)
+	resultExtractionMethod?:                   string @go(ResultExtractionMethod)
+	maxResultSize?:                            int    @go(MaxResultSize)
+	setSecurityContext?:                       bool   @go(SetSecurityContext)
+	setSecurityContextReadOnlyRootFilesystem?: bool   @go(SetSecurityContextReadOnlyRootFilesystem)
+	coschedule?:                               string @go(Coschedule)
+	enableCELInWhenExpression?:                bool   @go(EnableCELInWhenExpression)
+
+	// EnableStepActions is a no-op flag since StepActions are stable
+	enableStepActions?:            bool   @go(EnableStepActions)
+	enableParamEnum?:              bool   @go(EnableParamEnum)
+	enableArtifacts?:              bool   @go(EnableArtifacts)
+	disableInlineSpec?:            string @go(DisableInlineSpec)
+	enableConciseResolverSyntax?:  bool   @go(EnableConciseResolverSyntax)
+	enableKubernetesSidecar?:      bool   @go(EnableKubernetesSidecar)
+	enableWaitExponentialBackoff?: bool   @go(EnableWaitExponentialBackoff)
 }
 
 #PerFeatureFlag: {

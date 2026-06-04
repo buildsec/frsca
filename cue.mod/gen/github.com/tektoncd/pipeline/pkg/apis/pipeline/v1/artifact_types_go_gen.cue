@@ -34,6 +34,9 @@ package v1
 // a task run or a similar process. Artifacts in this context are units of data or resources
 // that the process either consumes as input or produces as output.
 #Artifacts: {
+	// +listType=atomic
 	inputs?: [...#Artifact] @go(Inputs,[]Artifact)
+
+	// +listType=atomic
 	outputs?: [...#Artifact] @go(Outputs,[]Artifact)
 }

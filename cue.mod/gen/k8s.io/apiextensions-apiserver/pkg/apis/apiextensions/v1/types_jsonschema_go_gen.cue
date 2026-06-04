@@ -35,7 +35,7 @@ package v1
 #JSONSchemaProps: {
 	id?:          string         @go(ID) @protobuf(1,bytes,opt)
 	$schema?:     #JSONSchemaURL @go(Schema) @protobuf(2,bytes,opt,name=schema)
-	$ref?:        null | string  @go(Ref,*string) @protobuf(3,bytes,opt,name=ref)
+	$ref?:        string         @go(Ref,*string) @protobuf(3,bytes,opt,name=ref)
 	description?: string         @go(Description) @protobuf(4,bytes,opt)
 	type?:        string         @go(Type) @protobuf(5,bytes,opt)
 
@@ -71,36 +71,46 @@ package v1
 	// default is a default value for undefined object fields.
 	// Defaulting is a beta feature under the CustomResourceDefaulting feature gate.
 	// Defaulting requires spec.preserveUnknownFields to be false.
-	default?:          null | #JSON   @go(Default,*JSON) @protobuf(8,bytes,opt)
-	maximum?:          null | float64 @go(Maximum,*float64) @protobuf(9,bytes,opt)
-	exclusiveMaximum?: bool           @go(ExclusiveMaximum) @protobuf(10,bytes,opt)
-	minimum?:          null | float64 @go(Minimum,*float64) @protobuf(11,bytes,opt)
-	exclusiveMinimum?: bool           @go(ExclusiveMinimum) @protobuf(12,bytes,opt)
-	maxLength?:        null | int64   @go(MaxLength,*int64) @protobuf(13,bytes,opt)
-	minLength?:        null | int64   @go(MinLength,*int64) @protobuf(14,bytes,opt)
-	pattern?:          string         @go(Pattern) @protobuf(15,bytes,opt)
-	maxItems?:         null | int64   @go(MaxItems,*int64) @protobuf(16,bytes,opt)
-	minItems?:         null | int64   @go(MinItems,*int64) @protobuf(17,bytes,opt)
-	uniqueItems?:      bool           @go(UniqueItems) @protobuf(18,bytes,opt)
-	multipleOf?:       null | float64 @go(MultipleOf,*float64) @protobuf(19,bytes,opt)
+	default?:          #JSON   @go(Default,*JSON) @protobuf(8,bytes,opt)
+	maximum?:          float64 @go(Maximum,*float64) @protobuf(9,bytes,opt)
+	exclusiveMaximum?: bool    @go(ExclusiveMaximum) @protobuf(10,bytes,opt)
+	minimum?:          float64 @go(Minimum,*float64) @protobuf(11,bytes,opt)
+	exclusiveMinimum?: bool    @go(ExclusiveMinimum) @protobuf(12,bytes,opt)
+	maxLength?:        int64   @go(MaxLength,*int64) @protobuf(13,bytes,opt)
+	minLength?:        int64   @go(MinLength,*int64) @protobuf(14,bytes,opt)
+	pattern?:          string  @go(Pattern) @protobuf(15,bytes,opt)
+	maxItems?:         int64   @go(MaxItems,*int64) @protobuf(16,bytes,opt)
+	minItems?:         int64   @go(MinItems,*int64) @protobuf(17,bytes,opt)
+	uniqueItems?:      bool    @go(UniqueItems) @protobuf(18,bytes,opt)
+	multipleOf?:       float64 @go(MultipleOf,*float64) @protobuf(19,bytes,opt)
+
+	// +listType=atomic
 	enum?: [...#JSON] @go(Enum,[]JSON) @protobuf(20,bytes,rep)
-	maxProperties?: null | int64 @go(MaxProperties,*int64) @protobuf(21,bytes,opt)
-	minProperties?: null | int64 @go(MinProperties,*int64) @protobuf(22,bytes,opt)
+	maxProperties?: int64 @go(MaxProperties,*int64) @protobuf(21,bytes,opt)
+	minProperties?: int64 @go(MinProperties,*int64) @protobuf(22,bytes,opt)
+
+	// +listType=atomic
 	required?: [...string] @go(Required,[]string) @protobuf(23,bytes,rep)
-	items?: null | #JSONSchemaPropsOrArray @go(Items,*JSONSchemaPropsOrArray) @protobuf(24,bytes,opt)
+	items?: #JSONSchemaPropsOrArray @go(Items,*JSONSchemaPropsOrArray) @protobuf(24,bytes,opt)
+
+	// +listType=atomic
 	allOf?: [...#JSONSchemaProps] @go(AllOf,[]JSONSchemaProps) @protobuf(25,bytes,rep)
+
+	// +listType=atomic
 	oneOf?: [...#JSONSchemaProps] @go(OneOf,[]JSONSchemaProps) @protobuf(26,bytes,rep)
+
+	// +listType=atomic
 	anyOf?: [...#JSONSchemaProps] @go(AnyOf,[]JSONSchemaProps) @protobuf(27,bytes,rep)
-	not?: null | #JSONSchemaProps @go(Not,*JSONSchemaProps) @protobuf(28,bytes,opt)
+	not?: #JSONSchemaProps @go(Not,*JSONSchemaProps) @protobuf(28,bytes,opt)
 	properties?: {[string]: #JSONSchemaProps} @go(Properties,map[string]JSONSchemaProps) @protobuf(29,bytes,rep)
-	additionalProperties?: null | #JSONSchemaPropsOrBool @go(AdditionalProperties,*JSONSchemaPropsOrBool) @protobuf(30,bytes,opt)
+	additionalProperties?: #JSONSchemaPropsOrBool @go(AdditionalProperties,*JSONSchemaPropsOrBool) @protobuf(30,bytes,opt)
 	patternProperties?: {[string]: #JSONSchemaProps} @go(PatternProperties,map[string]JSONSchemaProps) @protobuf(31,bytes,rep)
-	dependencies?:    #JSONSchemaDependencies       @go(Dependencies) @protobuf(32,bytes,opt)
-	additionalItems?: null | #JSONSchemaPropsOrBool @go(AdditionalItems,*JSONSchemaPropsOrBool) @protobuf(33,bytes,opt)
-	definitions?:     #JSONSchemaDefinitions        @go(Definitions) @protobuf(34,bytes,opt)
-	externalDocs?:    null | #ExternalDocumentation @go(ExternalDocs,*ExternalDocumentation) @protobuf(35,bytes,opt)
-	example?:         null | #JSON                  @go(Example,*JSON) @protobuf(36,bytes,opt)
-	nullable?:        bool                          @go(Nullable) @protobuf(37,bytes,opt)
+	dependencies?:    #JSONSchemaDependencies @go(Dependencies) @protobuf(32,bytes,opt)
+	additionalItems?: #JSONSchemaPropsOrBool  @go(AdditionalItems,*JSONSchemaPropsOrBool) @protobuf(33,bytes,opt)
+	definitions?:     #JSONSchemaDefinitions  @go(Definitions) @protobuf(34,bytes,opt)
+	externalDocs?:    #ExternalDocumentation  @go(ExternalDocs,*ExternalDocumentation) @protobuf(35,bytes,opt)
+	example?:         #JSON                   @go(Example,*JSON) @protobuf(36,bytes,opt)
+	nullable?:        bool                    @go(Nullable) @protobuf(37,bytes,opt)
 
 	// x-kubernetes-preserve-unknown-fields stops the API server
 	// decoding step from pruning fields which are not specified
@@ -108,7 +118,7 @@ package v1
 	// but switches back to normal pruning behaviour if nested
 	// properties or additionalProperties are specified in the schema.
 	// This can either be true or undefined. False is forbidden.
-	"x-kubernetes-preserve-unknown-fields"?: null | bool @go(XPreserveUnknownFields,*bool) @protobuf(38,bytes,opt,name=xKubernetesPreserveUnknownFields)
+	"x-kubernetes-preserve-unknown-fields"?: bool @go(XPreserveUnknownFields,*bool) @protobuf(38,bytes,opt,name=xKubernetesPreserveUnknownFields)
 
 	// x-kubernetes-embedded-resource defines that the value is an
 	// embedded Kubernetes runtime.Object, with TypeMeta and
@@ -145,6 +155,7 @@ package v1
 	// to ensure those properties are present for all list items.
 	//
 	// +optional
+	// +listType=atomic
 	"x-kubernetes-list-map-keys"?: [...string] @go(XListMapKeys,[]string) @protobuf(41,bytes,rep,name=xKubernetesListMapKeys)
 
 	// x-kubernetes-list-type annotates an array to further describe its topology.
@@ -163,7 +174,7 @@ package v1
 	//      must only be used on a list with elements of type object.
 	// Defaults to atomic for arrays.
 	// +optional
-	"x-kubernetes-list-type"?: null | string @go(XListType,*string) @protobuf(42,bytes,opt,name=xKubernetesListType)
+	"x-kubernetes-list-type"?: string @go(XListType,*string) @protobuf(42,bytes,opt,name=xKubernetesListType)
 
 	// x-kubernetes-map-type annotates an object to further describe its topology.
 	// This extension must only be used when type is object and may have 2 possible values:
@@ -175,10 +186,9 @@ package v1
 	// 2) `atomic`: the list is treated as a single entity, like a scalar.
 	//      Atomic maps will be entirely replaced when updated.
 	// +optional
-	"x-kubernetes-map-type"?: null | string @go(XMapType,*string) @protobuf(43,bytes,opt,name=xKubernetesMapType)
+	"x-kubernetes-map-type"?: string @go(XMapType,*string) @protobuf(43,bytes,opt,name=xKubernetesMapType)
 
 	// x-kubernetes-validations describes a list of validation rules written in the CEL expression language.
-	// This field is an alpha-level. Using this field requires the feature gate `CustomResourceValidationExpressions` to be enabled.
 	// +patchMergeKey=rule
 	// +patchStrategy=merge
 	// +listType=map
@@ -284,7 +294,7 @@ package v1
 	// If not set, default to use "FieldValueInvalid".
 	// All future added reasons must be accepted by clients when reading this value and unknown reasons should be treated as FieldValueInvalid.
 	// +optional
-	reason?: null | #FieldValueErrorReason @go(Reason,*FieldValueErrorReason) @protobuf(4,bytes,opt)
+	reason?: #FieldValueErrorReason @go(Reason,*FieldValueErrorReason) @protobuf(4,bytes,opt)
 
 	// fieldPath represents the field path returned when the validation fails.
 	// It must be a relative JSON path (i.e. with array notation) scoped to the location of this x-kubernetes-validations extension in the schema and refer to an existing field.
@@ -314,7 +324,7 @@ package v1
 	//
 	// +featureGate=CRDValidationRatcheting
 	// +optional
-	optionalOldSelf?: null | bool @go(OptionalOldSelf,*bool) @protobuf(6,bytes,opt)
+	optionalOldSelf?: bool @go(OptionalOldSelf,*bool) @protobuf(6,bytes,opt)
 }
 
 // JSON represents any valid JSON value.

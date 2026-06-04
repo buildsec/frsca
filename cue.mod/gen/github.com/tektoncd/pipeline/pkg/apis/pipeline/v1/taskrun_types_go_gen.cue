@@ -14,10 +14,9 @@ import (
 // TaskRunSpec defines the desired state of TaskRun
 #TaskRunSpec: {
 	// +optional
-	debug?: null | #TaskRunDebug @go(Debug,*TaskRunDebug)
+	debug?: #TaskRunDebug @go(Debug,*TaskRunDebug)
 
 	// +optional
-	// +listType=atomic
 	params?: #Params @go(Params)
 
 	// +optional
@@ -25,12 +24,15 @@ import (
 
 	// no more than one of the TaskRef and TaskSpec may be specified.
 	// +optional
-	taskRef?: null | #TaskRef @go(TaskRef,*TaskRef)
+	taskRef?: #TaskRef @go(TaskRef,*TaskRef)
 
-	// Specifying PipelineSpec can be disabled by setting
-	// `disable-inline-spec` feature flag..
+	// Specifying TaskSpec can be disabled by setting
+	// `disable-inline-spec` feature flag.
+	// See Task.spec (API version: tekton.dev/v1)
 	// +optional
-	taskSpec?: null | #TaskSpec @go(TaskSpec,*TaskSpec)
+	// +kubebuilder:pruning:PreserveUnknownFields
+	// +kubebuilder:validation:Schemaless
+	taskSpec?: #TaskSpec @go(TaskSpec,*TaskSpec)
 
 	// Used for cancelling a TaskRun (and maybe more later on)
 	// +optional
@@ -47,10 +49,10 @@ import (
 	// Time after which one retry attempt times out. Defaults to 1 hour.
 	// Refer Go's ParseDuration documentation for expected format: https://golang.org/pkg/time/#ParseDuration
 	// +optional
-	timeout?: null | metav1.#Duration @go(Timeout,*metav1.Duration)
+	timeout?: metav1.#Duration @go(Timeout,*metav1.Duration)
 
 	// PodTemplate holds pod specific configuration
-	podTemplate?: null | pod.#Template @go(PodTemplate,*pod.PodTemplate)
+	podTemplate?: pod.#Template @go(PodTemplate,*pod.PodTemplate)
 
 	// Workspaces is a list of WorkspaceBindings from volumes to workspaces.
 	// +optional
@@ -74,7 +76,7 @@ import (
 	sidecarSpecs?: [...#TaskRunSidecarSpec] @go(SidecarSpecs,[]TaskRunSidecarSpec)
 
 	// Compute resources to use for this TaskRun
-	computeResources?: null | corev1.#ResourceRequirements @go(ComputeResources,*corev1.ResourceRequirements)
+	computeResources?: corev1.#ResourceRequirements @go(ComputeResources,*corev1.ResourceRequirements)
 }
 
 // TaskRunSpecStatus defines the TaskRun spec status the user can provide
@@ -104,7 +106,7 @@ import (
 // TaskRunDebug defines the breakpoint config for a particular TaskRun
 #TaskRunDebug: {
 	// +optional
-	breakpoints?: null | #TaskBreakpoints @go(Breakpoints,*TaskBreakpoints)
+	breakpoints?: #TaskBreakpoints @go(Breakpoints,*TaskBreakpoints)
 }
 
 // TaskBreakpoints defines the breakpoint config for a particular Task
@@ -217,6 +219,9 @@ import (
 // TaskRuns failed due to reconciler/validation error should not use this reason.
 #TaskRunReasonFailureIgnored: #TaskRunReason & "FailureIgnored"
 
+// +listType=atomic
+#RetriesStatus: [...#TaskRunStatus]
+
 // TaskRunStatusFields holds the fields of TaskRun's status.  This is defined
 // separately and inlined so that other types can readily consume these fields
 // via duck typing.
@@ -225,10 +230,10 @@ import (
 	podName: string @go(PodName)
 
 	// StartTime is the time the build is actually started.
-	startTime?: null | metav1.#Time @go(StartTime,*metav1.Time)
+	startTime?: metav1.#Time @go(StartTime,*metav1.Time)
 
 	// CompletionTime is the time the build completed.
-	completionTime?: null | metav1.#Time @go(CompletionTime,*metav1.Time)
+	completionTime?: metav1.#Time @go(CompletionTime,*metav1.Time)
 
 	// Steps describes the state of each build step container.
 	// +optional
@@ -238,8 +243,9 @@ import (
 	// RetriesStatus contains the history of TaskRunStatus in case of a retry in order to keep record of failures.
 	// All TaskRunStatus stored in RetriesStatus will have no date within the RetriesStatus as is redundant.
 	// +optional
-	// +listType=atomic
-	retriesStatus?: [...#TaskRunStatus] @go(RetriesStatus,[]TaskRunStatus)
+	// +kubebuilder:pruning:PreserveUnknownFields
+	// +kubebuilder:validation:Schemaless
+	retriesStatus?: #RetriesStatus @go(RetriesStatus)
 
 	// Results are the list of results written out by the task's containers
 	// +optional
@@ -248,8 +254,7 @@ import (
 
 	// Artifacts are the list of artifacts written out by the task's containers
 	// +optional
-	// +listType=atomic
-	artifacts?: null | #Artifacts @go(Artifacts,*Artifacts)
+	artifacts?: #Artifacts @go(Artifacts,*Artifacts)
 
 	// The list has one entry per sidecar in the manifest. Each entry is
 	// represents the imageid of the corresponding sidecar.
@@ -257,11 +262,11 @@ import (
 	sidecars?: [...#SidecarState] @go(Sidecars,[]SidecarState)
 
 	// TaskSpec contains the Spec from the dereferenced Task definition used to instantiate this TaskRun.
-	taskSpec?: null | #TaskSpec @go(TaskSpec,*TaskSpec)
+	taskSpec?: #TaskSpec @go(TaskSpec,*TaskSpec)
 
 	// Provenance contains some key authenticated metadata about how a software artifact was built (what sources, what inputs/outputs, etc.).
 	// +optional
-	provenance?: null | #Provenance @go(Provenance,*Provenance)
+	provenance?: #Provenance @go(Provenance,*Provenance)
 
 	// SpanContext contains tracing span context fields
 	spanContext?: {[string]: string} @go(SpanContext,map[string]string)
@@ -292,8 +297,8 @@ import (
 	container?: string @go(Container)
 	imageID?:   string @go(ImageID)
 	results?: [...#TaskRunResult] @go(Results,[]TaskRunStepResult)
-	provenance?:        null | #Provenance @go(Provenance,*Provenance)
-	terminationReason?: string             @go(TerminationReason)
+	provenance?:        #Provenance @go(Provenance,*Provenance)
+	terminationReason?: string      @go(TerminationReason)
 	inputs?: [...#Artifact] @go(Inputs,[]TaskRunStepArtifact)
 	outputs?: [...#Artifact] @go(Outputs,[]TaskRunStepArtifact)
 }
@@ -311,6 +316,7 @@ import (
 // used to run the steps in a Task.
 //
 // +k8s:openapi-gen=true
+// +kubebuilder:storageversion
 #TaskRun: {
 	metav1.#TypeMeta
 

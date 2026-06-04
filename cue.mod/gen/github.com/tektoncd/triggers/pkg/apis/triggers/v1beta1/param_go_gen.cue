@@ -17,7 +17,7 @@ package v1beta1
 
 	// Default is the value a parameter takes if no input value via a Param is supplied.
 	// +optional
-	default?: null | string @go(Default,*string)
+	default?: string @go(Default,*string)
 }
 
 // Param defines a string value to be used for a ParamSpec with the same name.

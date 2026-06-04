@@ -26,6 +26,9 @@ import (
 	spec?: #TaskSpec @go(Spec)
 }
 
+// +listType=atomic
+#Volumes: [...corev1.#Volume]
+
 // TaskSpec defines the desired state of Task.
 #TaskSpec: {
 	// Resources is a list input and output resource to run the task
@@ -34,13 +37,12 @@ import (
 	//
 	// Deprecated: Unused, preserved only for backwards compatibility
 	// +optional
-	resources?: null | #TaskResources @go(Resources,*TaskResources)
+	resources?: #TaskResources @go(Resources,*TaskResources)
 
 	// Params is a list of input parameters required to run the task. Params
 	// must be supplied as inputs in TaskRuns unless they declare a default
 	// value.
 	// +optional
-	// +listType=atomic
 	params?: #ParamSpecs @go(Params)
 
 	// DisplayName is a user-facing name of the task that may be
@@ -60,12 +62,14 @@ import (
 
 	// Volumes is a collection of volumes that are available to mount into the
 	// steps of the build.
-	// +listType=atomic
-	volumes?: [...corev1.#Volume] @go(Volumes,[]corev1.Volume)
+	// See Pod.spec.volumes (API version: v1)
+	// +kubebuilder:pruning:PreserveUnknownFields
+	// +kubebuilder:validation:Schemaless
+	volumes?: #Volumes @go(Volumes)
 
 	// StepTemplate can be used as the basis for all step containers within the
 	// Task, so that the steps inherit settings on the base container.
-	stepTemplate?: null | #StepTemplate @go(StepTemplate,*StepTemplate)
+	stepTemplate?: #StepTemplate @go(StepTemplate,*StepTemplate)
 
 	// Sidecars are run alongside the Task's step containers. They begin before
 	// the steps start and end after the steps complete.

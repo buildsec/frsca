@@ -25,14 +25,13 @@ import (
 // CustomRunSpec defines the desired state of CustomRun
 #CustomRunSpec: {
 	// +optional
-	customRef?: null | #TaskRef @go(CustomRef,*TaskRef)
+	customRef?: #TaskRef @go(CustomRef,*TaskRef)
 
 	// Spec is a specification of a custom task
 	// +optional
-	customSpec?: null | #EmbeddedCustomRunSpec @go(CustomSpec,*EmbeddedCustomRunSpec)
+	customSpec?: #EmbeddedCustomRunSpec @go(CustomSpec,*EmbeddedCustomRunSpec)
 
 	// +optional
-	// +listType=atomic
 	params?: #Params @go(Params)
 
 	// Used for cancelling a customrun (and maybe more later on)
@@ -53,7 +52,7 @@ import (
 	// Time after which the custom-task times out.
 	// Refer Go's ParseDuration documentation for expected format: https://golang.org/pkg/time/#ParseDuration
 	// +optional
-	timeout?: null | metav1.#Duration @go(Timeout,*metav1.Duration)
+	timeout?: metav1.#Duration @go(Timeout,*metav1.Duration)
 
 	// Workspaces is a list of WorkspaceBindings from volumes to workspaces.
 	// +optional

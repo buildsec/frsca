@@ -24,7 +24,9 @@ package v1beta1
 
 	// Value the expression used to retrieve the value of the result from an underlying Step.
 	// +optional
-	value?: null | #ParamValue @go(Value,*ResultValue)
+	// +kubebuilder:pruning:PreserveUnknownFields
+	// +kubebuilder:validation:Schemaless
+	value?: #ParamValue @go(Value,*ResultValue)
 }
 
 // TaskRunResult used to describe the results of a task
@@ -38,6 +40,8 @@ package v1beta1
 	type?: #ResultsType @go(Type)
 
 	// Value the given value of the result
+	// +kubebuilder:pruning:PreserveUnknownFields
+	// +kubebuilder:validation:Schemaless
 	value: #ParamValue @go(Value,ResultValue)
 }
 

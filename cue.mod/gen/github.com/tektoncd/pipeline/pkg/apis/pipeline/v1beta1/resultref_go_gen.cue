@@ -6,10 +6,10 @@ package v1beta1
 
 // ResultRef is a type that represents a reference to a task run result
 #ResultRef: {
-	pipelineTask:  string     @go(PipelineTask)
-	result:        string     @go(Result)
-	resultsIndex?: null | int @go(ResultsIndex,*int)
-	property:      string     @go(Property)
+	pipelineTask:  string @go(PipelineTask)
+	result:        string @go(Result)
+	resultsIndex?: int    @go(ResultsIndex,*int)
+	property:      string @go(Property)
 }
 
 // ResultTaskPart Constant used to define the "tasks" part of a pipeline result reference

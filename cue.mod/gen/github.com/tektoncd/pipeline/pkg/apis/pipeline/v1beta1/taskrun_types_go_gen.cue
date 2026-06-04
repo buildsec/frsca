@@ -15,27 +15,29 @@ import (
 // TaskRunSpec defines the desired state of TaskRun
 #TaskRunSpec: {
 	// +optional
-	debug?: null | #TaskRunDebug @go(Debug,*TaskRunDebug)
+	debug?: #TaskRunDebug @go(Debug,*TaskRunDebug)
 
 	// +optional
-	// +listType=atomic
 	params?: #Params @go(Params)
 
 	// Deprecated: Unused, preserved only for backwards compatibility
 	// +optional
-	resources?: null | #TaskRunResources @go(Resources,*TaskRunResources)
+	resources?: #TaskRunResources @go(Resources,*TaskRunResources)
 
 	// +optional
 	serviceAccountName?: string @go(ServiceAccountName)
 
 	// no more than one of the TaskRef and TaskSpec may be specified.
 	// +optional
-	taskRef?: null | #TaskRef @go(TaskRef,*TaskRef)
+	taskRef?: #TaskRef @go(TaskRef,*TaskRef)
 
-	// Specifying PipelineSpec can be disabled by setting
-	// `disable-inline-spec` feature flag..
+	// Specifying TaskSpec can be disabled by setting
+	// `disable-inline-spec` feature flag.
+	// See Task.spec (API version: tekton.dev/v1beta1)
 	// +optional
-	taskSpec?: null | #TaskSpec @go(TaskSpec,*TaskSpec)
+	// +kubebuilder:pruning:PreserveUnknownFields
+	// +kubebuilder:validation:Schemaless
+	taskSpec?: #TaskSpec @go(TaskSpec,*TaskSpec)
 
 	// Used for cancelling a TaskRun (and maybe more later on)
 	// +optional
@@ -52,10 +54,10 @@ import (
 	// Time after which one retry attempt times out. Defaults to 1 hour.
 	// Refer Go's ParseDuration documentation for expected format: https://golang.org/pkg/time/#ParseDuration
 	// +optional
-	timeout?: null | metav1.#Duration @go(Timeout,*metav1.Duration)
+	timeout?: metav1.#Duration @go(Timeout,*metav1.Duration)
 
 	// PodTemplate holds pod specific configuration
-	podTemplate?: null | pod.#Template @go(PodTemplate,*pod.PodTemplate)
+	podTemplate?: pod.#Template @go(PodTemplate,*pod.PodTemplate)
 
 	// Workspaces is a list of WorkspaceBindings from volumes to workspaces.
 	// +optional
@@ -79,7 +81,7 @@ import (
 	sidecarOverrides?: [...#TaskRunSidecarOverride] @go(SidecarOverrides,[]TaskRunSidecarOverride)
 
 	// Compute resources to use for this TaskRun
-	computeResources?: null | corev1.#ResourceRequirements @go(ComputeResources,*corev1.ResourceRequirements)
+	computeResources?: corev1.#ResourceRequirements @go(ComputeResources,*corev1.ResourceRequirements)
 }
 
 // TaskRunSpecStatus defines the TaskRun spec status the user can provide
@@ -109,7 +111,7 @@ import (
 // TaskRunDebug defines the breakpoint config for a particular TaskRun
 #TaskRunDebug: {
 	// +optional
-	breakpoints?: null | #TaskBreakpoints @go(Breakpoints,*TaskBreakpoints)
+	breakpoints?: #TaskBreakpoints @go(Breakpoints,*TaskBreakpoints)
 }
 
 // TaskBreakpoints defines the breakpoint config for a particular Task
@@ -203,6 +205,9 @@ import (
 // TaskRunReasonStopSidecarFailed indicates that the sidecar is not properly stopped.
 #TaskRunReasonStopSidecarFailed: "TaskRunStopSidecarFailed"
 
+// +listType=atomic
+#RetriesStatus: [...#TaskRunStatus]
+
 // TaskRunStatusFields holds the fields of TaskRun's status.  This is defined
 // separately and inlined so that other types can readily consume these fields
 // via duck typing.
@@ -211,10 +216,10 @@ import (
 	podName: string @go(PodName)
 
 	// StartTime is the time the build is actually started.
-	startTime?: null | metav1.#Time @go(StartTime,*metav1.Time)
+	startTime?: metav1.#Time @go(StartTime,*metav1.Time)
 
 	// CompletionTime is the time the build completed.
-	completionTime?: null | metav1.#Time @go(CompletionTime,*metav1.Time)
+	completionTime?: metav1.#Time @go(CompletionTime,*metav1.Time)
 
 	// Steps describes the state of each build step container.
 	// +optional
@@ -232,9 +237,11 @@ import (
 
 	// RetriesStatus contains the history of TaskRunStatus in case of a retry in order to keep record of failures.
 	// All TaskRunStatus stored in RetriesStatus will have no date within the RetriesStatus as is redundant.
+	// See TaskRun.status (API version: tekton.dev/v1beta1)
 	// +optional
-	// +listType=atomic
-	retriesStatus?: [...#TaskRunStatus] @go(RetriesStatus,[]TaskRunStatus)
+	// +kubebuilder:pruning:PreserveUnknownFields
+	// +kubebuilder:validation:Schemaless
+	retriesStatus?: #RetriesStatus @go(RetriesStatus)
 
 	// Results from Resources built during the TaskRun.
 	// This is tomb-stoned along with the removal of pipelineResources
@@ -254,11 +261,14 @@ import (
 	sidecars?: [...#SidecarState] @go(Sidecars,[]SidecarState)
 
 	// TaskSpec contains the Spec from the dereferenced Task definition used to instantiate this TaskRun.
-	taskSpec?: null | #TaskSpec @go(TaskSpec,*TaskSpec)
+	// See Task.spec (API version tekton.dev/v1beta1)
+	// +kubebuilder:pruning:PreserveUnknownFields
+	// +kubebuilder:validation:Schemaless
+	taskSpec?: #TaskSpec @go(TaskSpec,*TaskSpec)
 
 	// Provenance contains some key authenticated metadata about how a software artifact was built (what sources, what inputs/outputs, etc.).
 	// +optional
-	provenance?: null | #Provenance @go(Provenance,*Provenance)
+	provenance?: #Provenance @go(Provenance,*Provenance)
 
 	// SpanContext contains tracing span context fields
 	spanContext?: {[string]: string} @go(SpanContext,map[string]string)
@@ -289,7 +299,7 @@ import (
 	container?: string @go(ContainerName)
 	imageID?:   string @go(ImageID)
 	results?: [...#TaskRunResult] @go(Results,[]TaskRunStepResult)
-	provenance?: null | #Provenance @go(Provenance,*Provenance)
+	provenance?: #Provenance @go(Provenance,*Provenance)
 	inputs?: [...#Artifact] @go(Inputs,[]TaskRunStepArtifact)
 	outputs?: [...#Artifact] @go(Outputs,[]TaskRunStepArtifact)
 }
@@ -336,7 +346,7 @@ import (
 
 	// SentAt is the time at which the last attempt to send the event was made
 	// +optional
-	sentAt?: null | metav1.#Time @go(SentAt,*metav1.Time)
+	sentAt?: metav1.#Time @go(SentAt,*metav1.Time)
 
 	// Error is the text of error (if any)
 	message: string @go(Error)

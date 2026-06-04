@@ -35,7 +35,11 @@ import (
 #DefaultImagePullBackOffTimeout:         int & 0
 
 // Default maximum resolution timeout used by the resolution controller before timing out when exceeded
-#DefaultMaximumResolutionTimeout:          int & 60000000000
+#DefaultMaximumResolutionTimeout:  int & 60000000000
+#DefaultSidecarLogPollingInterval: int & 100000000
+
+// DefaultStepRefConcurrencyLimit is the default concurrency limit for resolving step references.
+#DefaultStepRefConcurrencyLimit:           5
 _#defaultTimeoutMinutesKey:                "default-timeout-minutes"
 _#defaultServiceAccountKey:                "default-service-account"
 _#defaultManagedByLabelValueKey:           "default-managed-by-label-value"
@@ -49,6 +53,8 @@ _#defaultResolverTypeKey:                  "default-resolver-type"
 _#defaultContainerResourceRequirementsKey: "default-container-resource-requirements"
 _#defaultImagePullBackOffTimeout:          "default-imagepullbackoff-timeout"
 _#defaultMaximumResolutionTimeout:         "default-maximum-resolution-timeout"
+_#defaultSidecarLogPollingIntervalKey:     "default-sidecar-log-polling-interval"
+#DefaultStepRefConcurrencyLimitKey:        "default-step-ref-concurrency-limit"
 
 // Defaults holds the default configurations
 // +k8s:deepcopy-gen=true
@@ -66,4 +72,10 @@ _#defaultMaximumResolutionTimeout:         "default-maximum-resolution-timeout"
 	DefaultContainerResourceRequirements: {[string]: corev1.#ResourceRequirements} @go(,map[string]corev1.ResourceRequirements)
 	DefaultImagePullBackOffTimeout:  int @go(,time.Duration)
 	DefaultMaximumResolutionTimeout: int @go(,time.Duration)
+
+	// DefaultSidecarLogPollingInterval specifies how frequently (as a time.Duration) the Tekton sidecar log results container polls for step completion files.
+	// This value is loaded from the 'sidecar-log-polling-interval' key in the config-defaults ConfigMap.
+	// It is used to control the responsiveness and resource usage of the sidecar in both production and test environments.
+	DefaultSidecarLogPollingInterval: int @go(,time.Duration)
+	DefaultStepRefConcurrencyLimit:   int
 }

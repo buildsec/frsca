@@ -15,6 +15,7 @@ import (
 // output resources the Task requires.
 //
 // +k8s:openapi-gen=true
+// +kubebuilder:storageversion
 #Task: {
 	metav1.#TypeMeta
 
@@ -26,13 +27,15 @@ import (
 	spec?: #TaskSpec @go(Spec)
 }
 
+// +listType=atomic
+#Volumes: [...corev1.#Volume]
+
 // TaskSpec defines the desired state of Task.
 #TaskSpec: {
 	// Params is a list of input parameters required to run the task. Params
 	// must be supplied as inputs in TaskRuns unless they declare a default
 	// value.
 	// +optional
-	// +listType=atomic
 	params?: #ParamSpecs @go(Params)
 
 	// DisplayName is a user-facing name of the task that may be
@@ -52,12 +55,14 @@ import (
 
 	// Volumes is a collection of volumes that are available to mount into the
 	// steps of the build.
-	// +listType=atomic
-	volumes?: [...corev1.#Volume] @go(Volumes,[]corev1.Volume)
+	// See Pod.spec.volumes (API version: v1)
+	// +kubebuilder:pruning:PreserveUnknownFields
+	// +kubebuilder:validation:Schemaless
+	volumes?: #Volumes @go(Volumes)
 
 	// StepTemplate can be used as the basis for all step containers within the
 	// Task, so that the steps inherit settings on the base container.
-	stepTemplate?: null | #StepTemplate @go(StepTemplate,*StepTemplate)
+	stepTemplate?: #StepTemplate @go(StepTemplate,*StepTemplate)
 
 	// Sidecars are run alongside the Task's step containers. They begin before
 	// the steps start and end after the steps complete.
@@ -82,3 +87,9 @@ import (
 	metadata?: metav1.#ListMeta @go(ListMeta)
 	items: [...#Task] @go(Items,[]Task)
 }
+
+// StepList is a list of Steps
+#StepList: [...#Step]
+
+// SidecarList is a list of Sidecars
+#SidecarList: [...#Sidecar]

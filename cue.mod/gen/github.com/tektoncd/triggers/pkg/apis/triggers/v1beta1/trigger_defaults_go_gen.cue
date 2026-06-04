@@ -4,4 +4,4 @@
 
 package v1beta1
 
-_#triggerSpecBindingArray: [...null | #TriggerSpecBinding]
+_#triggerSpecBindingArray: [...#TriggerSpecBinding]

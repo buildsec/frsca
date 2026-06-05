@@ -17,14 +17,14 @@ import (
 // TriggerSpecTemplate to then create resources from.
 #TriggerSpec: {
 	// +listType=atomic
-	bindings: [...null | #TriggerSpecBinding] @go(Bindings,[]*TriggerSpecBinding)
+	bindings: [...#TriggerSpecBinding] @go(Bindings,[]*TriggerSpecBinding)
 	template: #TriggerSpecTemplate @go(Template)
 
 	// +optional
 	name?: string @go(Name)
 
 	// +listType=atomic
-	interceptors?: [...null | #TriggerInterceptor] @go(Interceptors,[]*TriggerInterceptor)
+	interceptors?: [...#TriggerInterceptor] @go(Interceptors,[]*TriggerInterceptor)
 
 	// ServiceAccountName optionally associates credentials with each trigger;
 	// Unlike EventListeners, this should be scoped to the same namespace
@@ -34,9 +34,9 @@ import (
 }
 
 #TriggerSpecTemplate: {
-	ref?:        null | string               @go(Ref,*string)
-	apiversion?: string                      @go(APIVersion)
-	spec?:       null | #TriggerTemplateSpec @go(Spec,*TriggerTemplateSpec)
+	ref?:        string               @go(Ref,*string)
+	apiversion?: string               @go(APIVersion)
+	spec?:       #TriggerTemplateSpec @go(Spec,*TriggerTemplateSpec)
 }
 
 #TriggerSpecBinding: {
@@ -47,7 +47,7 @@ import (
 	// Value is the value of the binding param. Can contain JSONPath
 	// Has to be pointer since "" is a valid value
 	// Required if Name is also specified.
-	value?: null | string @go(Value,*string)
+	value?: string @go(Value,*string)
 
 	// Ref is a reference to a TriggerBinding kind.
 	// Mutually exclusive with Name
@@ -78,7 +78,7 @@ import (
 // TriggerInterceptor provides a hook to intercept and pre-process events
 #TriggerInterceptor: {
 	// Optional name to identify the current interceptor configuration
-	name?: null | string @go(Name,*string)
+	name?: string @go(Name,*string)
 
 	// Ref refers to the Interceptor to use
 	ref: #InterceptorRef @go(Ref)
@@ -88,7 +88,7 @@ import (
 	params?: [...#InterceptorParams] @go(Params,[]InterceptorParams)
 
 	// WebhookInterceptor refers to an old style webhook interceptor service
-	webhook?: null | #WebhookInterceptor @go(Webhook,*WebhookInterceptor)
+	webhook?: #WebhookInterceptor @go(Webhook,*WebhookInterceptor)
 }
 
 // InterceptorParams defines a key-value pair that can be passed on an interceptor
@@ -129,10 +129,10 @@ import (
 	// ObjectRef is a reference to an object that will resolve to a cluster DNS
 	// name to use as the EventInterceptor. Either objectRef or url can be specified
 	// +optional
-	objectRef?: null | corev1.#ObjectReference @go(ObjectRef,*corev1.ObjectReference)
+	objectRef?: corev1.#ObjectReference @go(ObjectRef,*corev1.ObjectReference)
 
 	// +optional
-	url?: null | apis.#URL @go(URL,*apis.URL)
+	url?: apis.#URL @go(URL,*apis.URL)
 
 	// Header is a group of key-value pairs that can be appended to the
 	// interceptor request headers. This allows the interceptor to make

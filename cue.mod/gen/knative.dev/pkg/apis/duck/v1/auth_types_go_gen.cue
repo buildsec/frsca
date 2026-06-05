@@ -4,10 +4,40 @@
 
 package v1
 
+import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
 // AuthStatus is meant to provide the generated service account name
 // in the resource status.
 #AuthStatus: {
 	// ServiceAccountName is the name of the generated service account
 	// used for this components OIDC authentication.
 	serviceAccountName?: null | string @go(ServiceAccountName,*string)
+
+	// ServiceAccountNames is the list of names of the generated service accounts
+	// used for this components OIDC authentication. This list can have len() > 1,
+	// when the component uses multiple identities (e.g. in case of a Parallel).
+	serviceAccountNames?: [...string] @go(ServiceAccountNames,[]string)
+}
+
+// AuthenticatableType is a skeleton type wrapping AuthStatus in the manner we expect
+// resource writers defining compatible resources to embed it.  We will
+// typically use this type to deserialize AuthenticatableType ObjectReferences and
+// access the AuthenticatableType data.  This is not a real resource.
+#AuthenticatableType: {
+	metav1.#TypeMeta
+	metadata?: metav1.#ObjectMeta     @go(ObjectMeta)
+	status:    #AuthenticatableStatus @go(Status)
+}
+
+#AuthenticatableStatus: {
+	// Auth contains the service account name for the subscription
+	// +optional
+	auth?: null | #AuthStatus @go(Auth,*AuthStatus)
+}
+
+// AuthenticatableTypeList is a list of AuthenticatableType resources
+#AuthenticatableTypeList: {
+	metav1.#TypeMeta
+	metadata: metav1.#ListMeta @go(ListMeta)
+	items: [...#AuthenticatableType] @go(Items,[]AuthenticatableType)
 }

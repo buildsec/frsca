@@ -11,10 +11,11 @@ _#cfgKey: {}
 // Config holds the collection of configurations that we attach to contexts.
 // +k8s:deepcopy-gen=false
 #Config: {
-	Defaults?:     null | #Defaults       @go(,*Defaults)
-	FeatureFlags?: null | #FeatureFlags   @go(,*FeatureFlags)
-	Metrics?:      null | #Metrics        @go(,*Metrics)
-	SpireConfig?:  null | sc.#SpireConfig @go(,*sc.SpireConfig)
-	Events?:       null | #Events         @go(,*Events)
-	Tracing?:      null | #Tracing        @go(,*Tracing)
+	Defaults?:               null | #Defaults               @go(,*Defaults)
+	FeatureFlags?:           null | #FeatureFlags           @go(,*FeatureFlags)
+	Metrics?:                null | #Metrics                @go(,*Metrics)
+	SpireConfig?:            null | sc.#SpireConfig         @go(,*sc.SpireConfig)
+	Events?:                 null | #Events                 @go(,*Events)
+	Tracing?:                null | #Tracing                @go(,*Tracing)
+	WaitExponentialBackoff?: null | #WaitExponentialBackoff @go(,*WaitExponentialBackoff)
 }

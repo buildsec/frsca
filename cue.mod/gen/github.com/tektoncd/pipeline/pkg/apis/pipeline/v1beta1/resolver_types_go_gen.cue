@@ -21,6 +21,5 @@ package v1beta1
 	// "repo" or "path" but the set of params ultimately depends on
 	// the chosen resolver.
 	// +optional
-	// +listType=atomic
 	params?: #Params @go(Params)
 }

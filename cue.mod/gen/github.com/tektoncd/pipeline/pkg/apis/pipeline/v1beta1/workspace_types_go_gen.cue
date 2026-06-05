@@ -40,35 +40,38 @@ import corev1 "k8s.io/api/core/v1"
 
 	// VolumeClaimTemplate is a template for a claim that will be created in the same namespace.
 	// The PipelineRun controller is responsible for creating a unique claim for each instance of PipelineRun.
+	// See PersistentVolumeClaim (API version: v1)
 	// +optional
-	volumeClaimTemplate?: null | corev1.#PersistentVolumeClaim @go(VolumeClaimTemplate,*corev1.PersistentVolumeClaim)
+	// +kubebuilder:pruning:PreserveUnknownFields
+	// +kubebuilder:validation:Schemaless
+	volumeClaimTemplate?: corev1.#PersistentVolumeClaim @go(VolumeClaimTemplate,*corev1.PersistentVolumeClaim)
 
 	// PersistentVolumeClaimVolumeSource represents a reference to a
 	// PersistentVolumeClaim in the same namespace. Either this OR EmptyDir can be used.
 	// +optional
-	persistentVolumeClaim?: null | corev1.#PersistentVolumeClaimVolumeSource @go(PersistentVolumeClaim,*corev1.PersistentVolumeClaimVolumeSource)
+	persistentVolumeClaim?: corev1.#PersistentVolumeClaimVolumeSource @go(PersistentVolumeClaim,*corev1.PersistentVolumeClaimVolumeSource)
 
 	// EmptyDir represents a temporary directory that shares a Task's lifetime.
 	// More info: https://kubernetes.io/docs/concepts/storage/volumes#emptydir
 	// Either this OR PersistentVolumeClaim can be used.
 	// +optional
-	emptyDir?: null | corev1.#EmptyDirVolumeSource @go(EmptyDir,*corev1.EmptyDirVolumeSource)
+	emptyDir?: corev1.#EmptyDirVolumeSource @go(EmptyDir,*corev1.EmptyDirVolumeSource)
 
 	// ConfigMap represents a configMap that should populate this workspace.
 	// +optional
-	configMap?: null | corev1.#ConfigMapVolumeSource @go(ConfigMap,*corev1.ConfigMapVolumeSource)
+	configMap?: corev1.#ConfigMapVolumeSource @go(ConfigMap,*corev1.ConfigMapVolumeSource)
 
 	// Secret represents a secret that should populate this workspace.
 	// +optional
-	secret?: null | corev1.#SecretVolumeSource @go(Secret,*corev1.SecretVolumeSource)
+	secret?: corev1.#SecretVolumeSource @go(Secret,*corev1.SecretVolumeSource)
 
 	// Projected represents a projected volume that should populate this workspace.
 	// +optional
-	projected?: null | corev1.#ProjectedVolumeSource @go(Projected,*corev1.ProjectedVolumeSource)
+	projected?: corev1.#ProjectedVolumeSource @go(Projected,*corev1.ProjectedVolumeSource)
 
 	// CSI (Container Storage Interface) represents ephemeral storage that is handled by certain external CSI drivers.
 	// +optional
-	csi?: null | corev1.#CSIVolumeSource @go(CSI,*corev1.CSIVolumeSource)
+	csi?: corev1.#CSIVolumeSource @go(CSI,*corev1.CSIVolumeSource)
 }
 
 // WorkspacePipelineDeclaration creates a named slot in a Pipeline that a PipelineRun

@@ -35,11 +35,16 @@ import (
 	results?: [...#CustomRunResult] @go(Results,[]CustomRunResult)
 
 	// RetriesStatus contains the history of CustomRunStatus, in case of a retry.
+	// See CustomRun.status (API version: tekton.dev/v1beta1)
 	// +optional
+	// +kubebuilder:pruning:PreserveUnknownFields
+	// +kubebuilder:validation:Schemaless
 	retriesStatus?: [...#CustomRunStatus] @go(RetriesStatus,[]CustomRunStatus)
 
 	// ExtraFields holds arbitrary fields provided by the custom task
 	// controller.
+	// +kubebuilder:pruning:PreserveUnknownFields
+	// +kubebuilder:validation:Schemaless
 	extraFields?: runtime.#RawExtension @go(ExtraFields)
 }
 

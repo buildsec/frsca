@@ -14,6 +14,7 @@ import (
 // The Step can only reference it from the cluster or using remote resolution.
 //
 // +k8s:openapi-gen=true
+// +kubebuilder:storageversion
 #StepAction: {
 	metav1.#TypeMeta
 
@@ -34,6 +35,9 @@ import (
 	metadata?: metav1.#ListMeta @go(ListMeta)
 	items: [...#StepAction] @go(Items,[]StepAction)
 }
+
+// +listType=atomic
+#Args: [...string]
 
 // StepActionSpec contains the actionable components of a step.
 #StepActionSpec: {
@@ -68,8 +72,7 @@ import (
 	// of whether the variable exists or not. Cannot be updated.
 	// More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell
 	// +optional
-	// +listType=atomic
-	args?: [...string] @go(Args,[]string) @protobuf(4,bytes,rep)
+	args?: #Args @go(Args) @protobuf(4,bytes,rep)
 
 	// List of environment variables to set in the container.
 	// Cannot be updated.
@@ -95,7 +98,6 @@ import (
 	// Params is a list of input parameters required to run the stepAction.
 	// Params must be supplied as inputs in Steps unless they declare a defaultvalue.
 	// +optional
-	// +listType=atomic
 	params?: v1.#ParamSpecs @go(Params)
 
 	// Results are values that this StepAction can output
@@ -108,7 +110,7 @@ import (
 	// More info: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
 	// The value set in StepAction will take precedence over the value from Task.
 	// +optional
-	securityContext?: null | corev1.#SecurityContext @go(SecurityContext,*corev1.SecurityContext) @protobuf(15,bytes,opt)
+	securityContext?: corev1.#SecurityContext @go(SecurityContext,*corev1.SecurityContext) @protobuf(15,bytes,opt)
 
 	// Volumes to mount into the Step's filesystem.
 	// Cannot be updated.

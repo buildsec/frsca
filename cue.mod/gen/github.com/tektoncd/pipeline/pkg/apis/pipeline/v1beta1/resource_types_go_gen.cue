@@ -143,12 +143,12 @@ import (
 	// ResourceRef is a reference to the instance of the actual PipelineResource
 	// that should be used
 	// +optional
-	resourceRef?: null | #PipelineResourceRef @go(ResourceRef,*PipelineResourceRef)
+	resourceRef?: #PipelineResourceRef @go(ResourceRef,*PipelineResourceRef)
 
 	// ResourceSpec is specification of a resource that should be created and
 	// consumed by the task
 	// +optional
-	resourceSpec?: null | resource.#PipelineResourceSpec @go(ResourceSpec,*resource.PipelineResourceSpec)
+	resourceSpec?: resource.#PipelineResourceSpec @go(ResourceSpec,*resource.PipelineResourceSpec)
 }
 
 // PipelineTaskResources allows a Pipeline to declare how its DeclaredPipelineResources

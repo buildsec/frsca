@@ -34,6 +34,7 @@ import (
 // Pipeline describes a list of Tasks to execute. It expresses how outputs
 // of tasks feed into inputs of subsequent tasks.
 // +k8s:openapi-gen=true
+// +kubebuilder:storageversion
 #Pipeline: {
 	metav1.#TypeMeta
 
@@ -63,7 +64,6 @@ import (
 
 	// Params declares a list of input parameters that must be supplied when
 	// this Pipeline is run.
-	// +listType=atomic
 	params?: #ParamSpecs @go(Params)
 
 	// Workspaces declares a set of named workspaces that are expected to be
@@ -99,6 +99,8 @@ import (
 	description?: string @go(Description)
 
 	// Value the expression used to retrieve the value
+	// +kubebuilder:pruning:PreserveUnknownFields
+	// +kubebuilder:validation:Schemaless
 	value: #ParamValue @go(Value,ResultValue)
 }
 
@@ -145,13 +147,16 @@ import (
 
 	// TaskRef is a reference to a task definition.
 	// +optional
-	taskRef?: null | #TaskRef @go(TaskRef,*TaskRef)
+	taskRef?: #TaskRef @go(TaskRef,*TaskRef)
 
 	// TaskSpec is a specification of a task
 	// Specifying TaskSpec can be disabled by setting
-	// `disable-inline-spec` feature flag..
+	// `disable-inline-spec` feature flag.
+	// See Task.spec (API version: tekton.dev/v1)
 	// +optional
-	taskSpec?: null | #EmbeddedTask @go(TaskSpec,*EmbeddedTask)
+	// +kubebuilder:pruning:PreserveUnknownFields
+	// +kubebuilder:validation:Schemaless
+	taskSpec?: #EmbeddedTask @go(TaskSpec,*EmbeddedTask)
 
 	// When is a list of when expressions that need to be true for the task to run
 	// +optional
@@ -169,12 +174,11 @@ import (
 
 	// Parameters declares parameters passed to this task.
 	// +optional
-	// +listType=atomic
 	params?: #Params @go(Params)
 
 	// Matrix declares parameters used to fan out this task.
 	// +optional
-	matrix?: null | #Matrix @go(Matrix,*Matrix)
+	matrix?: #Matrix @go(Matrix,*Matrix)
 
 	// Workspaces maps workspaces from the pipeline spec to the workspaces
 	// declared in the Task.
@@ -182,22 +186,25 @@ import (
 	// +listType=atomic
 	workspaces?: [...#WorkspacePipelineTaskBinding] @go(Workspaces,[]WorkspacePipelineTaskBinding)
 
-	// Time after which the TaskRun times out. Defaults to 1 hour.
+	// Duration after which the TaskRun times out. Defaults to 1 hour.
 	// Refer Go's ParseDuration documentation for expected format: https://golang.org/pkg/time/#ParseDuration
 	// +optional
-	timeout?: null | metav1.#Duration @go(Timeout,*metav1.Duration)
+	timeout?: metav1.#Duration @go(Timeout,*metav1.Duration)
 
 	// PipelineRef is a reference to a pipeline definition
 	// Note: PipelineRef is in preview mode and not yet supported
 	// +optional
-	pipelineRef?: null | #PipelineRef @go(PipelineRef,*PipelineRef)
+	pipelineRef?: #PipelineRef @go(PipelineRef,*PipelineRef)
 
 	// PipelineSpec is a specification of a pipeline
 	// Note: PipelineSpec is in preview mode and not yet supported
 	// Specifying PipelineSpec can be disabled by setting
-	// `disable-inline-spec` feature flag..
+	// `disable-inline-spec` feature flag.
+	// See Pipeline.spec (API version: tekton.dev/v1)
 	// +optional
-	pipelineSpec?: null | #PipelineSpec @go(PipelineSpec,*PipelineSpec)
+	// +kubebuilder:pruning:PreserveUnknownFields
+	// +kubebuilder:validation:Schemaless
+	pipelineSpec?: #PipelineSpec @go(PipelineSpec,*PipelineSpec)
 
 	// OnError defines the exiting behavior of a PipelineRun on error
 	// can be set to [ continue | stopAndFail ]

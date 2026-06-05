@@ -117,7 +117,7 @@ import (
 	// Deprecated: This field will be removed in a future release.
 	//
 	// +optional
-	livenessProbe?: null | corev1.#Probe @go(DeprecatedLivenessProbe,*corev1.Probe) @protobuf(10,bytes,opt)
+	livenessProbe?: corev1.#Probe @go(DeprecatedLivenessProbe,*corev1.Probe) @protobuf(10,bytes,opt)
 
 	// Periodic probe of container service readiness.
 	// Step will be removed from service endpoints if the probe fails.
@@ -127,7 +127,7 @@ import (
 	// Deprecated: This field will be removed in a future release.
 	//
 	// +optional
-	readinessProbe?: null | corev1.#Probe @go(DeprecatedReadinessProbe,*corev1.Probe) @protobuf(11,bytes,opt)
+	readinessProbe?: corev1.#Probe @go(DeprecatedReadinessProbe,*corev1.Probe) @protobuf(11,bytes,opt)
 
 	// DeprecatedStartupProbe indicates that the Pod this Step runs in has successfully initialized.
 	// If specified, no other probes are executed until this completes successfully.
@@ -140,7 +140,7 @@ import (
 	// Deprecated: This field will be removed in a future release.
 	//
 	// +optional
-	startupProbe?: null | corev1.#Probe @go(DeprecatedStartupProbe,*corev1.Probe) @protobuf(22,bytes,opt)
+	startupProbe?: corev1.#Probe @go(DeprecatedStartupProbe,*corev1.Probe) @protobuf(22,bytes,opt)
 
 	// Actions that the management system should take in response to container lifecycle events.
 	// Cannot be updated.
@@ -148,7 +148,7 @@ import (
 	// Deprecated: This field will be removed in a future release.
 	//
 	// +optional
-	lifecycle?: null | corev1.#Lifecycle @go(DeprecatedLifecycle,*corev1.Lifecycle) @protobuf(12,bytes,opt)
+	lifecycle?: corev1.#Lifecycle @go(DeprecatedLifecycle,*corev1.Lifecycle) @protobuf(12,bytes,opt)
 
 	// Deprecated: This field will be removed in a future release and can't be meaningfully used.
 	// +optional
@@ -170,7 +170,7 @@ import (
 	// If set, the fields of SecurityContext override the equivalent fields of PodSecurityContext.
 	// More info: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
 	// +optional
-	securityContext?: null | corev1.#SecurityContext @go(SecurityContext,*corev1.SecurityContext) @protobuf(15,bytes,opt)
+	securityContext?: corev1.#SecurityContext @go(SecurityContext,*corev1.SecurityContext) @protobuf(15,bytes,opt)
 
 	// Whether this container should allocate a buffer for stdin in the container runtime. If this
 	// is not set, reads from stdin in the container will always result in EOF.
@@ -211,7 +211,7 @@ import (
 	// Timeout is the time after which the step times out. Defaults to never.
 	// Refer to Go's ParseDuration documentation for expected format: https://golang.org/pkg/time/#ParseDuration
 	// +optional
-	timeout?: null | metav1.#Duration @go(Timeout,*metav1.Duration)
+	timeout?: metav1.#Duration @go(Timeout,*metav1.Duration)
 
 	// This is an alpha field. You must set the "enable-api-fields" feature flag to "alpha"
 	// for this field to be supported.
@@ -230,24 +230,21 @@ import (
 
 	// Stores configuration for the stdout stream of the step.
 	// +optional
-	stdoutConfig?: null | #StepOutputConfig @go(StdoutConfig,*StepOutputConfig)
+	stdoutConfig?: #StepOutputConfig @go(StdoutConfig,*StepOutputConfig)
 
 	// Stores configuration for the stderr stream of the step.
 	// +optional
-	stderrConfig?: null | #StepOutputConfig @go(StderrConfig,*StepOutputConfig)
+	stderrConfig?: #StepOutputConfig @go(StderrConfig,*StepOutputConfig)
 
 	// Contains the reference to an existing StepAction.
 	//+optional
-	ref?: null | #Ref @go(Ref,*Ref)
+	ref?: #Ref @go(Ref,*Ref)
 
 	// Params declares parameters passed to this step action.
 	// +optional
-	// +listType=atomic
 	params?: #Params @go(Params)
 
 	// Results declares StepResults produced by the Step.
-	//
-	// This is field is at an ALPHA stability level and gated by "enable-step-actions" feature flag.
 	//
 	// It can be used in an inlined Step when used to store Results to $(step.results.resultName.path).
 	// It cannot be used when referencing StepActions using [v1beta1.Step.Ref].
@@ -402,7 +399,7 @@ import (
 	// Deprecated: This field will be removed in a future release.
 	//
 	// +optional
-	livenessProbe?: null | corev1.#Probe @go(DeprecatedLivenessProbe,*corev1.Probe) @protobuf(10,bytes,opt)
+	livenessProbe?: corev1.#Probe @go(DeprecatedLivenessProbe,*corev1.Probe) @protobuf(10,bytes,opt)
 
 	// Periodic probe of container service readiness.
 	// Container will be removed from service endpoints if the probe fails.
@@ -412,7 +409,7 @@ import (
 	// Deprecated: This field will be removed in a future release.
 	//
 	// +optional
-	readinessProbe?: null | corev1.#Probe @go(DeprecatedReadinessProbe,*corev1.Probe) @protobuf(11,bytes,opt)
+	readinessProbe?: corev1.#Probe @go(DeprecatedReadinessProbe,*corev1.Probe) @protobuf(11,bytes,opt)
 
 	// DeprecatedStartupProbe indicates that the Pod has successfully initialized.
 	// If specified, no other probes are executed until this completes successfully.
@@ -425,7 +422,7 @@ import (
 	// Deprecated: This field will be removed in a future release.
 	//
 	// +optional
-	startupProbe?: null | corev1.#Probe @go(DeprecatedStartupProbe,*corev1.Probe) @protobuf(22,bytes,opt)
+	startupProbe?: corev1.#Probe @go(DeprecatedStartupProbe,*corev1.Probe) @protobuf(22,bytes,opt)
 
 	// Actions that the management system should take in response to container lifecycle events.
 	// Cannot be updated.
@@ -433,7 +430,7 @@ import (
 	// Deprecated: This field will be removed in a future release.
 	//
 	// +optional
-	lifecycle?: null | corev1.#Lifecycle @go(DeprecatedLifecycle,*corev1.Lifecycle) @protobuf(12,bytes,opt)
+	lifecycle?: corev1.#Lifecycle @go(DeprecatedLifecycle,*corev1.Lifecycle) @protobuf(12,bytes,opt)
 
 	// Deprecated: This field will be removed in a future release and cannot be meaningfully used.
 	// +optional
@@ -455,7 +452,7 @@ import (
 	// If set, the fields of SecurityContext override the equivalent fields of PodSecurityContext.
 	// More info: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
 	// +optional
-	securityContext?: null | corev1.#SecurityContext @go(SecurityContext,*corev1.SecurityContext) @protobuf(15,bytes,opt)
+	securityContext?: corev1.#SecurityContext @go(SecurityContext,*corev1.SecurityContext) @protobuf(15,bytes,opt)
 
 	// Whether this Step should allocate a buffer for stdin in the container runtime. If this
 	// is not set, reads from stdin in the Step will always result in EOF.
@@ -590,14 +587,14 @@ import (
 	// Cannot be updated.
 	// More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
 	// +optional
-	livenessProbe?: null | corev1.#Probe @go(LivenessProbe,*corev1.Probe) @protobuf(10,bytes,opt)
+	livenessProbe?: corev1.#Probe @go(LivenessProbe,*corev1.Probe) @protobuf(10,bytes,opt)
 
 	// Periodic probe of Sidecar service readiness.
 	// Container will be removed from service endpoints if the probe fails.
 	// Cannot be updated.
 	// More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
 	// +optional
-	readinessProbe?: null | corev1.#Probe @go(ReadinessProbe,*corev1.Probe) @protobuf(11,bytes,opt)
+	readinessProbe?: corev1.#Probe @go(ReadinessProbe,*corev1.Probe) @protobuf(11,bytes,opt)
 
 	// StartupProbe indicates that the Pod the Sidecar is running in has successfully initialized.
 	// If specified, no other probes are executed until this completes successfully.
@@ -607,12 +604,12 @@ import (
 	// This cannot be updated.
 	// More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
 	// +optional
-	startupProbe?: null | corev1.#Probe @go(StartupProbe,*corev1.Probe) @protobuf(22,bytes,opt)
+	startupProbe?: corev1.#Probe @go(StartupProbe,*corev1.Probe) @protobuf(22,bytes,opt)
 
 	// Actions that the management system should take in response to Sidecar lifecycle events.
 	// Cannot be updated.
 	// +optional
-	lifecycle?: null | corev1.#Lifecycle @go(Lifecycle,*corev1.Lifecycle) @protobuf(12,bytes,opt)
+	lifecycle?: corev1.#Lifecycle @go(Lifecycle,*corev1.Lifecycle) @protobuf(12,bytes,opt)
 
 	// Optional: Path at which the file to which the Sidecar's termination message
 	// will be written is mounted into the Sidecar's filesystem.
@@ -646,7 +643,7 @@ import (
 	// If set, the fields of SecurityContext override the equivalent fields of PodSecurityContext.
 	// More info: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
 	// +optional
-	securityContext?: null | corev1.#SecurityContext @go(SecurityContext,*corev1.SecurityContext) @protobuf(15,bytes,opt)
+	securityContext?: corev1.#SecurityContext @go(SecurityContext,*corev1.SecurityContext) @protobuf(15,bytes,opt)
 
 	// Whether this Sidecar should allocate a buffer for stdin in the container runtime. If this
 	// is not set, reads from stdin in the Sidecar will always result in EOF.
@@ -691,5 +688,5 @@ import (
 	// left optional to help support Kubernetes versions prior to 1.29 when this feature
 	// was introduced.
 	// +optional
-	restartPolicy?: null | corev1.#ContainerRestartPolicy @go(RestartPolicy,*corev1.ContainerRestartPolicy)
+	restartPolicy?: corev1.#ContainerRestartPolicy @go(RestartPolicy,*corev1.ContainerRestartPolicy)
 }

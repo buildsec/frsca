@@ -24,12 +24,12 @@ package v1
 
 	// Value the expression used to retrieve the value of the result from an underlying Step.
 	// +optional
-	value?: null | #ParamValue @go(Value,*ResultValue)
+	// +kubebuilder:pruning:PreserveUnknownFields
+	// +kubebuilder:validation:Schemaless
+	value?: #ParamValue @go(Value,*ResultValue)
 }
 
 // StepResult used to describe the Results of a Step.
-//
-// This is field is at an BETA stability level and gated by "enable-step-actions" feature flag.
 #StepResult: {
 	// Name the given name
 	name: string @go(Name)
@@ -58,6 +58,8 @@ package v1
 	type?: #ResultsType @go(Type)
 
 	// Value the given value of the result
+	// +kubebuilder:pruning:PreserveUnknownFields
+	// +kubebuilder:validation:Schemaless
 	value: #ParamValue @go(Value,ResultValue)
 }
 

@@ -9,6 +9,6 @@ package v1
 // - Must begin with a letter or an underscore (_)
 _#stringAndArrayVariableNameFormat: "^[_a-zA-Z][_a-zA-Z0-9.-]*$"
 
-// objectVariableNameFormat is the regext used to validate object name and key names format
+// objectVariableNameFormat is the regex used to validate object name and key names format
 // The difference with the array or string name format is that object variable names shouldn't contain dots.
 _#objectVariableNameFormat: "^[_a-zA-Z][_a-zA-Z0-9-]*$"

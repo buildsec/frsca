@@ -40,24 +40,24 @@ import (
 	// Trigger groups allow for centralized processing of an interceptor chain
 	// +listType=atomic
 	triggerGroups?: [...#EventListenerTriggerGroup] @go(TriggerGroups,[]EventListenerTriggerGroup)
-	namespaceSelector?: #NamespaceSelector           @go(NamespaceSelector)
-	labelSelector?:     null | metav1.#LabelSelector @go(LabelSelector,*metav1.LabelSelector)
-	resources?:         #Resources                   @go(Resources)
-	cloudEventURI?:     string                       @go(CloudEventURI)
+	namespaceSelector?: #NamespaceSelector    @go(NamespaceSelector)
+	labelSelector?:     metav1.#LabelSelector @go(LabelSelector,*metav1.LabelSelector)
+	resources?:         #Resources            @go(Resources)
+	cloudEventURI?:     string                @go(CloudEventURI)
 }
 
 #Resources: {
-	kubernetesResource?: null | #KubernetesResource @go(KubernetesResource,*KubernetesResource)
-	customResource?:     null | #CustomResource     @go(CustomResource,*CustomResource)
+	kubernetesResource?: #KubernetesResource @go(KubernetesResource,*KubernetesResource)
+	customResource?:     #CustomResource     @go(CustomResource,*CustomResource)
 }
 
 #CustomResource: _
 
 #KubernetesResource: {
-	replicas?:                 null | int32        @go(Replicas,*int32)
+	replicas?:                 int32               @go(Replicas,*int32)
 	serviceType?:              corev1.#ServiceType @go(ServiceType)
-	servicePort?:              null | int32        @go(ServicePort,*int32)
-	serviceLoadBalancerClass?: null | string       @go(ServiceLoadBalancerClass,*string)
+	servicePort?:              int32               @go(ServicePort,*int32)
+	serviceLoadBalancerClass?: string              @go(ServiceLoadBalancerClass,*string)
 	spec?:                     duckv1.#WithPodSpec @go(WithPodSpec)
 }
 
@@ -67,15 +67,15 @@ import (
 // provided instead of TriggerBinding, Interceptors and TriggerTemplate
 #EventListenerTrigger: {
 	// +listType=atomic
-	bindings?: [...null | #TriggerSpecBinding] @go(Bindings,[]*EventListenerBinding)
-	template?:   null | #TriggerSpecTemplate @go(Template,*EventListenerTemplate)
-	triggerRef?: string                      @go(TriggerRef)
+	bindings?: [...#TriggerSpecBinding] @go(Bindings,[]*EventListenerBinding)
+	template?:   #TriggerSpecTemplate @go(Template,*EventListenerTemplate)
+	triggerRef?: string               @go(TriggerRef)
 
 	// +optional
 	name?: string @go(Name)
 
 	// +listType=atomic
-	interceptors?: [...null | #TriggerInterceptor] @go(Interceptors,[]*EventInterceptor)
+	interceptors?: [...#TriggerInterceptor] @go(Interceptors,[]*EventInterceptor)
 
 	// ServiceAccountName optionally associates credentials with each trigger;
 	// more granular authorization for
@@ -92,14 +92,14 @@ import (
 	name: string @go(Name)
 
 	// +listType=atomic
-	interceptors: [...null | #TriggerInterceptor] @go(Interceptors,[]*TriggerInterceptor)
+	interceptors: [...#TriggerInterceptor] @go(Interceptors,[]*TriggerInterceptor)
 	triggerSelector: #EventListenerTriggerSelector @go(TriggerSelector)
 }
 
 // EventListenerTriggerSelector  defines ways to select a group of triggers using their metadata
 #EventListenerTriggerSelector: {
-	namespaceSelector?: #NamespaceSelector           @go(NamespaceSelector)
-	labelSelector?:     null | metav1.#LabelSelector @go(LabelSelector,*metav1.LabelSelector)
+	namespaceSelector?: #NamespaceSelector    @go(NamespaceSelector)
+	labelSelector?:     metav1.#LabelSelector @go(LabelSelector,*metav1.LabelSelector)
 }
 
 // EventInterceptor provides a hook to intercept and pre-process events

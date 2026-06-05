@@ -29,7 +29,7 @@ import corev1 "k8s.io/api/core/v1"
 
 	// SecurityContext sets the security context for the pod
 	// +optional
-	securityContext?: null | corev1.#PodSecurityContext @go(SecurityContext,*corev1.PodSecurityContext)
+	securityContext?: corev1.#PodSecurityContext @go(SecurityContext,*corev1.PodSecurityContext)
 
 	// If specified, indicates the pod's priority. "system-node-critical" and
 	// "system-cluster-critical" are two special keywords which indicate the
@@ -38,5 +38,5 @@ import corev1 "k8s.io/api/core/v1"
 	// If not specified, the pod priority will be default or zero if there is no
 	// default.
 	// +optional
-	priorityClassName?: null | string @go(PriorityClassName,*string)
+	priorityClassName?: string @go(PriorityClassName,*string)
 }

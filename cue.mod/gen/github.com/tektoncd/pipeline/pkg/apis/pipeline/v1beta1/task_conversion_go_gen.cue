@@ -15,7 +15,7 @@ _#taskDeprecation: {
 	deprecatedSteps?: [...#Step] @go(DeprecatedSteps,[]Step)
 
 	// DeprecatedStepTemplate contains stepTemplate of a Task that with deprecated fields defined.
-	deprecatedStepTemplate?: null | #StepTemplate @go(DeprecatedStepTemplate,*StepTemplate)
+	deprecatedStepTemplate?: #StepTemplate @go(DeprecatedStepTemplate,*StepTemplate)
 }
 
 // taskDeprecations contains deprecated fields of Tasks that belong to the same Pipeline or PipelineRun

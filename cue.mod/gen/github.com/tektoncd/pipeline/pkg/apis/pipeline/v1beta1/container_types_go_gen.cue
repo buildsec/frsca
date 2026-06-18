@@ -16,6 +16,11 @@ import (
 	// Each Step in a Task must have a unique name.
 	name: string @go(Name) @protobuf(1,bytes,opt)
 
+	// DisplayName is a user-facing name of the step that may be
+	// used to populate a UI.
+	// +optional
+	displayName?: string @go(DisplayName)
+
 	// Image reference name to run for this Step.
 	// More info: https://kubernetes.io/docs/concepts/containers/images
 	// +optional

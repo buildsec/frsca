@@ -10,6 +10,8 @@ import (
 	"github.com/tektoncd/pipeline/pkg/apis/pipeline/v1"
 )
 
+#StepActionKind: "StepAction"
+
 // StepAction represents the actionable components of Step.
 // The Step can only reference it from the cluster or using remote resolution.
 //

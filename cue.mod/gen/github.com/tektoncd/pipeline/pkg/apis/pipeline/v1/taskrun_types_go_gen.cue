@@ -77,6 +77,13 @@ import (
 
 	// Compute resources to use for this TaskRun
 	computeResources?: corev1.#ResourceRequirements @go(ComputeResources,*corev1.ResourceRequirements)
+
+	// ManagedBy indicates which controller is responsible for reconciling
+	// this resource. If unset or set to "tekton.dev/pipeline", the default
+	// Tekton controller will manage this resource.
+	// This field is immutable.
+	// +optional
+	managedBy?: string @go(ManagedBy,*string)
 }
 
 // TaskRunSpecStatus defines the TaskRun spec status the user can provide

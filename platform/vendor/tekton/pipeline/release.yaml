@@ -583,8 +583,8 @@ metadata:
   labels:
     app.kubernetes.io/instance: default
     app.kubernetes.io/part-of: tekton-pipelines
-    pipeline.tekton.dev/release: "v1.4.0"
-    version: "v1.4.0"
+    pipeline.tekton.dev/release: "v1.6.3"
+    version: "v1.6.3"
 spec:
   group: tekton.dev
   preserveUnknownFields: false
@@ -1419,8 +1419,8 @@ metadata:
   labels:
     app.kubernetes.io/instance: default
     app.kubernetes.io/part-of: tekton-pipelines
-    pipeline.tekton.dev/release: "v1.4.0"
-    version: "v1.4.0"
+    pipeline.tekton.dev/release: "v1.6.3"
+    version: "v1.6.3"
 spec:
   group: tekton.dev
   preserveUnknownFields: false
@@ -2994,8 +2994,8 @@ metadata:
   labels:
     app.kubernetes.io/instance: default
     app.kubernetes.io/part-of: tekton-pipelines
-    pipeline.tekton.dev/release: "v1.4.0"
-    version: "v1.4.0"
+    pipeline.tekton.dev/release: "v1.6.3"
+    version: "v1.6.3"
 spec:
   group: tekton.dev
   preserveUnknownFields: false
@@ -3036,6 +3036,13 @@ spec:
               description: PipelineRunSpec defines the desired state of PipelineRun
               type: object
               properties:
+                managedBy:
+                  description: |-
+                    ManagedBy indicates which controller is responsible for reconciling
+                    this resource. If unset or set to "tekton.dev/pipeline", the default
+                    Tekton controller will manage this resource.
+                    This field is immutable.
+                  type: string
                 params:
                   description: Params is a list of parameter names and values.
                   type: array
@@ -3304,6 +3311,18 @@ spec:
                       x-kubernetes-list-type: atomic
                     hostNetwork:
                       description: HostNetwork specifies whether the pod may use the node network namespace
+                      type: boolean
+                    hostUsers:
+                      description: |-
+                        HostUsers indicates whether the pod will use the host's user namespace.
+                        Optional: Default to true.
+                        If set to true or not present, the pod will be run in the host user namespace, useful
+                        for when the pod needs a feature only available to the host user namespace, such as
+                        loading a kernel module with CAP_SYS_MODULE.
+                        When set to false, a new user namespace is created for the pod. Setting false
+                        is useful to mitigating container breakout vulnerabilities such as allowing
+                        containers to run as root without their user having root privileges on the host.
+                        This field depends on the kubernetes feature gate UserNamespacesSupport being enabled.
                       type: boolean
                     imagePullSecrets:
                       description: ImagePullSecrets gives the name of the secret used by the pod to pull the image if specified
@@ -4113,6 +4132,18 @@ spec:
                             x-kubernetes-list-type: atomic
                           hostNetwork:
                             description: HostNetwork specifies whether the pod may use the node network namespace
+                            type: boolean
+                          hostUsers:
+                            description: |-
+                              HostUsers indicates whether the pod will use the host's user namespace.
+                              Optional: Default to true.
+                              If set to true or not present, the pod will be run in the host user namespace, useful
+                              for when the pod needs a feature only available to the host user namespace, such as
+                              loading a kernel module with CAP_SYS_MODULE.
+                              When set to false, a new user namespace is created for the pod. Setting false
+                              is useful to mitigating container breakout vulnerabilities such as allowing
+                              containers to run as root without their user having root privileges on the host.
+                              This field depends on the kubernetes feature gate UserNamespacesSupport being enabled.
                             type: boolean
                           imagePullSecrets:
                             description: ImagePullSecrets gives the name of the secret used by the pod to pull the image if specified
@@ -6110,6 +6141,13 @@ spec:
               description: PipelineRunSpec defines the desired state of PipelineRun
               type: object
               properties:
+                managedBy:
+                  description: |-
+                    ManagedBy indicates which controller is responsible for reconciling
+                    this resource. If unset or set to "tekton.dev/pipeline", the default
+                    Tekton controller will manage this resource.
+                    This field is immutable.
+                  type: string
                 params:
                   description: Params is a list of parameter names and values.
                   type: array
@@ -6456,6 +6494,18 @@ spec:
                             x-kubernetes-list-type: atomic
                           hostNetwork:
                             description: HostNetwork specifies whether the pod may use the node network namespace
+                            type: boolean
+                          hostUsers:
+                            description: |-
+                              HostUsers indicates whether the pod will use the host's user namespace.
+                              Optional: Default to true.
+                              If set to true or not present, the pod will be run in the host user namespace, useful
+                              for when the pod needs a feature only available to the host user namespace, such as
+                              loading a kernel module with CAP_SYS_MODULE.
+                              When set to false, a new user namespace is created for the pod. Setting false
+                              is useful to mitigating container breakout vulnerabilities such as allowing
+                              containers to run as root without their user having root privileges on the host.
+                              This field depends on the kubernetes feature gate UserNamespacesSupport being enabled.
                             type: boolean
                           imagePullSecrets:
                             description: ImagePullSecrets gives the name of the secret used by the pod to pull the image if specified
@@ -7099,6 +7149,18 @@ spec:
                           x-kubernetes-list-type: atomic
                         hostNetwork:
                           description: HostNetwork specifies whether the pod may use the node network namespace
+                          type: boolean
+                        hostUsers:
+                          description: |-
+                            HostUsers indicates whether the pod will use the host's user namespace.
+                            Optional: Default to true.
+                            If set to true or not present, the pod will be run in the host user namespace, useful
+                            for when the pod needs a feature only available to the host user namespace, such as
+                            loading a kernel module with CAP_SYS_MODULE.
+                            When set to false, a new user namespace is created for the pod. Setting false
+                            is useful to mitigating container breakout vulnerabilities such as allowing
+                            containers to run as root without their user having root privileges on the host.
+                            This field depends on the kubernetes feature gate UserNamespacesSupport being enabled.
                           type: boolean
                         imagePullSecrets:
                           description: ImagePullSecrets gives the name of the secret used by the pod to pull the image if specified
@@ -8613,8 +8675,8 @@ metadata:
   labels:
     app.kubernetes.io/instance: default
     app.kubernetes.io/part-of: tekton-pipelines
-    pipeline.tekton.dev/release: "v1.4.0"
-    version: "v1.4.0"
+    pipeline.tekton.dev/release: "v1.6.3"
+    version: "v1.6.3"
 spec:
   group: tekton.dev
   preserveUnknownFields: false
@@ -9732,8 +9794,8 @@ metadata:
   labels:
     app.kubernetes.io/instance: default
     app.kubernetes.io/part-of: tekton-pipelines
-    pipeline.tekton.dev/release: "v1.4.0"
-    version: "v1.4.0"
+    pipeline.tekton.dev/release: "v1.6.3"
+    version: "v1.6.3"
 spec:
   group: tekton.dev
   preserveUnknownFields: false
@@ -12698,6 +12760,11 @@ spec:
                         items:
                           type: string
                         x-kubernetes-list-type: atomic
+                      displayName:
+                        description: |-
+                          DisplayName is a user-facing name of the step that may be
+                          used to populate a UI.
+                        type: string
                       env:
                         description: |-
                           List of environment variables to set in the container.
@@ -16337,6 +16404,11 @@ spec:
                                 - type: integer
                                 - type: string
                               x-kubernetes-int-or-string: true
+                      displayName:
+                        description: |-
+                          DisplayName is a user-facing name of the step that may be
+                          used to populate a UI.
+                        type: string
                       env:
                         description: |-
                           List of environment variables to set in the Step.
@@ -17044,8 +17116,8 @@ metadata:
   labels:
     app.kubernetes.io/instance: default
     app.kubernetes.io/part-of: tekton-pipelines
-    pipeline.tekton.dev/release: "v1.4.0"
-    version: "v1.4.0"
+    pipeline.tekton.dev/release: "v1.6.3"
+    version: "v1.6.3"
 spec:
   group: tekton.dev
   preserveUnknownFields: false
@@ -17161,6 +17233,13 @@ spec:
                             if enabled, pause TaskRun on failure of a step
                             failed step will not exit
                           type: string
+                managedBy:
+                  description: |-
+                    ManagedBy indicates which controller is responsible for reconciling
+                    this resource. If unset or set to "tekton.dev/pipeline", the default
+                    Tekton controller will manage this resource.
+                    This field is immutable.
+                  type: string
                 params:
                   description: Params is a list of Param
                   type: array
@@ -17382,6 +17461,18 @@ spec:
                       x-kubernetes-list-type: atomic
                     hostNetwork:
                       description: HostNetwork specifies whether the pod may use the node network namespace
+                      type: boolean
+                    hostUsers:
+                      description: |-
+                        HostUsers indicates whether the pod will use the host's user namespace.
+                        Optional: Default to true.
+                        If set to true or not present, the pod will be run in the host user namespace, useful
+                        for when the pod needs a feature only available to the host user namespace, such as
+                        loading a kernel module with CAP_SYS_MODULE.
+                        When set to false, a new user namespace is created for the pod. Setting false
+                        is useful to mitigating container breakout vulnerabilities such as allowing
+                        containers to run as root without their user having root privileges on the host.
+                        This field depends on the kubernetes feature gate UserNamespacesSupport being enabled.
                       type: boolean
                     imagePullSecrets:
                       description: ImagePullSecrets gives the name of the secret used by the pod to pull the image if specified
@@ -19361,6 +19452,13 @@ spec:
                             if enabled, pause TaskRun on failure of a step
                             failed step will not exit
                           type: string
+                managedBy:
+                  description: |-
+                    ManagedBy indicates which controller is responsible for reconciling
+                    this resource. If unset or set to "tekton.dev/pipeline", the default
+                    Tekton controller will manage this resource.
+                    This field is immutable.
+                  type: string
                 params:
                   description: Params is a list of Param
                   type: array
@@ -19582,6 +19680,18 @@ spec:
                       x-kubernetes-list-type: atomic
                     hostNetwork:
                       description: HostNetwork specifies whether the pod may use the node network namespace
+                      type: boolean
+                    hostUsers:
+                      description: |-
+                        HostUsers indicates whether the pod will use the host's user namespace.
+                        Optional: Default to true.
+                        If set to true or not present, the pod will be run in the host user namespace, useful
+                        for when the pod needs a feature only available to the host user namespace, such as
+                        loading a kernel module with CAP_SYS_MODULE.
+                        When set to false, a new user namespace is created for the pod. Setting false
+                        is useful to mitigating container breakout vulnerabilities such as allowing
+                        containers to run as root without their user having root privileges on the host.
+                        This field depends on the kubernetes feature gate UserNamespacesSupport being enabled.
                       type: boolean
                     imagePullSecrets:
                       description: ImagePullSecrets gives the name of the secret used by the pod to pull the image if specified
@@ -23288,6 +23398,11 @@ spec:
                                     - type: integer
                                     - type: string
                                   x-kubernetes-int-or-string: true
+                          displayName:
+                            description: |-
+                              DisplayName is a user-facing name of the step that may be
+                              used to populate a UI.
+                            type: string
                           env:
                             description: |-
                               List of environment variables to set in the Step.
@@ -24011,8 +24126,8 @@ metadata:
   labels:
     app.kubernetes.io/instance: default
     app.kubernetes.io/part-of: tekton-pipelines
-    pipeline.tekton.dev/release: "v1.4.0"
-    version: "v1.4.0"
+    pipeline.tekton.dev/release: "v1.6.3"
+    version: "v1.6.3"
 spec:
   group: tekton.dev
   versions:
@@ -24155,7 +24270,7 @@ metadata:
     app.kubernetes.io/component: webhook
     app.kubernetes.io/instance: default
     app.kubernetes.io/part-of: tekton-pipelines
-    pipeline.tekton.dev/release: "v1.4.0"
+    pipeline.tekton.dev/release: "v1.6.3"
 # The data is populated at install time.
 ---
 apiVersion: admissionregistration.k8s.io/v1
@@ -24166,7 +24281,7 @@ metadata:
     app.kubernetes.io/component: webhook
     app.kubernetes.io/instance: default
     app.kubernetes.io/part-of: tekton-pipelines
-    pipeline.tekton.dev/release: "v1.4.0"
+    pipeline.tekton.dev/release: "v1.6.3"
 webhooks:
   - admissionReviewVersions: ["v1"]
     clientConfig:
@@ -24185,7 +24300,7 @@ metadata:
     app.kubernetes.io/component: webhook
     app.kubernetes.io/instance: default
     app.kubernetes.io/part-of: tekton-pipelines
-    pipeline.tekton.dev/release: "v1.4.0"
+    pipeline.tekton.dev/release: "v1.6.3"
 webhooks:
   - admissionReviewVersions: ["v1"]
     clientConfig:
@@ -24204,7 +24319,7 @@ metadata:
     app.kubernetes.io/component: webhook
     app.kubernetes.io/instance: default
     app.kubernetes.io/part-of: tekton-pipelines
-    pipeline.tekton.dev/release: "v1.4.0"
+    pipeline.tekton.dev/release: "v1.6.3"
 webhooks:
   - admissionReviewVersions: ["v1"]
     clientConfig:
@@ -24691,7 +24806,7 @@ data:
   # this ConfigMap such that even if we don't have access to
   # other resources in the namespace we still can have access to
   # this ConfigMap.
-  version: "v1.4.0"
+  version: "v1.6.3"
 
 ---
 # Copyright 2020 Tekton Authors LLC
@@ -25156,12 +25271,12 @@ metadata:
     app.kubernetes.io/name: controller
     app.kubernetes.io/component: controller
     app.kubernetes.io/instance: default
-    app.kubernetes.io/version: "v1.4.0"
+    app.kubernetes.io/version: "v1.6.3"
     app.kubernetes.io/part-of: tekton-pipelines
     # tekton.dev/release value replaced with inputs.params.versionTag in pipeline/tekton/publish.yaml
-    pipeline.tekton.dev/release: "v1.4.0"
+    pipeline.tekton.dev/release: "v1.6.3"
     # labels below are related to istio and should not be used for resource lookup
-    version: "v1.4.0"
+    version: "v1.6.3"
 spec:
   replicas: 1
   selector:
@@ -25176,13 +25291,13 @@ spec:
         app.kubernetes.io/name: controller
         app.kubernetes.io/component: controller
         app.kubernetes.io/instance: default
-        app.kubernetes.io/version: "v1.4.0"
+        app.kubernetes.io/version: "v1.6.3"
         app.kubernetes.io/part-of: tekton-pipelines
         # tekton.dev/release value replaced with inputs.params.versionTag in pipeline/tekton/publish.yaml
-        pipeline.tekton.dev/release: "v1.4.0"
+        pipeline.tekton.dev/release: "v1.6.3"
         # labels below are related to istio and should not be used for resource lookup
         app: tekton-pipelines-controller
-        version: "v1.4.0"
+        version: "v1.6.3"
     spec:
       affinity:
         nodeAffinity:
@@ -25207,11 +25322,11 @@ spec:
       serviceAccountName: tekton-pipelines-controller
       containers:
         - name: tekton-pipelines-controller
-          image: ghcr.io/tektoncd/pipeline/controller-10a3e32792f33651396d02b6855a6e36:v1.4.0@sha256:8fd3eba94a15ce667fad65cfaebd095c9ecff2e1a39cee9b9b02edf2814bc678
+          image: ghcr.io/tektoncd/pipeline/controller-10a3e32792f33651396d02b6855a6e36:v1.6.3@sha256:0b325a78c052c2c316ee1721c7750ca5d5b6f848c5b8e999eb3f2a1c9ca1baef
           args: [
             # These images are built on-demand by `ko resolve` and are replaced
             # by image references by digest.
-            "-entrypoint-image", "ghcr.io/tektoncd/pipeline/entrypoint-bff0a22da108bc2f16c818c97641a296:v1.4.0@sha256:7926807e7777721815c7d4d1b0d478710b7e270f3680e7f62e9a9d07a08e7bdd", "-nop-image", "ghcr.io/tektoncd/pipeline/nop-8eac7c133edad5df719dc37b36b62482:v1.4.0@sha256:998ba46d452f2cbb46e7cbe7446576ab6e62d31bf1135468ccfea59953b4659c", "-sidecarlogresults-image", "ghcr.io/tektoncd/pipeline/sidecarlogresults-7501c6a20d741631510a448b48ab098f:v1.4.0@sha256:31cd5667c81cd1811073f64c89204828c13f91d293faf4d19393f5cdf8c212b0", "-workingdirinit-image", "ghcr.io/tektoncd/pipeline/workingdirinit-0c558922ec6a1b739e550e349f2d5fc1:v1.4.0@sha256:481ad894e8ced6919bc95ff26c791ff286831e77e8feaa33087a700d028468a3",
+            "-entrypoint-image", "ghcr.io/tektoncd/pipeline/entrypoint-bff0a22da108bc2f16c818c97641a296:v1.6.3@sha256:cfe6239e4f6a67bab464fc8b091c4ac010ee6da715cf609d9cd234d81163fd05", "-nop-image", "ghcr.io/tektoncd/pipeline/nop-8eac7c133edad5df719dc37b36b62482:v1.6.3@sha256:25b4020a0fbbf0674dadce802c09f8b15b08422f289f34081d6a5f7b82a404c6", "-sidecarlogresults-image", "ghcr.io/tektoncd/pipeline/sidecarlogresults-7501c6a20d741631510a448b48ab098f:v1.6.3@sha256:3d1c34f55d65c3e895d6aca3d4a1da20267364221b1f2e847f9d521c8d23c34f", "-workingdirinit-image", "ghcr.io/tektoncd/pipeline/workingdirinit-0c558922ec6a1b739e550e349f2d5fc1:v1.6.3@sha256:3a02b84dc4c7902254fd57f8273dfcb616e6b8994af38116b2ac210016e40846",
             # The shell image must allow root in order to create directories and copy files to PVCs.
             # cgr.dev/chainguard/busybox as of April 14 2022
             # image shall not contains tag, so it will be supported on a runtime like cri-o
@@ -25302,13 +25417,13 @@ metadata:
     app.kubernetes.io/name: controller
     app.kubernetes.io/component: controller
     app.kubernetes.io/instance: default
-    app.kubernetes.io/version: "v1.4.0"
+    app.kubernetes.io/version: "v1.6.3"
     app.kubernetes.io/part-of: tekton-pipelines
     # tekton.dev/release value replaced with inputs.params.versionTag in pipeline/tekton/publish.yaml
-    pipeline.tekton.dev/release: "v1.4.0"
+    pipeline.tekton.dev/release: "v1.6.3"
     # labels below are related to istio and should not be used for resource lookup
     app: tekton-pipelines-controller
-    version: "v1.4.0"
+    version: "v1.6.3"
   name: tekton-pipelines-controller
   namespace: tekton-pipelines
 spec:
@@ -25352,12 +25467,12 @@ metadata:
     app.kubernetes.io/name: events
     app.kubernetes.io/component: events
     app.kubernetes.io/instance: default
-    app.kubernetes.io/version: "v1.4.0"
+    app.kubernetes.io/version: "v1.6.3"
     app.kubernetes.io/part-of: tekton-pipelines
     # tekton.dev/release value replaced with inputs.params.versionTag in pipeline/tekton/publish.yaml
-    pipeline.tekton.dev/release: "v1.4.0"
+    pipeline.tekton.dev/release: "v1.6.3"
     # labels below are related to istio and should not be used for resource lookup
-    version: "v1.4.0"
+    version: "v1.6.3"
 spec:
   replicas: 1
   selector:
@@ -25372,13 +25487,13 @@ spec:
         app.kubernetes.io/name: events
         app.kubernetes.io/component: events
         app.kubernetes.io/instance: default
-        app.kubernetes.io/version: "v1.4.0"
+        app.kubernetes.io/version: "v1.6.3"
         app.kubernetes.io/part-of: tekton-pipelines
         # tekton.dev/release value replaced with inputs.params.versionTag in pipeline/tekton/publish.yaml
-        pipeline.tekton.dev/release: "v1.4.0"
+        pipeline.tekton.dev/release: "v1.6.3"
         # labels below are related to istio and should not be used for resource lookup
         app: tekton-events-controller
-        version: "v1.4.0"
+        version: "v1.6.3"
     spec:
       affinity:
         nodeAffinity:
@@ -25392,7 +25507,7 @@ spec:
       serviceAccountName: tekton-events-controller
       containers:
         - name: tekton-events-controller
-          image: ghcr.io/tektoncd/pipeline/events-a9042f7efb0cbade2a868a1ee5ddd52c:v1.4.0@sha256:50775111c05b54f75b502c4c50f50791ed9b4a644840fc3f5f935d8f9706b913
+          image: ghcr.io/tektoncd/pipeline/events-a9042f7efb0cbade2a868a1ee5ddd52c:v1.6.3@sha256:306fb975ff243efe95b1b400408f75aa3230b4b1878f852c667e08a05a1cf8a2
           args: []
           volumeMounts:
             - name: config-logging
@@ -25471,13 +25586,13 @@ metadata:
     app.kubernetes.io/name: events
     app.kubernetes.io/component: events
     app.kubernetes.io/instance: default
-    app.kubernetes.io/version: "v1.4.0"
+    app.kubernetes.io/version: "v1.6.3"
     app.kubernetes.io/part-of: tekton-pipelines
     # tekton.dev/release value replaced with inputs.params.versionTag in pipeline/tekton/publish.yaml
-    pipeline.tekton.dev/release: "v1.4.0"
+    pipeline.tekton.dev/release: "v1.6.3"
     # labels below are related to istio and should not be used for resource lookup
     app: tekton-events-controller
-    version: "v1.4.0"
+    version: "v1.6.3"
   name: tekton-events-controller
   namespace: tekton-pipelines
 spec:
@@ -25711,6 +25826,11 @@ data:
   default-service-account: "default"
   # The default layer kind in the bundle image.
   default-kind: "task"
+  # Optional: Default cache mode for this resolver. Valid values: "always", "never", "auto" (default: "auto")
+  # "always" - Always cache resolved resources
+  # "never"  - Never cache resolved resources
+  # "auto"   - Only cache bundles with digest references (@sha256:...)
+  # default-cache-mode: "auto"
 
 ---
 # Copyright 2022 The Tekton Authors
@@ -25745,6 +25865,11 @@ data:
   allowed-namespaces: ""
   # An optional comma-separated list of namespaces which the resolver is blocked from accessing. Defaults to empty, meaning all namespaces are allowed.
   blocked-namespaces: ""
+  # Optional: Default cache mode for this resolver. Valid values: "always", "never", "auto" (default: "auto")
+  # "always" - Always cache resolved resources
+  # "never"  - Never cache resolved resources (recommended for cluster resolver since resources are mutable)
+  # "auto"   - Never cache for cluster resolver (same as "never")
+  # default-cache-mode: "auto"
 
 ---
 # Copyright 2019 The Tekton Authors
@@ -25996,6 +26121,11 @@ data:
   # The default organization to look for repositories under when using the authenticated API,
   # if not specified in the resolver parameters. Optional.
   default-org: ""
+  # Optional: Default cache mode for this resolver. Valid values: "always", "never", "auto" (default: "auto")
+  # "always" - Always cache resolved resources
+  # "never"  - Never cache resolved resources
+  # "auto"   - Only cache when revision is a commit hash
+  # default-cache-mode: "auto"
 
 ---
 # Copyright 2023 The Tekton Authors
@@ -26062,6 +26192,36 @@ data:
   default-type: "artifact"
 
 ---
+# Copyright 2025 The Tekton Authors
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: resolver-cache-config
+  namespace: tekton-pipelines-resolvers
+  labels:
+    app.kubernetes.io/component: resolvers
+    app.kubernetes.io/instance: default
+    app.kubernetes.io/part-of: tekton-pipelines
+data:
+  # Maximum number of entries in the resolver cache
+  max-size: "1000"
+  # Time-to-live for cache entries (examples: 5m, 10m, 1h)
+  ttl: "5m"
+
+---
 # Copyright 2022 The Tekton Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -26084,12 +26244,12 @@ metadata:
     app.kubernetes.io/name: resolvers
     app.kubernetes.io/component: resolvers
     app.kubernetes.io/instance: default
-    app.kubernetes.io/version: "v1.4.0"
+    app.kubernetes.io/version: "v1.6.3"
     app.kubernetes.io/part-of: tekton-pipelines
     # tekton.dev/release value replaced with inputs.params.versionTag in pipeline/tekton/publish.yaml
-    pipeline.tekton.dev/release: "v1.4.0"
+    pipeline.tekton.dev/release: "v1.6.3"
     # labels below are related to istio and should not be used for resource lookup
-    version: "v1.4.0"
+    version: "v1.6.3"
 spec:
   replicas: 1
   selector:
@@ -26104,13 +26264,13 @@ spec:
         app.kubernetes.io/name: resolvers
         app.kubernetes.io/component: resolvers
         app.kubernetes.io/instance: default
-        app.kubernetes.io/version: "v1.4.0"
+        app.kubernetes.io/version: "v1.6.3"
         app.kubernetes.io/part-of: tekton-pipelines
         # tekton.dev/release value replaced with inputs.params.versionTag in pipeline/tekton/publish.yaml
-        pipeline.tekton.dev/release: "v1.4.0"
+        pipeline.tekton.dev/release: "v1.6.3"
         # labels below are related to istio and should not be used for resource lookup
         app: tekton-pipelines-resolvers
-        version: "v1.4.0"
+        version: "v1.6.3"
     spec:
       affinity:
         nodeAffinity:
@@ -26135,7 +26295,7 @@ spec:
       serviceAccountName: tekton-pipelines-resolvers
       containers:
         - name: controller
-          image: ghcr.io/tektoncd/pipeline/resolvers-ff86b24f130c42b88983d3c13993056d:v1.4.0@sha256:25b9cbeae5b6d8d0b183d9b213fee176585552436c88e4203027d83496f9085d
+          image: ghcr.io/tektoncd/pipeline/resolvers-ff86b24f130c42b88983d3c13993056d:v1.6.3@sha256:0b130d2df4da703da5e848653cc4062f6f2bd2421bc660250fb649e2a2a09047
           command:
             - /sbin/tini
             - --
@@ -26221,13 +26381,13 @@ metadata:
     app.kubernetes.io/name: resolvers
     app.kubernetes.io/component: resolvers
     app.kubernetes.io/instance: default
-    app.kubernetes.io/version: "v1.4.0"
+    app.kubernetes.io/version: "v1.6.3"
     app.kubernetes.io/part-of: tekton-pipelines
     # tekton.dev/release value replaced with inputs.params.versionTag in pipeline/tekton/publish.yaml
-    pipeline.tekton.dev/release: "v1.4.0"
+    pipeline.tekton.dev/release: "v1.6.3"
     # labels below are related to istio and should not be used for resource lookup
     app: tekton-pipelines-remote-resolvers
-    version: "v1.4.0"
+    version: "v1.6.3"
   name: tekton-pipelines-remote-resolvers
   namespace: tekton-pipelines-resolvers
 spec:
@@ -26271,12 +26431,12 @@ metadata:
     app.kubernetes.io/name: webhook
     app.kubernetes.io/component: webhook
     app.kubernetes.io/instance: default
-    app.kubernetes.io/version: "v1.4.0"
+    app.kubernetes.io/version: "v1.6.3"
     app.kubernetes.io/part-of: tekton-pipelines
     # tekton.dev/release value replaced with inputs.params.versionTag in pipeline/tekton/publish.yaml
-    pipeline.tekton.dev/release: "v1.4.0"
+    pipeline.tekton.dev/release: "v1.6.3"
     # labels below are related to istio and should not be used for resource lookup
-    version: "v1.4.0"
+    version: "v1.6.3"
 spec:
   minReplicas: 1
   maxReplicas: 5
@@ -26319,12 +26479,12 @@ metadata:
     app.kubernetes.io/name: webhook
     app.kubernetes.io/component: webhook
     app.kubernetes.io/instance: default
-    app.kubernetes.io/version: "v1.4.0"
+    app.kubernetes.io/version: "v1.6.3"
     app.kubernetes.io/part-of: tekton-pipelines
     # tekton.dev/release value replaced with inputs.params.versionTag in pipeline/tekton/publish.yaml
-    pipeline.tekton.dev/release: "v1.4.0"
+    pipeline.tekton.dev/release: "v1.6.3"
     # labels below are related to istio and should not be used for resource lookup
-    version: "v1.4.0"
+    version: "v1.6.3"
 spec:
   selector:
     matchLabels:
@@ -26338,13 +26498,13 @@ spec:
         app.kubernetes.io/name: webhook
         app.kubernetes.io/component: webhook
         app.kubernetes.io/instance: default
-        app.kubernetes.io/version: "v1.4.0"
+        app.kubernetes.io/version: "v1.6.3"
         app.kubernetes.io/part-of: tekton-pipelines
         # tekton.dev/release value replaced with inputs.params.versionTag in pipeline/tekton/publish.yaml
-        pipeline.tekton.dev/release: "v1.4.0"
+        pipeline.tekton.dev/release: "v1.6.3"
         # labels below are related to istio and should not be used for resource lookup
         app: tekton-pipelines-webhook
-        version: "v1.4.0"
+        version: "v1.6.3"
     spec:
       affinity:
         nodeAffinity:
@@ -26371,7 +26531,7 @@ spec:
         - name: webhook
           # This is the Go import path for the binary that is containerized
           # and substituted here.
-          image: ghcr.io/tektoncd/pipeline/webhook-d4749e605405422fd87700164e31b2d1:v1.4.0@sha256:b5ff9aa1a413eb469f39846f60d2576e86b5faab3835b70750f07a77789dbc98
+          image: ghcr.io/tektoncd/pipeline/webhook-d4749e605405422fd87700164e31b2d1:v1.6.3@sha256:0846c158e62f6a4496ade54ce31def12106f9531630b9b9c960ddcacdbaa78b9
           # Resource request required for autoscaler to take any action for a metric
           resources:
             requests:
@@ -26468,13 +26628,13 @@ metadata:
     app.kubernetes.io/name: webhook
     app.kubernetes.io/component: webhook
     app.kubernetes.io/instance: default
-    app.kubernetes.io/version: "v1.4.0"
+    app.kubernetes.io/version: "v1.6.3"
     app.kubernetes.io/part-of: tekton-pipelines
     # tekton.dev/release value replaced with inputs.params.versionTag in pipeline/tekton/publish.yaml
-    pipeline.tekton.dev/release: "v1.4.0"
+    pipeline.tekton.dev/release: "v1.6.3"
     # labels below are related to istio and should not be used for resource lookup
     app: tekton-pipelines-webhook
-    version: "v1.4.0"
+    version: "v1.6.3"
   name: tekton-pipelines-webhook
   namespace: tekton-pipelines
 spec:

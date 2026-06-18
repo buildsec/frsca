@@ -93,6 +93,13 @@ import (
 	// +optional
 	// +listType=atomic
 	taskRunSpecs?: [...#PipelineTaskRunSpec] @go(TaskRunSpecs,[]PipelineTaskRunSpec)
+
+	// ManagedBy indicates which controller is responsible for reconciling
+	// this resource. If unset or set to "tekton.dev/pipeline", the default
+	// Tekton controller will manage this resource.
+	// This field is immutable.
+	// +optional
+	managedBy?: string @go(ManagedBy,*string)
 }
 
 // TimeoutFields allows granular specification of pipeline, task, and finally timeouts

@@ -63,8 +63,8 @@ metadata:
     app.kubernetes.io/component: controller
     app.kubernetes.io/instance: default
     app.kubernetes.io/part-of: tekton-chains
-    pipeline.tekton.dev/release: "v0.25.1"
-    version: "v0.25.1"
+    pipeline.tekton.dev/release: "v0.27.1"
+    version: "v0.27.1"
 spec:
   replicas: 1
   selector:
@@ -84,13 +84,33 @@ spec:
         app.kubernetes.io/instance: default
         app.kubernetes.io/part-of: tekton-chains
         # # tekton.dev/release value replaced with inputs.params.versionTag in pipeline/tekton/publish.yaml
-        pipeline.tekton.dev/release: "v0.25.1"
-        version: "v0.25.1"
+        pipeline.tekton.dev/release: "v0.27.1"
+        version: "v0.27.1"
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/os
+                    operator: NotIn
+                    values:
+                      - windows
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: controller
+                    app.kubernetes.io/component: controller
+                    app.kubernetes.io/instance: default
+                    app.kubernetes.io/part-of: tekton-chains
+                topologyKey: kubernetes.io/hostname
+              weight: 100
       serviceAccountName: tekton-chains-controller
       containers:
         - name: tekton-chains-controller
-          image: ghcr.io/tektoncd/chains/controller-92006fd957c0afd31de6a40b3e33b39f:v0.25.1@sha256:05022c671e63971799cbe44af2631de2c0d6608b4a59214c4641af05411e28fc
+          image: ghcr.io/tektoncd/chains/github.com/tektoncd/chains/cmd/controller:v0.27.1@sha256:2011424841784c67b7fe9f5a103304859ebd9bb809b3326de6698528b548be17
           volumeMounts:
             - name: signing-secrets
               mountPath: /etc/signing-secrets
@@ -344,7 +364,7 @@ data:
   # this ConfigMap such that even if we don't have access to
   # other resources in the namespace, we can still access
   # this ConfigMap.
-  version: "v0.25.1"
+  version: "v0.27.1"
 
 ---
 # Copyright 2023 Tekton Authors LLC
@@ -478,6 +498,9 @@ metadata:
     app.kubernetes.io/instance: default
     app.kubernetes.io/part-of: tekton-chains
 data:
+  # metrics-protocol specifies the OpenTelemetry export protocol for metrics.
+  # Supported values: prometheus (default), grpc, http/protobuf, none.
+  metrics-protocol: prometheus
   _example: |
     ################################
     #                              #
@@ -493,26 +516,20 @@ data:
     # this example block and unindented to be in the data block
     # to actually change the configuration.
     #
-    # metrics.backend-destination field specifies the system metrics destination.
-    # It supports either prometheus (the default) or stackdriver.
-    # Note: Using Stackdriver will incur additional charges.
+    # metrics-protocol specifies the OpenTelemetry export protocol.
+    # Supported values: prometheus (default), grpc, http/protobuf, none.
     #
-    metrics.backend-destination: prometheus
+    metrics-protocol: prometheus
     #
-    # metrics.stackdriver-project-id field specifies the Stackdriver project ID. This
-    # field is optional. When running on GCE, application default credentials will be
-    # used and metrics will be sent to the cluster's project if this field is
-    # not provided.
+    # metrics-endpoint is the OTLP collector endpoint to send metrics to.
+    # Required when metrics-protocol is grpc or http/protobuf.
     #
-    metrics.stackdriver-project-id: "<your stackdriver project id>"
+    metrics-endpoint: "otel-collector.observability.svc.cluster.local:4317"
     #
-    # metrics.allow-stackdriver-custom-metrics indicates whether it is allowed
-    # to send metrics to Stackdriver using "global" resource type and custom
-    # metric type. Setting this flag to "true" could cause extra Stackdriver
-    # charge.  If metrics.backend-destination is not Stackdriver, this is
-    # ignored.
+    # metrics-export-interval is the interval at which metrics are exported.
+    # Uses Go duration format (e.g. 30s, 1m). Defaults to 30s.
     #
-    metrics.allow-stackdriver-custom-metrics: "false"
+    metrics-export-interval: 30s
 
 ---
 # Copyright 2023 Tekton Authors LLC

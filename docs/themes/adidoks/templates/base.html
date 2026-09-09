@@ -1,4 +1,4 @@
-{%- import 'macros/head.html' as macros_head -%}
+{% import 'macros/head.html' as macros_head -%}
 {% import 'macros/math.html' as macros_math -%}
 {% import 'macros/header.html' as macros_header -%}
 {% import 'macros/footer.html' as macros_footer -%}
@@ -41,6 +41,6 @@
     {{ macros_footer::footer() }}
   {% endblock footer %}
 
-  {{ macros_js::javascript() }}  
+  {{ macros_js::javascript() }}
 </body>
 </html>
